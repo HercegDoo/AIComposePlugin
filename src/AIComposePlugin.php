@@ -14,6 +14,25 @@ class AIComposePlugin extends rcube_plugin
     public function load_resources($args)
     {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         $this->include_stylesheet('./css/settings.css');
 
         if ($args['template'] == 'compose' ) {
