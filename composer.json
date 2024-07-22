@@ -40,12 +40,14 @@
     "nexusphp/tachycardia": "^1.5",
     "nexusphp/cs-config": "^3.18",
     "mockery/mockery": "^1.6",
-    "dg/bypass-finals": "^1.8"
+    "dg/bypass-finals": "^1.8",
+    "phpstan/phpstan": "^1.11"
   },
   "scripts": {
     "cs-fixer": "php-cs-fixer fix --ansi --verbose --diff",
     "cs": "php-cs-fixer fix --ansi --verbose --dry-run --diff",
-    "test": "phpunit --no-coverage"
+    "test": "phpunit --no-coverage",
+    "phpstan": "vendor/bin/phpstan analyse"
   },
   "config": {
     "allow-plugins": {

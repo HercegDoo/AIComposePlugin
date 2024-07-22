@@ -1,0 +1,9 @@
+parameters:
+    level: max
+    paths:
+        - src
+        - tests
+    excludePaths:
+        - %rootDir%/../vendor
+    ignoreErrors:
+        - '#Method .*::.*\(\) does not exist#'
