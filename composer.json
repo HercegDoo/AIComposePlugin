@@ -19,7 +19,8 @@
   ],
   "require": {
     "php": ">=7.4",
-      "roundcube/plugin-installer": ">=0.1.3"
+      "roundcube/plugin-installer": ">=0.1.3",
+    "fortawesome/font-awesome": "^6.6"
   },
   "autoload": {
     "psr-4": {

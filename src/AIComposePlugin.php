@@ -16,6 +16,7 @@ class AIComposePlugin extends rcube_plugin
         if ($args['template'] == 'compose' || $args['template'] == 'settings') {
             $this->include_stylesheet('./assets/styles/styles.css');
             $this->include_script('./assets/scripts/main.js');
+            $this->include_stylesheet('./css/all.css');
         }
 
         return $args;
