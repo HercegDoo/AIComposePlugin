@@ -1,8 +1,7 @@
 <?php
 
 namespace HercegDoo\AIComposePlugin;
-
-
+//test komentar
 final class AIComposePlugin extends \rcube_plugin
 {
     public $task = 'mail';
