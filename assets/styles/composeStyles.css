@@ -1,1 +1,25 @@
-/* Fajl za stilizaciju dugmeta i generalne strukture modala */
+/* Stilizacija za a element sa ID-jem #mojjJJe */
+#aicp-propmt-open-button::before {
+    content: "\f544";
+}
+
+/* Stilizacija za a element sa klasom auto-generate */
+.auto-generate {
+    /* Dodajte stilove za auto-generate dugme */
+    display: inline-flex;
+    align-items: center;
+    padding: 10px;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.auto-generate:hover {
+    background-color: #0056b3;
+}
+
+/* Stilizacija za span element sa klasom inner */
+.inner {
+    font-weight: bold;
+}
