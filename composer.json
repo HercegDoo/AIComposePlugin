@@ -1,0 +1,63 @@
+{
+  "name": "hercegdoo/aicomposeplugin",
+  "description": "A plugin for AI generated emails.",
+  "type": "roundcube-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Herceg Doo",
+      "email": "amel.junuzovic@dooherceg.ba",
+      "homepage": "https://dooherceg.ba",
+      "role": "Developer"
+    },
+    {
+      "name": "Harun Duranović",
+      "email": "harun.duranovic@dooherceg.ba",
+      "homepage": "https://dooherceg.ba",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "fortawesome/font-awesome": "^6.6"
+    },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/roundcube/roundcubemail"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "HercegDoo\\AIComposePlugin\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "HercegDoo\\AIComposePlugin\\": "tests/",
+      "HercegDoo\\AIComposePlugin\\TestSupport\\": "tests/_support/"
+    }
+  },
+  "require-dev": {
+    "roundcube/roundcubemail": "dev-master",
+    "friendsofphp/php-cs-fixer": "*",
+    "codeigniter/coding-standard": "^1.7",
+    "phpunit/phpunit": "^9.6",
+    "nexusphp/tachycardia": "^1.5",
+    "nexusphp/cs-config": "^3.18",
+    "mockery/mockery": "^1.6",
+    "dg/bypass-finals": "^1.8",
+    "phpstan/phpstan": "^1.11"
+  },
+  "scripts": {
+    "cs-fixer": "php-cs-fixer fix --ansi --verbose --diff",
+    "cs": "php-cs-fixer fix --ansi --verbose --dry-run --diff",
+    "test": "phpunit --no-coverage",
+    "phpstan": "vendor/bin/phpstan analyse"
+  },
+  "config": {
+    "allow-plugins": {
+      "roundcube/plugin-installer": true
+    }
+  }
+}

@@ -1,0 +1,1 @@
+//logika vezana za funkcionalnosti modala
