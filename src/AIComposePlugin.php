@@ -5,7 +5,7 @@ namespace HercegDoo\AIComposePlugin;
 // test komentar
 
 require_once __DIR__ . '/../vendor/autoload.php';
-class AIComposePlugin extends \rcube_plugin
+final class AIComposePlugin extends \rcube_plugin
 {
     public $task = 'mail';
 
