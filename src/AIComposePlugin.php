@@ -2,16 +2,22 @@
 
 namespace HercegDoo\AIComposePlugin;
 
-class AIComposePlugin extends rcube_plugin
+require_once __DIR__ . '/../vendor/autoload.php';
+class AIComposePlugin extends \rcube_plugin
 {
     public $task = 'mail';
 
-    public function init()
+    public function init(): void
     {
         $this->add_hook('render_page', [$this, 'load_resources']);
     }
 
-    public function load_resources($args)
+    /**
+     * @param array<string, mixed> $args
+     *
+     * @return array<string, mixed>
+     */
+    public function load_resources(array $args): array
     {
         $this->include_stylesheet('./css/settings.css');
 

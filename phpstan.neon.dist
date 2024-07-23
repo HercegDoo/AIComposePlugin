@@ -5,5 +5,3 @@ parameters:
         - tests
     excludePaths:
         - %rootDir%/../vendor
-    ignoreErrors:
-        - '#Method .*::.*\(\) does not exist#'

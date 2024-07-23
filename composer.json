@@ -19,8 +19,15 @@
   ],
   "require": {
     "php": ">=7.4",
-    "fortawesome/font-awesome": "^6.6"
-  },
+    "fortawesome/font-awesome": "^6.6",
+    "roundcube/roundcubemail": "dev-master"
+    },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/roundcube/roundcubemail"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "HercegDoo\\AIComposePlugin\\": "src/"
