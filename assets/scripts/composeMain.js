@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Kreiramo span element i dodajemo tekst
     var spanElement = document.createElement("span");
     spanElement.classList.add("inner");
-    spanElement.innerText = "Auto-Generate";
+    spanElement.innerText = "AI Compose";
 
     // Dodajemo span u a element
     aElement.appendChild(spanElement);
