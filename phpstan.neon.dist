@@ -3,6 +3,6 @@ parameters:
     paths:
         - src
     bootstrapFiles:
-        - /vendor/autoload.php
+        - %currentWorkingDirectory%/vendor/autoload.php
     excludePaths:
-        - %rootDir%/../vendor
+        - %currentWorkingDirectory%/vendor
