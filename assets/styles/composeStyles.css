@@ -1,25 +1,18 @@
-/* Stilizacija za a element sa ID-jem #mojjJJe */
-#aicp-propmt-open-button::before {
+#aicp-prompt-open-button::before {
     content: "\f544";
+    font-size: 1.1212rem;
 }
 
-/* Stilizacija za a element sa klasom auto-generate */
-.auto-generate {
-    /* Dodajte stilove za auto-generate dugme */
-    display: inline-flex;
+#aicp-prompt-open-button {
+    font-size: 0.9rem;
+    display: flex;
     align-items: center;
-    padding: 10px;
-    color: #fff;
-    background-color: #007bff;
+    justify-content: end;
+    flex-direction: column;
+}
+
+.auto-generate {
+    background-color: #21292c;
     border-radius: 5px;
     text-decoration: none;
-}
-
-.auto-generate:hover {
-    background-color: #0056b3;
-}
-
-/* Stilizacija za span element sa klasom inner */
-.inner {
-    font-weight: bold;
 }

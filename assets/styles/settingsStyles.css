@@ -1,0 +1,9 @@
+.settings-default-icon tr > td#l\:rcmrowaic::before {
+    content: "\f544";
+    font-size: 1.1212rem;
+}
+
+.settings-default-icon tr > td#l\:rcmrowaic {
+    display: flex;
+    align-items: baseline;
+}
