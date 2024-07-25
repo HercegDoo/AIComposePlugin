@@ -26,6 +26,8 @@ class SettingsTask extends AbstractTask
         /** @var array<string, array<string, mixed>> $list */
         $list = $args['list'] ?? [];
 
+        $this->plugin->include_stylesheet('/../assets/styles/settingsStyles');
+
         $list['aic'] = [
             'id' => 'aic',
             'section' => 'AICompose Settings',

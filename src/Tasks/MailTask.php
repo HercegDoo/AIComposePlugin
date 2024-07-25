@@ -23,12 +23,12 @@ class MailTask extends AbstractTask
      */
     public function load_resources(array $args): array
     {
-        // TODO: Zašto postoji ovaj file settings.css u MailTask.php?
-        $this->plugin->include_stylesheet('./css/settings.css');
+
+        $this->plugin->include_stylesheet('/../assets/css/all.css');
 
         if (isset($args['template']) && $args['template'] == 'compose') {
-            $this->plugin->include_stylesheet('./assets/styles/composeStyles.css');
-            $this->plugin->include_script('./assets/scripts/composeMain.js');
+            $this->plugin->include_stylesheet('/../assets/styles/composeStyles.css');
+            $this->plugin->include_script('/../assets/scripts/composeMain.js');
         }
 
         return $args;
