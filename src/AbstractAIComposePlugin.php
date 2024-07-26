@@ -4,7 +4,9 @@ namespace HercegDoo\AIComposePlugin;
 
 use HercegDoo\AIComposePlugin\Tasks\AbstractTask;
 
-final class AIComposePlugin extends \rcube_plugin
+use rcube_plugin;
+
+abstract class AbstractAIComposePlugin extends rcube_plugin
 {
     public $task = 'mail|settings';
 
@@ -22,6 +24,5 @@ final class AIComposePlugin extends \rcube_plugin
                 $taskHandler->init();
             }
         }
-
     }
 }

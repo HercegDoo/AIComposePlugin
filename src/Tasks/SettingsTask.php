@@ -2,10 +2,7 @@
 
 declare(strict_types=1);
 
-
 namespace HercegDoo\AIComposePlugin\Tasks;
-
-use HercegDoo\AIComposePlugin\Tasks\AbstractTask;
 
 class SettingsTask extends AbstractTask
 {
