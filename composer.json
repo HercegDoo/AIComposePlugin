@@ -23,8 +23,20 @@
     },
   "repositories": [
     {
-      "type": "vcs",
-      "url": "https://github.com/roundcube/roundcubemail"
+      "type": "package",
+      "package": {
+        "name": "roundcube/roundcubemail",
+        "version": "1.6.5",
+        "source": {
+          "url": "https://github.com/roundcube/roundcubemail",
+          "type": "git",
+          "reference": "1.6.5"
+        },
+        "dist": {
+          "url": "https://github.com/roundcube/roundcubemail/archive/refs/tags/1.6.5.zip",
+          "type": "zip"
+        }
+      }
     }
   ],
   "autoload": {
@@ -39,7 +51,7 @@
     }
   },
   "require-dev": {
-    "roundcube/roundcubemail": "dev-master",
+    "roundcube/roundcubemail": "1.6.5",
     "friendsofphp/php-cs-fixer": "*",
     "codeigniter/coding-standard": "^1.7",
     "phpunit/phpunit": "^9.6",

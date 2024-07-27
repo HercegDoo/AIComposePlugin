@@ -1,0 +1,18 @@
+#aicp-prompt-open-button::before {
+    content: "\f544";
+    font-size: 1.1212rem;
+}
+
+#aicp-prompt-open-button {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    flex-direction: column;
+}
+
+.auto-generate {
+    background-color: #21292c;
+    border-radius: 5px;
+    text-decoration: none;
+}
