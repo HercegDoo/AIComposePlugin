@@ -9,7 +9,7 @@ use rcube_plugin;
 abstract class AbstractAIComposePlugin extends rcube_plugin
 {
     public $task = 'mail|settings';
-//test komentarr
+//test komentarrr
     public function init(): void
     {
         $task = $this->api->task;
