@@ -1,3 +1,4 @@
-import createButton from "./helpers/createButton";
+import {createButtonInToolbarMenu} from "./helpers/toolbar";
 
-createButton("AI Compose");
+
+createButtonInToolbarMenu();
