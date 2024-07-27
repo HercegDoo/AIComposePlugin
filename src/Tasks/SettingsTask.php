@@ -23,7 +23,7 @@ class SettingsTask extends AbstractTask
         /** @var array<string, array<string, mixed>> $list */
         $list = $args['list'] ?? [];
 
-        $this->plugin->include_stylesheet('/../assets/styles/settingsStyles');
+        $this->plugin->include_stylesheet('/../../dist/settingsStyles');
 
         $list['aic'] = [
             'id' => 'aic',
