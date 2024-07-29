@@ -1,5 +1,7 @@
 <?php
 
+// test komentar
+
 namespace HercegDoo\AIComposePlugin;
 
 use HercegDoo\AIComposePlugin\Tasks\AbstractTask;
