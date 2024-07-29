@@ -1,4 +1,5 @@
-import {createButtonInToolbarMenu} from "./helpers/toolbar";
+import {createButtonInToolbarMenu} from "./helpers/composeHelper/createButton-scripts/toolbar";
+document.addEventListener("DOMContentLoaded", function (){
+    createButtonInToolbarMenu();
+});
 
-console.log(44);
-createButtonInToolbarMenu();

@@ -4,17 +4,16 @@ namespace HercegDoo\AIComposePlugin;
 
 use HercegDoo\AIComposePlugin\Tasks\AbstractTask;
 
-use rcube_plugin;
-
-abstract class AbstractAIComposePlugin extends rcube_plugin
+abstract class AbstractAIComposePlugin extends \rcube_plugin
 {
     public $task = 'mail|settings';
-//test komentttddd
+
+    // test komentttddd
     public function init(): void
     {
         $task = $this->api->task;
 
-        if (is_string($task)) {
+        if (\is_string($task)) {
             $task = ucfirst($task);
             $taskClass = "HercegDoo\\AIComposePlugin\\Tasks\\{$task}Task";
 

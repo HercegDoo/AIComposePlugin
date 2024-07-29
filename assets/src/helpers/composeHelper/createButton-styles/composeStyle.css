@@ -1,3 +1,5 @@
+@import "all.css";
+
 #aicp-prompt-open-button::before {
     content: "\f544";
     font-size: 1.1212rem;

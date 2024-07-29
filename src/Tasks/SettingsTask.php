@@ -6,7 +6,6 @@ namespace HercegDoo\AIComposePlugin\Tasks;
 
 class SettingsTask extends AbstractTask
 {
-
     public function init(): void
     {
         $this->plugin->add_hook('preferences_sections_list', [$this, 'preferencesSectionsList']);
@@ -22,8 +21,6 @@ class SettingsTask extends AbstractTask
     {
         /** @var array<string, array<string, mixed>> $list */
         $list = $args['list'] ?? [];
-
-        $this->plugin->include_stylesheet('/../../dist/settingsStyles');
 
         $list['aic'] = [
             'id' => 'aic',

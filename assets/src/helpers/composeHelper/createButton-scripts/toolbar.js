@@ -1,4 +1,5 @@
 import {appendToParent, createElement, createTextNode} from "./html";
+import '../createButton-styles/composeStyle.css';
 
 export const createButtonInToolbarMenu = function () {
     const liElement = createElement("li", { role: "menuitem" });

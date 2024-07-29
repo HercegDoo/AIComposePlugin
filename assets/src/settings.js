@@ -1,4 +1,4 @@
-import {createButtonInToolbarMenu} from "./helpers/toolbar";
+import {createButtonInToolbarMenu} from "./helpers/composeHelper/createButton-scripts/toolbar";
 
 
 createButtonInToolbarMenu();
