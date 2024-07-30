@@ -1,7 +1,7 @@
 <?php
 
 namespace HercegDoo\AIComposePlugin;
-
+//test
 require_once __DIR__ . '/../vendor/autoload.php';
 final class AIComposePlugin extends \rcube_plugin
 {
