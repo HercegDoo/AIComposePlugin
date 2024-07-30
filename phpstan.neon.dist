@@ -2,5 +2,7 @@ parameters:
     level: max
     paths:
         - src
+    bootstrapFiles:
+        - %currentWorkingDirectory%/vendor/autoload.php
     excludePaths:
-        - %rootDir%/../vendor
+        - %currentWorkingDirectory%/vendor
