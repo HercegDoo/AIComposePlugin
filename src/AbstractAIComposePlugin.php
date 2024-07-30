@@ -1,6 +1,6 @@
 <?php
 
-// test komentar
+// test komentarr
 
 namespace HercegDoo\AIComposePlugin;
 
