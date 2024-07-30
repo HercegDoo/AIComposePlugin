@@ -20,7 +20,7 @@
   "require": {
     "php": ">=7.4",
     "fortawesome/font-awesome": "^6.6"
-    },
+  },
   "repositories": [
     {
       "type": "package",
@@ -42,7 +42,13 @@
   "autoload": {
     "psr-4": {
       "HercegDoo\\AIComposePlugin\\": "src/"
-    }
+    },
+    "classmap": [
+      "vendor/roundcube/roundcubemail/program/lib/Roundcube"
+    ],
+    "files": [
+      "vendor/roundcube/roundcubemail/program/lib/Roundcube/bootstrap.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
