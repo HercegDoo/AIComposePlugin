@@ -45,9 +45,6 @@
     },
     "classmap": [
       "vendor/roundcube/roundcubemail/program/lib/Roundcube"
-    ],
-    "files": [
-      "vendor/roundcube/roundcubemail/program/lib/Roundcube/bootstrap.php"
     ]
   },
   "autoload-dev": {
