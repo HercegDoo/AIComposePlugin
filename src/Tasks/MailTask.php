@@ -19,7 +19,7 @@ class MailTask extends AbstractTask
     public function load_resources(array $args): array
     {
         if (isset($args['template']) && $args['template'] == 'compose') {
-            $this->plugin->include_stylesheet('assets/dist/compose.bundle.js');
+            $this->plugin->include_script('assets/dist/compose.bundle.js');
         }
 
         return $args;
