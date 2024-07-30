@@ -1,7 +1,6 @@
 import createElement from './createElement.js';
 import createTextNode from './createTextNode.js';
 import appendToParent from './appendToParent.js';
-import '../createButton-styles/composeStyle.css';
 
 const createButton = function (name) {
     const liElement = createElement("li", { role: "menuitem" });
