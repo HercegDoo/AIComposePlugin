@@ -1,6 +1,6 @@
-/vendor/
-.idea/
-/node_modules/
 /assets/dist/
-/.php_cs.cache
 /test.php
+/.php_cs.cache
+/node_modules/
+/vendor/
+.idea
