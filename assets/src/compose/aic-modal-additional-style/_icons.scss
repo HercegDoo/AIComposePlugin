@@ -1,0 +1,66 @@
+// This file includes everything we need to use the icon functionality in the plugins
+
+@import "_icons_map";
+
+// Using a placeholder instead of a mixin because "@extend %icon-style" will group all the selectors together and apply the styles
+// only once, while using a mixin will repeat the styles for every selector where it's used.
+%icon-style {
+    font-family: RcpIconFont, sans-serif !important;
+    font-weight: normal !important;
+    position: relative;
+    background-image: none;
+    text-indent: 0;
+}
+
+// Includes the font family and the icon content in all the possible icon ranges.
+@mixin icon($icon, $important: false) {
+    @extend %icon-style;
+    @include icon-content($icon, $important);
+}
+
+// Includes the icon characters in the content for all the available icon ranges.
+@mixin icon-content($icon, $important: false) {
+    // default; applies also to elastic and larry
+    content: icon-code($icon, 0) unquote(if($important, " !important", ""));
+
+    html.xicons-traditional & {
+        content: icon-code($icon, 1) unquote(if($important, " !important", ""));
+    }
+    html.xicons-outlined & {
+        content: icon-code($icon, 2) unquote(if($important, " !important", ""));
+    }
+    html.xicons-material & {
+        content: icon-code($icon, 3)unquote(if($important, " !important", ""));
+    }
+    html.xicons-cartoon & {
+        content: icon-code($icon, 4)unquote(if($important, " !important", ""));
+    }
+}
+
+// Converts the icon id (its position in the font) to the unicode character of where the icon is found in the font in the specified range
+// (icon style.) The icons in the font are located in the private character area starting at index 60,000. Each icon range (style) takes
+// 200 characters, so to find the correct range (style) start position + the icon id to get the icon character.
+@function icon-code($int, $icon-range) {
+    $int: $int + 60000 + ($icon-range * 200);
+    $hex: "A" "B" "C" "D" "E" "F";
+    $base: 16;
+    $quotient: $int;
+    $result: "";
+    @if $int == 0 {
+        $result: "00";
+    }
+    @while $quotient != 0 {
+        $mod: $quotient % $base;
+        $quotient: floor($quotient / $base);
+        @if $mod > 9 {
+            $mod: nth($hex, $mod - 9);
+        }
+        @if $int < $base {
+            $result: "0" + $mod;
+        } @else {
+            $result: $mod + $result;
+        }
+    }
+    @return #{"\"\\"}#{$result + "\""};
+}
+

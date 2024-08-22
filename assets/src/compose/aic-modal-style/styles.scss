@@ -1,0 +1,180 @@
+@import "../aic-modal-additional-style/_colors.scss";
+@import "../aic-modal-additional-style/_icons.scss";
+
+// icons
+#aic-open-compose-dialog:before {
+  @include icon($robot);
+}
+
+#aic-compose-dialog {
+  display: none;
+}
+
+#aic-compose-dialog #aic-compose-dialog-box {
+  span.small-size {
+    display: none;
+  }
+
+  .layout-small &,
+  .layout-phone &,
+  .layout-normal.touch & {
+    span.small-size {
+      display: inline-block;
+    }
+    span.regular-size {
+      display: none;
+    }
+  }
+
+  & > .xdialog-contents {
+    overflow-y: auto;
+    display: flex;
+    flex-flow: column;
+    position: relative;
+    padding: 0;
+
+    .btn-default {
+      @include border-color;
+    }
+
+    .xspinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      font-size: 3em;
+      margin: -1.5em 0 -1.5em 0;
+      @include text-dim-color;
+    }
+
+    .properties {
+      display: flex;
+      align-items: stretch;
+
+      .propbox {
+        padding: 0 10px 10px 0;
+        flex: 1;
+
+        input,
+        select {
+          width: 100%;
+        }
+      }
+    }
+
+    .generate-container {
+      text-align: center;
+      padding: 1rem 0 0 0;
+
+      button {
+        margin: 0 0.2rem;
+      }
+    }
+  }
+
+  #aic-request {
+    flex: 0 0 auto;
+    padding: 1rem 1rem 0 1rem;
+
+    .generate-container {
+      button {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  #aic-result {
+    padding: 0 1rem 1rem 1rem;
+    flex: 1 1 auto;
+
+    textarea {
+      height: 100%;
+    }
+  }
+
+  #aic-compose-help {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .help-header {
+      position: relative;
+      padding: 1rem;
+
+      button {
+        position: absolute;
+        left: 1rem;
+      }
+
+      h3 {
+        font-size: 1.4rem;
+        margin: 0;
+        padding: 0.3rem 0;
+        text-align: center;
+      }
+    }
+
+    .help-content {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 1rem;
+      border-bottom: 1px solid;
+      @include border-color;
+
+      ul {
+        list-style-position: inside;
+        padding-left: 0.5rem;
+      }
+
+      li {
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}
+
+html.dark-mode
+#aic-compose-dialog-box
+> .xdialog-contents
+#aic-instructions::placeholder {
+  color: #5e5e5e;
+}
+
+body.xlarry:not(.xskin) {
+  #aic-open-compose-dialog {
+    background: url(../aic-modal-additional-style/images/button_xai.png)
+    no-repeat center 0;
+
+    &:before {
+      display: none;
+    }
+  }
+
+  #sections-table #rcmrowaic td.section {
+    background-image: url(../aic-modal-additional-style/images/settings.png);
+    background-position: 2px 1px;
+  }
+
+  #sections-table #rcmrowaic.selected td.section {
+    background-image: url(../aic-modal-additional-style/images/settings-hot.png);
+  }
+}
+
+body.xlarry {
+  #aic-compose-dialog #aic-compose-dialog-box {
+    .form-control,
+    select {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0.3em;
+      margin-top: 0.3em;
+    }
+
+    .xdialog-close {
+      line-height: 1.3rem;
+      background: transparent !important;
+    }
+  }
+}
