@@ -1,18 +1,23 @@
 import { appendToParent, createElement, createTextNode } from "./html";
-import { createComposeModal } from "./modal/index.js";
+import { createComposeModal } from "./modal";
 
 export const createButtonInToolbarMenu = function () {
-    const liElement = createElement("li", { role: "menuitem" });
-    const aElement = createElement(
-        "a",
-        {
-            href: "#responses",
-            id: "aicp-prompt-open-button",
-            class: "auto-generate",
-            role: "button",
-        },
+    const liElement = createElement("li", {
+        role: "menuitem",
+        id: "aic-button-li",
+    });
+    const spanElement = createElement(
+        "span",
+        { id: "aic-button-span", class: "inner" },
         [createTextNode("AI Compose")]
     );
+    const aElement = createElement("a", {
+        href: "#responses",
+        id: "aicp-prompt-open-button",
+        class: "auto-generate",
+        role: "button",
+    });
+    aElement.appendChild(spanElement);
     liElement.appendChild(aElement);
 
     appendToParent("#toolbar-menu", liElement);

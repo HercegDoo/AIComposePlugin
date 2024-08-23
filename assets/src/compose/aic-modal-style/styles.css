@@ -153,6 +153,11 @@ button {
     position: absolute;
     left: 1rem;
 }
+
+#xdialog-close {
+    margin-top: 3px;
+}
+
 #aic-compose-dialog #aic-compose-dialog-box #aic-compose-help .help-header h3 {
     font-size: 1.4rem;
     margin: 0;
@@ -210,5 +215,23 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box select {
 body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     line-height: 1.3rem;
     background: transparent !important;
+}
+
+@media (max-width: 768px) {
+    .properties {
+        flex-direction: column;
+    }
+
+    #aic-compose-dialog #aic-compose-dialog-box #aic-result textarea {
+        overflow-y: scroll;
+    }
+
+    #aic-instructions {
+        overflow-y: scroll;
+    }
+
+    #aic-compose-dialog-box {
+        min-width: 254px;
+    }
 }
 /*# sourceMappingURL=styles.css.map */

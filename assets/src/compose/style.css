@@ -1,8 +1,22 @@
-@import "~@fortawesome/fontawesome-free/css/all.css";
-
 #aicp-prompt-open-button::before {
     content: "\f544";
-    font-size: 1.1212rem;
+    line-height: inherit;
+    height: inherit !important;
+    float: left !important;
+    width: 1.18em !important;
+    min-width: 1.18em;
+    font-size: 1.25em;
+    display: block;
+    font-style: normal;
+    font-weight: 900;
+    text-decoration: inherit;
+    text-align: center;
+    margin: 0 !important;
+}
+
+#aicp-prompt-open-button span {
+    font-size: 100%;
+    font-weight: 400;
 }
 
 #aicp-prompt-open-button {
@@ -13,8 +27,58 @@
     flex-direction: column;
 }
 
-.auto-generate {
+html.dark-mode .auto-generate {
     background-color: #21292c;
-    border-radius: 5px;
-    text-decoration: none;
+}
+
+/* .auto-generate {
+  background-color: #f4f4f4;
+  border-radius: 5px;
+  text-decoration: none;
+} */
+
+@media (max-height: 768px) {
+    html.dark-mode #aic-button-li {
+        background-color: #161b1d;
+    }
+
+    html.dark-mode #aic-button-li a {
+        background-color: #161b1d;
+    }
+
+    html.dark-mode #aic-button-li a:hover {
+        background-color: #38444c;
+    }
+
+    html.dark-mode #aic-button-li:hover {
+        background-color: #38444c;
+    }
+
+    #aicp-prompt-open-button::before {
+        font-size: 1.19em;
+    }
+
+    #aicp-prompt-open-button span {
+        margin-left: 7.5px;
+        margin-top: 2px;
+        display: inline-block;
+    }
+
+    #aicp-prompt-open-button {
+        line-height: 47px;
+        font-size: 16px;
+        padding: 0 0.5em;
+        height: unset;
+        max-width: 100%;
+        width: 100%;
+        display: block;
+        text-align: left;
+        float: left;
+        border: 0 !important;
+        min-width: 3.2rem;
+        cursor: pointer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
