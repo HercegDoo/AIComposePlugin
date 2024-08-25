@@ -177,22 +177,7 @@ body.dragging * {
 
 // settings
 
-#sections-table #rcmrowxsidebar td.section {
-  background-image: url(./images/settings-sidebar.png);
-  background-position: 2px 0;
-}
-
-#sections-table #rcmrowxsidebar.selected td.section {
-  background-image: url(./images/settings-sidebar-hot.png);
-}
-
-// apps menu
-
-#taskbar a.button-apps span.button-inner {
-  background-repeat: no-repeat;
-  background-position: 3px 2px;
   background-image: url("./images/apps.png");
-}
 
 #taskbar a.button-apps:hover span.button-inner {
   background-position: 3px -25px;
@@ -299,7 +284,6 @@ body.dragging * {
   .button-interface-options {
     background-repeat: no-repeat;
     background-position: 10px 12px;
-    background-image: url(./images/larry-interface-options.png);
     margin-right: 5px;
     float: right;
     width: 26px;

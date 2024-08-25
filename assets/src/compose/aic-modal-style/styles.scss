@@ -213,23 +213,14 @@ html.dark-mode {
 body.xlarry {
   &:not(.xskin) {
     #aic-open-compose-dialog {
-      background: url(../aic-modal-additional-style/images/button_xai.png) center 0;
       display: none;
     }
     #sections-table {
       #rcmrowaic {
         td.section {
-          background-image: url(../aic-modal-additional-style/images/settings.png);
           background-position: 2px 1px;
         }
       }
-      #rcmrowaic.selected {
-        td.section {
-          background-image: url(../aic-modal-additional-style/images/settings-hot.png);
-        }
-      }
-    }
-  }
   #aic-compose-dialog {
     #aic-compose-dialog-box {
       .form-control {

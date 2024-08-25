@@ -402,10 +402,10 @@
 .xskin div.tox .tox-dialog__footer .tox-button.tox-button--secondary:before,
 .xskin div.tox .tox-search-dialog .tox-dialog__footer-end button:before,
 .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:nth-of-type(1):before,
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:nth-of-type(1):before,
 .xskin div.tox .tox-dialog__footer .tox-tbtn.tox-tbtn--select:before {
   font-family: RcpIconFont, sans-serif !important;
   font-weight: normal !important;
@@ -416,8 +416,8 @@
 @font-face {
   font-family: "RcpIconFont";
   src: url("./fonts/roundcube_plus_icons.woff2") format("woff2"),
-    url("./fonts/roundcube_plus_icons.woff") format("woff"),
-    url("./fonts/roundcube_plus_icons.ttf") format("truetype");
+  url("./fonts/roundcube_plus_icons.woff") format("woff"),
+  url("./fonts/roundcube_plus_icons.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -458,9 +458,7 @@
 .animate-fade.ng-hide {
   opacity: 0;
 }
-.cpanel .minicolors-sprite {
-  background-image: url(./images/cpanel-minicolors-sprite.png) !important;
-}
+
 html body button.xanchor {
   display: inline-block;
   background: transparent !important;
@@ -697,7 +695,7 @@ html.dark-mode .xtabs.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
 }
 .flatpickr-calendar {
   box-shadow: 1px 0 0 #e6e6e6, -1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6,
-    0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08) !important;
+  0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08) !important;
 }
 .flatpickr-calendar .flatpickr-months {
   border-bottom: 1px solid #e6e6e6;
@@ -830,8 +828,13 @@ html.dark-mode .xdialog-mask .xdialog-box .xdialog-title {
   font-size: 2rem;
   padding: 0;
   margin: 0;
-  background: transparent !important;
+  color: #2c363a;
 }
+
+html.dark-mode .xdialog-mask .xdialog-box .xdialog-title .xdialog-close {
+  color: #c5d1d3;
+}
+
 .xdialog-mask .xdialog-box .xdialog-contents {
   flex: 1 1 auto;
   padding: 1rem;
@@ -887,19 +890,19 @@ html.dark-mode .xdatepicker .ui-datepicker-header {
   color: #333;
 }
 html.dark-mode
-  .xdatepicker
-  .ui-datepicker-header
-  .ui-datepicker-title
-  select
-  option {
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-title
+select
+option {
   background-color: #21292c;
 }
 html.dark-mode
-  .xdatepicker
-  .ui-datepicker-header
-  .ui-datepicker-title
-  select
-  option {
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-title
+select
+option {
   color: #c5d1d3;
 }
 .xdatepicker .ui-datepicker-header .ui-datepicker-prev,
@@ -921,27 +924,27 @@ html.dark-mode .xdatepicker .ui-datepicker-header .ui-datepicker-next {
   content: "\EA68";
 }
 html.xicons-traditional
-  .xdatepicker
-  .ui-datepicker-header
-  .ui-datepicker-prev:before {
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-prev:before {
   content: "\EB30";
 }
 html.xicons-outlined
-  .xdatepicker
-  .ui-datepicker-header
-  .ui-datepicker-prev:before {
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-prev:before {
   content: "\EBF8";
 }
 html.xicons-material
-  .xdatepicker
-  .ui-datepicker-header
-  .ui-datepicker-prev:before {
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-prev:before {
   content: "\ECC0";
 }
 html.xicons-cartoon
-  .xdatepicker
-  .ui-datepicker-header
-  .ui-datepicker-prev:before {
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-prev:before {
   content: "\ED88";
 }
 .xdatepicker .ui-datepicker-header .ui-datepicker-next {
@@ -951,27 +954,27 @@ html.xicons-cartoon
   content: "\EA69";
 }
 html.xicons-traditional
-  .xdatepicker
-  .ui-datepicker-header
-  .ui-datepicker-next:before {
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-next:before {
   content: "\EB31";
 }
 html.xicons-outlined
-  .xdatepicker
-  .ui-datepicker-header
-  .ui-datepicker-next:before {
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-next:before {
   content: "\EBF9";
 }
 html.xicons-material
-  .xdatepicker
-  .ui-datepicker-header
-  .ui-datepicker-next:before {
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-next:before {
   content: "\ECC1";
 }
 html.xicons-cartoon
-  .xdatepicker
-  .ui-datepicker-header
-  .ui-datepicker-next:before {
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-next:before {
   content: "\ED89";
 }
 .xdatepicker table {
@@ -1429,10 +1432,10 @@ html.dark-mode .xdatepicker th {
 .xskin div.tox .tox-dialog__footer .tox-button.tox-button--secondary:before,
 .xskin div.tox .tox-search-dialog .tox-dialog__footer-end button:before,
 .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:nth-of-type(1):before,
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:nth-of-type(1):before,
 .xskin div.tox .tox-dialog__footer .tox-tbtn.tox-tbtn--select:before {
   font-family: RcpIconFont, sans-serif !important;
   font-weight: normal !important;
@@ -1824,9 +1827,9 @@ html.xicons-cartoon #apps-menu a.app-item-xskin div.icon:before {
   content: "\EACC";
 }
 html.xicons-traditional
-  #apps-menu
-  a.app-item-xvertical_preview
-  div.icon:before {
+#apps-menu
+a.app-item-xvertical_preview
+div.icon:before {
   content: "\EB94";
 }
 html.xicons-outlined #apps-menu a.app-item-xvertical_preview div.icon:before {
@@ -2122,9 +2125,9 @@ html.xicons-cartoon #sections-table tr.xskin > td.section:before {
   content: "\EACC";
 }
 html.xicons-traditional
-  #sections-table
-  tr.xvertical_preview
-  > td.section:before {
+#sections-table
+tr.xvertical_preview
+> td.section:before {
   content: "\EB94";
 }
 html.xicons-outlined #sections-table tr.xvertical_preview > td.section:before {
@@ -2743,93 +2746,93 @@ html.xicons-cartoon .menu a.status:before {
   content: "\EA8F";
 }
 html.xicons-traditional
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a.advanced:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a.advanced:before {
   content: "\EB57";
 }
 html.xicons-outlined
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a.advanced:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a.advanced:before {
   content: "\EC1F";
 }
 html.xicons-material
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a.advanced:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a.advanced:before {
   content: "\ECE7";
 }
 html.xicons-cartoon
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a.advanced:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a.advanced:before {
   content: "\EDAF";
 }
 .action-plugin-managesieve-action .propform td.rowbuttons a:before {
   content: "\EA7A";
 }
 html.xicons-traditional
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a:before {
   content: "\EB42";
 }
 html.xicons-outlined
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a:before {
   content: "\EC0A";
 }
 html.xicons-material
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a:before {
   content: "\ECD2";
 }
 html.xicons-cartoon
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a:before {
   content: "\ED9A";
 }
 .action-plugin-managesieve-action .propform td.rowbuttons a.delete:before {
   content: "\EA96";
 }
 html.xicons-traditional
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a.delete:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a.delete:before {
   content: "\EB5E";
 }
 html.xicons-outlined
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a.delete:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a.delete:before {
   content: "\EC26";
 }
 html.xicons-material
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a.delete:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a.delete:before {
   content: "\ECEE";
 }
 html.xicons-cartoon
-  .action-plugin-managesieve-action
-  .propform
-  td.rowbuttons
-  a.delete:before {
+.action-plugin-managesieve-action
+.propform
+td.rowbuttons
+a.delete:before {
   content: "\EDB6";
 }
 .menu a.taskaddlink:before {
@@ -2851,62 +2854,62 @@ html.xicons-cartoon .menu a.taskaddlink:before {
   content: "\EAED";
 }
 html.xicons-traditional
-  #sections-table
-  tbody
-  tr#rcmrowthunderbird_labels
-  td.section:before {
+#sections-table
+tbody
+tr#rcmrowthunderbird_labels
+td.section:before {
   content: "\EBB5";
 }
 html.xicons-outlined
-  #sections-table
-  tbody
-  tr#rcmrowthunderbird_labels
-  td.section:before {
+#sections-table
+tbody
+tr#rcmrowthunderbird_labels
+td.section:before {
   content: "\EC7D";
 }
 html.xicons-material
-  #sections-table
-  tbody
-  tr#rcmrowthunderbird_labels
-  td.section:before {
+#sections-table
+tbody
+tr#rcmrowthunderbird_labels
+td.section:before {
   content: "\ED45";
 }
 html.xicons-cartoon
-  #sections-table
-  tbody
-  tr#rcmrowthunderbird_labels
-  td.section:before {
+#sections-table
+tbody
+tr#rcmrowthunderbird_labels
+td.section:before {
   content: "\EE0D";
 }
 #sections-table tbody tr#rcmrowcd_preferences td.section:before {
   content: "\EAC7";
 }
 html.xicons-traditional
-  #sections-table
-  tbody
-  tr#rcmrowcd_preferences
-  td.section:before {
+#sections-table
+tbody
+tr#rcmrowcd_preferences
+td.section:before {
   content: "\EB8F";
 }
 html.xicons-outlined
-  #sections-table
-  tbody
-  tr#rcmrowcd_preferences
-  td.section:before {
+#sections-table
+tbody
+tr#rcmrowcd_preferences
+td.section:before {
   content: "\EC57";
 }
 html.xicons-material
-  #sections-table
-  tbody
-  tr#rcmrowcd_preferences
-  td.section:before {
+#sections-table
+tbody
+tr#rcmrowcd_preferences
+td.section:before {
   content: "\ED1F";
 }
 html.xicons-cartoon
-  #sections-table
-  tbody
-  tr#rcmrowcd_preferences
-  td.section:before {
+#sections-table
+tbody
+tr#rcmrowcd_preferences
+td.section:before {
   content: "\EDE7";
 }
 #settingstabplugintwofactor_gauthenticator a:before {
@@ -3343,10 +3346,10 @@ html.xicons-cartoon #twofactor_gauthenticator-form .show-codes:before {
 .xskin div.tox .tox-dialog__footer .tox-button.tox-button--secondary:before,
 .xskin div.tox .tox-search-dialog .tox-dialog__footer-end button:before,
 .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:nth-of-type(1):before,
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:nth-of-type(1):before,
 .xskin div.tox .tox-dialog__footer .tox-tbtn.tox-tbtn--select:before {
   font-family: RcpIconFont, sans-serif !important;
   font-weight: normal !important;
@@ -5188,140 +5191,140 @@ html.xicons-cartoon .xskin #message-header .subject a.extwin:before {
   content: "\EABD";
 }
 html.xicons-traditional
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.envelope:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.envelope:before {
   content: "\EB85";
 }
 html.xicons-outlined
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.envelope:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.envelope:before {
   content: "\EC4D";
 }
 html.xicons-material
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.envelope:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.envelope:before {
   content: "\ED15";
 }
 html.xicons-cartoon
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.envelope:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.envelope:before {
   content: "\EDDD";
 }
 .xskin #message-header .short-header div.header-links a.html:before {
   content: "\EAA8";
 }
 html.xicons-traditional
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.html:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.html:before {
   content: "\EB70";
 }
 html.xicons-outlined
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.html:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.html:before {
   content: "\EC38";
 }
 html.xicons-material
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.html:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.html:before {
   content: "\ED00";
 }
 html.xicons-cartoon
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.html:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.html:before {
   content: "\EDC8";
 }
 .xskin #message-header .short-header div.header-links a.plain:before {
   content: "\EAA7";
 }
 html.xicons-traditional
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.plain:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.plain:before {
   content: "\EB6F";
 }
 html.xicons-outlined
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.plain:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.plain:before {
   content: "\EC37";
 }
 html.xicons-material
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.plain:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.plain:before {
   content: "\ECFF";
 }
 html.xicons-cartoon
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.plain:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.plain:before {
   content: "\EDC7";
 }
 .xskin #message-header .short-header div.header-links a.zipdownload:before {
   content: "\EA9A";
 }
 html.xicons-traditional
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.zipdownload:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.zipdownload:before {
   content: "\EB62";
 }
 html.xicons-outlined
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.zipdownload:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.zipdownload:before {
   content: "\EC2A";
 }
 html.xicons-material
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.zipdownload:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.zipdownload:before {
   content: "\ECF2";
 }
 html.xicons-cartoon
-  .xskin
-  #message-header
-  .short-header
-  div.header-links
-  a.zipdownload:before {
+.xskin
+#message-header
+.short-header
+div.header-links
+a.zipdownload:before {
   content: "\EDBA";
 }
 .xskin .toolbar a.button.search:before {
@@ -5393,194 +5396,194 @@ html.xicons-cartoon .xskin .messagelist tr.thread td.threads div:before {
   content: "\EA6B";
 }
 html.xicons-traditional
-  .xskin
-  .messagelist
-  tr.thread.expanded
-  td.threads
-  div:before {
+.xskin
+.messagelist
+tr.thread.expanded
+td.threads
+div:before {
   content: "\EB33";
 }
 html.xicons-outlined
-  .xskin
-  .messagelist
-  tr.thread.expanded
-  td.threads
-  div:before {
+.xskin
+.messagelist
+tr.thread.expanded
+td.threads
+div:before {
   content: "\EBFB";
 }
 html.xicons-material
-  .xskin
-  .messagelist
-  tr.thread.expanded
-  td.threads
-  div:before {
+.xskin
+.messagelist
+tr.thread.expanded
+td.threads
+div:before {
   content: "\ECC3";
 }
 html.xicons-cartoon
-  .xskin
-  .messagelist
-  tr.thread.expanded
-  td.threads
-  div:before {
+.xskin
+.messagelist
+tr.thread.expanded
+td.threads
+div:before {
   content: "\ED8B";
 }
 .xskin .messagelist td.subject span.msgicon.status.unreadchildren:before {
   content: "\EAAA";
 }
 html.xicons-traditional
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.unreadchildren:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.unreadchildren:before {
   content: "\EB72";
 }
 html.xicons-outlined
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.unreadchildren:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.unreadchildren:before {
   content: "\EC3A";
 }
 html.xicons-material
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.unreadchildren:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.unreadchildren:before {
   content: "\ED02";
 }
 html.xicons-cartoon
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.unreadchildren:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.unreadchildren:before {
   content: "\EDCA";
 }
 .xskin .messagelist td.subject span.msgicon.status.replied:before {
   content: "\EA92";
 }
 html.xicons-traditional
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.replied:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.replied:before {
   content: "\EB5A";
 }
 html.xicons-outlined
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.replied:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.replied:before {
   content: "\EC22";
 }
 html.xicons-material
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.replied:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.replied:before {
   content: "\ECEA";
 }
 html.xicons-cartoon
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.replied:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.replied:before {
   content: "\EDB2";
 }
 .xskin .messagelist td.subject span.msgicon.status.forwarded:before {
   content: "\EA94";
 }
 html.xicons-traditional
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.forwarded:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.forwarded:before {
   content: "\EB5C";
 }
 html.xicons-outlined
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.forwarded:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.forwarded:before {
   content: "\EC24";
 }
 html.xicons-material
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.forwarded:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.forwarded:before {
   content: "\ECEC";
 }
 html.xicons-cartoon
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.forwarded:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.forwarded:before {
   content: "\EDB4";
 }
 .xskin .messagelist td.subject span.msgicon.status.replied.forwarded:before {
   content: "\EAF2";
 }
 html.xicons-traditional
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.replied.forwarded:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.replied.forwarded:before {
   content: "\EBBA";
 }
 html.xicons-outlined
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.replied.forwarded:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.replied.forwarded:before {
   content: "\EC82";
 }
 html.xicons-material
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.replied.forwarded:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.replied.forwarded:before {
   content: "\ED4A";
 }
 html.xicons-cartoon
-  .xskin
-  .messagelist
-  td.subject
-  span.msgicon.status.replied.forwarded:before {
+.xskin
+.messagelist
+td.subject
+span.msgicon.status.replied.forwarded:before {
   content: "\EE12";
 }
 .xskin .messagelist tr.deleted td.subject span.msgicon.status:before {
   content: "\EAB0";
 }
 html.xicons-traditional
-  .xskin
-  .messagelist
-  tr.deleted
-  td.subject
-  span.msgicon.status:before {
+.xskin
+.messagelist
+tr.deleted
+td.subject
+span.msgicon.status:before {
   content: "\EB78";
 }
 html.xicons-outlined
-  .xskin
-  .messagelist
-  tr.deleted
-  td.subject
-  span.msgicon.status:before {
+.xskin
+.messagelist
+tr.deleted
+td.subject
+span.msgicon.status:before {
   content: "\EC40";
 }
 html.xicons-material
-  .xskin
-  .messagelist
-  tr.deleted
-  td.subject
-  span.msgicon.status:before {
+.xskin
+.messagelist
+tr.deleted
+td.subject
+span.msgicon.status:before {
   content: "\ED08";
 }
 html.xicons-cartoon
-  .xskin
-  .messagelist
-  tr.deleted
-  td.subject
-  span.msgicon.status:before {
+.xskin
+.messagelist
+tr.deleted
+td.subject
+span.msgicon.status:before {
   content: "\EDD0";
 }
 .xskin .messagelist span.attachment span:before {
@@ -5617,10 +5620,10 @@ html.xicons-cartoon .xskin .messagelist span.attachment span.report:before {
   content: "\EABC";
 }
 html.xicons-traditional
-  .xskin
-  .messagelist
-  span.attachment
-  span.encrypted:before {
+.xskin
+.messagelist
+span.attachment
+span.encrypted:before {
   content: "\EB84";
 }
 html.xicons-outlined .xskin .messagelist span.attachment span.encrypted:before {
@@ -6943,10 +6946,10 @@ html.xicons-cartoon .xskin .multi-input a.icon.reset:before {
   content: "\EA78";
 }
 html.xicons-traditional
-  .xskin
-  .tagedit-list
-  li.tagedit-listelement-old
-  a:before {
+.xskin
+.tagedit-list
+li.tagedit-listelement-old
+a:before {
   content: "\EB40";
 }
 html.xicons-outlined .xskin .tagedit-list li.tagedit-listelement-old a:before {
@@ -7073,39 +7076,39 @@ html.xicons-cartoon .xskin .attachmentslist li a.delete:before {
   content: "\EA6B";
 }
 html.xicons-traditional
-  .xskin
-  .message-part
-  blockquote
-  span.blockquote-link:after,
+.xskin
+.message-part
+blockquote
+span.blockquote-link:after,
 html.xicons-traditional
-  .xskin
-  .message-htmlpart
-  blockquote
-  span.blockquote-link:after {
+.xskin
+.message-htmlpart
+blockquote
+span.blockquote-link:after {
   content: "\EB33";
 }
 html.xicons-outlined .xskin .message-part blockquote span.blockquote-link:after,
 html.xicons-outlined
-  .xskin
-  .message-htmlpart
-  blockquote
-  span.blockquote-link:after {
+.xskin
+.message-htmlpart
+blockquote
+span.blockquote-link:after {
   content: "\EBFB";
 }
 html.xicons-material .xskin .message-part blockquote span.blockquote-link:after,
 html.xicons-material
-  .xskin
-  .message-htmlpart
-  blockquote
-  span.blockquote-link:after {
+.xskin
+.message-htmlpart
+blockquote
+span.blockquote-link:after {
   content: "\ECC3";
 }
 html.xicons-cartoon .xskin .message-part blockquote span.blockquote-link:after,
 html.xicons-cartoon
-  .xskin
-  .message-htmlpart
-  blockquote
-  span.blockquote-link:after {
+.xskin
+.message-htmlpart
+blockquote
+span.blockquote-link:after {
   content: "\ED8B";
 }
 .xskin .message-part blockquote span.blockquote-link.collapsed:after,
@@ -7113,51 +7116,51 @@ html.xicons-cartoon
   content: "\EA6A";
 }
 html.xicons-traditional
-  .xskin
-  .message-part
-  blockquote
-  span.blockquote-link.collapsed:after,
+.xskin
+.message-part
+blockquote
+span.blockquote-link.collapsed:after,
 html.xicons-traditional
-  .xskin
-  .message-htmlpart
-  blockquote
-  span.blockquote-link.collapsed:after {
+.xskin
+.message-htmlpart
+blockquote
+span.blockquote-link.collapsed:after {
   content: "\EB32";
 }
 html.xicons-outlined
-  .xskin
-  .message-part
-  blockquote
-  span.blockquote-link.collapsed:after,
+.xskin
+.message-part
+blockquote
+span.blockquote-link.collapsed:after,
 html.xicons-outlined
-  .xskin
-  .message-htmlpart
-  blockquote
-  span.blockquote-link.collapsed:after {
+.xskin
+.message-htmlpart
+blockquote
+span.blockquote-link.collapsed:after {
   content: "\EBFA";
 }
 html.xicons-material
-  .xskin
-  .message-part
-  blockquote
-  span.blockquote-link.collapsed:after,
+.xskin
+.message-part
+blockquote
+span.blockquote-link.collapsed:after,
 html.xicons-material
-  .xskin
-  .message-htmlpart
-  blockquote
-  span.blockquote-link.collapsed:after {
+.xskin
+.message-htmlpart
+blockquote
+span.blockquote-link.collapsed:after {
   content: "\ECC2";
 }
 html.xicons-cartoon
-  .xskin
-  .message-part
-  blockquote
-  span.blockquote-link.collapsed:after,
+.xskin
+.message-part
+blockquote
+span.blockquote-link.collapsed:after,
 html.xicons-cartoon
-  .xskin
-  .message-htmlpart
-  blockquote
-  span.blockquote-link.collapsed:after {
+.xskin
+.message-htmlpart
+blockquote
+span.blockquote-link.collapsed:after {
   content: "\ED8A";
 }
 .xskin .ui-dialog .ui-dialog-titlebar-close:before {
@@ -7209,31 +7212,31 @@ html.xicons-cartoon .xskin .listing td.action a.pushgroup:before {
   content: "\EA69";
 }
 html.xicons-traditional
-  .xskin
-  .popupmenu.toolbar.listing
-  .dropbutton
-  a.button.dropdown:before {
+.xskin
+.popupmenu.toolbar.listing
+.dropbutton
+a.button.dropdown:before {
   content: "\EB31";
 }
 html.xicons-outlined
-  .xskin
-  .popupmenu.toolbar.listing
-  .dropbutton
-  a.button.dropdown:before {
+.xskin
+.popupmenu.toolbar.listing
+.dropbutton
+a.button.dropdown:before {
   content: "\EBF9";
 }
 html.xicons-material
-  .xskin
-  .popupmenu.toolbar.listing
-  .dropbutton
-  a.button.dropdown:before {
+.xskin
+.popupmenu.toolbar.listing
+.dropbutton
+a.button.dropdown:before {
   content: "\ECC1";
 }
 html.xicons-cartoon
-  .xskin
-  .popupmenu.toolbar.listing
-  .dropbutton
-  a.button.dropdown:before {
+.xskin
+.popupmenu.toolbar.listing
+.dropbutton
+a.button.dropdown:before {
   content: "\ED89";
 }
 .xskin .pgpkeyimport div.key label.keyid + a:before {
@@ -7285,10 +7288,10 @@ html.xicons-cartoon .xskin .floating-action-buttons a.button:before {
   content: "\EAD7";
 }
 html.xicons-traditional
-  .xskin
-  p.image-attachment
-  .attachment-links
-  a.open:before {
+.xskin
+p.image-attachment
+.attachment-links
+a.open:before {
   content: "\EB9F";
 }
 html.xicons-outlined .xskin p.image-attachment .attachment-links a.open:before {
@@ -7304,110 +7307,110 @@ html.xicons-cartoon .xskin p.image-attachment .attachment-links a.open:before {
   content: "\EA9A";
 }
 html.xicons-traditional
-  .xskin
-  p.image-attachment
-  .attachment-links
-  a.download:before {
+.xskin
+p.image-attachment
+.attachment-links
+a.download:before {
   content: "\EB62";
 }
 html.xicons-outlined
-  .xskin
-  p.image-attachment
-  .attachment-links
-  a.download:before {
+.xskin
+p.image-attachment
+.attachment-links
+a.download:before {
   content: "\EC2A";
 }
 html.xicons-material
-  .xskin
-  p.image-attachment
-  .attachment-links
-  a.download:before {
+.xskin
+p.image-attachment
+.attachment-links
+a.download:before {
   content: "\ECF2";
 }
 html.xicons-cartoon
-  .xskin
-  p.image-attachment
-  .attachment-links
-  a.download:before {
+.xskin
+p.image-attachment
+.attachment-links
+a.download:before {
   content: "\EDBA";
 }
 .xskin .table-widget table.options-table td.enabled span:before {
   content: "\EA80";
 }
 html.xicons-traditional
-  .xskin
-  .table-widget
-  table.options-table
-  td.enabled
-  span:before {
+.xskin
+.table-widget
+table.options-table
+td.enabled
+span:before {
   content: "\EB48";
 }
 html.xicons-outlined
-  .xskin
-  .table-widget
-  table.options-table
-  td.enabled
-  span:before {
+.xskin
+.table-widget
+table.options-table
+td.enabled
+span:before {
   content: "\EC10";
 }
 html.xicons-material
-  .xskin
-  .table-widget
-  table.options-table
-  td.enabled
-  span:before {
+.xskin
+.table-widget
+table.options-table
+td.enabled
+span:before {
   content: "\ECD8";
 }
 html.xicons-cartoon
-  .xskin
-  .table-widget
-  table.options-table
-  td.enabled
-  span:before {
+.xskin
+.table-widget
+table.options-table
+td.enabled
+span:before {
   content: "\EDA0";
 }
 .xskin .table-widget table.options-table td.partial span:before {
   content: "\EA80";
 }
 html.xicons-traditional
-  .xskin
-  .table-widget
-  table.options-table
-  td.partial
-  span:before {
+.xskin
+.table-widget
+table.options-table
+td.partial
+span:before {
   content: "\EB48";
 }
 html.xicons-outlined
-  .xskin
-  .table-widget
-  table.options-table
-  td.partial
-  span:before {
+.xskin
+.table-widget
+table.options-table
+td.partial
+span:before {
   content: "\EC10";
 }
 html.xicons-material
-  .xskin
-  .table-widget
-  table.options-table
-  td.partial
-  span:before {
+.xskin
+.table-widget
+table.options-table
+td.partial
+span:before {
   content: "\ECD8";
 }
 html.xicons-cartoon
-  .xskin
-  .table-widget
-  table.options-table
-  td.partial
-  span:before {
+.xskin
+.table-widget
+table.options-table
+td.partial
+span:before {
   content: "\EDA0";
 }
 .xskin table.table th.checkbox-cell.subscription:before {
   content: "\EAEC";
 }
 html.xicons-traditional
-  .xskin
-  table.table
-  th.checkbox-cell.subscription:before {
+.xskin
+table.table
+th.checkbox-cell.subscription:before {
   content: "\EBB4";
 }
 html.xicons-outlined .xskin table.table th.checkbox-cell.subscription:before {
@@ -7551,143 +7554,143 @@ html.xicons-cartoon .xskin div.tox .tox-dialog__footer .tox-button:before {
   content: "\EA78";
 }
 html.xicons-traditional
-  .xskin
-  div.tox
-  .tox-dialog__footer
-  .tox-button.tox-button--secondary:before {
+.xskin
+div.tox
+.tox-dialog__footer
+.tox-button.tox-button--secondary:before {
   content: "\EB40";
 }
 html.xicons-outlined
-  .xskin
-  div.tox
-  .tox-dialog__footer
-  .tox-button.tox-button--secondary:before {
+.xskin
+div.tox
+.tox-dialog__footer
+.tox-button.tox-button--secondary:before {
   content: "\EC08";
 }
 html.xicons-material
-  .xskin
-  div.tox
-  .tox-dialog__footer
-  .tox-button.tox-button--secondary:before {
+.xskin
+div.tox
+.tox-dialog__footer
+.tox-button.tox-button--secondary:before {
   content: "\ECD0";
 }
 html.xicons-cartoon
-  .xskin
-  div.tox
-  .tox-dialog__footer
-  .tox-button.tox-button--secondary:before {
+.xskin
+div.tox
+.tox-dialog__footer
+.tox-button.tox-button--secondary:before {
   content: "\ED98";
 }
 .xskin div.tox .tox-search-dialog .tox-dialog__footer-end button:before {
   content: "\EAA3" !important;
 }
 html.xicons-traditional
-  .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:before {
+.xskin
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:before {
   content: "\EB6B" !important;
 }
 html.xicons-outlined
-  .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:before {
+.xskin
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:before {
   content: "\EC33" !important;
 }
 html.xicons-material
-  .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:before {
+.xskin
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:before {
   content: "\ECFB" !important;
 }
 html.xicons-cartoon
-  .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:before {
+.xskin
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:before {
   content: "\EDC3" !important;
 }
 .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:nth-of-type(1):before {
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:nth-of-type(1):before {
   content: "\EAA6" !important;
 }
 html.xicons-traditional
-  .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:nth-of-type(1):before {
+.xskin
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:nth-of-type(1):before {
   content: "\EB6E" !important;
 }
 html.xicons-outlined
-  .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:nth-of-type(1):before {
+.xskin
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:nth-of-type(1):before {
   content: "\EC36" !important;
 }
 html.xicons-material
-  .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:nth-of-type(1):before {
+.xskin
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:nth-of-type(1):before {
   content: "\ECFE" !important;
 }
 html.xicons-cartoon
-  .xskin
-  div.tox
-  .tox-search-dialog
-  .tox-dialog__footer-end
-  button:nth-of-type(1):before {
+.xskin
+div.tox
+.tox-search-dialog
+.tox-dialog__footer-end
+button:nth-of-type(1):before {
   content: "\EDC6" !important;
 }
 .xskin
-  div.tox
-  .tox-dialog__footer
-  .tox-tbtn.tox-tbtn--select
-  .tox-icon.tox-tbtn__icon-wrap {
+div.tox
+.tox-dialog__footer
+.tox-tbtn.tox-tbtn--select
+.tox-icon.tox-tbtn__icon-wrap {
   display: none;
 }
 .xskin div.tox .tox-dialog__footer .tox-tbtn.tox-tbtn--select:before {
   content: "\EA8F" !important;
 }
 html.xicons-traditional
-  .xskin
-  div.tox
-  .tox-dialog__footer
-  .tox-tbtn.tox-tbtn--select:before {
+.xskin
+div.tox
+.tox-dialog__footer
+.tox-tbtn.tox-tbtn--select:before {
   content: "\EB57" !important;
 }
 html.xicons-outlined
-  .xskin
-  div.tox
-  .tox-dialog__footer
-  .tox-tbtn.tox-tbtn--select:before {
+.xskin
+div.tox
+.tox-dialog__footer
+.tox-tbtn.tox-tbtn--select:before {
   content: "\EC1F" !important;
 }
 html.xicons-material
-  .xskin
-  div.tox
-  .tox-dialog__footer
-  .tox-tbtn.tox-tbtn--select:before {
+.xskin
+div.tox
+.tox-dialog__footer
+.tox-tbtn.tox-tbtn--select:before {
   content: "\ECE7" !important;
 }
 html.xicons-cartoon
-  .xskin
-  div.tox
-  .tox-dialog__footer
-  .tox-tbtn.tox-tbtn--select:before {
+.xskin
+div.tox
+.tox-dialog__footer
+.tox-tbtn.tox-tbtn--select:before {
   content: "\EDAF" !important;
 }
 input[type="checkbox"].no-switchbox.icon-checkbox + label {
@@ -7904,9 +7907,9 @@ html.dark-mode.touch body.xsidebar-mobile-visible #xsidebar {
   background-color: #161b1d;
 }
 html.dark-mode.touch
-  body.xsidebar-mobile-visible
-  #xsidebar
-  #xsidebar-mobile-header {
+body.xsidebar-mobile-visible
+#xsidebar
+#xsidebar-mobile-header {
   background-color: transparent;
   border-bottom: 1px solid #4d6066;
 }
