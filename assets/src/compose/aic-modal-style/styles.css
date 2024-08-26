@@ -79,6 +79,7 @@ html.dark-mode
 #aic-compose-dialog #aic-compose-dialog-box > .xdialog-contents .properties {
     display: flex;
     align-items: stretch;
+    flex-wrap: wrap !important;
 }
 #aic-compose-dialog
 #aic-compose-dialog-box
@@ -109,6 +110,7 @@ select {
     text-align: center;
     padding: 1rem 0 0 0;
 }
+
 #aic-compose-dialog
 #aic-compose-dialog-box
 > .xdialog-contents
@@ -192,13 +194,6 @@ html.dark-mode
     color: #5e5e5e;
 }
 
-body.xlarry:not(.xskin) #aic-open-compose-dialog {
-    display: none;
-}
-body.xlarry:not(.xskin) #sections-table #rcmrowaic td.section {
-    background-position: 2px 1px;
-}
-
 body.xlarry #aic-compose-dialog #aic-compose-dialog-box .form-control,
 body.xlarry #aic-compose-dialog #aic-compose-dialog-box select {
     display: block;
@@ -212,7 +207,17 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     background: transparent !important;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 351px) and (max-width: 768px) {
+    #aic-compose-dialog
+    #aic-compose-dialog-box
+    > .xdialog-contents
+    .properties
+    .propbox {
+        flex: 1 1 33.33%;
+    }
+}
+
+@media (max-width: 350px) {
     .properties {
         flex-direction: column;
     }
