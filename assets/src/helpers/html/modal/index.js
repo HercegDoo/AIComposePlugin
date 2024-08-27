@@ -1,13 +1,5 @@
-
 import "../../../compose/aic-modal-style/styles.css";
-
-// import fontawsome from vendor
-// import '../../../../../node_modules/@fortawesome/fontawesome-free/js/all';
-// import '../../../../../node_modules/@fortawesome/fontawesome-free/css/all';
-
-
 import { createDialogContents } from "./createDialogContents.js";
-import { initializeCustomSelect } from "./customSelect.js";
 
 export function createComposeModal() {
     const dialogMask = document.createElement("div");
@@ -46,5 +38,8 @@ export function createComposeModal() {
     });
 
     document.body.appendChild(dialogMask);
-    initializeCustomSelect();
+
+    $("select:not([multiple])", dialogMask).each(function () {
+        UI.pretty_select(this);
+    });
 }

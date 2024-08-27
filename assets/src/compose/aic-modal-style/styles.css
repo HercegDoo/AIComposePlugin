@@ -265,67 +265,8 @@ button {
     left: 1rem;
 }
 
-#custom-popover {
-    position: fixed;
-    overflow-y: scroll;
-}
-
 .propbox {
     position: relative;
-}
-
-#custom-popover ul {
-    margin: 0;
-    padding: 0;
-}
-
-.popover-body ul li {
-    border-radius: 0.25rem 0.25rem 0 0;
-    border-color: #2c373a;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    position: relative;
-    list-style: none;
-    border-bottom: 1px solid #f1f3f4;
-    cursor: default;
-    font-weight: 400;
-    line-height: 35px;
-    width: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-
-html.dark-mode .popover-body ul li a {
-    color: #c5d1d3;
-}
-
-.popover-body ul li a {
-    font-size: 1.1em;
-    color: #26262e;
-    font-family: Roboto, sans-serif;
-}
-
-html.dark-mode .popover-body ul li a:hover {
-    background-color: #21292c;
-}
-
-.popover-body ul li a:hover {
-    cursor: pointer;
-    background-color: #ececec;
-}
-
-html.dark-mode .popover-body {
-    background-color: #161b1d;
-    color: #c5d1d3;
-}
-
-.popover-body {
-    max-height: 379px;
-    padding: 0;
-    overflow-x: hidden;
-    background-color: #ffffff;
-    border-radius: 10px;
 }
 
 #aic-compose-dialog #aic-compose-dialog-box #aic-compose-help .help-header h3 {
@@ -404,10 +345,6 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     border-bottom: 1px solid #f7f7f7;
 }
 
-.popover-header:hover {
-    cursor: pointer;
-}
-
 @media (min-width: 500px) and (max-width: 1068px) {
     #aic-compose-dialog
     #aic-compose-dialog-box
@@ -416,17 +353,6 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     .propbox {
         flex: 1 1 33.33%;
     }
-}
-
-html.dark-mode .popover-highlight {
-    background-color: #30343c;
-}
-
-.popover-highlight {
-    outline: 1.5px solid #37beff;
-    box-shadow: 0 0 8px rgba(39, 79, 97, 255); /* Tamnija sjenka */
-    outline-offset: 0.1px;
-    background-color: #ececec;
 }
 
 @media (max-width: 500px) {
@@ -456,14 +382,6 @@ html.dark-mode .popover-highlight {
 }
 
 @media (max-width: 1024px) and (min-width: 350px) {
-    html.touch .custom-pop .listing li a {
-        font-size: 1.05rem;
-    }
-
-    .popover-header {
-        font-size: 1.25rem;
-    }
-
     #aic-result {
         margin-bottom: 7px;
     }
@@ -474,24 +392,8 @@ html.dark-mode .popover-highlight {
 }
 
 @media (max-width: 350px) {
-    html.touch .custom-pop .listing li a {
-        font-size: 0.95rem;
-    }
-
-    .popover-header {
-        font-size: 1.2rem;
-    }
     .xinfo {
         display: none;
     }
 }
 /*# sourceMappingURL=styles.css.map */
-#custom-popover {
-    position: absolute;
-    max-height: 50vh;
-}
-
-#custom-popover .custom-pop {
-    max-height: 100%; /* Ova vrednost će omogućiti da popover body zauzme celokupan prostor unutar popover-a */
-    overflow-y: scroll;
-}

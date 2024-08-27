@@ -31,12 +31,6 @@ html.dark-mode .auto-generate {
     background-color: #21292c;
 }
 
-/* .auto-generate {
-  background-color: #f4f4f4;
-  border-radius: 5px;
-  text-decoration: none;
-} */
-
 @media (max-height: 768px) {
     html.dark-mode #aic-button-li {
         background-color: #161b1d;
