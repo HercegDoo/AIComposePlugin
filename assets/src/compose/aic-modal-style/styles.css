@@ -161,15 +161,6 @@ button {
     left: 1rem;
 }
 
-#xdialog-close {
-    margin-top: 3px;
-}
-
-option {
-    z-index: 0;
-    opacity: 0;
-}
-
 #custom-popover {
     position: fixed;
     overflow-y: scroll;
@@ -182,7 +173,6 @@ option {
 #custom-popover ul {
     margin: 0;
     padding: 0;
-    overflow-y: scroll;
 }
 
 .popover-body ul li {
@@ -202,33 +192,37 @@ option {
     overflow: hidden;
 }
 
+html.dark-mode .popover-body ul li a {
+    color: #c5d1d3;
+}
+
 .popover-body ul li a {
     font-size: 1.1em;
-    color: #c5d1d3;
+    color: #26262e;
     font-family: Roboto, sans-serif;
+}
+
+html.dark-mode .popover-body ul li a:hover {
+    background-color: #21292c;
 }
 
 .popover-body ul li a:hover {
     cursor: pointer;
-    background-color: #21292c;
+    background-color: #ececec;
+}
+
+html.dark-mode .popover-body {
+    background-color: #161b1d;
+    color: #c5d1d3;
 }
 
 .popover-body {
     max-height: 379px;
-    color: #c5d1d3;
     padding: 0;
     overflow-x: hidden;
-    background-color: #161b1d;
-    overflow-y: scroll;
+    background-color: #ffffff;
 }
 
-.popover-body .popover-ul {
-    overflow-y: scroll;
-}
-
-option {
-    pointer-events: none;
-}
 #aic-compose-dialog #aic-compose-dialog-box #aic-compose-help .help-header h3 {
     font-size: 1.4rem;
     margin: 0;
@@ -317,9 +311,15 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     }
 }
 
+html.dark-mode .popover-highlight {
+    background-color: #30343c;
+}
+
 .popover-highlight {
     outline: 1.5px solid #37beff;
     box-shadow: 0 0 8px rgba(39, 79, 97, 255); /* Tamnija sjenka */
+    outline-offset: 0.1px;
+    background-color: #ececec;
 }
 
 @media (max-width: 500px) {
@@ -361,12 +361,11 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
 }
 /*# sourceMappingURL=styles.css.map */
 #custom-popover {
-    position: absolute; /* Ako već nije */
-    overflow: hidden;
+    position: absolute;
     max-height: 50vh;
 }
 
 #custom-popover .custom-pop {
-    max-height: 100%;
-    overflow-y: auto;
+    max-height: 100%; /* Ova vrednost će omogućiti da popover body zauzme celokupan prostor unutar popover-a */
+    overflow-y: scroll;
 }
