@@ -7,165 +7,7 @@
     background-image: none;
     text-indent: 0;
 }
-.button.mini {
-    padding: 2px 4px;
-}
-.xspinner:before {
-    display: inline-block;
-    -webkit-animation: xspin 2s infinite linear;
-    animation: xspin 2s infinite linear;
-}
-@-webkit-keyframes xspin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(359deg);
-        transform: rotate(359deg);
-    }
-}
-@keyframes xspin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(359deg);
-        transform: rotate(359deg);
-    }
-}
-.animate-fade {
-    opacity: 1;
-    -moz-transition: opacity 0.25s ease-in-out;
-    -webkit-transition: opacity 0.25s ease-in-out;
-    transition: opacity 0.25s ease-in-out;
-}
-.animate-fade.ng-hide {
-    opacity: 0;
-}
 
-html body button.xanchor {
-    display: inline-block;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    width: auto !important;
-    line-height: normal !important;
-    font-weight: normal !important;
-    font-size: 1rem;
-    text-align: left;
-    color: #00acff;
-    -webkit-appearance: none;
-}
-html body button.xanchor:hover {
-    color: #008acc;
-    text-decoration: underline;
-}
-#xsidebar {
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-#xsidebar div.ui-sortable-helper {
-    -ms-transform: scale(0.8, 0.8);
-    -webkit-transform: scale(0.8, 0.8);
-    transform: scale(0.8, 0.8);
-    border: 1px solid;
-    border-color: #ddd;
-    background-color: #fff;
-}
-html.dark-mode #xsidebar div.ui-sortable-helper {
-    border-color: #4d6066;
-}
-html.dark-mode #xsidebar div.ui-sortable-helper {
-    background-color: #21292c;
-}
-#xsidebar .placeholder {
-    height: 3px;
-    background: #990033;
-}
-#xsidebar h2.boxtitle {
-    position: relative;
-    cursor: pointer;
-    font-size: 1em;
-    padding: 5px 8px;
-}
-#xsidebar h2.boxtitle:first-child {
-    border-top: none;
-}
-#xsidebar h2.boxtitle .sidebar-title-button {
-    float: right;
-    padding-left: 5px;
-    padding-top: 1px;
-    color: #333;
-}
-html.dark-mode #xsidebar h2.boxtitle .sidebar-title-button {
-    color: #c5d1d3;
-}
-#xsidebar h2.boxtitle .sidebar-title-button:hover {
-    color: #141414;
-}
-html.dark-mode #xsidebar h2.boxtitle .sidebar-title-button:hover {
-    color: #e5f1f3;
-}
-#xsidebar h2.boxtitle span.sidebar-title-text {
-    display: block;
-    margin-right: 2.5em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-#xsidebar .box-content {
-    position: relative;
-    padding: 8px;
-    line-height: unset;
-}
-#xsidebar .collapsed .box-content {
-    display: none;
-}
-#xsidebar .bottom-links {
-    margin-top: 7px;
-}
-#xsidebar .bottom-links a {
-    display: inline-block;
-    margin-right: 10px;
-}
-#xsidebar-order-note {
-    padding: 20px 0;
-}
-#xsidebar-order-note:before {
-    padding-right: 10px;
-}
-#xsidebar-order-table .placeholder {
-    background-color: rgba(0, 0, 0, 0.05);
-}
-html.dark-mode #xsidebar-order-table .placeholder {
-    background-color: rgba(255, 255, 255, 0.05);
-}
-#xsidebar-order-table tr.ui-sortable-helper {
-    max-width: 300px !important;
-    border: 1px solid;
-    border-color: #ddd;
-    background-color: rgba(0, 0, 0, 0.05);
-}
-html.dark-mode #xsidebar-order-table tr.ui-sortable-helper {
-    border-color: #4d6066;
-}
-html.dark-mode #xsidebar-order-table tr.ui-sortable-helper {
-    background-color: rgba(255, 255, 255, 0.05);
-}
-#xsidebar-order-table tr.ui-sortable-handle {
-    margin: 0;
-}
-#xsidebar-order-table td.title {
-    width: 30%;
-}
-#xsidebar-order-table td.title label:before {
-    font-size: 0.9em !important;
-    padding-right: 15px;
-}
 .touch .xinfo {
     display: none;
 }
@@ -184,6 +26,8 @@ html.dark-mode #xsidebar-order-table tr.ui-sortable-helper {
     display: block;
 }
 .xinfo div {
+    font-family: Roboto, sans-serif;
+    font-size: 1.1rem;
     position: absolute;
     display: none;
     right: 0;
@@ -205,26 +49,7 @@ html.dark-mode .xinfo div {
     border-color: #4d6066;
     box-shadow: none;
 }
-.xbadge {
-    display: inline-block;
-    position: relative;
-    top: -0.9em;
-    left: -0.5em;
-    z-index: 999;
-    color: #fff !important;
-    background-color: #a7411f !important;
-    margin: 0;
-    line-height: 1em;
-    padding: 3px 4px 2px 4px !important;
-    border-radius: 5px !important;
-    font-size: 0.8em !important;
-    font-weight: normal;
-    font-family: sans-serif !important;
-    text-align: center;
-}
-html.dark-mode .xbadge {
-    background-color: #802824 !important;
-}
+
 .xtabs.ui-tabs {
     border: none;
     background: transparent;
@@ -434,76 +259,14 @@ html.dark-mode .xdialog-mask .xdialog-box .xdialog-buttons {
 .xdialog-mask .xdialog-box .xdialog-buttons button {
     margin-left: 5px;
 }
-.xdatepicker {
-    min-width: 20rem;
-}
-.xdatepicker .ui-datepicker-header {
-    display: flex;
-    padding: 0.6rem;
-    align-items: center;
-    margin-bottom: 0.8rem;
-    font-size: 1.2em;
-    border-bottom: 1px solid;
-    border-color: #ddd;
-}
-html.dark-mode .xdatepicker .ui-datepicker-header {
-    border-color: #4d6066;
-}
-.xdatepicker .ui-datepicker-header .ui-datepicker-title {
-    flex: 1;
-    text-align: center;
-}
-.xdatepicker .ui-datepicker-header .ui-datepicker-title select {
-    background: transparent;
-    border: none;
-    text-decoration: underline;
-    cursor: pointer;
-    outline: none;
-    padding: 0 5px;
-    width: auto;
-    appearance: none;
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    box-shadow: none !important;
-}
-.xdatepicker .ui-datepicker-header .ui-datepicker-title select option {
-    background-color: #fff;
-    color: #333;
-}
-html.dark-mode
-.xdatepicker
-.ui-datepicker-header
-.ui-datepicker-title
-select
-option {
-    background-color: #21292c;
-}
-html.dark-mode
-.xdatepicker
-.ui-datepicker-header
-.ui-datepicker-title
-select
-option {
-    color: #c5d1d3;
-}
-.xdatepicker .ui-datepicker-header .ui-datepicker-prev,
-.xdatepicker .ui-datepicker-header .ui-datepicker-next {
-    color: #333;
-    text-decoration: none !important;
-    cursor: pointer;
-    padding: 0.3rem;
-}
-html.dark-mode .xdatepicker .ui-datepicker-header .ui-datepicker-prev,
-html.dark-mode .xdatepicker .ui-datepicker-header .ui-datepicker-next {
-    color: #c5d1d3;
-}
-.xdatepicker .ui-datepicker-header .ui-datepicker-prev span,
-.xdatepicker .ui-datepicker-header .ui-datepicker-next span {
-    display: none;
-}
+
 #aic-compose-dialog #aic-compose-dialog-box span.small-size {
     display: none;
 }
+
+/* .xinfo::before {
+  content: "\f6f0";
+} */
 .layout-small #aic-compose-dialog #aic-compose-dialog-box span.small-size,
 .layout-phone #aic-compose-dialog #aic-compose-dialog-box span.small-size,
 .layout-normal.touch
@@ -621,92 +384,9 @@ body.dragging * {
     font-size: 0.9em !important;
     padding-right: 15px;
 }
-.xmobile #xsidebar-order-table td.title {
-    width: 50%;
-}
-.xmobile #xsidebar-order-table td.title label:before {
-    content: "" !important;
-    padding: 0;
-}
-.xmobile #xsidebar-order-note {
-    display: none;
-}
 
 #taskbar a.button-apps:hover span.button-inner {
     background-position: 3px -25px;
-}
-#apps-menu {
-    left: auto !important;
-    right: 4px;
-    max-width: 575px;
-    box-sizing: border-box;
-}
-#apps-menu a.app-item {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    padding: 0.5em 1em;
-}
-#apps-menu a.app-item:hover {
-    background: rgba(0, 0, 0, 0.2);
-}
-#apps-menu a.app-item > div.icon {
-    color: #fff;
-    margin-right: 1rem;
-}
-#apps-menu a.app-item > div.icon:before {
-    font-size: 1.2em;
-}
-#apps-menu a.app-item > img {
-    width: 10px;
-    height: 10px;
-    display: inline-block;
-}
-#apps-menu a.app-item > div.title {
-    color: #fff;
-}
-#apps-menu span {
-    display: none;
-}
-.xskin #apps-menu a.app-item > div.icon {
-    color: #434343;
-}
-.xskin #apps-menu a.app-item > div.title {
-    color: #434343;
-}
-.xmobile #apps-menu {
-    left: 0 !important;
-    right: auto;
-}
-#interface-options {
-    min-width: 120px;
-    max-width: 216px;
-    color: #eee;
-    padding: 12px 10px;
-    left: auto !important;
-    right: 4px;
-}
-#interface-options a {
-    color: #f9f9f9;
-}
-#interface-options a .tooltip {
-    display: none !important;
-}
-#interface-options .section {
-    margin: 10px 0;
-}
-#interface-options .section select,
-#interface-options .section input.button {
-    width: 100%;
-    margin: 0;
-}
-#interface-options .section div.section-title {
-    padding-bottom: 5px;
-}
-#interface-options select,
-#interface-options input.button {
-    width: 100%;
-    margin: 0;
 }
 
 #taskbar .button-interface-options .button-inner {
@@ -722,26 +402,7 @@ body.dragging * {
 #message-list-sort {
     display: none;
 }
-.xmobile #interface-options {
-    min-width: 0;
-    max-width: 100%;
-    color: #333 !important;
-    left: 0 !important;
-    right: auto;
-}
-.xmobile .section {
-    margin: 10px 0;
-    padding: 10px;
-}
-.xmobile #taskbar .button-interface-options {
-    margin-right: 5px;
-    float: none;
-    width: auto;
-    text-align: left;
-}
-.xmobile #taskbar .button-interface-options .button-inner {
-    display: block;
-}
+
 span.xsetting-help {
     position: relative;
     display: inline-block;
