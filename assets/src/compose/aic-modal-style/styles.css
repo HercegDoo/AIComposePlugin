@@ -81,6 +81,11 @@ html.dark-mode
     align-items: stretch;
     flex-wrap: wrap !important;
 }
+option {
+    background-color: #21292c;
+    color: #c5d1d3;
+}
+
 #aic-compose-dialog
 #aic-compose-dialog-box
 > .xdialog-contents
@@ -160,6 +165,70 @@ button {
     margin-top: 3px;
 }
 
+option {
+    z-index: 0;
+    opacity: 0;
+}
+
+#custom-popover {
+    position: fixed;
+    overflow-y: scroll;
+}
+
+.propbox {
+    position: relative;
+}
+
+#custom-popover ul {
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+}
+
+.popover-body ul li {
+    border-radius: 0.25rem 0.25rem 0 0;
+    border-color: #2c373a;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    list-style: none;
+    border-bottom: 1px solid #f1f3f4;
+    cursor: default;
+    font-weight: 400;
+    line-height: 35px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.popover-body ul li a {
+    font-size: 1.1em;
+    color: #c5d1d3;
+    font-family: Roboto, sans-serif;
+}
+
+.popover-body ul li a:hover {
+    cursor: pointer;
+    background-color: #21292c;
+}
+
+.popover-body {
+    max-height: 379px;
+    color: #c5d1d3;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: #161b1d;
+    overflow-y: scroll;
+}
+
+.popover-body .popover-ul {
+    overflow-y: scroll;
+}
+
+option {
+    pointer-events: none;
+}
 #aic-compose-dialog #aic-compose-dialog-box #aic-compose-help .help-header h3 {
     font-size: 1.4rem;
     margin: 0;
@@ -194,6 +263,20 @@ html.dark-mode
     color: #5e5e5e;
 }
 
+.xdialog-mask .xdialog-box .xdialog-title .xdialog-close {
+    position: absolute;
+    right: 1rem;
+    border: none !important;
+    font-size: 2rem;
+    padding: 0;
+    margin: 0;
+    color: #2c363a;
+}
+
+html.dark-mode .xdialog-mask .xdialog-box .xdialog-title .xdialog-close {
+    color: #c5d1d3;
+}
+
 body.xlarry #aic-compose-dialog #aic-compose-dialog-box .form-control,
 body.xlarry #aic-compose-dialog #aic-compose-dialog-box select {
     display: block;
@@ -201,13 +284,30 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box select {
     width: 100%;
     padding: 0.3em;
     margin-top: 0.3em;
+    background-color: yellow;
 }
 body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     line-height: 1.3rem;
     background: transparent !important;
 }
 
-@media (min-width: 351px) and (max-width: 768px) {
+.bs-popover-auto[x-placement^="bottom"] .popover-header::before,
+.bs-popover-bottom .popover-header::before {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    display: block;
+    width: 1rem;
+    margin-left: -0.5rem;
+    content: "";
+    border-bottom: 1px solid #f7f7f7;
+}
+
+.popover-header:hover {
+    cursor: pointer;
+}
+
+@media (min-width: 500px) and (max-width: 1068px) {
     #aic-compose-dialog
     #aic-compose-dialog-box
     > .xdialog-contents
@@ -217,7 +317,12 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     }
 }
 
-@media (max-width: 350px) {
+.popover-highlight {
+    outline: 1.5px solid #37beff;
+    box-shadow: 0 0 8px rgba(39, 79, 97, 255); /* Tamnija sjenka */
+}
+
+@media (max-width: 500px) {
     .properties {
         flex-direction: column;
     }
@@ -234,4 +339,34 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
         min-width: 254px;
     }
 }
+
+@media (max-width: 1024px) and (min-width: 350px) {
+    html.touch .custom-pop .listing li a {
+        font-size: 1.05rem;
+    }
+
+    .popover-header {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 350px) {
+    html.touch .custom-pop .listing li a {
+        font-size: 0.95rem;
+    }
+
+    .popover-header {
+        font-size: 1.2rem;
+    }
+}
 /*# sourceMappingURL=styles.css.map */
+#custom-popover {
+    position: absolute; /* Ako već nije */
+    overflow: hidden;
+    max-height: 50vh;
+}
+
+#custom-popover .custom-pop {
+    max-height: 100%;
+    overflow-y: auto;
+}
