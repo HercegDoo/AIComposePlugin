@@ -10,7 +10,6 @@ import {
 export function createRequestSection() {
     const aicRequest = document.createElement("div");
     aicRequest.id = "aic-request";
-    aicRequest.setAttribute("ng-show", "!helpVisible");
 
     const properties = document.createElement("div");
     properties.className = "properties";

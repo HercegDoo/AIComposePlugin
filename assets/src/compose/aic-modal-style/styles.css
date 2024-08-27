@@ -325,6 +325,7 @@ html.dark-mode .popover-body {
     padding: 0;
     overflow-x: hidden;
     background-color: #ffffff;
+    border-radius: 10px;
 }
 
 #aic-compose-dialog #aic-compose-dialog-box #aic-compose-help .help-header h3 {
