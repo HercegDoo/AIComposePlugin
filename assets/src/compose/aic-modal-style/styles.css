@@ -7,22 +7,498 @@
     background-image: none;
     text-indent: 0;
 }
-#aic-open-compose-dialog:before {
-    content: "\EAF9";
+.button.mini {
+    padding: 2px 4px;
 }
-html.xicons-traditional #aic-open-compose-dialog:before {
-    content: "\EBC1";
+.xspinner:before {
+    display: inline-block;
+    -webkit-animation: xspin 2s infinite linear;
+    animation: xspin 2s infinite linear;
 }
-html.xicons-outlined #aic-open-compose-dialog:before {
-    content: "\EC89";
+@-webkit-keyframes xspin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }
-html.xicons-material #aic-open-compose-dialog:before {
-    content: "\ED51";
+@keyframes xspin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }
-html.xicons-cartoon #aic-open-compose-dialog:before {
-    content: "\EE19";
+.animate-fade {
+    opacity: 1;
+    -moz-transition: opacity 0.25s ease-in-out;
+    -webkit-transition: opacity 0.25s ease-in-out;
+    transition: opacity 0.25s ease-in-out;
 }
-#aic-compose-dialog {
+.animate-fade.ng-hide {
+    opacity: 0;
+}
+
+html body button.xanchor {
+    display: inline-block;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    line-height: normal !important;
+    font-weight: normal !important;
+    font-size: 1rem;
+    text-align: left;
+    color: #00acff;
+    -webkit-appearance: none;
+}
+html body button.xanchor:hover {
+    color: #008acc;
+    text-decoration: underline;
+}
+#xsidebar {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+#xsidebar div.ui-sortable-helper {
+    -ms-transform: scale(0.8, 0.8);
+    -webkit-transform: scale(0.8, 0.8);
+    transform: scale(0.8, 0.8);
+    border: 1px solid;
+    border-color: #ddd;
+    background-color: #fff;
+}
+html.dark-mode #xsidebar div.ui-sortable-helper {
+    border-color: #4d6066;
+}
+html.dark-mode #xsidebar div.ui-sortable-helper {
+    background-color: #21292c;
+}
+#xsidebar .placeholder {
+    height: 3px;
+    background: #990033;
+}
+#xsidebar h2.boxtitle {
+    position: relative;
+    cursor: pointer;
+    font-size: 1em;
+    padding: 5px 8px;
+}
+#xsidebar h2.boxtitle:first-child {
+    border-top: none;
+}
+#xsidebar h2.boxtitle .sidebar-title-button {
+    float: right;
+    padding-left: 5px;
+    padding-top: 1px;
+    color: #333;
+}
+html.dark-mode #xsidebar h2.boxtitle .sidebar-title-button {
+    color: #c5d1d3;
+}
+#xsidebar h2.boxtitle .sidebar-title-button:hover {
+    color: #141414;
+}
+html.dark-mode #xsidebar h2.boxtitle .sidebar-title-button:hover {
+    color: #e5f1f3;
+}
+#xsidebar h2.boxtitle span.sidebar-title-text {
+    display: block;
+    margin-right: 2.5em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#xsidebar .box-content {
+    position: relative;
+    padding: 8px;
+    line-height: unset;
+}
+#xsidebar .collapsed .box-content {
+    display: none;
+}
+#xsidebar .bottom-links {
+    margin-top: 7px;
+}
+#xsidebar .bottom-links a {
+    display: inline-block;
+    margin-right: 10px;
+}
+#xsidebar-order-note {
+    padding: 20px 0;
+}
+#xsidebar-order-note:before {
+    padding-right: 10px;
+}
+#xsidebar-order-table .placeholder {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+html.dark-mode #xsidebar-order-table .placeholder {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+#xsidebar-order-table tr.ui-sortable-helper {
+    max-width: 300px !important;
+    border: 1px solid;
+    border-color: #ddd;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+html.dark-mode #xsidebar-order-table tr.ui-sortable-helper {
+    border-color: #4d6066;
+}
+html.dark-mode #xsidebar-order-table tr.ui-sortable-helper {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+#xsidebar-order-table tr.ui-sortable-handle {
+    margin: 0;
+}
+#xsidebar-order-table td.title {
+    width: 30%;
+}
+#xsidebar-order-table td.title label:before {
+    font-size: 0.9em !important;
+    padding-right: 15px;
+}
+.touch .xinfo {
+    display: none;
+}
+.xinfo {
+    display: inline-block;
+    position: relative;
+}
+.xinfo.right div {
+    right: auto;
+}
+.xinfo.top div {
+    top: auto;
+    bottom: 20px;
+}
+.xinfo:hover div {
+    display: block;
+}
+.xinfo div {
+    position: absolute;
+    display: none;
+    right: 0;
+    text-align: left;
+    min-width: 200px;
+    max-width: 300px;
+    font-weight: normal;
+    top: 20px;
+    padding: 8px;
+    border-radius: 5px;
+    z-index: 99999;
+    white-space: normal;
+    background-color: #fff;
+    border: 1px solid #d4dbde;
+    box-shadow: 3px 3px 5px #dcdedf;
+}
+html.dark-mode .xinfo div {
+    background-color: #161b1d;
+    border-color: #4d6066;
+    box-shadow: none;
+}
+.xbadge {
+    display: inline-block;
+    position: relative;
+    top: -0.9em;
+    left: -0.5em;
+    z-index: 999;
+    color: #fff !important;
+    background-color: #a7411f !important;
+    margin: 0;
+    line-height: 1em;
+    padding: 3px 4px 2px 4px !important;
+    border-radius: 5px !important;
+    font-size: 0.8em !important;
+    font-weight: normal;
+    font-family: sans-serif !important;
+    text-align: center;
+}
+html.dark-mode .xbadge {
+    background-color: #802824 !important;
+}
+.xtabs.ui-tabs {
+    border: none;
+    background: transparent;
+}
+.xtabs.ui-tabs .ui-tabs-nav {
+    height: auto;
+    background: transparent;
+    margin-bottom: 15px;
+    padding-left: 0;
+    padding-right: 0;
+    border-bottom: 1px solid;
+    border-color: #ddd;
+}
+html.dark-mode .xtabs.ui-tabs .ui-tabs-nav {
+    border-color: #4d6066;
+}
+.xtabs.ui-tabs .ui-tabs-nav li {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    float: left;
+    border: none;
+}
+.xtabs.ui-tabs .ui-tabs-nav li .xbadge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: auto;
+}
+.xtabs.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+    padding: 15px;
+    font-weight: normal;
+    background: transparent;
+    border: none;
+    color: #333;
+}
+html.dark-mode .xtabs.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+    color: #c5d1d3;
+}
+.xtabs.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+    position: relative;
+    display: block;
+    padding-bottom: 12px;
+    font-weight: bold;
+    border-bottom: 3px solid;
+    border-color: #aaa;
+}
+html.dark-mode .xtabs.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
+    border-color: #e5f1f3;
+}
+.xtabs.ui-tabs .ui-tabs-panel {
+    padding: 0;
+    background: transparent;
+}
+.flatpickr-calendar {
+    box-shadow: 1px 0 0 #e6e6e6, -1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6,
+    0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08) !important;
+}
+.flatpickr-calendar .flatpickr-months {
+    border-bottom: 1px solid #e6e6e6;
+}
+.flatpickr-calendar .flatpickr-months .flatpickr-prev-month,
+.flatpickr-calendar .flatpickr-months .flatpickr-next-month {
+    line-height: 1.1rem;
+}
+.flatpickr-calendar .flatpickr-months .flatpickr-prev-month:hover svg,
+.flatpickr-calendar .flatpickr-months .flatpickr-next-month:hover svg {
+    fill: #000;
+}
+.flatpickr-calendar .flatpickr-current-month input.cur-year {
+    height: 1.4rem;
+}
+.flatpickr-calendar .flatpickr-current-month span.cur-month {
+    font-weight: normal;
+    padding-right: 3px;
+}
+.flatpickr-calendar .flatpickr-current-month span.cur-month:hover {
+    background: transparent !important;
+}
+.flatpickr-calendar .flatpickr-day.selected {
+    border-color: transparent !important;
+}
+.flatpickr-calendar .numInputWrapper:hover {
+    background: transparent !important;
+}
+.flatpickr-calendar.hasTime .flatpickr-time {
+    border-bottom: 1px solid #e6e6e6;
+}
+.flatpickr-calendar.hasTime .flatpickr-time input:hover,
+.flatpickr-calendar.hasTime .flatpickr-time input:focus,
+.flatpickr-calendar.hasTime .flatpickr-time .flatpickr-am-pm:hover,
+.flatpickr-calendar.hasTime .flatpickr-time .flatpickr-am-pm:focus {
+    background: transparent !important;
+}
+.flatpickr-calendar .flatpickr-confirm {
+    margin: 5px 10px;
+    border-radius: 3px;
+    height: auto;
+    padding: 1px;
+    color: #fff;
+}
+.xelastic .flatpickr-calendar .flatpickr-current-month input.cur-year,
+.xelastic .flatpickr-calendar .flatpickr-current-month span.cur-month {
+    font-size: 1.4rem;
+}
+.xelastic .flatpickr-calendar .flatpickr-day.selected,
+.xelastic .flatpickr-calendar .flatpickr-confirm {
+    background: #6e8791;
+    color: #fff;
+}
+.xlarry .flatpickr-calendar .flatpickr-current-month input.cur-year,
+.xlarry .flatpickr-calendar .flatpickr-current-month span.cur-month {
+    font-size: 1.2rem;
+}
+.xlarry .flatpickr-calendar .flatpickr-day.selected,
+.xlarry .flatpickr-calendar .flatpickr-confirm {
+    background: #2c2f33;
+}
+.xlarry .flatpickr-calendar .flatpickr-day.selected svg,
+.xlarry .flatpickr-calendar .flatpickr-confirm svg {
+    fill: #fff;
+}
+.dark-mode .xdialog-mask {
+    background: rgba(0, 0, 0, 0.7);
+}
+.xdialog-mask {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+}
+.xdialog-mask .xdialog-box {
+    display: flex;
+    flex-direction: column;
+    margin: 20% auto 0 auto;
+    max-width: 460px;
+    max-height: 90%;
+    box-sizing: border-box;
+    text-align: center;
+    border: 1px solid;
+    border-color: #ddd;
+    background-color: #fff;
+}
+html.dark-mode .xdialog-mask .xdialog-box {
+    border-color: #4d6066;
+}
+html.dark-mode .xdialog-mask .xdialog-box {
+    background-color: #21292c;
+}
+.xdialog-mask .xdialog-box.full-screen {
+    position: fixed;
+    max-width: None;
+    margin: 0;
+    max-height: none;
+    top: 5%;
+    left: 5%;
+    right: 5%;
+    bottom: 5%;
+}
+.layout-phone .xdialog-mask .xdialog-box.full-screen {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: none;
+}
+.xdialog-mask .xdialog-box .xdialog-title {
+    flex: 0 0 auto;
+    position: relative;
+    padding: 1rem;
+    text-align: left;
+    font-size: 1.25rem;
+    font-weight: bold;
+    border-bottom: 1px solid;
+    border-color: #ddd;
+}
+html.dark-mode .xdialog-mask .xdialog-box .xdialog-title {
+    border-color: #4d6066;
+}
+.xdialog-mask .xdialog-box .xdialog-title .xdialog-close {
+    position: absolute;
+    right: 1rem;
+    border: none !important;
+    font-size: 2rem;
+    padding: 0;
+    margin: 0;
+    background: transparent !important;
+}
+.xdialog-mask .xdialog-box .xdialog-contents {
+    flex: 1 1 auto;
+    padding: 1rem;
+    text-align: left;
+}
+.xdialog-mask .xdialog-box .xdialog-buttons {
+    flex: 0 0 auto;
+    padding: 1rem;
+    text-align: right;
+    border-top: 1px solid;
+    border-color: #ddd;
+}
+html.dark-mode .xdialog-mask .xdialog-box .xdialog-buttons {
+    border-color: #4d6066;
+}
+.xdialog-mask .xdialog-box .xdialog-buttons button {
+    margin-left: 5px;
+}
+.xdatepicker {
+    min-width: 20rem;
+}
+.xdatepicker .ui-datepicker-header {
+    display: flex;
+    padding: 0.6rem;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    font-size: 1.2em;
+    border-bottom: 1px solid;
+    border-color: #ddd;
+}
+html.dark-mode .xdatepicker .ui-datepicker-header {
+    border-color: #4d6066;
+}
+.xdatepicker .ui-datepicker-header .ui-datepicker-title {
+    flex: 1;
+    text-align: center;
+}
+.xdatepicker .ui-datepicker-header .ui-datepicker-title select {
+    background: transparent;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+    outline: none;
+    padding: 0 5px;
+    width: auto;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    box-shadow: none !important;
+}
+.xdatepicker .ui-datepicker-header .ui-datepicker-title select option {
+    background-color: #fff;
+    color: #333;
+}
+html.dark-mode
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-title
+select
+option {
+    background-color: #21292c;
+}
+html.dark-mode
+.xdatepicker
+.ui-datepicker-header
+.ui-datepicker-title
+select
+option {
+    color: #c5d1d3;
+}
+.xdatepicker .ui-datepicker-header .ui-datepicker-prev,
+.xdatepicker .ui-datepicker-header .ui-datepicker-next {
+    color: #333;
+    text-decoration: none !important;
+    cursor: pointer;
+    padding: 0.3rem;
+}
+html.dark-mode .xdatepicker .ui-datepicker-header .ui-datepicker-prev,
+html.dark-mode .xdatepicker .ui-datepicker-header .ui-datepicker-next {
+    color: #c5d1d3;
+}
+.xdatepicker .ui-datepicker-header .ui-datepicker-prev span,
+.xdatepicker .ui-datepicker-header .ui-datepicker-next span {
     display: none;
 }
 #aic-compose-dialog #aic-compose-dialog-box span.small-size {
@@ -43,6 +519,265 @@ span.small-size {
 #aic-compose-dialog-box
 span.regular-size {
     display: none;
+}
+
+body.xlarry:not(.xskin) #button-apps:before,
+body.xlarry:not(.xskin) #sections-table tr > td.section:before,
+body.xlarry:not(.xskin) #settings-tabs a.x2fa:before,
+body.xlarry:not(.xskin) #settings-tabs a.xcpanel-settings:before,
+body.xlarry:not(.xskin) .listing.iconized li > a:before {
+    display: none !important;
+}
+table.messagelist.fixedcopy {
+    position: absolute !important;
+}
+body.xdesktop .messagelist thead tr:hover .flag span:before {
+    color: #fff;
+}
+.formcontent input.button,
+.formcontent input[type="checkbox"] {
+    width: auto;
+}
+.listing.iconized li a:before,
+.listing.iconized tr td:before {
+    margin-right: 0.5rem;
+}
+.mailbox a:before {
+    display: inline-block;
+    padding-right: 10px;
+    font-size: 1.3em;
+    position: relative;
+    top: 2px;
+}
+.xdesktop #taskbar a:before {
+    top: 3px;
+}
+.widescreen .messagelist td.subject span {
+    line-height: normal;
+}
+.xsidebar-visible #mailview-right {
+    width: auto !important;
+}
+.xsidebar-visible #xsidebar,
+.xsidebar-visible #xsidebar-splitter {
+    display: block;
+}
+.xsidebar-visible #xsidebar-splitter {
+    top: 45px;
+    bottom: 0px;
+    height: auto;
+}
+#sidebar-splitter {
+    display: none;
+}
+#xsidebar {
+    display: none;
+    position: absolute;
+    top: 42px;
+    bottom: 0;
+    right: 0;
+    overflow-y: auto;
+}
+#xsidebar h2.boxtitle {
+    padding: 4px 8px;
+    line-height: 17px;
+}
+#xsidebar .listbox.collapsed:before {
+    content: "";
+}
+#xsidebar-preview-frame-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 9999;
+}
+.xsidebar-wrap #searchfilter {
+    right: 288px;
+}
+.xsidebar-wrap #quicksearchbar {
+    right: 34px;
+}
+#xsidebar-button {
+    display: block;
+    width: 16px;
+    margin: 0;
+    padding: 4px 3px 6px 3px;
+    margin-top: 2px;
+    text-align: center;
+}
+#xsidebar-button:before {
+    content: "\25c0";
+}
+.xsidebar-visible #xsidebar-button:before {
+    content: "\25b6";
+}
+body.dragging,
+body.dragging * {
+    cursor: move !important;
+}
+#xsidebar-order-table td.title label:before {
+    font-size: 0.9em !important;
+    padding-right: 15px;
+}
+.xmobile #xsidebar-order-table td.title {
+    width: 50%;
+}
+.xmobile #xsidebar-order-table td.title label:before {
+    content: "" !important;
+    padding: 0;
+}
+.xmobile #xsidebar-order-note {
+    display: none;
+}
+
+#taskbar a.button-apps:hover span.button-inner {
+    background-position: 3px -25px;
+}
+#apps-menu {
+    left: auto !important;
+    right: 4px;
+    max-width: 575px;
+    box-sizing: border-box;
+}
+#apps-menu a.app-item {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0.5em 1em;
+}
+#apps-menu a.app-item:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+#apps-menu a.app-item > div.icon {
+    color: #fff;
+    margin-right: 1rem;
+}
+#apps-menu a.app-item > div.icon:before {
+    font-size: 1.2em;
+}
+#apps-menu a.app-item > img {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+}
+#apps-menu a.app-item > div.title {
+    color: #fff;
+}
+#apps-menu span {
+    display: none;
+}
+.xskin #apps-menu a.app-item > div.icon {
+    color: #434343;
+}
+.xskin #apps-menu a.app-item > div.title {
+    color: #434343;
+}
+.xmobile #apps-menu {
+    left: 0 !important;
+    right: auto;
+}
+#interface-options {
+    min-width: 120px;
+    max-width: 216px;
+    color: #eee;
+    padding: 12px 10px;
+    left: auto !important;
+    right: 4px;
+}
+#interface-options a {
+    color: #f9f9f9;
+}
+#interface-options a .tooltip {
+    display: none !important;
+}
+#interface-options .section {
+    margin: 10px 0;
+}
+#interface-options .section select,
+#interface-options .section input.button {
+    width: 100%;
+    margin: 0;
+}
+#interface-options .section div.section-title {
+    padding-bottom: 5px;
+}
+#interface-options select,
+#interface-options input.button {
+    width: 100%;
+    margin: 0;
+}
+
+#taskbar .button-interface-options .button-inner {
+    display: none;
+}
+.minimal #taskbar .button-logout {
+    padding-left: 0;
+}
+.minimal #taskbar .button-interface-options {
+    padding: 10px 6px 0 6px;
+    background-position: 8px 10px;
+}
+#message-list-sort {
+    display: none;
+}
+.xmobile #interface-options {
+    min-width: 0;
+    max-width: 100%;
+    color: #333 !important;
+    left: 0 !important;
+    right: auto;
+}
+.xmobile .section {
+    margin: 10px 0;
+    padding: 10px;
+}
+.xmobile #taskbar .button-interface-options {
+    margin-right: 5px;
+    float: none;
+    width: auto;
+    text-align: left;
+}
+.xmobile #taskbar .button-interface-options .button-inner {
+    display: block;
+}
+span.xsetting-help {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+}
+span.xsetting-help:before {
+    display: inline-block;
+    text-align: center;
+    color: #999999;
+    border: 1px solid #ddd;
+    padding: 1px;
+    border-radius: 50%;
+    background: #fff;
+    width: 12px;
+    height: 12px;
+    content: "?";
+    font-weight: bold;
+    font-size: 10px !important;
+    font-family: sans-serif;
+    line-height: 12px;
+}
+span.xsetting-help span {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    display: none;
+    padding: 8px;
+    border: 1px solid #cccccc;
+    background: #ffffcc;
+    min-width: 200px;
+}
+span.xsetting-help:hover span {
+    display: block;
+}
+.xskin #taskbar .minmodetoggle {
+    background: none;
 }
 #aic-compose-dialog #aic-compose-dialog-box > .xdialog-contents {
     overflow-y: auto;
@@ -260,11 +995,13 @@ html.dark-mode
 .xdialog-mask .xdialog-box .xdialog-title .xdialog-close {
     position: absolute;
     right: 1rem;
+    top: 50%;
+    transform: translateY(-52%);
     border: none !important;
     font-size: 2rem;
     padding: 0;
     margin: 0;
-    color: #2c363a;
+    color: #26262e;
 }
 
 html.dark-mode .xdialog-mask .xdialog-box .xdialog-title .xdialog-close {

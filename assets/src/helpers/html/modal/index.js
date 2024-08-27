@@ -1,5 +1,4 @@
-import "../../../compose/aic-modal-additional-style/elastic.css";
-import "../../../compose/aic-modal-additional-style/larry.css";
+
 import "../../../compose/aic-modal-style/styles.css";
 
 // import fontawsome from vendor
