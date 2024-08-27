@@ -35,7 +35,7 @@ export function createStylePropbox() {
         <label for="aic-style">Style</label>
         <span class="fa-solid fa-circle-info xinfo"><div>The preferred writing style for the new email.</div></span>
     </div>
-    <select id="aic-style" ng-model="data.style" ng-disabled="busy" class="form-control custom-select pretty-select ng-pristine ng-untouched ng-valid ng-not-empty">
+    <select id="aic-style" class="form-control custom-select pretty-select">
         <option hidden value="assertive" >Assertive</option>
         <option hidden value="casual" >Casual</option>
         <option hidden value="enthusiastic" >Enthusiastic</option>

@@ -2,8 +2,8 @@
 import "../../../compose/aic-modal-style/styles.css";
 
 // import fontawsome from vendor
-import '../../../../../node_modules/@fortawesome/fontawesome-free/js/all';
-import '../../../../../node_modules/@fortawesome/fontawesome-free/css/all';
+// import '../../../../../node_modules/@fortawesome/fontawesome-free/js/all';
+// import '../../../../../node_modules/@fortawesome/fontawesome-free/css/all';
 
 
 import { createDialogContents } from "./createDialogContents.js";

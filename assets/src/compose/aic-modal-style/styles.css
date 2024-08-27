@@ -8,9 +8,6 @@
     text-indent: 0;
 }
 
-.touch .xinfo {
-    display: none;
-}
 .xinfo {
     display: inline-block;
     position: relative;
@@ -50,128 +47,6 @@ html.dark-mode .xinfo div {
     box-shadow: none;
 }
 
-.xtabs.ui-tabs {
-    border: none;
-    background: transparent;
-}
-.xtabs.ui-tabs .ui-tabs-nav {
-    height: auto;
-    background: transparent;
-    margin-bottom: 15px;
-    padding-left: 0;
-    padding-right: 0;
-    border-bottom: 1px solid;
-    border-color: #ddd;
-}
-html.dark-mode .xtabs.ui-tabs .ui-tabs-nav {
-    border-color: #4d6066;
-}
-.xtabs.ui-tabs .ui-tabs-nav li {
-    background: transparent;
-    padding: 0;
-    margin: 0;
-    float: left;
-    border: none;
-}
-.xtabs.ui-tabs .ui-tabs-nav li .xbadge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: auto;
-}
-.xtabs.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
-    padding: 15px;
-    font-weight: normal;
-    background: transparent;
-    border: none;
-    color: #333;
-}
-html.dark-mode .xtabs.ui-tabs .ui-tabs-nav .ui-tabs-anchor {
-    color: #c5d1d3;
-}
-.xtabs.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
-    position: relative;
-    display: block;
-    padding-bottom: 12px;
-    font-weight: bold;
-    border-bottom: 3px solid;
-    border-color: #aaa;
-}
-html.dark-mode .xtabs.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
-    border-color: #e5f1f3;
-}
-.xtabs.ui-tabs .ui-tabs-panel {
-    padding: 0;
-    background: transparent;
-}
-.flatpickr-calendar {
-    box-shadow: 1px 0 0 #e6e6e6, -1px 0 0 #e6e6e6, 0 1px 0 #e6e6e6,
-    0 -1px 0 #e6e6e6, 0 3px 13px rgba(0, 0, 0, 0.08) !important;
-}
-.flatpickr-calendar .flatpickr-months {
-    border-bottom: 1px solid #e6e6e6;
-}
-.flatpickr-calendar .flatpickr-months .flatpickr-prev-month,
-.flatpickr-calendar .flatpickr-months .flatpickr-next-month {
-    line-height: 1.1rem;
-}
-.flatpickr-calendar .flatpickr-months .flatpickr-prev-month:hover svg,
-.flatpickr-calendar .flatpickr-months .flatpickr-next-month:hover svg {
-    fill: #000;
-}
-.flatpickr-calendar .flatpickr-current-month input.cur-year {
-    height: 1.4rem;
-}
-.flatpickr-calendar .flatpickr-current-month span.cur-month {
-    font-weight: normal;
-    padding-right: 3px;
-}
-.flatpickr-calendar .flatpickr-current-month span.cur-month:hover {
-    background: transparent !important;
-}
-.flatpickr-calendar .flatpickr-day.selected {
-    border-color: transparent !important;
-}
-.flatpickr-calendar .numInputWrapper:hover {
-    background: transparent !important;
-}
-.flatpickr-calendar.hasTime .flatpickr-time {
-    border-bottom: 1px solid #e6e6e6;
-}
-.flatpickr-calendar.hasTime .flatpickr-time input:hover,
-.flatpickr-calendar.hasTime .flatpickr-time input:focus,
-.flatpickr-calendar.hasTime .flatpickr-time .flatpickr-am-pm:hover,
-.flatpickr-calendar.hasTime .flatpickr-time .flatpickr-am-pm:focus {
-    background: transparent !important;
-}
-.flatpickr-calendar .flatpickr-confirm {
-    margin: 5px 10px;
-    border-radius: 3px;
-    height: auto;
-    padding: 1px;
-    color: #fff;
-}
-.xelastic .flatpickr-calendar .flatpickr-current-month input.cur-year,
-.xelastic .flatpickr-calendar .flatpickr-current-month span.cur-month {
-    font-size: 1.4rem;
-}
-.xelastic .flatpickr-calendar .flatpickr-day.selected,
-.xelastic .flatpickr-calendar .flatpickr-confirm {
-    background: #6e8791;
-    color: #fff;
-}
-.xlarry .flatpickr-calendar .flatpickr-current-month input.cur-year,
-.xlarry .flatpickr-calendar .flatpickr-current-month span.cur-month {
-    font-size: 1.2rem;
-}
-.xlarry .flatpickr-calendar .flatpickr-day.selected,
-.xlarry .flatpickr-calendar .flatpickr-confirm {
-    background: #2c2f33;
-}
-.xlarry .flatpickr-calendar .flatpickr-day.selected svg,
-.xlarry .flatpickr-calendar .flatpickr-confirm svg {
-    fill: #fff;
-}
 .dark-mode .xdialog-mask {
     background: rgba(0, 0, 0, 0.7);
 }
@@ -212,13 +87,7 @@ html.dark-mode .xdialog-mask .xdialog-box {
     right: 5%;
     bottom: 5%;
 }
-.layout-phone .xdialog-mask .xdialog-box.full-screen {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: none;
-}
+
 .xdialog-mask .xdialog-box .xdialog-title {
     flex: 0 0 auto;
     position: relative;
@@ -267,22 +136,6 @@ html.dark-mode .xdialog-mask .xdialog-box .xdialog-buttons {
 /* .xinfo::before {
   content: "\f6f0";
 } */
-.layout-small #aic-compose-dialog #aic-compose-dialog-box span.small-size,
-.layout-phone #aic-compose-dialog #aic-compose-dialog-box span.small-size,
-.layout-normal.touch
-#aic-compose-dialog
-#aic-compose-dialog-box
-span.small-size {
-    display: inline-block;
-}
-.layout-small #aic-compose-dialog #aic-compose-dialog-box span.regular-size,
-.layout-phone #aic-compose-dialog #aic-compose-dialog-box span.regular-size,
-.layout-normal.touch
-#aic-compose-dialog
-#aic-compose-dialog-box
-span.regular-size {
-    display: none;
-}
 
 body.xlarry:not(.xskin) #button-apps:before,
 body.xlarry:not(.xskin) #sections-table tr > td.section:before,
@@ -291,12 +144,7 @@ body.xlarry:not(.xskin) #settings-tabs a.xcpanel-settings:before,
 body.xlarry:not(.xskin) .listing.iconized li > a:before {
     display: none !important;
 }
-table.messagelist.fixedcopy {
-    position: absolute !important;
-}
-body.xdesktop .messagelist thead tr:hover .flag span:before {
-    color: #fff;
-}
+
 .formcontent input.button,
 .formcontent input[type="checkbox"] {
     width: auto;
@@ -305,141 +153,7 @@ body.xdesktop .messagelist thead tr:hover .flag span:before {
 .listing.iconized tr td:before {
     margin-right: 0.5rem;
 }
-.mailbox a:before {
-    display: inline-block;
-    padding-right: 10px;
-    font-size: 1.3em;
-    position: relative;
-    top: 2px;
-}
-.xdesktop #taskbar a:before {
-    top: 3px;
-}
-.widescreen .messagelist td.subject span {
-    line-height: normal;
-}
-.xsidebar-visible #mailview-right {
-    width: auto !important;
-}
-.xsidebar-visible #xsidebar,
-.xsidebar-visible #xsidebar-splitter {
-    display: block;
-}
-.xsidebar-visible #xsidebar-splitter {
-    top: 45px;
-    bottom: 0px;
-    height: auto;
-}
-#sidebar-splitter {
-    display: none;
-}
-#xsidebar {
-    display: none;
-    position: absolute;
-    top: 42px;
-    bottom: 0;
-    right: 0;
-    overflow-y: auto;
-}
-#xsidebar h2.boxtitle {
-    padding: 4px 8px;
-    line-height: 17px;
-}
-#xsidebar .listbox.collapsed:before {
-    content: "";
-}
-#xsidebar-preview-frame-overlay {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    z-index: 9999;
-}
-.xsidebar-wrap #searchfilter {
-    right: 288px;
-}
-.xsidebar-wrap #quicksearchbar {
-    right: 34px;
-}
-#xsidebar-button {
-    display: block;
-    width: 16px;
-    margin: 0;
-    padding: 4px 3px 6px 3px;
-    margin-top: 2px;
-    text-align: center;
-}
-#xsidebar-button:before {
-    content: "\25c0";
-}
-.xsidebar-visible #xsidebar-button:before {
-    content: "\25b6";
-}
-body.dragging,
-body.dragging * {
-    cursor: move !important;
-}
-#xsidebar-order-table td.title label:before {
-    font-size: 0.9em !important;
-    padding-right: 15px;
-}
 
-#taskbar a.button-apps:hover span.button-inner {
-    background-position: 3px -25px;
-}
-
-#taskbar .button-interface-options .button-inner {
-    display: none;
-}
-.minimal #taskbar .button-logout {
-    padding-left: 0;
-}
-.minimal #taskbar .button-interface-options {
-    padding: 10px 6px 0 6px;
-    background-position: 8px 10px;
-}
-#message-list-sort {
-    display: none;
-}
-
-span.xsetting-help {
-    position: relative;
-    display: inline-block;
-    margin-left: 5px;
-}
-span.xsetting-help:before {
-    display: inline-block;
-    text-align: center;
-    color: #999999;
-    border: 1px solid #ddd;
-    padding: 1px;
-    border-radius: 50%;
-    background: #fff;
-    width: 12px;
-    height: 12px;
-    content: "?";
-    font-weight: bold;
-    font-size: 10px !important;
-    font-family: sans-serif;
-    line-height: 12px;
-}
-span.xsetting-help span {
-    position: absolute;
-    top: 20px;
-    right: 0;
-    display: none;
-    padding: 8px;
-    border: 1px solid #cccccc;
-    background: #ffffcc;
-    min-width: 200px;
-}
-span.xsetting-help:hover span {
-    display: block;
-}
-.xskin #taskbar .minmodetoggle {
-    background: none;
-}
 #aic-compose-dialog #aic-compose-dialog-box > .xdialog-contents {
     overflow-y: auto;
     display: flex;
@@ -465,13 +179,7 @@ html.dark-mode
     margin: -1.5em 0 -1.5em 0;
     color: #777;
 }
-html.dark-mode
-#aic-compose-dialog
-#aic-compose-dialog-box
-> .xdialog-contents
-.xspinner {
-    color: #6b787a;
-}
+
 #aic-compose-dialog #aic-compose-dialog-box > .xdialog-contents .properties {
     display: flex;
     align-items: stretch;
@@ -535,7 +243,7 @@ button {
     flex: 1 1 auto;
 }
 #aic-compose-dialog #aic-compose-dialog-box #aic-result textarea {
-    height: 100%;
+    height: 93%;
 }
 #aic-compose-dialog #aic-compose-dialog-box #aic-compose-help {
     flex: 1;
@@ -736,6 +444,14 @@ html.dark-mode .popover-highlight {
     #aic-compose-dialog-box {
         min-width: 254px;
     }
+
+    #aic-result {
+        margin-bottom: 7px;
+    }
+
+    #aic-result i {
+        font-size: 17px;
+    }
 }
 
 @media (max-width: 1024px) and (min-width: 350px) {
@@ -746,6 +462,14 @@ html.dark-mode .popover-highlight {
     .popover-header {
         font-size: 1.25rem;
     }
+
+    #aic-result {
+        margin-bottom: 7px;
+    }
+
+    .xinfo {
+        display: none;
+    }
 }
 
 @media (max-width: 350px) {
@@ -755,6 +479,9 @@ html.dark-mode .popover-highlight {
 
     .popover-header {
         font-size: 1.2rem;
+    }
+    .xinfo {
+        display: none;
     }
 }
 /*# sourceMappingURL=styles.css.map */
