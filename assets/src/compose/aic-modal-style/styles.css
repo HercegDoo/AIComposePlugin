@@ -351,18 +351,6 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     }
 }
 
-.disabled-button{
-    pointer-events: none;
-    cursor:not-allowed;
-    opacity: 0.5;
-}
-
-.enabled-button{
-    pointer-events: all;
-    cursor: auto;
-    opacity: 1;
-}
-
 @media (max-width: 500px) {
     .properties {
         flex-direction: column;

@@ -1,4 +1,4 @@
-export function checkSelectedText(){
+export function checkSelectedText() {
     const textarea = document.querySelector("#aic-email");
     const fixSelectedTextButton = document.getElementById("fixSelectedText");
 
@@ -7,17 +7,17 @@ export function checkSelectedText(){
         const end = textarea.selectionEnd;
 
         if (start !== end) {
-            const selectedText = textarea.value.substring(start,end);
-            fixSelectedTextButton.classList.remove("disabled-button");
-            fixSelectedTextButton.classList.add("enabled-button");
+            const selectedText = textarea.value.substring(start, end);
+            fixSelectedTextButton.classList.remove("disabled");
+            fixSelectedTextButton.removeAttribute("disabled");
         } else {
-            if(fixSelectedTextButton.classList.contains("enabled-button")
-            ){
-                fixSelectedTextButton.classList.remove("enabled-button");
-                fixSelectedTextButton.classList.add("disabled-button");}
+            fixSelectedTextButton.setAttribute("disabled","disabled");
+            fixSelectedTextButton.classList.add("disabled");
         }
     }
 
     textarea.addEventListener('mouseup', checkSelection);
     textarea.addEventListener('keyup', checkSelection);
+    textarea.addEventListener('input', checkSelection);
+
 }

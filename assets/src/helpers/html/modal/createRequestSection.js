@@ -40,7 +40,7 @@ export function createRequestSection() {
       <span style="display: none;">Generate Again</span>
   </button>
   <button type="button" class="btn btn-default" >Instruction Examples</button>
-  <button type="button" class="btn btn-default disabled-button" id="fixSelectedText" >Fix Selected Text</button>`;
+  <button disabled type="button" class="btn btn-default disabled" id="fixSelectedText" >Fix Selected Text</button>`;
 
     aicRequest.appendChild(generateContainer);
 
