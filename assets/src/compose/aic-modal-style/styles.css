@@ -243,7 +243,7 @@ button {
     flex: 1 1 auto;
 }
 #aic-compose-dialog #aic-compose-dialog-box #aic-result textarea {
-    height: 93%;
+    height: 100%;
 }
 #aic-compose-dialog #aic-compose-dialog-box #aic-compose-help {
     flex: 1;
@@ -263,10 +263,6 @@ button {
 button {
     position: absolute;
     left: 1rem;
-}
-
-.propbox {
-    position: relative;
 }
 
 #aic-compose-dialog #aic-compose-dialog-box #aic-compose-help .help-header h3 {
@@ -355,6 +351,18 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     }
 }
 
+.disabled-button{
+    pointer-events: none;
+    cursor:not-allowed;
+    opacity: 0.5;
+}
+
+.enabled-button{
+    pointer-events: all;
+    cursor: auto;
+    opacity: 1;
+}
+
 @media (max-width: 500px) {
     .properties {
         flex-direction: column;
@@ -372,19 +380,9 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
         min-width: 254px;
     }
 
-    #aic-result {
-        margin-bottom: 7px;
-    }
-
-    #aic-result i {
-        font-size: 17px;
-    }
 }
 
 @media (max-width: 1024px) and (min-width: 350px) {
-    #aic-result {
-        margin-bottom: 7px;
-    }
 
     .xinfo {
         display: none;

@@ -1,5 +1,6 @@
 import "../../../compose/aic-modal-style/styles.css";
 import { createDialogContents } from "./createDialogContents.js";
+import {checkSelectedText} from "./helperFunctions/checkSelectedText";
 
 export function createComposeModal() {
     const dialogMask = document.createElement("div");
@@ -38,6 +39,8 @@ export function createComposeModal() {
     });
 
     document.body.appendChild(dialogMask);
+
+    checkSelectedText();
 
     $("select:not([multiple])", dialogMask).each(function () {
         UI.pretty_select(this);
