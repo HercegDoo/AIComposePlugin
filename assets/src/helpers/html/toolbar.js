@@ -14,7 +14,7 @@ export const createButtonInToolbarMenu = function () {
     const aElement = createElement("a", {
         href: "#responses",
         id: "aicp-prompt-open-button",
-        class: "auto-generate",
+        class: "auto-generate responses active",
         role: "button",
     });
     aElement.appendChild(spanElement);

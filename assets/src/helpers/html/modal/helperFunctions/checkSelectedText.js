@@ -1,5 +1,5 @@
 export function checkSelectedText(){
-    const textarea = document.querySelector("#aic-email")
+    const textarea = document.querySelector("#aic-email");
     const fixSelectedTextButton = document.getElementById("fixSelectedText");
 
     function checkSelection() {
@@ -19,4 +19,5 @@ export function checkSelectedText(){
     }
 
     textarea.addEventListener('mouseup', checkSelection);
+    textarea.addEventListener('keyup', checkSelection);
 }
