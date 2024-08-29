@@ -1,11 +1,4 @@
 
-#aic-open-compose-dialog:before {
-    font-family: RcpIconFont, sans-serif !important;
-    font-weight: normal !important;
-    position: relative;
-    background-image: none;
-    text-indent: 0;
-}
 
 .xinfo {
     display: inline-block;
@@ -326,17 +319,6 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     background: transparent !important;
 }
 
-.bs-popover-auto[x-placement^="bottom"] .popover-header::before,
-.bs-popover-bottom .popover-header::before {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    display: block;
-    width: 1rem;
-    margin-left: -0.5rem;
-    content: "";
-    border-bottom: 1px solid #f7f7f7;
-}
 
 @media (min-width: 500px) and (max-width: 1068px) {
     #aic-compose-dialog
@@ -357,13 +339,6 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
         overflow-y: scroll;
     }
 
-    #aic-instructions {
-        overflow-y: scroll;
-    }
-
-    #aic-compose-dialog-box {
-        min-width: 254px;
-    }
 
 }
 
