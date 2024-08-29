@@ -1,1 +1,1 @@
-
+import "./settings/style.css";
