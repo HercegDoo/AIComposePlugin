@@ -1,6 +1,7 @@
 import "./styles.css";
 import { createDialogContents } from "./createDialogContents.js";
 import {checkSelectedText} from "./additionalModalFunctions/checkSelectedText";
+import {regulateHelpModal} from "./additionalModalFunctions/regulateHelpModal";
 
 export function createComposeModal() {
     const dialogMask = document.createElement("div");
@@ -41,6 +42,7 @@ export function createComposeModal() {
     document.body.appendChild(dialogMask);
 
     checkSelectedText();
+    regulateHelpModal();
 
     $("select:not([multiple])", dialogMask).each(function () {
         UI.pretty_select(this);
