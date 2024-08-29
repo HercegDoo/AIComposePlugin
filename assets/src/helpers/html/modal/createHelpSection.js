@@ -1,10 +1,10 @@
 export function createHelpSection() {
     const helpDiv = document.createElement("div");
     helpDiv.id = "aic-compose-help";
-    helpDiv.style.display = "none"; // Sakriva cijeli dio Help & Examples
+    helpDiv.setAttribute("hidden", "true");
 
     helpDiv.innerHTML = `<div class="help-header">
-      <button type="button" class="btn btn-primary"  style="display:none;">&lt; Back</button>
+      <button type="button" class="btn btn-primary">&lt; Back</button>
       <h3>Help & Examples</h3>
   </div>
   <div class="help-content">

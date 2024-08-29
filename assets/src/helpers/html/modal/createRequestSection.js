@@ -27,7 +27,7 @@ export function createRequestSection() {
     instructionsDiv.className = "instructions";
     instructionsDiv.innerHTML = `<div>
       <label for="aic-instructions">Instructions</label>
-      <span class="fa-solid fa-circle-info xinfo right"><div>Instructions on what to include in the new email. Click the Instruction Examples button to see some examples.</div></span>
+      <span class="xinfo right"><div>Instructions on what to include in the new email. Click the Instruction Examples button to see some examples.</div></span>
   </div>
   <textarea id="aic-instructions" class="form-control" placeholder="Example: ask to change the appointment for next week"></textarea>`;
 

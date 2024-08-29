@@ -6,15 +6,13 @@ export function checkSelectedText() {
         const start = textarea.selectionStart;
         const end = textarea.selectionEnd;
 
-        if (start !== end) {
-            const selectedText = textarea.value.substring(start, end);
-            fixSelectedTextButton.classList.remove("disabled");
-            fixSelectedTextButton.removeAttribute("disabled");
-        } else {
-            fixSelectedTextButton.setAttribute("disabled","disabled");
-            fixSelectedTextButton.classList.add("disabled");
-        }
+        const isTextSelected = start !== end;
+        const selectedText = textarea.value.substring(start, end);
+
+        fixSelectedTextButton.classList.toggle("disabled", !isTextSelected);
+        fixSelectedTextButton.toggleAttribute("disabled", !isTextSelected);
     }
+
 
     textarea.addEventListener('mouseup', checkSelection);
     textarea.addEventListener('keyup', checkSelection);
