@@ -1,6 +1,6 @@
-import "../../../compose/aic-modal-style/styles.css";
+import "./styles.css";
 import { createDialogContents } from "./createDialogContents.js";
-import {checkSelectedText} from "./helperFunctions/checkSelectedText";
+import {checkSelectedText} from "./additionalModalFunctions/checkSelectedText";
 
 export function createComposeModal() {
     const dialogMask = document.createElement("div");

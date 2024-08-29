@@ -1,10 +1,10 @@
-import { createButtonInToolbarMenu, openModal } from "./helpers/html/toolbar";
+import { createButtonInToolbarMenu, openModal } from "./compose/buttonToToolbar";
 import "./compose/style.css";
 
 document.addEventListener("DOMContentLoaded", function () {
-    const OpenAIComposehhButton = createButtonInToolbarMenu();
+    createButtonInToolbarMenu();
 
-    OpenAIComposehhButton.addEventListener("click", (e) => {
+    document.getElementById("aicp-prompt-open-button").addEventListener("click", (e) => {
         e.preventDefault();
         openModal();
     });
