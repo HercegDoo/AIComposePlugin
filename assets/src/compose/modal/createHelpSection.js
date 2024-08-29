@@ -1,9 +1,9 @@
 export function createHelpSection() {
-    const helpDiv = document.createElement("div");
-    helpDiv.id = "aic-compose-help";
-    helpDiv.setAttribute("hidden", "true");
+  const helpDiv = document.createElement('div');
+  helpDiv.id = 'aic-compose-help';
+  helpDiv.setAttribute('hidden', 'true');
 
-    helpDiv.innerHTML = `<div class="help-header">
+  helpDiv.innerHTML = `<div class="help-header">
       <button type="button" class="btn btn-primary" id="help-back-btn">&lt; Back</button>
       <h3>Help & Examples</h3>
   </div>
@@ -83,7 +83,5 @@ export function createHelpSection() {
  </div>`;
 
 
-
-
-    return helpDiv;
+  return helpDiv;
 }

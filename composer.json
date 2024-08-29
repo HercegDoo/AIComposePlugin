@@ -18,7 +18,9 @@
     }
   ],
   "require": {
-    "php": ">=7.4"
+    "php": ">=7.4",
+    "ext-curl": "*",
+    "php-curl-class/php-curl-class": "^9.19"
   },
   "repositories": [
     {
