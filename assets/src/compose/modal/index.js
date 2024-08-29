@@ -1,7 +1,7 @@
 import "./styles.css";
 import { createDialogContents } from "./createDialogContents.js";
 import {checkSelectedText} from "./additionalModalFunctions/checkSelectedText";
-import {regulateHelpModal} from "./additionalModalFunctions/showHelpModal";
+import {regulateHelpModal} from "./additionalModalFunctions/regulateHelpModal";
 
 export function createComposeModal() {
     const dialogMask = document.createElement("div");
