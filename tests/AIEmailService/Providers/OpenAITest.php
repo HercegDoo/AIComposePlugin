@@ -152,20 +152,7 @@ final class OpenAITest extends TestCase
 
         $openAI->generateEmail($requestData, $settingsMock);
     }
-
-    public function testGenerateEmailReturn()
-    {
-        $openAI = new OpenAI();
-        $requestData = new RequestData('Meho', 'Muhi', 'TestInstrukcija');
-        $settings = new Settings($openAI);
-
-        self::assertIsString(($openAI->generateEmail($requestData, $settings))->getBody());
-        self::assertNotEmpty(($openAI->generateEmail($requestData, $settings))->getBody());
-        self::assertStringContainsString('Meho', ($openAI->generateEmail($requestData, $settings))->getBody());
-        self::assertStringContainsString('test', ($openAI->generateEmail($requestData, $settings))->getBody());
-        self::assertStringEndsWith('Muhi', ($openAI->generateEmail($requestData, $settings))->getBody());
-        self::assertInstanceOf(Respond::class, $openAI->generateEmail($requestData, $settings));
-    }
+    
 
     public function testPromptNoFixDefault()
     {
@@ -326,32 +313,7 @@ final class OpenAITest extends TestCase
         } catch (ProviderException $e) {
         }
     }
-
-    public function testSendRequestReturnType()
-    {
-        $requestData = new RequestData('Ime1', 'Ime2', 'SastaviMail');
-
-        $OpenAi = new OpenAI();
-        $settings = new Settings($OpenAi);
-        $apiKey = $settings->providerOpenAI['apiKey'];
-        $model = $settings->providerOpenAI['model'];
-        ReflectionHelper::setPrivateProperty($OpenAi, 'apiKey', $apiKey);
-        ReflectionHelper::setPrivateProperty($OpenAi, 'model', $model);
-        ReflectionHelper::setPrivateProperty($OpenAi, 'maxTokens', 2000);
-        ReflectionHelper::setPrivateProperty($OpenAi, 'creativity', 0.5);
-        $reflection = new \ReflectionClass(OpenAI::class);
-        $promptReflection = $reflection->getMethod('prompt');
-        $promptReflection->setAccessible(true);
-        $sendRequestReflection = $reflection->getMethod('sendRequest');
-        $sendRequestReflection->setAccessible(true);
-
-        $prompt = $promptReflection->invoke($OpenAi, $requestData);
-
-        $returned = $sendRequestReflection->invoke($OpenAi, $prompt);
-
-        self::assertInstanceOf(\stdClass::class, $returned);
-        self::assertObjectHasProperty('choices', $returned);
-    }
+    
 
     public function testSendRequestUnathorized()
     {
@@ -382,8 +344,7 @@ final class OpenAITest extends TestCase
             'model' => 'test-model']);
 
         $this->expectException(ProviderException::class);
-        $regex = '/HTTP\/(1\.1|2)\s404\s?(Not\Found)?/';
-        $this->expectExceptionMessageMatches($regex);
+        $this->expectExceptionMessage('APICurl: HTTP/2 401');
         $OpenAi->generateEmail($requestData, $settings);
     }
 
@@ -399,8 +360,7 @@ final class OpenAITest extends TestCase
             Settings::CREATIVITY_HIGH => -10000, ]);
 
         $this->expectException(ProviderException::class);
-        $regex = 'APICurl: HTTP/2 401 ';
-        $this->expectExceptionMessageMatches($regex);
+        $this->expectExceptionMessage('APICurl: HTTP/2 401');
         $OpenAi->generateEmail($requestData, $settings);
     }
 

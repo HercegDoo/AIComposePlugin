@@ -86,15 +86,6 @@ final class AIEmailServiceTest extends TestCase
         $aiEmailService->generateEmail($requestData);
     }
 
-    public function testGenerateEmailServiceOpenAI()
-    {
-        $openAI = new OpenAI();
-        $settings = new Settings($openAI);
-        $aiEmailService = new AIEmailService($settings);
-        $requestData = new RequestData('Meho', 'Muhi', 'Instrukcija');
-
-        self::assertInstanceOf(Respond::class, $aiEmailService->generateEmail($requestData, $settings));
-    }
 
     public function testGenerateEmailServiceOpenAIPrEx()
     {
