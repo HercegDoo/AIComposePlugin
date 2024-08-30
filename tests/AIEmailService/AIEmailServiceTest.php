@@ -86,7 +86,6 @@ final class AIEmailServiceTest extends TestCase
         $aiEmailService->generateEmail($requestData);
     }
 
-
     public function testGenerateEmailServiceOpenAIPrEx()
     {
         $openAiMock = $this->getMockBuilder(OpenAI::class)

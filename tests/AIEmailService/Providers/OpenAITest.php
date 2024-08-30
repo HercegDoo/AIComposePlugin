@@ -7,7 +7,6 @@ namespace HercegDoo\AIComposePlugin\Tests\AIEmailService\Providers;
 use Curl\Curl;
 use DG\BypassFinals;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
-use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
 use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
@@ -152,7 +151,6 @@ final class OpenAITest extends TestCase
 
         $openAI->generateEmail($requestData, $settingsMock);
     }
-    
 
     public function testPromptNoFixDefault()
     {
@@ -313,7 +311,6 @@ final class OpenAITest extends TestCase
         } catch (ProviderException $e) {
         }
     }
-    
 
     public function testSendRequestUnathorized()
     {

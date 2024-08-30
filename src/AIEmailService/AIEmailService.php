@@ -12,7 +12,7 @@ use HercegDoo\AIComposePlugin\AIEmailService\Providers\InterfaceProvider;
 class AIEmailService
 {
     public const VERSION = '0.0.1-rc';
-//komentar
+    // komentar
     private InterfaceProvider $provider;
     private Settings $settings;
 
