@@ -1,9 +1,9 @@
-name: Run Tests on Push
+name: Run Tests on Pull Request
 
 on:
-  push:
+  pull_request:
     branches:
-      - izrada-testova-i-prompt
+      - main
 
 jobs:
   run-tests:
