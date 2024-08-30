@@ -50,7 +50,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-
+      "HercegDoo\\AIComposePlugin\\Tests\\": "tests/",
+      "HercegDoo\\AIComposePlugin\\Tests\\TestAIEmailService\\": "tests/TestAIEmailService/"
     }
   },
   "require-dev": {
