@@ -22,6 +22,10 @@ final class Settings
     public const LANGUAGE_ENGLISH = 'English';
     public const LANGUAGE_SPANISH = 'Spanish';
     public const LANGUAGE_BOSNIAN = 'Bosnian';
+
+    /**
+     * @var array<string, string>
+     */
     public array $providerOpenAI = [
         'apiKey' => '',
         'model' => '',
@@ -39,6 +43,9 @@ final class Settings
         return $this->provider;
     }
 
+    /**
+     * @return array<int,mixed>
+     */
     public static function getStyles(): array
     {
         return array_values(array_filter(
@@ -48,6 +55,9 @@ final class Settings
         ));
     }
 
+    /**
+     * @return array<int,mixed>
+     */
     public static function getLengths(): array
     {
         return array_values(array_filter(
@@ -57,6 +67,9 @@ final class Settings
         ));
     }
 
+    /**
+     * @return array<int,mixed>
+     */
     public static function getCreativities(): array
     {
         return array_values(array_filter(
@@ -66,6 +79,9 @@ final class Settings
         ));
     }
 
+    /**
+     * @return array<int,mixed>
+     */
     public static function getLanguages(): array
     {
         return array_values(array_filter(

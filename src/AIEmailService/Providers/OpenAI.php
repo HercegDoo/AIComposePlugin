@@ -17,12 +17,19 @@ final class OpenAI extends AbstractProvider
     private float $creativity;
     private string $model;
     private int $maxTokens;
+
+    /**
+     * @var array<string, float>
+     */
     private array $creativityMap = [
         Settings::CREATIVITY_LOW => 0.2,
         Settings::CREATIVITY_MEDIUM => 0.5,
         Settings::CREATIVITY_HIGH => 0.8,
     ];
 
+    /**
+     * @param Curl $curl
+     */
     public function __construct($curl = null)
     {
         $this->curl = $curl ?: new Curl();
@@ -72,7 +79,7 @@ final class OpenAI extends AbstractProvider
             ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '');
     }
 
-    private function sendRequest(string $prompt): ?\stdClass
+    private function sendRequest(string $prompt): \stdClass
     {
         $curl = $this->curl;
 
@@ -106,6 +113,6 @@ final class OpenAI extends AbstractProvider
             throw new ProviderException('APICurl: ' . $curl->errorMessage);
         }
 
-        return $respond;
+        return (object) $respond;
     }
 }

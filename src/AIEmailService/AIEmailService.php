@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HercegDoo\AiEmail;
+namespace HercegDoo\AIComposePlugin\AIEmailService;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;

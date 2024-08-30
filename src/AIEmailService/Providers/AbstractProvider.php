@@ -6,6 +6,9 @@ namespace HercegDoo\AIComposePlugin\AIEmailService\Providers;
 
 abstract class AbstractProvider implements InterfaceProvider
 {
+    /**
+     * @var string[]
+     */
     private array $errors = [];
 
     public function setError(string $error): void
@@ -13,6 +16,9 @@ abstract class AbstractProvider implements InterfaceProvider
         $this->errors[] = $error;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getErrors(): array
     {
         return $this->errors;
