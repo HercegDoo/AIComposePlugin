@@ -45,6 +45,8 @@ trait ReflectionHelper
         }
     }
 
+
+
     /**
      * Retrieve a private property.
      *
