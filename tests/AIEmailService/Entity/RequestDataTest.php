@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HercegDoo\AIComposePlugin\Tests\TestAIEmailService\Entity;
+namespace HercegDoo\AIComposePlugin\Tests\AIEmailService\Entity;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use PHPUnit\Framework\TestCase;

@@ -2,7 +2,14 @@
 
 declare(strict_types=1);
 
-namespace HercegDoo\AIComposePlugin\Tests\TestAIEmailService;
+namespace HercegDoo\AIComposePlugin\TestSupport;
+
+use Closure;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionObject;
+use ReflectionProperty;
 
 trait ReflectionHelper
 {

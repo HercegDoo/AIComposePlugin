@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace HercegDoo\AIComposePlugin\Tests\TestAIEmailService;
+namespace HercegDoo\AIComposePlugin\Tests\AIEmailService;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use HercegDoo\AIComposePlugin\TestSupport\ReflectionHelper;
 use PHPUnit\Framework\TestCase;
 
 /**

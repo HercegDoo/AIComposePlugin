@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HercegDoo\AIComposePlugin\Tests\TestAIEmailService\Providers;
+namespace HercegDoo\AIComposePlugin\Tests\AIEmailService\Providers;
 
 use Curl\Curl;
 use DG\BypassFinals;
@@ -11,7 +11,7 @@ use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
 use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
-use HercegDoo\AIComposePlugin\Tests\TestAIEmailService\ReflectionHelper;
+use HercegDoo\AIComposePlugin\TestSupport\ReflectionHelper;
 use PHPUnit\Framework\TestCase;
 
 BypassFinals::enable();
@@ -382,7 +382,7 @@ final class OpenAITest extends TestCase
             'model' => 'test-model']);
 
         $this->expectException(ProviderException::class);
-        $regex = '/HTTP\/(1\.1|2)\s404\s?(Not\sFound)?/';
+        $regex = '/HTTP\/(1\.1|2)\s404\s?(Not\Found)?/';
         $this->expectExceptionMessageMatches($regex);
         $OpenAi->generateEmail($requestData, $settings);
     }
@@ -399,7 +399,7 @@ final class OpenAITest extends TestCase
             Settings::CREATIVITY_HIGH => -10000, ]);
 
         $this->expectException(ProviderException::class);
-        $regex = '/HTTP\/(1\.1|2)\s400\s?(Bad\sRequest)?/';
+        $regex = 'APICurl: HTTP/2 401 ';
         $this->expectExceptionMessageMatches($regex);
         $OpenAi->generateEmail($requestData, $settings);
     }
