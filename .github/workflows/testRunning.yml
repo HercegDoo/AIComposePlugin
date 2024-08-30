@@ -22,4 +22,5 @@ jobs:
         run: composer install
 
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: /vendor/bin/phpunit tests --exclude ./tests/AIEmailService/_support
+
