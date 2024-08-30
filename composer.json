@@ -18,7 +18,7 @@
     }
   ],
   "require": {
-    "php": ">=7.4",
+    "php": ">=8.1",
     "ext-curl": "*",
     "php-curl-class/php-curl-class": "^9.19"
   },
@@ -50,8 +50,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "HercegDoo\\AIComposePlugin\\": "tests/",
-      "HercegDoo\\AIComposePlugin\\TestSupport\\": "tests/_support/"
+
     }
   },
   "require-dev": {
