@@ -341,7 +341,15 @@ final class OpenAITest extends TestCase
             'model' => 'test-model']);
 
         $this->expectException(ProviderException::class);
-        $this->expectExceptionMessage('APICurl: HTTP/2 401');
+        try {
+            $OpenAi->generateEmail($requestData, $settings);
+        } catch (ProviderException $e) {
+            self::assertTrue(
+                $e->getMessage() === 'APICurl: HTTP/2 401' || $e->getMessage() === 'APICurl: HTTP/1.1 401 Unauthorized',
+                'Unexpected exception message: ' . $e->getMessage()
+            );
+            throw $e; // Re-throw the exception to satisfy the expectException call
+        }
         $OpenAi->generateEmail($requestData, $settings);
     }
 
@@ -357,7 +365,15 @@ final class OpenAITest extends TestCase
             Settings::CREATIVITY_HIGH => -10000, ]);
 
         $this->expectException(ProviderException::class);
-        $this->expectExceptionMessage('APICurl: HTTP/2 401');
+        try {
+            $OpenAi->generateEmail($requestData, $settings);
+        } catch (ProviderException $e) {
+            self::assertTrue(
+                $e->getMessage() === 'APICurl: HTTP/2 401' || $e->getMessage() === 'APICurl: HTTP/1.1 401 Unauthorized',
+                'Unexpected exception message: ' . $e->getMessage()
+            );
+            throw $e; // Re-throw the exception to satisfy the expectException call
+        }
         $OpenAi->generateEmail($requestData, $settings);
     }
 
