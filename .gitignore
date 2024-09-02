@@ -5,3 +5,4 @@
 /vendor/
 .idea
 /cache/
+config.inc.php

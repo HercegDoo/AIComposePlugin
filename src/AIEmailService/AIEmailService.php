@@ -14,10 +14,15 @@ class AIEmailService
     private InterfaceProvider $provider;
     private Settings $settings;
 
-    public function __construct(Settings $settings)
+    private function __construct(Settings $settings)
     {
         $this->settings = $settings;
         $this->provider = $settings->getProvider();
+    }
+
+    public static function createAIEmailService(Settings $settings): self
+    {
+        return new self( $settings);
     }
 
     /**

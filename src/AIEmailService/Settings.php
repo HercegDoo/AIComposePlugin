@@ -4,38 +4,65 @@ declare(strict_types=1);
 
 namespace HercegDoo\AIComposePlugin\AIEmailService;
 
+include 'config.inc.php';
+
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\InterfaceProvider;
 
 final class Settings
 {
-    public const DEFAULT_TIMEOUT = 60;
-    public const DEFAULT_INPUT_CHARS = 500;
-    public const DEFAULT_MAX_TOKENS = 2000;
-    public const STYLE_CASUAL = 'casual';
-    public const STYLE_PROFESSIONAL = 'professional';
-    public const LENGTH_SHORT = 'short';
-    public const LENGTH_MEDIUM = 'medium';
-    public const LENGTH_LONG = 'long';
-    public const CREATIVITY_LOW = 'low';
-    public const CREATIVITY_MEDIUM = 'medium';
-    public const CREATIVITY_HIGH = 'high';
-    public const LANGUAGE_ENGLISH = 'English';
-    public const LANGUAGE_SPANISH = 'Spanish';
-    public const LANGUAGE_BOSNIAN = 'Bosnian';
+    public static int $default_timeout;
+    public static int $default_input_chars;
+    public static int $default_max_tokens;
+
+    public static string $STYLE_CASUAL;
+    public static string $STYLE_PROFESSIONAL;
+    public static string $STYLE_ENTHUSIASTIC;
+    public static string $STYLE_FUNNY;
+    public static string $STYLE_INFORMATIONAL;
+    public static string $STYLE_PERSUASIVE;
+
+    public static string $STYLE_ASSERTIVE;
+    public static string $LENGTH_SHORT;
+    public static string $LENGTH_MEDIUM;
+    public static string $LENGTH_LONG;
+    public static string $CREATIVITY_LOW;
+    public static string $CREATIVITY_MEDIUM;
+    public static string $CREATIVITY_HIGH;
+    public static string $LANGUAGE_ENGLISH;
+    public static string $LANGUAGE_CROATIAN;
+    public static string $LANGUAGE_BOSNIAN;
+    public static string $LANGUAGE_GERMAN;
+    public static string $LANGUAGE_DUTCH;
 
     /**
      * @var array<string, string>
      */
-    public array $providerOpenAI = [
-        'apiKey' => '',
-        'model' => '',
-    ];
+    public array $providerOpenAI = [];
+
+    private static ?Settings $settingsInstance = null;
 
     private InterfaceProvider $provider;
 
-    public function __construct(InterfaceProvider $provider)
+    private function __construct(InterfaceProvider $provider)
     {
+        global $config;
         $this->provider = $provider;
+
+        if ($provider->getProviderName() === 'OpenAI') {
+            $this->providerOpenAI = [
+                'apiKey' => $config['provider_openai_config']['apiKey'],
+                'model' => $config['provider_openai_config']['model'],
+            ];
+        }
+    }
+
+    public static function getSettingsInstance(InterfaceProvider $provider): self
+    {
+        if (self::$settingsInstance === null) {
+            self::$settingsInstance = new self($provider);
+        }
+
+        return self::$settingsInstance;
     }
 
     public function getProvider(): InterfaceProvider

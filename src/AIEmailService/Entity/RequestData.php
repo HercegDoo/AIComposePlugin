@@ -21,15 +21,20 @@ class RequestData
     private ?string $previousGeneratedEmail = null;
     private ?string $previousConversation = null;
 
-    public function __construct(string $recipientName, string $senderName, string $instruction, string $style = Settings::STYLE_CASUAL, string $length = Settings::LENGTH_MEDIUM, string $creativity = Settings::CREATIVITY_MEDIUM, string $language = Settings::LANGUAGE_BOSNIAN)
+    private function __construct(string $recipientName, string $senderName, string $instruction, ?string $style, ?string $length, ?string $creativity, ?string $language)
     {
         $this->recipientName = $recipientName;
         $this->senderName = $senderName;
-        $this->style = $style;
-        $this->length = $length;
-        $this->creativity = $creativity;
-        $this->language = $language;
+        $this->style = $style ?? Settings::$STYLE_CASUAL;
+        $this->length = $length ?? Settings::$LENGTH_MEDIUM;
+        $this->creativity = $creativity ?? Settings::$CREATIVITY_MEDIUM;
+        $this->language = $language ?? Settings::$LANGUAGE_BOSNIAN;
         $this->instruction = $instruction;
+    }
+
+    public static function createRequestData(string $recipientName, string $senderName, string $instruction, ?string $style, ?string $length, ?string $creativity, ?string $language): self
+    {
+        return new self($recipientName, $senderName, $instruction, $style, $length, $creativity, $language);
     }
 
     public function setRecipientName(string $recipientName): self

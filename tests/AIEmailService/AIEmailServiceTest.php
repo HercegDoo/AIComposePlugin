@@ -27,8 +27,9 @@ final class AIEmailServiceTest extends TestCase
     public function testConstructAiEmailService()
     {
         $dummyProvider = new DummyProvider();
-        $settings = new Settings($dummyProvider);
-        $aiEmailService = new AIEmailService($settings);
+        $settings = Settings::getSettingsInstance($dummyProvider);
+
+        $aiEmailService = AIEmailService::createAIEmailService($settings);
 
         self::assertSame($dummyProvider, ReflectionHelper::getPrivateProperty($aiEmailService, 'provider'));
         self::assertSame($settings, ReflectionHelper::getPrivateProperty($aiEmailService, 'settings'));
@@ -37,9 +38,9 @@ final class AIEmailServiceTest extends TestCase
     public function testGenerateEmailServiceDummy()
     {
         $dummyProvider = new DummyProvider();
-        $settings = new Settings($dummyProvider);
-        $aiEmailService = new AIEmailService($settings);
-        $requestData = new RequestData('Meho', 'Muhi', 'InstrukcijaDummy');
+        $settings = Settings::getSettingsInstance($dummyProvider);
+        $aiEmailService = AIEmailService::createAIEmailService($settings);
+        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
 
         self::assertInstanceOf(Respond::class, $aiEmailService->generateEmail($requestData, $settings));
     }
@@ -56,9 +57,9 @@ final class AIEmailServiceTest extends TestCase
             ->willThrowException(new \InvalidArgumentException('Invalid argument'))
         ;
 
-        $settings = new Settings($dummyProviderMock);
-        $aiEmailService = new AIEmailService($settings);
-        $requestData = new RequestData('Meho', 'Muhi', 'InstrukcijaDummy');
+        $settings = Settings::getSettingsInstance($dummyProviderMock);
+        $aiEmailService = AIEmailService::createAIEmailService($settings);
+        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('General: Invalid argument');
@@ -77,9 +78,9 @@ final class AIEmailServiceTest extends TestCase
             ->willThrowException(new ProviderException('Provider Exception'))
         ;
 
-        $settings = new Settings($dummyProviderMock);
-        $aiEmailService = new AIEmailService($settings);
-        $requestData = new RequestData('Meho', 'Muhi', 'InstrukcijaDummy');
+        $settings = Settings::getSettingsInstance($dummyProviderMock);
+        $aiEmailService = AIEmailService::createAIEmailService($settings);
+        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('Provider Exception');
@@ -98,11 +99,11 @@ final class AIEmailServiceTest extends TestCase
             ->willThrowException(new \InvalidArgumentException('Invalid argument'))
         ;
 
-        $settings = new Settings($openAiMock);
+        $settings = Settings::getSettingsInstance($openAiMock);
 
-        $aiEmailService = new AIEmailService($settings);
+        $aiEmailService = AIEmailService::createAIEmailService($settings);
 
-        $requestData = new RequestData('Meho', 'Muhi', 'Instrukcija');
+        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('General: Invalid argument');
@@ -121,11 +122,11 @@ final class AIEmailServiceTest extends TestCase
             ->willThrowException(new ProviderException('Provider Exception'))
         ;
 
-        $settings = new Settings($openAiMock);
+        $settings = Settings::getSettingsInstance($openAiMock);
 
-        $aiEmailService = new AIEmailService($settings);
+        $aiEmailService = AIEmailService::createAIEmailService($settings);
 
-        $requestData = new RequestData('Meho', 'Muhi', 'Instrukcija');
+        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'Instrukcija', null, null, null, null);
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('Provider Exception');

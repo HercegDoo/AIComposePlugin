@@ -19,13 +19,9 @@ final class OpenAI extends AbstractProvider
     private int $maxTokens;
 
     /**
-     * @var array<string, float>
+     * @var array<int|string, float>
      */
-    private array $creativityMap = [
-        Settings::CREATIVITY_LOW => 0.2,
-        Settings::CREATIVITY_MEDIUM => 0.5,
-        Settings::CREATIVITY_HIGH => 0.8,
-    ];
+    private array $creativityMap = [];
 
     /**
      * @param Curl $curl
@@ -33,6 +29,9 @@ final class OpenAI extends AbstractProvider
     public function __construct($curl = null)
     {
         $this->curl = $curl ?: new Curl();
+        $this->creativityMap = [Settings::$CREATIVITY_LOW => 0.2,
+            Settings::$CREATIVITY_MEDIUM => 0.5,
+            Settings::$CREATIVITY_HIGH => 0.8, ];
     }
 
     public function getProviderName(): string
@@ -47,7 +46,7 @@ final class OpenAI extends AbstractProvider
     {
         $this->apiKey = $settings->providerOpenAI['apiKey'];
         $this->model = $settings->providerOpenAI['model'];
-        $this->maxTokens = $settings::DEFAULT_MAX_TOKENS;
+        $this->maxTokens = $settings::$default_max_tokens;
 
         $this->creativity = $this->creativityMap[$requestData->getCreativity()] ?? 0.5;
         $prompt = $this->prompt($requestData);

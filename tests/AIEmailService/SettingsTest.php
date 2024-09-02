@@ -19,7 +19,7 @@ final class SettingsTest extends TestCase
     public function testConstruct()
     {
         $OpenAI = new OpenAI();
-        $settings = new Settings($OpenAI);
+        $settings = Settings::getSettingsInstance($OpenAI);
 
         $reflectionProvider = ReflectionHelper::getPrivateProperty($settings, 'provider');
 
@@ -29,7 +29,7 @@ final class SettingsTest extends TestCase
     public function testGetProvider()
     {
         $OpenAI = new OpenAI();
-        $settings = new Settings($OpenAI);
+        $settings = Settings::getSettingsInstance($OpenAI);
 
         self::assertSame($OpenAI, $settings->getProvider());
     }
