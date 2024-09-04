@@ -23,6 +23,21 @@ final class OpenAI extends AbstractProvider
      */
     private array $creativityMap = [];
 
+    private function setCreativityMap(string $creativity):float{
+        switch($creativity){
+            case 'low':
+                $this->creativityMap[$creativity] = 0.2;
+                break;
+            case 'medium':
+                $this->creativityMap[$creativity] = 0.5;
+                break;
+            case 'high':
+                $this->creativityMap[$creativity] = 0.8;
+                break;
+        }
+        return $this->creativityMap[$creativity];
+    }
+
     /**
      * @param Curl $curl
      */
@@ -62,22 +77,6 @@ final class OpenAI extends AbstractProvider
         return new Respond($email);
     }
 
-    private function setCreativityMap(string $creativity): float
-    {
-        switch ($creativity) {
-            case 'low':
-                $this->creativityMap[$creativity] = 0.2;
-                break;
-            case 'medium':
-                $this->creativityMap[$creativity] = 0.5;
-                break;
-            case 'high':
-                $this->creativityMap[$creativity] = 0.8;
-                break;
-        }
-
-        return $this->creativityMap[$creativity];
-    }
 
     private function prompt(RequestData $requestData): string
     {

@@ -17,9 +17,6 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
 
         $task = $this->api->task;
 
-        $request = RequestData::make('muhi', 'meho', 'dobro jutro');
-        $email = AIEmail::generate($request);
-        print_r($email->getBody());
 
         if (\is_string($task)) {
             $task = ucfirst($task);
