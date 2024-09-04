@@ -2,8 +2,6 @@
 
 namespace HercegDoo\AIComposePlugin;
 
-use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
-use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use HercegDoo\AIComposePlugin\Tasks\AbstractTask;
 
@@ -15,16 +13,7 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
     {
         $this->initSettings();
 
-
-        $request = RequestData::make('muhi', 'meho', 'dobro jutro');
-        Settings::setDefaultCreativity('low');
-        $def_cr = Settings::getDefaultCreativity();
-        $request->setCreativity($def_cr);
-        $email = AIEmail::generate($request);
-        print_r($email->getBody());
-
         $task = $this->api->task;
-
 
         if (\is_string($task)) {
             $task = ucfirst($task);
@@ -89,10 +78,9 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
 
         /** @var string $default_creativity */
         $default_creativity = $rcmail->config->get('ai_compose_default_creativity');
-        if($default_creativity !== null){
+        if ($default_creativity !== null) {
             Settings::setDefaultCreativity($default_creativity);
         }
-
 
         /** @var string $provider */
         $provider = $rcmail->config->get('ai_compose_provider', 'openai');

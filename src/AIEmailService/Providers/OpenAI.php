@@ -24,9 +24,8 @@ final class OpenAI extends AbstractProvider
     private array $creativityMap = [
         'low' => 0.2,
         'medium' => 0.5,
-        'high' => 0.8
+        'high' => 0.8,
     ];
-
 
     /**
      * @param Curl $curl
@@ -66,7 +65,6 @@ final class OpenAI extends AbstractProvider
 
         return new Respond($email);
     }
-
 
     private function prompt(RequestData $requestData): string
     {

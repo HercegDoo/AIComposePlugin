@@ -25,7 +25,7 @@ final class Settings
     /** @var string[] */
     private static array $lengths;
 
-    private static string $default_creativity= 'medium';
+    private static string $default_creativity = 'medium';
     /** @var string[] */
     private static array $languages;
 
