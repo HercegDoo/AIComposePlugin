@@ -17,8 +17,8 @@ final class Settings
     private static array $styles;
     /** @var string[] */
     private static array $lengths;
-    /** @var string[] */
-    private static array $creativities;
+
+    private static string $default_creativity;
     /** @var string[] */
     private static array $languages;
 
@@ -55,17 +55,18 @@ final class Settings
         return self::getLengths()['default'] ?? self::getLengths()[0] ?? 'medium';
     }
 
-    /**
-     * @return array<string>
-     */
-    public static function getCreativities(): array
-    {
-        return self::$creativities;
-    }
-
     public static function getDefaultCreativity(): string
     {
-        return self::getCreativities()['default'] ?? self::getCreativities()[0] ?? 'medium';
+        return self::$default_creativity ?? 'medium';
+    }
+
+    public static function setDefaultCreativity(?string $creativity = null): void
+    {
+        if ($creativity === 'low' || $creativity === 'medium' || $creativity === 'high') {
+            self::$default_creativity = $creativity;
+        } else {
+            self::$default_creativity = 'medium';
+        }
     }
 
     public static function setProvider(string $provider): void
@@ -86,14 +87,6 @@ final class Settings
     public static function setLanguages(array $languages): void
     {
         self::$languages = $languages;
-    }
-
-    /**
-     * @param array<string> $creativities
-     */
-    public static function setCreativities(array $creativities): void
-    {
-        self::$creativities = $creativities;
     }
 
     /**

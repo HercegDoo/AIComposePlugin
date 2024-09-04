@@ -21,8 +21,7 @@ final class OpenAI extends AbstractProvider
     /**
      * @var array<int|string, float>
      */
-    private array $creativityMap = [
-    ];
+    private array $creativityMap = [];
 
     /**
      * @param Curl $curl
@@ -30,14 +29,6 @@ final class OpenAI extends AbstractProvider
     public function __construct($curl = null)
     {
         $this->curl = $curl ?: new Curl();
-        $creativities = Settings::getCreativities();
-        if (!empty($creativities) && !\in_array(null, $creativities, true)) {
-            $this->creativityMap = [
-                $creativities[0] => 0.2,
-                $creativities['default'] => 0.5,
-                $creativities[1] => 0.8,
-            ];
-        }
     }
 
     public function getProviderName(): string
@@ -54,11 +45,7 @@ final class OpenAI extends AbstractProvider
         $this->model = Settings::getProviderConfig()['model'];
         $this->maxTokens = Settings::getDefaultMaxTokens();
 
-        $creativityKey = $requestData->getCreativity();
-        if (!isset($this->creativityMap[$creativityKey])) {
-            $creativityKey = Settings::getDefaultCreativity();
-        }
-        $this->creativity = $this->creativityMap[$creativityKey] ?? 0.5;
+        $this->creativity = $this->setCreativityMap(Settings::getDefaultCreativity());
         $prompt = $this->prompt($requestData);
 
         $respond = $this->sendRequest($prompt);
@@ -73,6 +60,23 @@ final class OpenAI extends AbstractProvider
         }
 
         return new Respond($email);
+    }
+
+    private function setCreativityMap(string $creativity): float
+    {
+        switch ($creativity) {
+            case 'low':
+                $this->creativityMap[$creativity] = 0.2;
+                break;
+            case 'medium':
+                $this->creativityMap[$creativity] = 0.5;
+                break;
+            case 'high':
+                $this->creativityMap[$creativity] = 0.8;
+                break;
+        }
+
+        return $this->creativityMap[$creativity];
     }
 
     private function prompt(RequestData $requestData): string
