@@ -22,7 +22,6 @@ final class OpenAI extends AbstractProvider
      * @var array<int|string, float>
      */
     private array $creativityMap = [
-
     ];
 
     /**
@@ -32,11 +31,11 @@ final class OpenAI extends AbstractProvider
     {
         $this->curl = $curl ?: new Curl();
         $creativities = Settings::getCreativities();
-        if (!empty($creativities) && !in_array(null, $creativities, true)) {
+        if (!empty($creativities) && !\in_array(null, $creativities, true)) {
             $this->creativityMap = [
                 $creativities[0] => 0.2,
                 $creativities['default'] => 0.5,
-                $creativities[1] => 0.8
+                $creativities[1] => 0.8,
             ];
         }
     }

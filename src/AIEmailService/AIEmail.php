@@ -8,7 +8,6 @@ use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
 
 final class AIEmail
 {
-
     /**
      * @throws ProviderException
      */
@@ -28,5 +27,4 @@ final class AIEmail
 
         return $respond;
     }
-
 }

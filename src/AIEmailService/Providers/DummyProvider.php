@@ -6,7 +6,6 @@ namespace HercegDoo\AIComposePlugin\AIEmailService\Providers;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
-use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 
 class DummyProvider implements InterfaceProvider
 {

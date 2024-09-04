@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace HercegDoo\AIComposePlugin\AIEmailService;
 
-use Hamcrest\Core\SetTest;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\InterfaceProvider;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
 
@@ -14,13 +13,13 @@ final class Settings
     private static int $default_input_chars;
     private static int $default_max_tokens;
 
-    /** @var string[] $styles */
+    /** @var string[] */
     private static array $styles;
-    /** @var string[] $lengths */
+    /** @var string[] */
     private static array $lengths;
-    /** @var string[] $creativities */
+    /** @var string[] */
     private static array $creativities;
-    /** @var string[] $languages */
+    /** @var string[] */
     private static array $languages;
 
     /**
@@ -29,7 +28,6 @@ final class Settings
     private static array $providerConfig = [];
 
     private static InterfaceProvider $provider;
-
 
     public static function getProvider(): InterfaceProvider
     {
@@ -44,8 +42,6 @@ final class Settings
         return self::$styles;
     }
 
-
-
     /**
      * @return array<string>
      */
@@ -56,7 +52,7 @@ final class Settings
 
     public static function getDefaultLength(): string
     {
-        return  self::getLengths()['default'] ?? self::getLengths()[0] ?? 'medium';
+        return self::getLengths()['default'] ?? self::getLengths()[0] ?? 'medium';
     }
 
     /**
@@ -67,17 +63,11 @@ final class Settings
         return self::$creativities;
     }
 
-    /**
-     * @return string
-     */
     public static function getDefaultCreativity(): string
     {
-        return  self::getCreativities()['default'] ?? self::getCreativities()[0] ?? 'medium';
+        return self::getCreativities()['default'] ?? self::getCreativities()[0] ?? 'medium';
     }
 
-    /**
-     * @param string $provider
-     */
     public static function setProvider(string $provider): void
     {
         switch ($provider) {
@@ -119,14 +109,12 @@ final class Settings
      */
     public static function setStyles(array $styles): void
     {
-
         self::$styles = $styles;
-
     }
 
     public static function getDefaultStyle(): string
     {
-        return  self::getStyles()['default'] ?? self::getStyles()[0] ?? 'casual';
+        return self::getStyles()['default'] ?? self::getStyles()[0] ?? 'casual';
     }
 
     /**
@@ -139,14 +127,13 @@ final class Settings
 
     public static function getDefaultLanguage(): string
     {
-        return  self::getLanguages()['default'] ?? self::getLanguages()[0] ?? 'Bosnian';
+        return self::getLanguages()['default'] ?? self::getLanguages()[0] ?? 'Bosnian';
     }
 
     public static function getDefaultTimeout(): int
     {
         return self::$default_timeout;
     }
-
 
     public static function setDefaultTimeout(int $default_timeout): void
     {
@@ -157,7 +144,6 @@ final class Settings
     {
         return self::$default_input_chars;
     }
-
 
     public static function setDefaultInputChars(int $default_input_chars): void
     {

@@ -32,7 +32,7 @@ class RequestData
         $this->language = $language ?? Settings::getDefaultLanguage();
     }
 
-    public static function make(string $recipientName, string $senderName, string $instruction, string $style = null, string $length = null, string $creativity = null, string $language = null): self
+    public static function make(string $recipientName, string $senderName, string $instruction, ?string $style = null, ?string $length = null, ?string $creativity = null, ?string $language = null): self
     {
         return new self($recipientName, $senderName, $instruction, $style, $length, $creativity, $language);
     }
