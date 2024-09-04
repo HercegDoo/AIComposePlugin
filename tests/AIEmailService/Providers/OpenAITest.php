@@ -66,7 +66,7 @@ final class OpenAITest extends TestCase
 
         $openAI = new OpenAI($mockCurl);
 
-        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'TestInstrukcija');
+        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
         $settingsMock = $this->createMock(Settings::class);
 
         $settingsMock->providerOpenAI = [
@@ -94,7 +94,7 @@ final class OpenAITest extends TestCase
         $openAI = new OpenAI($mockCurl);
         ReflectionHelper::setPrivateProperty($openAI, 'creativityMap', [null, null, null]);
 
-        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'TestInstrukcija');
+        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
         $settingsMock = $this->createMock(Settings::class);
 
         $settingsMock->providerOpenAI = [
@@ -119,7 +119,7 @@ final class OpenAITest extends TestCase
 
         $openAI = new OpenAI($mockCurl);
 
-        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'TestInstrukcija');
+        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
         $settingsMock = $this->createMock(Settings::class);
 
         $openAI->setError('dummyError');
@@ -138,7 +138,7 @@ final class OpenAITest extends TestCase
 
         $openAI = new OpenAI($mockCurl);
 
-        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'TestInstrukcija');
+        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
         $settingsMock = $this->createMock(Settings::class);
 
         $settingsMock->providerOpenAI = [
@@ -157,7 +157,7 @@ final class OpenAITest extends TestCase
         $OpenAI = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAI, 'prompt');
 
-        $requestData = RequestData::createRequestData('Meho', 'Muhamed', 'TestInstrukcija');
+        $requestData = RequestData::make('Meho', 'Muhamed', 'TestInstrukcija');
 
         $result = $privateMethodInvoker($requestData);
 
@@ -174,7 +174,7 @@ final class OpenAITest extends TestCase
         $OpenAi = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAi, 'prompt');
 
-        $requestData = RequestData::createRequestData('Ime1', 'Ime2', 'Sastavi Mail', 'professional', 'long', 'low', 'Spanish');
+        $requestData = RequestData::make('Ime1', 'Ime2', 'Sastavi Mail', 'professional', 'long', 'low', 'Spanish');
 
         $result = $privateMethodInvoker($requestData);
 
@@ -191,7 +191,7 @@ final class OpenAITest extends TestCase
         $OpenAi = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAi, 'prompt');
 
-        $requestData = RequestData::createRequestData('Ime1', 'Ime2', 'SastaviMail');
+        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
         $requestData->setFixText('dummyprevgenemail', 'fixThisExample');
         $requestData->setPreviousConversation('prevConvo');
 
@@ -212,7 +212,7 @@ final class OpenAITest extends TestCase
         $OpenAi = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAi, 'prompt');
 
-        $requestData = RequestData::createRequestData('Ime1', 'Ime2', 'SastaviMail', 'professional', 'long', 'low', 'Spanish');
+        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail', 'professional', 'long', 'low', 'Spanish');
         $requestData->setFixText('dummyprevgenemail', 'fixThisExample');
         $requestData->setPreviousConversation('prevConvo');
 
@@ -230,7 +230,7 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestSetters()
     {
-        $requestData = RequestData::createRequestData('Ime1', 'Ime2', 'SastaviMail');
+        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $curlMock = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['setHeader', 'setOpts'])
@@ -269,7 +269,7 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestPostMethod()
     {
-        $requestData = RequestData::createRequestData('Ime1', 'Ime2', 'SastaviMail');
+        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $curlMock = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['post'])
@@ -314,7 +314,7 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestUnathorized()
     {
-        $requestData = RequestData::createRequestData('Ime1', 'Ime2', 'SastaviMail');
+        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $OpenAi = new OpenAI();
         $settings = Settings::getSettingsInstance($OpenAi);
@@ -331,7 +331,7 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestNotFound()
     {
-        $requestData = RequestData::createRequestData('Ime1', 'Ime2', 'SastaviMail');
+        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $OpenAi = new OpenAI();
         $settings = Settings::getSettingsInstance($OpenAi);
@@ -355,7 +355,7 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestBadRequest()
     {
-        $requestData = RequestData::createRequestData('Ime1', 'Ime2', 'SastaviMail');
+        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $OpenAi = new OpenAI();
         $settings = Settings::getSettingsInstance($OpenAi);
@@ -379,7 +379,7 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestThrowable()
     {
-        $requestData = RequestData::createRequestData('Ime1', 'Ime2', 'SastaviMail');
+        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $mockCurl = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['post'])

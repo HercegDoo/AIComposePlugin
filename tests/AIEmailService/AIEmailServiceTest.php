@@ -40,7 +40,7 @@ final class AIEmailServiceTest extends TestCase
         $dummyProvider = new DummyProvider();
         $settings = Settings::getSettingsInstance($dummyProvider);
         $aiEmailService = AIEmailService::createAIEmailService($settings);
-        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
+        $requestData = RequestData::make('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
 
         self::assertInstanceOf(Respond::class, $aiEmailService->generateEmail($requestData, $settings));
     }
@@ -59,7 +59,7 @@ final class AIEmailServiceTest extends TestCase
 
         $settings = Settings::getSettingsInstance($dummyProviderMock);
         $aiEmailService = AIEmailService::createAIEmailService($settings);
-        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
+        $requestData = RequestData::make('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('General: Invalid argument');
@@ -80,7 +80,7 @@ final class AIEmailServiceTest extends TestCase
 
         $settings = Settings::getSettingsInstance($dummyProviderMock);
         $aiEmailService = AIEmailService::createAIEmailService($settings);
-        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
+        $requestData = RequestData::make('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('Provider Exception');
@@ -103,7 +103,7 @@ final class AIEmailServiceTest extends TestCase
 
         $aiEmailService = AIEmailService::createAIEmailService($settings);
 
-        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
+        $requestData = RequestData::make('Meho', 'Muhi', 'InstrukcijaDummy', null, null, null, null);
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('General: Invalid argument');
@@ -126,7 +126,7 @@ final class AIEmailServiceTest extends TestCase
 
         $aiEmailService = AIEmailService::createAIEmailService($settings);
 
-        $requestData = RequestData::createRequestData('Meho', 'Muhi', 'Instrukcija', null, null, null, null);
+        $requestData = RequestData::make('Meho', 'Muhi', 'Instrukcija', null, null, null, null);
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('Provider Exception');

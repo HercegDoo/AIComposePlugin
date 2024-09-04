@@ -16,5 +16,5 @@ interface InterfaceProvider
     /**
      * @throws ProviderException
      */
-    public function generateEmail(RequestData $requestData, Settings $settings): Respond;
+    public function generateEmail(RequestData $requestData): Respond;
 }

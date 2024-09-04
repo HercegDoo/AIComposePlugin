@@ -25,14 +25,14 @@ class RequestData
     {
         $this->recipientName = $recipientName;
         $this->senderName = $senderName;
-        $this->style = $style ?? Settings::$STYLE_CASUAL;
-        $this->length = $length ?? Settings::$LENGTH_MEDIUM;
-        $this->creativity = $creativity ?? Settings::$CREATIVITY_MEDIUM;
-        $this->language = $language ?? Settings::$LANGUAGE_BOSNIAN;
         $this->instruction = $instruction;
+        $this->style = $style ?? Settings::getDefaultStyle();
+        $this->length = $length ?? Settings::getDefaultLength();
+        $this->creativity = $creativity ?? Settings::getDefaultCreativity();
+        $this->language = $language ?? Settings::getDefaultLanguage();
     }
 
-    public static function createRequestData(string $recipientName, string $senderName, string $instruction, ?string $style, ?string $length, ?string $creativity, ?string $language): self
+    public static function make(string $recipientName, string $senderName, string $instruction, string $style = null, string $length = null, string $creativity = null, string $language = null): self
     {
         return new self($recipientName, $senderName, $instruction, $style, $length, $creativity, $language);
     }

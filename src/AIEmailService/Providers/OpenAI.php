@@ -21,7 +21,9 @@ final class OpenAI extends AbstractProvider
     /**
      * @var array<int|string, float>
      */
-    private array $creativityMap = [];
+    private array $creativityMap = [
+
+    ];
 
     /**
      * @param Curl $curl
@@ -29,9 +31,14 @@ final class OpenAI extends AbstractProvider
     public function __construct($curl = null)
     {
         $this->curl = $curl ?: new Curl();
-        $this->creativityMap = [Settings::$CREATIVITY_LOW => 0.2,
-            Settings::$CREATIVITY_MEDIUM => 0.5,
-            Settings::$CREATIVITY_HIGH => 0.8, ];
+        $creativities = Settings::getCreativities();
+        if (!empty($creativities) && !in_array(null, $creativities, true)) {
+            $this->creativityMap = [
+                $creativities[0] => 0.2,
+                $creativities['default'] => 0.5,
+                $creativities[1] => 0.8
+            ];
+        }
     }
 
     public function getProviderName(): string
@@ -42,13 +49,17 @@ final class OpenAI extends AbstractProvider
     /**
      * @throws ProviderException
      */
-    public function generateEmail(RequestData $requestData, Settings $settings): Respond
+    public function generateEmail(RequestData $requestData): Respond
     {
-        $this->apiKey = $settings->providerOpenAI['apiKey'];
-        $this->model = $settings->providerOpenAI['model'];
-        $this->maxTokens = $settings::$default_max_tokens;
+        $this->apiKey = Settings::getProviderConfig()['api_key'];
+        $this->model = Settings::getProviderConfig()['model'];
+        $this->maxTokens = Settings::getDefaultMaxTokens();
 
-        $this->creativity = $this->creativityMap[$requestData->getCreativity()] ?? 0.5;
+        $creativityKey = $requestData->getCreativity();
+        if (!isset($this->creativityMap[$creativityKey])) {
+            $creativityKey = Settings::getDefaultCreativity();
+        }
+        $this->creativity = $this->creativityMap[$creativityKey] ?? 0.5;
         $prompt = $this->prompt($requestData);
 
         $respond = $this->sendRequest($prompt);

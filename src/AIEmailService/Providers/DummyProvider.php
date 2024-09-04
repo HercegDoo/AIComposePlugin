@@ -15,7 +15,7 @@ class DummyProvider implements InterfaceProvider
         return 'Dummy Provider';
     }
 
-    public function generateEmail(RequestData $requestData, Settings $settings): Respond
+    public function generateEmail(RequestData $requestData): Respond
     {
         return (new Respond('This is a dummy response'))->setSubject('Dummy Subject')->setBody("
             This is a dummy response to your request.
