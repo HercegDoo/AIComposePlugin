@@ -28,7 +28,7 @@ class RequestData
         $this->instruction = $instruction;
         $this->style = $style ?? Settings::getDefaultStyle();
         $this->length = $length ?? Settings::getDefaultLength();
-        $this->creativity = $creativity ?? Settings::getDefaultCreativity();
+        $this->creativity = $creativity ?? Settings::getCreativity();
         $this->language = $language ?? Settings::getDefaultLanguage();
     }
 

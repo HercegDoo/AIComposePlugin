@@ -45,11 +45,11 @@ final class OpenAI extends AbstractProvider
      */
     public function generateEmail(RequestData $requestData): Respond
     {
-        $this->apiKey = Settings::getProviderConfig()['api_key'];
+        $this->apiKey = Settings::getProviderConfig()['apiKey'];
         $this->model = Settings::getProviderConfig()['model'];
         $this->maxTokens = Settings::getDefaultMaxTokens();
 
-        $this->creativity = $this->creativityMap[Settings::getDefaultCreativity()];
+        $this->creativity = $this->creativityMap[Settings::getCreativity()];
         $prompt = $this->prompt($requestData);
 
         $respond = $this->sendRequest($prompt);

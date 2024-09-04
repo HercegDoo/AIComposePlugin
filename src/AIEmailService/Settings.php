@@ -9,9 +9,9 @@ use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
 
 final class Settings
 {
-    private static int $default_timeout;
-    private static int $default_input_chars;
-    private static int $default_max_tokens;
+    private static int $defaultTimeout;
+    private static int $defaultInputChars;
+    private static int $defaultMaxTokens;
 
     /** @var string[] */
     private static array $creativities = [
@@ -25,7 +25,7 @@ final class Settings
     /** @var string[] */
     private static array $lengths;
 
-    private static string $default_creativity = 'medium';
+    private static string $creativity = 'medium';
     /** @var string[] */
     private static array $languages;
 
@@ -70,16 +70,16 @@ final class Settings
         return self::getLengths()['default'] ?? self::getLengths()[0] ?? 'medium';
     }
 
-    public static function getDefaultCreativity(): string
+    public static function getCreativity(): string
     {
-        return self::$default_creativity;
+        return self::$creativity;
     }
 
-    public static function setDefaultCreativity(string $creativity): void
+    public static function setCreativity(string $creativity): void
     {
         $creativities = self::getCreativities();
         if (\in_array($creativity, $creativities, true)) {
-            self::$default_creativity = $creativity;
+            self::$creativity = $creativity;
         } else {
             throw new \InvalidArgumentException('Invalid creativity value provided.  Valid values are: ' . implode(', ', $creativities));
         }
@@ -88,7 +88,7 @@ final class Settings
     public static function setProvider(string $provider): void
     {
         switch ($provider) {
-            case 'openai':
+            case 'OpenAI':
                 self::$provider = new OpenAI();
                 break;
 
@@ -141,35 +141,35 @@ final class Settings
 
     public static function getDefaultTimeout(): int
     {
-        return self::$default_timeout;
+        return self::$defaultTimeout;
     }
 
-    public static function setDefaultTimeout(int $default_timeout): void
+    public static function setDefaultTimeout(int $defaultTimeout): void
     {
-        self::$default_timeout = $default_timeout;
+        self::$defaultTimeout = $defaultTimeout;
     }
 
     public static function getDefaultInputChars(): int
     {
-        return self::$default_input_chars;
+        return self::$defaultInputChars;
     }
 
-    public static function setDefaultInputChars(int $default_input_chars): void
+    public static function setDefaultInputChars(int $defaultInputChars): void
     {
-        self::$default_input_chars = $default_input_chars;
+        self::$defaultInputChars = $defaultInputChars;
     }
 
     public static function getDefaultMaxTokens(): int
     {
-        return self::$default_max_tokens;
+        return self::$defaultMaxTokens;
     }
 
     /**
-     * @param int $default_max_tokens
+     * @param int $defaultMaxTokens
      */
-    public static function setDefaultMaxTokens($default_max_tokens): void
+    public static function setDefaultMaxTokens($defaultMaxTokens): void
     {
-        self::$default_max_tokens = $default_max_tokens;
+        self::$defaultMaxTokens = $defaultMaxTokens;
     }
 
     /**
