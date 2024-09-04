@@ -82,6 +82,11 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
 
         Settings::setLanguages($languages);
 
+        /** @var string[] $creativities */
+        $creativities = $rcmail->config->get('ai_compose_lengths');
+        $default_creativity = $creativities['default'];
+        Settings::setDefaultCreativity($default_creativity);
+
         /** @var string $provider */
         $provider = $rcmail->config->get('ai_compose_provider', 'openai');
 

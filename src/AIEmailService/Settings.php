@@ -14,6 +14,13 @@ final class Settings
     private static int $default_max_tokens;
 
     /** @var string[] */
+    private static array $creativities = [
+        'low',
+        'medium',
+        'high',
+    ];
+
+    /** @var string[] */
     private static array $styles;
     /** @var string[] */
     private static array $lengths;
@@ -50,6 +57,14 @@ final class Settings
         return self::$lengths;
     }
 
+    /**
+     * @return array<string>
+     */
+    public static function getCreativities(): array
+    {
+        return self::$creativities;
+    }
+
     public static function getDefaultLength(): string
     {
         return self::getLengths()['default'] ?? self::getLengths()[0] ?? 'medium';
@@ -60,12 +75,13 @@ final class Settings
         return self::$default_creativity ?? 'medium';
     }
 
-    public static function setDefaultCreativity(?string $creativity = null): void
+    public static function setDefaultCreativity(string $creativity): void
     {
-        if ($creativity === 'low' || $creativity === 'medium' || $creativity === 'high') {
+        $creativities = self::getCreativities();
+        if ($creativity === $creativities[0] || $creativity === $creativity[1] || $creativity === $creativity[2]) {
             self::$default_creativity = $creativity;
         } else {
-            self::$default_creativity = 'medium';
+            throw new \InvalidArgumentException('Invalid creativity value provided.');
         }
     }
 
