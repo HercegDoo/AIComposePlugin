@@ -21,22 +21,12 @@ final class OpenAI extends AbstractProvider
     /**
      * @var array<int|string, float>
      */
-    private array $creativityMap = [];
+    private array $creativityMap = [
+        'low' => 0.2,
+        'medium' => 0.5,
+        'high' => 0.8
+    ];
 
-    private function setCreativityMap(string $creativity):float{
-        switch($creativity){
-            case 'low':
-                $this->creativityMap[$creativity] = 0.2;
-                break;
-            case 'medium':
-                $this->creativityMap[$creativity] = 0.5;
-                break;
-            case 'high':
-                $this->creativityMap[$creativity] = 0.8;
-                break;
-        }
-        return $this->creativityMap[$creativity];
-    }
 
     /**
      * @param Curl $curl
@@ -60,7 +50,7 @@ final class OpenAI extends AbstractProvider
         $this->model = Settings::getProviderConfig()['model'];
         $this->maxTokens = Settings::getDefaultMaxTokens();
 
-        $this->creativity = $this->setCreativityMap(Settings::getDefaultCreativity());
+        $this->creativity = $this->creativityMap[Settings::getDefaultCreativity()];
         $prompt = $this->prompt($requestData);
 
         $respond = $this->sendRequest($prompt);
