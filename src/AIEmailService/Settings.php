@@ -16,7 +16,7 @@ final class Settings
     /** @var string[] */
     private static array $creativities = [
         'low',
-        'medium',
+        'default' => 'medium',
         'high',
     ];
 
@@ -72,16 +72,16 @@ final class Settings
 
     public static function getDefaultCreativity(): string
     {
-        return self::$default_creativity ?? 'medium';
+        return self::$default_creativity;
     }
 
     public static function setDefaultCreativity(string $creativity): void
     {
         $creativities = self::getCreativities();
-        if ($creativity === $creativities[0] || $creativity === $creativity[1] || $creativity === $creativity[2]) {
+        if (\in_array($creativity, $creativities, true)) {
             self::$default_creativity = $creativity;
         } else {
-            throw new \InvalidArgumentException('Invalid creativity value provided.');
+            throw new \InvalidArgumentException('Invalid creativity value provided.  Valid values are: ' . implode(', ', $creativities));
         }
     }
 
