@@ -2,10 +2,10 @@
 
 namespace HercegDoo\AIComposePlugin;
 
+use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
+use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use HercegDoo\AIComposePlugin\Tasks\AbstractTask;
-use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
-use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
 
 abstract class AbstractAIComposePlugin extends \rcube_plugin
 {
@@ -15,12 +15,14 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
     {
         $this->initSettings();
 
-        $request = RequestData::make('muhi', 'meho', 'dobro jutro');
-        Settings::setCreativity('low');
-        $def_cr = Settings::getCreativity();
-        $request->setCreativity($def_cr);
-        $email = AIEmail::generate($request);
-        print_r($email->getBody());
+        //        $request = RequestData::make('muhi', 'meho', 'dobro jutro');
+        //        Settings::setCreativity('low');
+        //        $def_cr = Settings::getCreativity();
+        //        $request->setCreativity($def_cr);
+        //        $email = AIEmail::generate($request);
+        //        print_r($email->getBody());
+
+        $this->add_hook('startup', [$this, 'startup']);
         $task = $this->api->task;
 
         if (\is_string($task)) {
@@ -33,6 +35,13 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
                 $taskHandler->init();
             }
         }
+    }
+
+    public function startup(): void
+    {
+        $rcmail = \rcmail::get_instance();
+        $settings = [Settings::getLanguages(), Settings::getLengths(), Settings::getCreativities(), Settings::getStyles()];
+        $rcmail->output->set_env('aiPluginDropdownOptions', $settings);
     }
 
     private function initSettings(): void
