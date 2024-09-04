@@ -1,5 +1,48 @@
+
+const {
+    languages, styles, creativities, lengths,
+    defaultLanguage, defaultCreativity, defaultLength, defaultStyle
+} = rcmail.env.aiPluginOptions;
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function createPropbox(id, label, xinfoText, options, defaultValue) {
+    const propbox = document.createElement("div");
+    propbox.className = "propbox";
+
+    const select = document.createElement("select");
+    select.id = id;
+    select.className = "form-control";
+
+    options.forEach(option => {
+        const optionElement = document.createElement("option");
+        optionElement.value = option;
+        if(option === defaultValue){optionElement.setAttribute('selected', 'true');}
+        optionElement.textContent = capitalizeFirstLetter(option);
+        select.appendChild(optionElement);
+
+    });
+
+    propbox.innerHTML = `
+        <div>
+            <label for="${id}">
+                <span class="regular-size">${label}</span>
+            </label>
+            <span class="xinfo"><div>${xinfoText}</div></span>
+        </div>
+    `;
+
+    propbox.appendChild(select);
+
+    return propbox;
+}
+
+
 export function createRecipientPropbox() {
     const recipientPropbox = document.createElement("div");
+
     recipientPropbox.className = "propbox";
     recipientPropbox.innerHTML = `<div>
       <label for="aic-to">
@@ -27,79 +70,20 @@ export function createSenderPropbox() {
 }
 
 export function createStylePropbox() {
-    const stylePropbox = document.createElement("div");
-    stylePropbox.className = "propbox";
-    stylePropbox.innerHTML = `<div>
-      <label for="aic-style">
-       <span class="regular-size">Style</span>
-       </label>
-     <span class="xinfo"><div>The preferred writing style for the new email.</div></span>
-  </div>
-  <select id="aic-style" class="form-control">
-      <option value="assertive" >Assertive</option>
-      <option value="casual" >Casual</option>
-      <option value="enthusiastic" >Enthusiastic</option>
-      <option value="funny" >Funny</option>
-      <option value="informational" >Informational</option>
-      <option value="persuasive" >Persuasive</option>
-  </select>`;
-
-    return stylePropbox;
+    return createPropbox("aic-style", "Style", "The preferred writing style for the new email.", styles, defaultStyle);
 }
 
 export function createLengthPropbox() {
-    const lengthPropbox = document.createElement("div");
-    lengthPropbox.className = "propbox";
-    lengthPropbox.innerHTML = `<div>
-      <label for="aic-length">
-      <span class="regular-size">Length</span>
-      </label>
-    <span class="xinfo"><div>The desired length of the new email.</div></span> 
-  </div>
-  <select id="aic-length" class="form-control">
-      <option value="short">Short</option>
-      <option value="medium">Medium</option>
-      <option value="long">Long</option>
-  </select>`;
-
-    return lengthPropbox;
+    return createPropbox("aic-length", "Length", "The desired length of the new email", lengths, defaultLength);
 }
 
-export function createCreativityPropbox() {
-    const creativityPropbox = document.createElement("div");
-    creativityPropbox.className = "propbox";
-    creativityPropbox.innerHTML = `<div>
-      <label for="aic-creativity"><span class="regular-size">Creativity</span>
-      </label>
-     <span class="xinfo"><div>The level of creativity you'd like in the new email.</div></span> 
-  </div>
-  <select id="aic-creativity" class="form-control">
-      <option value="low">Low</option>
-      <option value="medium">Medium</option>
-      <option value="high" >High</option>
-  </select>`;
 
-    return creativityPropbox;
+export function createCreativityPropbox() {
+    return createPropbox("aic-creativity", "Creativity", "The level of creativity you'd like in the new email.", creativities, defaultCreativity);
 }
 
 export function createLanguagePropbox() {
-    const languagePropbox = document.createElement("div");
-    languagePropbox.className = "propbox";
-    languagePropbox.innerHTML = `<div>
-      <label for="aic-language">
-      <span class="regular-size">Language</span>
-      </label>
-      <span class="xinfo"><div>The language in which the new email will be written.</div></span>
-  </div>
-  <select id="aic-language" class="form-control">
-      <option value="en" >English</option>
-      <option value="es" >Spanish</option>
-      <option value="fr" >French</option>
-      <option value="de" >German</option>
-      <option value="it" >Italian</option>
-      <option value="ja" >Japanese</option>
-      <option value="zh" >Chinese</option>
-  </select>`;
-
-    return languagePropbox;
+    return createPropbox("aic-language", "Language", "The language in which the new email will be written.", languages, defaultLanguage);
 }
+
+
