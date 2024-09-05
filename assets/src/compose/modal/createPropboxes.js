@@ -1,31 +1,37 @@
-//test komentar
 const {
-    languages, styles, creativities, lengths,
-    defaultLanguage, defaultCreativity, defaultLength, defaultStyle
+  languages,
+  styles,
+  creativities,
+  lengths,
+  defaultLanguage,
+  defaultCreativity,
+  defaultLength,
+  defaultStyle,
 } = rcmail.env.aiPluginOptions;
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function createPropbox(id, label, xinfoText, options, defaultValue) {
-    const propbox = document.createElement("div");
-    propbox.className = "propbox";
+  const propbox = document.createElement("div");
+  propbox.className = "propbox";
 
-    const select = document.createElement("select");
-    select.id = id;
-    select.className = "form-control";
+  const select = document.createElement("select");
+  select.id = id;
+  select.className = "form-control";
 
-    options.forEach(option => {
-        const optionElement = document.createElement("option");
-        optionElement.value = option;
-        if(option === defaultValue){optionElement.setAttribute('selected', 'true');}
-        optionElement.textContent = capitalizeFirstLetter(option);
-        select.appendChild(optionElement);
+  options.forEach((option) => {
+    const optionElement = document.createElement("option");
+    optionElement.value = option;
+    if (option === defaultValue) {
+      optionElement.setAttribute("selected", "selected");
+    }
+    optionElement.textContent = capitalizeFirstLetter(option);
+    select.appendChild(optionElement);
+  });
 
-    });
-
-    propbox.innerHTML = `
+  propbox.innerHTML = `
         <div>
             <label for="${id}">
                 <span class="regular-size">${label}</span>
@@ -34,17 +40,16 @@ function createPropbox(id, label, xinfoText, options, defaultValue) {
         </div>
     `;
 
-    propbox.appendChild(select);
+  propbox.appendChild(select);
 
-    return propbox;
+  return propbox;
 }
 
-
 export function createRecipientPropbox() {
-    const recipientPropbox = document.createElement("div");
+  const recipientPropbox = document.createElement("div");
 
-    recipientPropbox.className = "propbox";
-    recipientPropbox.innerHTML = `<div>
+  recipientPropbox.className = "propbox";
+  recipientPropbox.innerHTML = `<div>
       <label for="aic-to">
           <span class="regular-size">Recipient's name</span>
       </label>
@@ -52,13 +57,13 @@ export function createRecipientPropbox() {
   </div>
   <input type="text" class="form-control">`;
 
-    return recipientPropbox;
+  return recipientPropbox;
 }
 
 export function createSenderPropbox() {
-    const senderPropbox = document.createElement("div");
-    senderPropbox.className = "propbox";
-    senderPropbox.innerHTML = `<div>
+  const senderPropbox = document.createElement("div");
+  senderPropbox.className = "propbox";
+  senderPropbox.innerHTML = `<div>
       <label for="aic-from">
           <span class="regular-size">Sender's name</span>
       </label>
@@ -66,24 +71,45 @@ export function createSenderPropbox() {
   </div>
   <input type="text" class="form-control">`;
 
-    return senderPropbox;
+  return senderPropbox;
 }
 
 export function createStylePropbox() {
-    return createPropbox("aic-style", "Style", "The preferred writing style for the new email.", styles, defaultStyle);
+  return createPropbox(
+    "aic-style",
+    "Style",
+    "The preferred writing style for the new email.",
+    styles,
+    defaultStyle
+  );
 }
 
 export function createLengthPropbox() {
-    return createPropbox("aic-length", "Length", "The desired length of the new email", lengths, defaultLength);
+  return createPropbox(
+    "aic-length",
+    "Length",
+    "The desired length of the new email",
+    lengths,
+    defaultLength
+  );
 }
 
-
 export function createCreativityPropbox() {
-    return createPropbox("aic-creativity", "Creativity", "The level of creativity you'd like in the new email.", creativities, defaultCreativity);
+  return createPropbox(
+    "aic-creativity",
+    "Creativity",
+    "The level of creativity you'd like in the new email.",
+    creativities,
+    defaultCreativity
+  );
 }
 
 export function createLanguagePropbox() {
-    return createPropbox("aic-language", "Language", "The language in which the new email will be written.", languages, defaultLanguage);
+  return createPropbox(
+    "aic-language",
+    "Language",
+    "The language in which the new email will be written.",
+    languages,
+    defaultLanguage
+  );
 }
-
-

@@ -32,14 +32,14 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
     {
         $rcmail = \rcmail::get_instance();
         $settings = [
-            'languages'=>array_values(Settings::getLanguages()),
+            'languages' => array_values(Settings::getLanguages()),
             'defaultLanguage' => Settings::getDefaultLanguage(),
             'lengths' => array_values(Settings::getLengths()),
             'defaultLength' => Settings::getDefaultLength(),
             'creativities' => array_values(Settings::getCreativities()),
             'defaultCreativity' => Settings::getCreativity(),
             'styles' => array_values(Settings::getStyles()),
-            'defaultStyle' =>Settings::getDefaultStyle()
+            'defaultStyle' => Settings::getDefaultStyle(),
         ];
         $rcmail->output->set_env('aiPluginOptions', $settings);
     }

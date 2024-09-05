@@ -30,14 +30,17 @@
     "@fortawesome/fontawesome-free": "^6.6.0"
   },
   "prettier": {
-    "semi": true,
-    "trailingComma": "es5",
-    "singleQuote": true,
     "printWidth": 80,
     "tabWidth": 2,
     "useTabs": false,
+    "semi": true,
+    "singleQuote": false,
+    "trailingComma": "es5",
     "bracketSpacing": true,
+    "jsxBracketSameLine": false,
     "arrowParens": "always",
+    "proseWrap": "never",
+    "htmlWhitespaceSensitivity": "ignore",
     "endOfLine": "lf"
   }
 }
