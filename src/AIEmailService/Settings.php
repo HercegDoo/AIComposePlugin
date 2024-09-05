@@ -164,10 +164,7 @@ final class Settings
         return self::$defaultMaxTokens;
     }
 
-    /**
-     * @param int $defaultMaxTokens
-     */
-    public static function setDefaultMaxTokens($defaultMaxTokens): void
+    public static function setDefaultMaxTokens(int $defaultMaxTokens): void
     {
         self::$defaultMaxTokens = $defaultMaxTokens;
     }

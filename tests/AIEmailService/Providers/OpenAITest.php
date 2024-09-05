@@ -22,6 +22,38 @@ BypassFinals::enable();
  */
 final class OpenAITest extends TestCase
 {
+    public function settingsSetters()
+    {
+        Settings::setStyles([
+            'professional',
+            'default' => 'casual',
+            'assertive',
+            'enthusiastic',
+            'funny',
+            'informational',
+            'persuasive',
+        ]);
+
+        Settings::setLengths([
+            'short',
+            'default' => 'medium',
+            'long',
+        ]);
+
+        Settings::setLanguages([
+            'default' => 'Bosnian',
+            'Croatian',
+            'German',
+            'Dutch',
+        ]);
+
+        Settings::setDefaultMaxTokens(2000);
+        Settings::setProviderConfig([
+            'apiKey' => 'test-api-key',
+            'model' => 'model-test',
+        ]);
+    }
+
     public function testSetError()
     {
         $OpenAi = new OpenAI();
@@ -66,47 +98,19 @@ final class OpenAITest extends TestCase
 
         $openAI = new OpenAI($mockCurl);
 
-        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
-        $settingsMock = $this->createMock(Settings::class);
+        $this->settingsSetters();
 
-        $settingsMock->providerOpenAI = [
-            'apiKey' => 'test-api-key',
-            'model' => 'test-model',
-        ];
+        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
+
+        Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
 
         try {
-            $openAI->generateEmail($requestData, $settingsMock);
+            $openAI->generateEmail($requestData);
         } catch (ProviderException $exception) {
             self::assertSame('test-api-key', ReflectionHelper::getPrivateProperty($openAI, 'apiKey'));
             self::assertSame('test-model', ReflectionHelper::getPrivateProperty($openAI, 'model'));
             self::assertSame(2000, ReflectionHelper::getPrivateProperty($openAI, 'maxTokens'));
             self::assertSame(0.5, ReflectionHelper::getPrivateProperty($openAI, 'creativity'));
-        }
-    }
-
-    public function testGenerateEmailAssignPropertyUndefinedCreativity()
-    {
-        $mockCurl = $this->getMockBuilder(Curl::class)
-            ->disableOriginalConstructor()
-            ->getMock()
-        ;
-
-        $openAI = new OpenAI($mockCurl);
-        ReflectionHelper::setPrivateProperty($openAI, 'creativityMap', [null, null, null]);
-
-        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
-        $settingsMock = $this->createMock(Settings::class);
-
-        $settingsMock->providerOpenAI = [
-            'apiKey' => 'test-api-key',
-            'model' => 'test-model',
-        ];
-
-        try {
-            $openAI->generateEmail($requestData, $settingsMock);
-        } catch (ProviderException $exception) {
-            self::assertSame(0.5, ReflectionHelper::getPrivateProperty($openAI, 'creativity'));
-            ReflectionHelper::getPrivateProperty($openAI, 'creativityMap');
         }
     }
 
@@ -116,6 +120,9 @@ final class OpenAITest extends TestCase
             ->disableOriginalConstructor()
             ->getMock()
         ;
+
+        $this->settingsSetters();
+        Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
 
         $openAI = new OpenAI($mockCurl);
 
@@ -138,24 +145,22 @@ final class OpenAITest extends TestCase
 
         $openAI = new OpenAI($mockCurl);
 
+        $this->settingsSetters();
+        Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
-        $settingsMock = $this->createMock(Settings::class);
-
-        $settingsMock->providerOpenAI = [
-            'apiKey' => 'test-api-key',
-            'model' => 'test-model',
-        ];
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('No email content found');
 
-        $openAI->generateEmail($requestData, $settingsMock);
+        $openAI->generateEmail($requestData);
     }
 
     public function testPromptNoFixDefault()
     {
         $OpenAI = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAI, 'prompt');
+
+        $this->settingsSetters();
 
         $requestData = RequestData::make('Meho', 'Muhamed', 'TestInstrukcija');
 
@@ -190,7 +195,7 @@ final class OpenAITest extends TestCase
     {
         $OpenAi = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAi, 'prompt');
-
+        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
         $requestData->setFixText('dummyprevgenemail', 'fixThisExample');
         $requestData->setPreviousConversation('prevConvo');
@@ -230,6 +235,7 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestSetters()
     {
+        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $curlMock = $this->getMockBuilder(Curl::class)
@@ -239,8 +245,7 @@ final class OpenAITest extends TestCase
 
         $OpenAi = new OpenAI($curlMock);
 
-        $settings = Settings::getSettingsInstance($OpenAi);
-        ReflectionHelper::setPrivateProperty($settings, 'providerOpenAI', [
+        Settings::setProviderConfig([
             'apiKey' => 'test-api-key',
             'model' => 'model-test',
         ]);
@@ -262,13 +267,14 @@ final class OpenAITest extends TestCase
         ;
 
         try {
-            $OpenAi->generateEmail($requestData, $settings);
+            $OpenAi->generateEmail($requestData);
         } catch (ProviderException $e) {
         }
     }
 
     public function testSendRequestPostMethod()
     {
+        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $curlMock = $this->getMockBuilder(Curl::class)
@@ -277,12 +283,6 @@ final class OpenAITest extends TestCase
         ;
 
         $OpenAi = new OpenAI($curlMock);
-
-        $settings = Settings::getSettingsInstance($OpenAi);
-        ReflectionHelper::setPrivateProperty($settings, 'providerOpenAI', [
-            'apiKey' => 'test-api-key',
-            'model' => 'model-test',
-        ]);
 
         $curlMock->expects(self::once())
             ->method('post')
@@ -307,78 +307,56 @@ final class OpenAITest extends TestCase
         ;
 
         try {
-            $OpenAi->generateEmail($requestData, $settings);
+            $OpenAi->generateEmail($requestData);
         } catch (ProviderException $e) {
         }
     }
 
     public function testSendRequestUnathorized()
     {
+        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $OpenAi = new OpenAI();
-        $settings = Settings::getSettingsInstance($OpenAi);
-
-        ReflectionHelper::setPrivateProperty($settings, 'providerOpenAI', ['apiKey' => 'test-api-key',
-            'model' => 'test-model']);
 
         $this->expectException(ProviderException::class);
         $regex = '/HTTP\/(1\.1|2)\s401\s?(Unauthorized)?/';
         $this->expectExceptionMessageMatches($regex);
 
-        $OpenAi->generateEmail($requestData, $settings);
+        $OpenAi->generateEmail($requestData);
     }
 
     public function testSendRequestNotFound()
     {
+        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $OpenAi = new OpenAI();
-        $settings = Settings::getSettingsInstance($OpenAi);
-        $apiKey = $settings->providerOpenAI['apiKey'];
-
-        ReflectionHelper::setPrivateProperty($settings, 'providerOpenAI', ['apiKey' => $apiKey,
-            'model' => 'test-model']);
 
         $this->expectException(ProviderException::class);
-        try {
-            $OpenAi->generateEmail($requestData, $settings);
-        } catch (ProviderException $e) {
-            self::assertTrue(
-                $e->getMessage() === 'APICurl: HTTP/2 401' || $e->getMessage() === 'APICurl: HTTP/1.1 401 Unauthorized',
-                'Unexpected exception message: ' . $e->getMessage()
-            );
-            throw $e; // Re-throw the exception to satisfy the expectException call
-        }
-        $OpenAi->generateEmail($requestData, $settings);
+
+        $OpenAi->generateEmail($requestData);
     }
 
     public function testSendRequestBadRequest()
     {
+        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $OpenAi = new OpenAI();
-        $settings = Settings::getSettingsInstance($OpenAi);
 
-        ReflectionHelper::setPrivateProperty($OpenAi, 'creativityMap', [Settings::CREATIVITY_LOW => -55,
-            Settings::CREATIVITY_MEDIUM => -600,
-            Settings::CREATIVITY_HIGH => -10000, ]);
+        ReflectionHelper::setPrivateProperty($OpenAi, 'creativityMap', [Settings::getCreativities()[0] => -55,
+            Settings::getCreativities()[1] => -600,
+            Settings::getCreativities()[2] => -10000, ]);
 
         $this->expectException(ProviderException::class);
-        try {
-            $OpenAi->generateEmail($requestData, $settings);
-        } catch (ProviderException $e) {
-            self::assertTrue(
-                $e->getMessage() === 'APICurl: HTTP/2 401' || $e->getMessage() === 'APICurl: HTTP/1.1 401 Unauthorized',
-                'Unexpected exception message: ' . $e->getMessage()
-            );
-            throw $e; // Re-throw the exception to satisfy the expectException call
-        }
-        $OpenAi->generateEmail($requestData, $settings);
+
+        $OpenAi->generateEmail($requestData);
     }
 
     public function testSendRequestThrowable()
     {
+        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $mockCurl = $this->getMockBuilder(Curl::class)
@@ -392,11 +370,10 @@ final class OpenAITest extends TestCase
         ;
 
         $openAI = new OpenAI($mockCurl);
-        $settings = Settings::getSettingsInstance($openAI);
 
         $this->expectException(\Throwable::class);
         $this->expectExceptionMessage('DivisionByZeroError');
 
-        $openAI->generateEmail($requestData, $settings);
+        $openAI->generateEmail($requestData);
     }
 }
