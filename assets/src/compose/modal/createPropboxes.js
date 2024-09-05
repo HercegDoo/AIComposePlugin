@@ -1,4 +1,4 @@
-//test
+//test komentar
 const {
     languages, styles, creativities, lengths,
     defaultLanguage, defaultCreativity, defaultLength, defaultStyle
