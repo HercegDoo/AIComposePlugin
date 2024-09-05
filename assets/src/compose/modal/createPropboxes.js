@@ -1,4 +1,4 @@
-
+//test
 const {
     languages, styles, creativities, lengths,
     defaultLanguage, defaultCreativity, defaultLength, defaultStyle
