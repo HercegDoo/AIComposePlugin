@@ -12,17 +12,23 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
-
+ *
+ * @coversNothing
  */
 final class DummyProviderTest extends TestCase
 {
-    public function settingsSetters()
+    protected function setUp(): void
     {
-        Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive',]);
+        parent::setUp();
 
-        Settings::setLengths(['short', 'default' => 'medium', 'long',]);
+        Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive']);
 
-        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch',]);
+        Settings::setLengths(['short', 'default' => 'medium', 'long']);
+
+        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch']);
+
+        Settings::setDefaultMaxTokens(2000);
+        Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'model-test']);
     }
 
     public function testGetProviderNameDummy()
@@ -33,7 +39,6 @@ final class DummyProviderTest extends TestCase
 
     public function testGenerateEmailReturnDummy()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
         $dummyProvider = new DummyProvider();
         $settings = new Settings($dummyProvider);

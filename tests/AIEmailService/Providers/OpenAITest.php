@@ -7,6 +7,7 @@ namespace HercegDoo\AIComposePlugin\Tests\AIEmailService\Providers;
 use Curl\Curl;
 use DG\BypassFinals;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
+use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
 use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
@@ -17,19 +18,23 @@ BypassFinals::enable();
 
 /**
  * @internal
+ *
+ * @coversNothing
  */
 final class OpenAITest extends TestCase
 {
-    public function settingsSetters()
+    protected function setUp(): void
     {
-        Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive',]);
+        parent::setUp();
 
-        Settings::setLengths(['short', 'default' => 'medium', 'long',]);
+        Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive']);
 
-        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch',]);
+        Settings::setLengths(['short', 'default' => 'medium', 'long']);
+
+        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch']);
 
         Settings::setDefaultMaxTokens(2000);
-        Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'model-test',]);
+        Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'model-test']);
     }
 
     public function testSetError()
@@ -76,8 +81,6 @@ final class OpenAITest extends TestCase
 
         $openAI = new OpenAI($mockCurl);
 
-        $this->settingsSetters();
-
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
 
         Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
@@ -99,7 +102,6 @@ final class OpenAITest extends TestCase
             ->getMock()
         ;
 
-        $this->settingsSetters();
         Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
 
         $openAI = new OpenAI($mockCurl);
@@ -114,6 +116,33 @@ final class OpenAITest extends TestCase
         $openAI->generateEmail($requestData, $settingsMock);
     }
 
+    public function testGenerateEmailReturnType()
+    {
+        $requestData = RequestData::make('Meho', 'Muhi', 'jabuka', 'casual', 'medium', 'low', 'Bosnian');
+        $requestData->setInstruction('afdsafsd');
+
+        $curlMock = $this->createMock(Curl::class);
+        $mockResponse = new \stdClass();
+        $mockResponse->choices = [
+            (object) [
+                'message' => (object) [
+                    'role' => 'assistant',
+                    'content' => "\n\nThis is a test!",
+                ],
+                'logprobs' => null,
+                'finish_reason' => 'stop',
+                'index' => 0,
+            ],
+        ];
+
+        $curlMock->method('post')->willReturn($mockResponse);
+        $OpenAI = new OpenAI($curlMock);
+
+        $return = $OpenAI->generateEmail($requestData);
+
+        self::assertInstanceOf(Respond::class, $return);
+    }
+
     public function testGenerateEmailProviderException()
     {
         $mockCurl = $this->getMockBuilder(Curl::class)
@@ -123,7 +152,6 @@ final class OpenAITest extends TestCase
 
         $openAI = new OpenAI($mockCurl);
 
-        $this->settingsSetters();
         Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
 
@@ -137,8 +165,6 @@ final class OpenAITest extends TestCase
     {
         $OpenAI = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAI, 'prompt');
-
-        $this->settingsSetters();
 
         $requestData = RequestData::make('Meho', 'Muhamed', 'TestInstrukcija');
 
@@ -173,7 +199,7 @@ final class OpenAITest extends TestCase
     {
         $OpenAi = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAi, 'prompt');
-        $this->settingsSetters();
+
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
         $requestData->setFixText('dummyprevgenemail', 'fixThisExample');
         $requestData->setPreviousConversation('prevConvo');
@@ -213,7 +239,6 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestSetters()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $curlMock = $this->getMockBuilder(Curl::class)
@@ -252,7 +277,6 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestPostMethod()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $curlMock = $this->getMockBuilder(Curl::class)
@@ -292,7 +316,6 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestUnathorized()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $OpenAi = new OpenAI();
@@ -306,7 +329,6 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestNotFound()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $OpenAi = new OpenAI();
@@ -318,7 +340,6 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestBadRequest()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $OpenAi = new OpenAI();
@@ -334,7 +355,6 @@ final class OpenAITest extends TestCase
 
     public function testSendRequestThrowable()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
 
         $mockCurl = $this->getMockBuilder(Curl::class)

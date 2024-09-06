@@ -10,21 +10,27 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
+ *
+ * @coversNothing
  */
 final class RequestDataTest extends TestCase
 {
-    public function settingsSetters()
+    protected function setUp(): void
     {
-        Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive',]);
+        parent::setUp();
 
-        Settings::setLengths(['short', 'default' => 'medium', 'long',]);
+        Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive']);
 
-        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch',]);
+        Settings::setLengths(['short', 'default' => 'medium', 'long']);
+
+        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch']);
+
+        Settings::setDefaultMaxTokens(2000);
+        Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'model-test']);
     }
 
     public function testReturnInstance()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
         self::assertInstanceOf(RequestData::class, $requestData);
     }
@@ -44,8 +50,6 @@ final class RequestDataTest extends TestCase
 
     public function testConstructorWithoutValuesForDefaults()
     {
-        $this->settingsSetters();
-
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
 
         self::assertSame('Meho', $requestData->getRecipientName());
@@ -59,7 +63,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetRecipientName()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
         $returnedValue = $requestData->setRecipientName('Muhi');
 
@@ -69,7 +72,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetSenderName()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestStil');
         $returnedValue = $requestData->setSenderName('Jaha');
         self::assertSame('Jaha', $requestData->getSenderName());
@@ -78,7 +80,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetInstruction()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setInstruction('MyInstructions');
         self::assertSame('MyInstructions', $requestData->getInstruction());
@@ -87,7 +88,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetStyle()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction', 'TestStyle');
         $returnedValue = $requestData->setStyle('MyStyle');
         self::assertSame('MyStyle', $requestData->getStyle());
@@ -96,7 +96,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetLength()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'Instruction');
         $returnedValue = $requestData->setLength('MyLength');
         self::assertSame('MyLength', $requestData->getLength());
@@ -113,7 +112,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetLanguage()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setLanguage('MyLanguage');
         self::assertSame('MyLanguage', $requestData->getLanguage());
@@ -122,7 +120,6 @@ final class RequestDataTest extends TestCase
 
     public function testGetRecipientName()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnData = $requestData->getRecipientName();
         self::assertSame('Meho', $returnData);
@@ -131,7 +128,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetRecipientEmail()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setRecipientEmail('dummymail@example.com');
         self::assertSame('dummymail@example.com', $requestData->getRecipientEmail());
@@ -140,7 +136,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetRecipientEmailNull()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setRecipientEmail(null);
         self::assertNull($requestData->getRecipientEmail());
@@ -149,7 +144,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetSenderEmail()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setSenderEmail('dummymail@example.com');
         self::assertSame('dummymail@example.com', $requestData->getSenderEmail());
@@ -158,7 +152,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetSenderEmailNull()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setSenderEmail(null);
         self::assertNull($requestData->getSenderEmail());
@@ -167,7 +160,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetFixTextNull()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setFixText(null, 'Meho');
         self::assertNull($requestData->getPreviousGeneratedEmail());
@@ -177,7 +169,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetFixTextStr()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setFixText('MyFixedText', 'Meho');
         self::assertSame('MyFixedText', $requestData->getPreviousGeneratedEmail());
@@ -187,7 +178,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetPreviousConversationNull()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setPreviousConversation(null);
         self::assertNull($requestData->getPreviousConversation());
@@ -196,7 +186,6 @@ final class RequestDataTest extends TestCase
 
     public function testSetPreviousConversationStr()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setPreviousConversation('MyPreviousConversation');
         self::assertSame('MyPreviousConversation', $requestData->getPreviousConversation());
@@ -205,7 +194,6 @@ final class RequestDataTest extends TestCase
 
     public function testGetSenderName()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnData = $requestData->getSenderName();
         self::assertSame('Muhi', $returnData);
@@ -213,7 +201,6 @@ final class RequestDataTest extends TestCase
 
     public function testGetSenderEmailNull()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnData = $requestData->getSenderEmail();
         self::assertNull($requestData->getSenderEmail());
@@ -229,7 +216,6 @@ final class RequestDataTest extends TestCase
 
     public function testGetStyle()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnData = $requestData->getStyle();
         self::assertSame('casual', $returnData);
@@ -237,7 +223,6 @@ final class RequestDataTest extends TestCase
 
     public function testGetLength()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'Instruction');
         $returnData = $requestData->getLength();
         self::assertSame('medium', $returnData);
@@ -245,7 +230,6 @@ final class RequestDataTest extends TestCase
 
     public function testGetCreativity()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnData = $requestData->getCreativity();
         self::assertSame('medium', $returnData);
@@ -253,7 +237,6 @@ final class RequestDataTest extends TestCase
 
     public function testGetLanguage()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnData = $requestData->getLanguage();
         self::assertSame('Bosnian', $returnData);
@@ -261,7 +244,6 @@ final class RequestDataTest extends TestCase
 
     public function testGetInstruction()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnData = $requestData->getInstruction();
         self::assertSame('TestInstruction', $returnData);
@@ -269,14 +251,12 @@ final class RequestDataTest extends TestCase
 
     public function testGetFixTestNull()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         self::assertNull($requestData->getFixText());
     }
 
     public function testGetFixTestStr()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $requestData->setFixText('dummymail', 'myFixText');
         self::assertSame('myFixText', $requestData->getFixText());
@@ -284,14 +264,12 @@ final class RequestDataTest extends TestCase
 
     public function testGetPreviousGeneratedEmailNull()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         self::assertNull($requestData->getPreviousGeneratedEmail());
     }
 
     public function testGetPreviousGeneratedEmailStr()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $requestData->setFixText('dummymail', 'myPreviousGeneratedEmail');
         self::assertSame('dummymail', $requestData->getPreviousGeneratedEmail());
@@ -299,16 +277,28 @@ final class RequestDataTest extends TestCase
 
     public function testGetPreviousConversationNull()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         self::assertNull($requestData->getPreviousConversation());
     }
 
     public function testGetPreviousConversationStr()
     {
-        $this->settingsSetters();
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $requestData->setPreviousConversation('MyPreviousConversation');
         self::assertSame('MyPreviousConversation', $requestData->getPreviousConversation());
+    }
+
+    public function testSetPreviousGeneratedEmail()
+    {
+        $requestData = RequestData::make('Meho', 'Muhi', 'jabuka');
+        $requestData->setPreviousGeneratedEmail('Jucerasnji mail');
+        self::assertSame('Jucerasnji mail', $requestData->getPreviousGeneratedEmail());
+    }
+
+    public function testSetPreviousGeneratedEmailReturnType()
+    {
+        $requestData = RequestData::make('Meho', 'Muhi', 'jabuka');
+        $return = $requestData->setPreviousGeneratedEmail('Jucerasnji mail');
+        self::assertInstanceOf(RequestData::class, $return);
     }
 }
