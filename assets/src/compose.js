@@ -1,11 +1,16 @@
-import { createButtonInToolbarMenu, openModal } from "./compose/buttonToToolbar";
+import {
+  createButtonInToolbarMenu,
+  openModal,
+} from "./compose/buttonToToolbar";
 import "./compose/style.css";
 
 document.addEventListener("DOMContentLoaded", function () {
-    createButtonInToolbarMenu();
+  createButtonInToolbarMenu();
 
-    document.getElementById("aicp-prompt-open-button").addEventListener("click", (e) => {
-        e.preventDefault();
-        openModal();
+  document
+    .getElementById("aicp-prompt-open-button")
+    .addEventListener("click", (e) => {
+      e.preventDefault();
+      openModal();
     });
 });

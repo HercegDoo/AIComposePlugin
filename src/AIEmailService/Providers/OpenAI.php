@@ -1,0 +1,118 @@
+<?php
+
+declare(strict_types=1);
+
+namespace HercegDoo\AIComposePlugin\AIEmailService\Providers;
+
+use Curl\Curl;
+use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
+use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
+use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
+use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+
+final class OpenAI extends AbstractProvider
+{
+    private string $apiKey;
+    private Curl $curl;
+    private float $creativity;
+    private string $model;
+    private int $maxTokens;
+
+    /**
+     * @var array<int|string, float>
+     */
+    private array $creativityMap = [
+        'low' => 0.2,
+        'medium' => 0.5,
+        'high' => 0.8,
+    ];
+
+    /**
+     * @param Curl $curl
+     */
+    public function __construct($curl = null)
+    {
+        $this->curl = $curl ?: new Curl();
+    }
+
+    public function getProviderName(): string
+    {
+        return 'OpenAI';
+    }
+
+    /**
+     * @throws ProviderException
+     */
+    public function generateEmail(RequestData $requestData): Respond
+    {
+        $this->apiKey = Settings::getProviderConfig()['apiKey'];
+        $this->model = Settings::getProviderConfig()['model'];
+        $this->maxTokens = Settings::getDefaultMaxTokens();
+
+        $this->creativity = $this->creativityMap[Settings::getCreativity()];
+        $prompt = $this->prompt($requestData);
+
+        $respond = $this->sendRequest($prompt);
+
+        if ($this->hasErrors()) {
+            throw new ProviderException(implode(', ', $this->getErrors()));
+        }
+
+        $email = $respond->choices[0]->message->content ?? '';
+        if ($email === '') {
+            throw new ProviderException('No email content found');
+        }
+
+        return new Respond($email);
+    }
+
+    private function prompt(RequestData $requestData): string
+    {
+        return "Write a {$requestData->getStyle()} email without a subject" .
+            ($requestData->getRecipientName() !== '' ? " to {$requestData->getRecipientName()}" : '') .
+            ($requestData->getSenderName() !== '' ? " from {$requestData->getSenderName()}" : '') . '.' .
+            " Email length: {$requestData->getLength()}." .
+            ($requestData->getLanguage() !== '-' ? " Email language: {$requestData->getLanguage()}." : '') .
+            " Email content: {$requestData->getInstruction()}." .
+
+            ($requestData->getFixText() ? " Write the same email as this {$requestData->getPreviousGeneratedEmail()} but change this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." : '') .
+            ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '');
+    }
+
+    private function sendRequest(string $prompt): \stdClass
+    {
+        $curl = $this->curl;
+
+        $curl->setHeader('Content-Type', 'application/json');
+        $curl->setHeader('Authorization', 'Bearer ' . $this->apiKey);
+
+        $curl->setOpts([
+            \CURLOPT_TIMEOUT => 60,
+            // not verifying the ssl certificate
+            \CURLOPT_SSL_VERIFYPEER => false,
+            \CURLOPT_SSL_VERIFYHOST => false,
+        ]);
+
+        try {
+            $respond = $curl->post('https://api.openai.com/v1/chat/completions', [
+                'model' => $this->model,
+                'messages' => [
+                    ['role' => 'system', 'content' => 'You are a helpful personal assistant.'],
+                    ['role' => 'user', 'content' => $prompt],
+                ],
+                'max_tokens' => $this->maxTokens,
+                'temperature' => $this->creativity,
+                'n' => 1,
+                'stream' => false,
+            ]);
+        } catch (\Throwable $e) {
+            throw new ProviderException('APIThrowable: ' . $e->getMessage());
+        }
+
+        if ($curl->error) {
+            throw new ProviderException('APICurl: ' . $curl->errorMessage);
+        }
+
+        return (object) $respond;
+    }
+}

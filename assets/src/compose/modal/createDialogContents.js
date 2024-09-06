@@ -3,17 +3,17 @@ import { createResultSection } from "./createResultSection.js";
 import { createHelpSection } from "./createHelpSection.js";
 
 export function createDialogContents() {
-    const dialogContents = document.createElement("div");
-    dialogContents.className = "xdialog-contents";
+  const dialogContents = document.createElement("div");
+  dialogContents.className = "xdialog-contents";
 
-    const aicRequest = createRequestSection();
-    dialogContents.appendChild(aicRequest);
+  const aicRequest = createRequestSection();
+  dialogContents.appendChild(aicRequest);
 
-    const aicResult = createResultSection();
-    dialogContents.appendChild(aicResult);
+  const aicResult = createResultSection();
+  dialogContents.appendChild(aicResult);
 
-    const helpDiv = createHelpSection();
-    dialogContents.appendChild(helpDiv);
+  const helpDiv = createHelpSection();
+  dialogContents.appendChild(helpDiv);
 
-    return dialogContents;
+  return dialogContents;
 }

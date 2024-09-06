@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+         backupGlobals="false"
+         beStrictAboutOutputDuringTests="true"
+         cacheResultFile="cache/.phpunit.cache/test-results"
+         colors="true"
+         columns="max"
+         failOnRisky="true"
+         failOnWarning="true">
+    <coverage
+            includeUncoveredFiles="true"
+            pathCoverage="false"
+            ignoreDeprecatedCodeUnits="true"
+            disableCodeCoverageIgnore="true"
+            cacheDirectory="cache/.phpunit.cache">
+        <report>
+            <clover outputFile="cache/logs/clover.xml"/>
+            <html outputDirectory="cache/logs/html"/>
+        </report>
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+    </coverage>
+    <testsuites>
+        <testsuite name="AIComposePlugin">
+            <directory>./tests</directory>
+
+            <directory>./tests/AIEmailService/_support</directory>
+        </testsuite>
+    </testsuites>
+    <logging>
+        <testdoxHtml outputFile="cache/logs/testdox.html"/>
+        <testdoxText outputFile="cache/logs/testdox.txt"/>
+        <junit outputFile="cache/logs/logfile.xml"/>
+    </logging>
+
+    <extensions>
+        <extension class="Nexus\PHPUnit\Extension\Tachycardia">
+            <arguments>
+                <array>
+                    <element key="timeLimit">
+                        <double>0.50</double>
+                    </element>
+                    <element key="reportable">
+                        <integer>30</integer>
+                    </element>
+                    <element key="precision">
+                        <integer>2</integer>
+                    </element>
+                    <element key="tabulate">
+                        <boolean>false</boolean>
+                    </element>
+                </array>
+            </arguments>
+        </extension>
+    </extensions>
+    <php>
+        <env name="XDEBUG_MODE" value="coverage"/>
+    </php>
+</phpunit>

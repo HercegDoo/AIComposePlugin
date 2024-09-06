@@ -18,7 +18,9 @@
     }
   ],
   "require": {
-    "php": ">=7.4"
+    "php": ">=7.4",
+    "ext-curl": "*",
+    "php-curl-class/php-curl-class": "^9.19"
   },
   "repositories": [
     {
@@ -41,16 +43,16 @@
   "autoload": {
     "psr-4": {
       "HercegDoo\\AIComposePlugin\\": "src/"
-    },
-    "classmap": [
-      "vendor/roundcube/roundcubemail/program/lib/Roundcube"
-    ]
+    }
   },
   "autoload-dev": {
     "psr-4": {
-      "HercegDoo\\AIComposePlugin\\": "tests/",
-      "HercegDoo\\AIComposePlugin\\TestSupport\\": "tests/_support/"
-    }
+      "HercegDoo\\AIComposePlugin\\Tests\\": "tests/",
+      "HercegDoo\\AIComposePlugin\\TestSupport\\": "tests/AIEmailService/_support"
+    },
+    "classmap": [
+      "vendor/roundcube/roundcubemail/program"
+    ]
   },
   "require-dev": {
     "roundcube/roundcubemail": "1.6.5",
@@ -67,7 +69,8 @@
     "cs-fixer": "php-cs-fixer fix --ansi --verbose --diff",
     "cs": "php-cs-fixer fix --ansi --verbose --dry-run --diff",
     "test": "phpunit --no-coverage",
-    "phpstan": "vendor/bin/phpstan analyse"
+    "phpstan": "vendor/bin/phpstan analyse",
+    "phpstan-gb": "vendor/bin/phpstan analyse --generate-baseline"
   },
   "config": {
     "allow-plugins": {
