@@ -2,6 +2,7 @@
 
 Ovaj program je poslovna tajna društva. Kao takav, njegova distribucija, izmjena ili upotreba bez izričite dozvole društva strogo je zabranjena.
 
+
 # ODREDBE STATUTA DRUŠTVA
 
 ## XI - POSLOVNA TAJNA
@@ -14,10 +15,10 @@ Poslovnu tajnu čine isprave i podaci utvrđeni Statutom, posebnim odlukama orga
 
 Podaci i isprave iz prethodnog člana smatraju se naročito:
 
-- isprave i podaci koji predstavljaju tajnu proizvodnje;
-- rezultat poslovanja;
-- istraživanja na tržištu i u domenu proizvodnje;
-- razne isprave i podaci čije bi saopštavanje bilo protivno interesima Društva.
+* isprave i podaci koji predstavljaju tajnu proizvodnje;
+* rezultat poslovanja;
+* istraživanja na tržištu i u domenu proizvodnje;
+* razne isprave i podaci čije bi saopštavanje bilo protivno interesima Društva.
 
 ### Član 45.
 
@@ -71,9 +72,9 @@ Kada je to nužno radi obavljanja poslova iz registrirane djelatnosti Društva, 
 
 Ne smatra se povredom poslovne tajne:
 
-- saopštavanje podataka na sastancima,
-- ako se podaci saopštavaju osobama kojima se inače moraju saopštiti na osnovu zakona i na osnovu ovlasti koje prizilaze iz dužnosti koju obavljaju, položaja na kojem se nalaze ili prirode radnog mjesta,
-- saopštavanje podataka nadležnim tijelima i institucijama u svrhu otkrivanja krivičnog djela i njegovog procesuiranja.
+* saopštavanje podataka na sastancima,
+* ako se podaci saopštavaju osobama kojima se inače moraju saopštiti na osnovu zakona i na osnovu ovlasti koje prizilaze iz dužnosti koju obavljaju, položaja na kojem se nalaze ili prirode radnog mjesta,
+* saopštavanje podataka nadležnim tijelima i institucijama u svrhu otkrivanja krivičnog djela i njegovog procesuiranja.
 
 ### Član 108.
 
@@ -95,7 +96,7 @@ Radnik koji na radu ili u vezi sa radom namjerno ili iz krajnje nepažnje prouzr
 
 Ako se naknada štete ne može utvrditi u tačnom iznosu ili bi utvrđivanje visine štete prouzrokovalo nesrazmjerne troškove, direktor Društva će odlukom odrediti štetu u paušalnom iznosu, uzimajući pri odlučivanju u obzir visinu pričinjene štete i druge okolnosti slučaja.
 
-Direktor Društva odlukom utvrđuje postojanje štete, okolnosti pod kojima je nastala, odgovornost radnika za pričinjenu štetu i visinu štete, kao i rok u kojem je radnik dužan naknaditi Društvu štetu.
+Direktor Društva odlukom utvrđuje postojanje štete, okolnosti pod kojima je nastala, odgovornost radnika za pričinjenu štetu i visinu štete, kao i  rok u kojem je radnik dužan naknaditi Društvu štetu.
 
 Na postupak utvrđivanja štete shodno se primjenjuju odredbe ovog Pravilnika kojima se reguliše disciplinski postupak.
 
