@@ -26,7 +26,7 @@
         <testsuite name="AIComposePlugin">
             <directory>./tests</directory>
 
-            <exclude>./tests/AIEmailService/_support</exclude>
+            <directory>./tests/AIEmailService/_support</directory>
         </testsuite>
     </testsuites>
     <logging>

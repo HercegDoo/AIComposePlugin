@@ -10,73 +10,33 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
 final class SettingsTest extends TestCase
 {
     public function testGetCreativities()
     {
-        self::assertSame([
-            'low',
-            'medium',
-            'high',
-        ], Settings::getCreativities());
+        self::assertSame(['low', 'medium', 'high',], Settings::getCreativities());
     }
 
     public function testSetAndGetLanguages(): void
     {
-        Settings::setLanguages([
-            'default' => 'Bosnian',
-            'Croatian',
-            'German',
-            'Dutch',
-        ]);
+        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch',]);
 
-        self::assertSame([
-            'default' => 'Bosnian',
-            'Croatian',
-            'German',
-            'Dutch',
-        ], Settings::getLanguages());
+        self::assertSame(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch',], Settings::getLanguages());
     }
 
     public function testSetAndGetLengths()
     {
-        Settings::setLengths([
-            'short',
-            'default' => 'medium',
-            'long',
-        ]);
+        Settings::setLengths(['short', 'default' => 'medium', 'long']);
 
-        self::assertSame([
-            'short',
-            'default' => 'medium',
-            'long',
-        ], Settings::getLengths());
+        self::assertSame(['short', 'default' => 'medium', 'long',], Settings::getLengths());
     }
 
     public function testSetAndGetStyles()
     {
-        Settings::setStyles([
-            'professional',
-            'default' => 'casual',
-            'assertive',
-            'enthusiastic',
-            'funny',
-            'informational',
-            'persuasive',
-        ]);
+        Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive',]);
 
-        self::assertSame([
-            'professional',
-            'default' => 'casual',
-            'assertive',
-            'enthusiastic',
-            'funny',
-            'informational',
-            'persuasive',
-        ], Settings::getStyles());
+        self::assertSame(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive',], Settings::getStyles());
     }
 
     public function testSetAndGetProviderOpenAI()
@@ -119,23 +79,13 @@ final class SettingsTest extends TestCase
     public function testGetDefaultLanguageInitialized()
     {
         // $languages initialized
-        Settings::setLanguages([
-            'default' => 'Bosnian',
-            'Croatian',
-            'German',
-            'Dutch',
-        ]);
+        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch',]);
         self::assertSame('Bosnian', Settings::getDefaultLanguage());
     }
 
     public function testGetDefaultLanguageInitializedNoDefault()
     {
-        Settings::setLanguages([
-            'Mandarin',
-            'Croatian',
-            'German',
-            'Dutch',
-        ]);
+        Settings::setLanguages(['Mandarin', 'Croatian', 'German', 'Dutch',]);
         self::assertSame('Mandarin', Settings::getDefaultLanguage());
     }
 
@@ -147,29 +97,13 @@ final class SettingsTest extends TestCase
 
     public function testGetDefaultStyleInitialized()
     {
-        Settings::setStyles([
-            'professional',
-            'default' => 'casual',
-            'assertive',
-            'enthusiastic',
-            'funny',
-            'informational',
-            'persuasive',
-        ]);
+        Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive',]);
         self::assertSame('casual', Settings::getDefaultStyle());
     }
 
     public function testGetDefaultStyleInitializedNoDefault()
     {
-        Settings::setStyles([
-            'professional',
-            'casual',
-            'assertive',
-            'enthusiastic',
-            'funny',
-            'informational',
-            'persuasive',
-        ]);
+        Settings::setStyles(['professional', 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive',]);
         self::assertSame('professional', Settings::getDefaultStyle());
     }
 
@@ -194,11 +128,7 @@ final class SettingsTest extends TestCase
 
     public function testGetDefaultLengthInitialized()
     {
-        Settings::setLengths([
-            'short',
-            'default' => 'medium',
-            'long',
-        ]);
+        Settings::setLengths(['short', 'default' => 'medium', 'long',]);
 
         self::assertSame(
             'medium',
@@ -208,11 +138,7 @@ final class SettingsTest extends TestCase
 
     public function testGetDefaultLengthInitializedNoDefault()
     {
-        Settings::setLengths([
-            'short',
-            'medium',
-            'long',
-        ]);
+        Settings::setLengths(['short', 'medium', 'long',]);
 
         self::assertSame('short', Settings::getDefaultLength());
     }

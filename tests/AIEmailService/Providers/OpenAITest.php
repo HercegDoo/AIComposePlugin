@@ -17,41 +17,19 @@ BypassFinals::enable();
 
 /**
  * @internal
- *
- * @coversNothing
  */
 final class OpenAITest extends TestCase
 {
     public function settingsSetters()
     {
-        Settings::setStyles([
-            'professional',
-            'default' => 'casual',
-            'assertive',
-            'enthusiastic',
-            'funny',
-            'informational',
-            'persuasive',
-        ]);
+        Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive',]);
 
-        Settings::setLengths([
-            'short',
-            'default' => 'medium',
-            'long',
-        ]);
+        Settings::setLengths(['short', 'default' => 'medium', 'long',]);
 
-        Settings::setLanguages([
-            'default' => 'Bosnian',
-            'Croatian',
-            'German',
-            'Dutch',
-        ]);
+        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch',]);
 
         Settings::setDefaultMaxTokens(2000);
-        Settings::setProviderConfig([
-            'apiKey' => 'test-api-key',
-            'model' => 'model-test',
-        ]);
+        Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'model-test',]);
     }
 
     public function testSetError()

@@ -7,7 +7,6 @@ namespace HercegDoo\AIComposePlugin\AIEmailService\Providers;
 abstract class AbstractProvider implements InterfaceProvider
 {
     /**
-     * komentar.
      *
      * @var string[]
      */

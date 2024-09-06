@@ -10,35 +10,16 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
- *
- * @coversNothing
  */
 final class RequestDataTest extends TestCase
 {
     public function settingsSetters()
     {
-        Settings::setStyles([
-            'professional',
-            'default' => 'casual',
-            'assertive',
-            'enthusiastic',
-            'funny',
-            'informational',
-            'persuasive',
-        ]);
+        Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive',]);
 
-        Settings::setLengths([
-            'short',
-            'default' => 'medium',
-            'long',
-        ]);
+        Settings::setLengths(['short', 'default' => 'medium', 'long',]);
 
-        Settings::setLanguages([
-            'default' => 'Bosnian',
-            'Croatian',
-            'German',
-            'Dutch',
-        ]);
+        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch',]);
     }
 
     public function testReturnInstance()
