@@ -1,5 +1,7 @@
 <?php
+
 namespace HercegDoo\AIComposePlugin\Tests\AIEmailService;
+
 use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
@@ -45,14 +47,14 @@ final class AIEmailTest extends TestCase
 
     public function testGenerateEmailWithNonExistingProviderException()
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         Settings::setProvider('Nonexistprovider');
     }
 
     /**
      * @dataProvider provideGenererateEmailProviderExceptionCases
      */
-    public function testGenererateEmailProviderException(Exception $exception, string $message)
+    public function testGenererateEmailProviderException(\Exception $exception, string $message)
     {
         $dummyProvider = new class extends DummyProvider {
             public $exception;
@@ -72,7 +74,7 @@ final class AIEmailTest extends TestCase
 
     public static function provideGenererateEmailProviderExceptionCases(): iterable
     {
-        yield [new Exception('Test exception'), 'General: Test exception'];
+        yield [new \Exception('Test exception'), 'General: Test exception'];
         yield [new ProviderException('Test exception'), 'Test exception'];
     }
 }
