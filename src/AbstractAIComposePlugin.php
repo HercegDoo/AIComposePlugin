@@ -2,7 +2,6 @@
 
 namespace HercegDoo\AIComposePlugin;
 
-use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use HercegDoo\AIComposePlugin\Tasks\AbstractTask;
 
 abstract class AbstractAIComposePlugin extends \rcube_plugin
@@ -11,12 +10,11 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
 
     public function init(): void
     {
-        $this->initSettings();
-
-        $this->add_hook('startup', [$this, 'startup']);
         $task = $this->api->task;
 
         if (\is_string($task)) {
+            $this->loadTranslations();
+
             $task = ucfirst($task);
             $taskClass = "HercegDoo\\AIComposePlugin\\Tasks\\{$task}Task";
 
@@ -28,84 +26,9 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
         }
     }
 
-    public function startup(): void
+    private function loadTranslations(): void
     {
-        $rcmail = \rcmail::get_instance();
-        $settings = [
-            'languages' => array_values(Settings::getLanguages()),
-            'defaultLanguage' => Settings::getDefaultLanguage(),
-            'lengths' => array_values(Settings::getLengths()),
-            'defaultLength' => Settings::getDefaultLength(),
-            'creativities' => array_values(Settings::getCreativities()),
-            'defaultCreativity' => Settings::getCreativity(),
-            'styles' => array_values(Settings::getStyles()),
-            'defaultStyle' => Settings::getDefaultStyle(),
-        ];
-        $rcmail->output->set_env('aiPluginOptions', $settings);
-    }
-
-    private function initSettings(): void
-    {
-        $rcmail = \rcmail::get_instance();
-
-        $this->load_config();
-
-        /** @var int $defaultTimeout */
-        $defaultTimeout = $rcmail->config->get('aiDefaultTimeout', 60);
-        Settings::setDefaultTimeout($defaultTimeout);
-
-        /** @var int $defaultInputChars */
-        $defaultInputChars = $rcmail->config->get('aiDefaultInputChars', 500);
-        Settings::setDefaultInputChars($defaultInputChars);
-
-        /** @var int $defaultMaxTokens */
-        $defaultMaxTokens = $rcmail->config->get('aiDefaultMaxTokens', 2000);
-        Settings::setDefaultMaxTokens($defaultMaxTokens);
-
-        /** @var string[] $styles */
-        $styles = $rcmail->config->get('aiComposeStyles', [
-            'professional',
-            'default' => 'casual',
-            'assertive',
-            'enthusiastic',
-            'funny',
-            'informational',
-            'persuasive',
-        ]);
-        Settings::setStyles($styles);
-
-        /** @var string[] $lengths */
-        $lengths = $rcmail->config->get('aiComposeLengths', [
-            'short',
-            'default' => 'medium',
-            'long',
-        ]);
-
-        Settings::setLengths($lengths);
-
-        /** @var string[] $languages */
-        $languages = $rcmail->config->get('aiComposeLanguages', [
-            'default' => 'Bosnian',
-            'Croatian',
-            'German',
-            'Dutch',
-        ]);
-
-        Settings::setLanguages($languages);
-
-        /** @var string $creativity */
-        $creativity = $rcmail->config->get('aiComposeCreativity');
-        if ($creativity !== null) {
-            Settings::setCreativity($creativity);
-        }
-
-        /** @var string $provider */
-        $provider = $rcmail->config->get('aiComposeProvider', 'OpenAI');
-
-        Settings::setProvider($provider);
-
-        /** @var array<string> $config */
-        $config = $rcmail->config->get('aiProvider' . $provider . 'Config', []);
-        Settings::setProviderConfig($config);
+        $this->add_texts('src/localization/messages/');
+        $this->add_texts('src/localization/labels/', true);
     }
 }

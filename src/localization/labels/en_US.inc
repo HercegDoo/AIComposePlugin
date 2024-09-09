@@ -24,6 +24,7 @@ $labels['ai_style_informational'] = 'Informational';
 $labels['ai_style_professional'] = 'Professional';
 $labels['ai_style_urgent'] = 'Urgent';
 $labels['ai_style_witty'] = 'Witty';
+$labels['ai_style_persuasive'] = 'Persuasive';
 
 $labels['ai_length_short'] = 'Short';
 $labels['ai_length_medium'] = 'Medium';
@@ -33,6 +34,12 @@ $labels['ai_creativity_low'] = 'Low';
 $labels['ai_creativity_medium'] = 'Medium';
 $labels['ai_creativity_high'] = 'High';
 
+$labels['ai_language_bosnian'] = 'Bosnian (Bosanski)';
+$labels['ai_language_croatian'] = 'Croatian (Hrvatski)';
+$labels['ai_language_english'] = 'English (US)';
+$labels['ai_language_german'] = 'German (Deutsch)';
+$labels['ai_language_dutch'] = 'Dutch (Nederlands)';
+
 $labels['ai_insert_email'] = 'Insert email';
 $labels['ai_generate_email'] = 'Generate email';
 $labels['ai_generate_again'] = 'Generate again';
@@ -41,7 +48,7 @@ $labels['ai_error_help_button'] = 'Help';
 
 $labels['ai_button_show_instructions'] = 'Instruction Examples';
 $labels['ai_help_button_back'] = 'Back';
-$labels['ai_button_fix_selected_text'] = 'Back';
+$labels['ai_button_fix_selected_text'] = 'Fix Selected Text';
 $labels['ai_help_title'] = 'Help & Examples';
 $labels['ai_help_use_example'] = '(Use this)';
 

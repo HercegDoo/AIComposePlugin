@@ -24,6 +24,7 @@ $labels['ai_style_informational'] = 'Informativno';
 $labels['ai_style_professional'] = 'Profesionalno';
 $labels['ai_style_urgent'] = 'Hitno';
 $labels['ai_style_witty'] = 'Domišljato';
+$labels['ai_style_persuasive'] = 'Uvjerljivo';
 
 $labels['ai_length_short'] = 'Kratko';
 $labels['ai_length_medium'] = 'Srednje';
@@ -33,6 +34,12 @@ $labels['ai_creativity_low'] = 'Nisko';
 $labels['ai_creativity_medium'] = 'Srednje';
 $labels['ai_creativity_high'] = 'Visoko';
 
+$labels['ai_language_bosnian'] = 'Bosnian (Bosanski)';
+$labels['ai_language_croatian'] = 'Croatian (Hrvatski)';
+$labels['ai_language_english'] = 'English (US)';
+$labels['ai_language_german'] = 'German (Deutsch)';
+$labels['ai_language_dutch'] = 'Dutch (Nederlands)';
+
 $labels['ai_insert_email'] = 'Umetni e-mail';
 $labels['ai_generate_email'] = 'Generiši e-mail';
 $labels['ai_generate_again'] = 'Generiši ponovo';
@@ -41,7 +48,7 @@ $labels['ai_error_help_button'] = 'Pomoć';
 
 $labels['ai_button_show_instructions'] = 'Primjeri Instrukcija';
 $labels['ai_help_button_back'] = 'Nazad';
-$labels['ai_button_fix_selected_text'] = 'Nazad';
+$labels['ai_button_fix_selected_text'] = ' Ispravi Odabrani Tekst';
 $labels['ai_help_title'] = 'Pomoć & Primjeri';
 $labels['ai_help_use_example'] = '(Koristi ovo)';
 

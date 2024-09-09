@@ -24,6 +24,7 @@ $labels['ai_style_informational'] = 'Informativ';
 $labels['ai_style_professional'] = 'Professionell';
 $labels['ai_style_urgent'] = 'Dringend';
 $labels['ai_style_witty'] = 'Geistreich';
+$labels['ai_style_persuasive'] = 'Überzeugend';
 
 $labels['ai_length_short'] = 'Kurz';
 $labels['ai_length_medium'] = 'Mittel';
@@ -33,6 +34,12 @@ $labels['ai_creativity_low'] = 'Niedrig';
 $labels['ai_creativity_medium'] = 'Mittel';
 $labels['ai_creativity_high'] = 'Hoch';
 
+$labels['ai_language_bosnian'] = 'Bosnian (Bosanski)';
+$labels['ai_language_croatian'] = 'Croatian (Hrvatski)';
+$labels['ai_language_english'] = 'English (US)';
+$labels['ai_language_german'] = 'German (Deutsch)';
+$labels['ai_language_dutch'] = 'Dutch (Nederlands)';
+
 $labels['ai_insert_email'] = 'E-Mail einfügen';
 $labels['ai_generate_email'] = 'E-Mail generieren';
 $labels['ai_generate_again'] = 'Erneut generieren';
@@ -41,7 +48,7 @@ $labels['ai_error_help_button'] = 'Hilfe';
 
 $labels['ai_button_show_instructions'] = 'Beispielanweisungen';
 $labels['ai_help_button_back'] = 'Zurück';
-$labels['ai_button_fix_selected_text'] = 'Zurück';
+$labels['ai_button_fix_selected_text'] = ' Ausgewählten Text Korrigieren';
 $labels['ai_help_title'] = 'Hilfe & Beispiele';
 $labels['ai_help_use_example'] = '(Verwenden Sie dies)';
 

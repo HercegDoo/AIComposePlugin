@@ -24,6 +24,7 @@ $labels['ai_style_informational'] = 'Informatief';
 $labels['ai_style_professional'] = 'Professioneel';
 $labels['ai_style_urgent'] = 'Urgent';
 $labels['ai_style_witty'] = 'Geestig';
+$labels['ai_style_persuasive'] = 'Overtuigend';
 
 $labels['ai_length_short'] = 'Kort';
 $labels['ai_length_medium'] = 'Middel';
@@ -33,6 +34,12 @@ $labels['ai_creativity_low'] = 'Laag';
 $labels['ai_creativity_medium'] = 'Middel';
 $labels['ai_creativity_high'] = 'Hoog';
 
+$labels['ai_language_bosnian'] = 'Bosnian (Bosanski)';
+$labels['ai_language_croatian'] = 'Croatian (Hrvatski)';
+$labels['ai_language_english'] = 'English (US)';
+$labels['ai_language_german'] = 'German (Deutsch)';
+$labels['ai_language_dutch'] = 'Dutch (Nederlands)';
+
 $labels['ai_insert_email'] = 'E-mail invoegen';
 $labels['ai_generate_email'] = 'E-mail genereren';
 $labels['ai_generate_again'] = 'Opnieuw genereren';
@@ -41,7 +48,7 @@ $labels['ai_error_help_button'] = 'Help';
 
 $labels['ai_button_show_instructions'] = 'Voorbeelden van instructies';
 $labels['ai_help_button_back'] = 'Terug';
-$labels['ai_button_fix_selected_text'] = 'Terug';
+$labels['ai_button_fix_selected_text'] = 'Geselecteerde Tekst Corrigeren';
 $labels['ai_help_title'] = 'Help & Voorbeelden';
 $labels['ai_help_use_example'] = '(Gebruik dit)';
 
