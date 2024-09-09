@@ -19,12 +19,12 @@ function unCapitalizeFirstLetter(string) {
 
 
 
-function createPropbox(id, label, xinfoText, options, defaultValue, name) {
+function createPropbox(id, label, xinfoText, options, defaultValue) {
   const propbox = document.createElement("div");
   propbox.className = "propbox";
 
   const select = document.createElement("select");
-  select.id = id;
+  select.id = `aic-${id}`;
   select.className = "form-control";
   options.forEach((option) => {
     option = unCapitalizeFirstLetter(option);
@@ -33,7 +33,7 @@ function createPropbox(id, label, xinfoText, options, defaultValue, name) {
     if (option === defaultValue) {
       optionElement.setAttribute("selected", "selected");
     }
-    optionElement.textContent = translation(`ai_${name}_${option}`);
+    optionElement.textContent = translation(`ai_${id}_${option}`);
     select.appendChild(optionElement);
   });
 
@@ -61,7 +61,7 @@ export function createRecipientPropbox() {
       </label>
       <span class="xinfo right"><div>${translation('ai_tip_to')}</div></span>
   </div>
-  <input type="text" class="form-control">`;
+  <input type="text" id="recipient-name" class="form-control">`;
 
   return recipientPropbox;
 }
@@ -75,51 +75,50 @@ export function createSenderPropbox() {
       </label>
      <span class="xinfo"><div>${translation('ai_tip_from')}</div></span> 
   </div>
-  <input type="text" class="form-control">`;
+  <input type="text" id="sender-name" class="form-control">`;
 
   return senderPropbox;
 }
 
 export function createStylePropbox() {
   return createPropbox(
-    "aic-style",
+    "style",
     translation('setting_ai_style'),
     translation('ai_tip_style'),
     styles,
     defaultStyle,
-      "style"
+
   );
 }
 
 export function createLengthPropbox() {
   return createPropbox(
-    "aic-length",
+    "length",
     translation('setting_ai_length'),
     translation('ai_tip_length'),
     lengths,
     defaultLength,
-      'length'
+
   );
 }
 
 export function createCreativityPropbox() {
   return createPropbox(
-    "aic-creativity",
+    "creativity",
     translation('ai_label_creativity'),
     translation('ai_tip_creativity'),
     creativities,
     defaultCreativity,
-      "creativity"
+
   );
 }
 
 export function createLanguagePropbox() {
   return createPropbox(
-    "aic-language",
+    "language",
     translation('ai_label_language'),
     translation('ai_tip_language'),
     languages,
     defaultLanguage,
-      "language"
   );
 }

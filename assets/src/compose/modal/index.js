@@ -3,7 +3,9 @@ import { createDialogContents } from "./createDialogContents.js";
 import { checkSelectedText } from "./additionalModalFunctions/checkSelectedText";
 import { regulateHelpModal } from "./additionalModalFunctions/regulateHelpModal";
 import {translation, translation as t} from "../../utils";
-
+const genEmailButton = document.getElementById('generate-email-button');
+const senderNameElement = document.getElementById('aic-email');
+import {showRequestData} from "./additionalModalFunctions/createRequestObject";
 
 
 export function createComposeModal() {
@@ -44,6 +46,7 @@ export function createComposeModal() {
   });
 
   document.body.appendChild(dialogMask);
+  showRequestData();
   const instructions = document.getElementById('aic-instructions');
   instructions.placeholder=translation('ai_instructions_placeholder');
   checkSelectedText();
