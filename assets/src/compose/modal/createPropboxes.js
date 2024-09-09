@@ -1,3 +1,5 @@
+import {translation} from "../../utils";
+
 const {
   languages,
   styles,
@@ -9,25 +11,29 @@ const {
   defaultStyle,
 } = rcmail.env.aiPluginOptions;
 
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
+function unCapitalizeFirstLetter(string) {
+  if(string.charAt(0) === string.charAt(0).toUpperCase()){
+  string = string.charAt(0).toLowerCase() + string.slice(1) }
+  return string;
 }
 
-function createPropbox(id, label, xinfoText, options, defaultValue) {
+
+
+function createPropbox(id, label, xinfoText, options, defaultValue, name) {
   const propbox = document.createElement("div");
   propbox.className = "propbox";
 
   const select = document.createElement("select");
   select.id = id;
   select.className = "form-control";
-
   options.forEach((option) => {
+    option = unCapitalizeFirstLetter(option);
     const optionElement = document.createElement("option");
     optionElement.value = option;
     if (option === defaultValue) {
       optionElement.setAttribute("selected", "selected");
     }
-    optionElement.textContent = capitalizeFirstLetter(option);
+    optionElement.textContent = translation(`ai_${name}_${option}`);
     select.appendChild(optionElement);
   });
 
@@ -51,9 +57,9 @@ export function createRecipientPropbox() {
   recipientPropbox.className = "propbox";
   recipientPropbox.innerHTML = `<div>
       <label for="aic-to">
-          <span class="regular-size">Recipient's name</span>
+          <span class="regular-size">${translation('ai_label_to')}</span>
       </label>
-      <span class="xinfo right"><div>The name of the recipient of the new email. You can specify more than one name, or use strings like "everybody," "team," etc.</div></span>
+      <span class="xinfo right"><div>${translation('ai_tip_to')}</div></span>
   </div>
   <input type="text" class="form-control">`;
 
@@ -65,9 +71,9 @@ export function createSenderPropbox() {
   senderPropbox.className = "propbox";
   senderPropbox.innerHTML = `<div>
       <label for="aic-from">
-          <span class="regular-size">Sender's name</span>
+          <span class="regular-size">${translation('ai_label_from')}</span>
       </label>
-     <span class="xinfo"><div>The new email will be signed with this name.</div></span> 
+     <span class="xinfo"><div>${translation('ai_tip_from')}</div></span> 
   </div>
   <input type="text" class="form-control">`;
 
@@ -77,39 +83,43 @@ export function createSenderPropbox() {
 export function createStylePropbox() {
   return createPropbox(
     "aic-style",
-    "Style",
-    "The preferred writing style for the new email.",
+    translation('setting_ai_style'),
+    translation('ai_tip_style'),
     styles,
-    defaultStyle
+    defaultStyle,
+      "style"
   );
 }
 
 export function createLengthPropbox() {
   return createPropbox(
     "aic-length",
-    "Length",
-    "The desired length of the new email",
+    translation('setting_ai_length'),
+    translation('ai_tip_length'),
     lengths,
-    defaultLength
+    defaultLength,
+      'length'
   );
 }
 
 export function createCreativityPropbox() {
   return createPropbox(
     "aic-creativity",
-    "Creativity",
-    "The level of creativity you'd like in the new email.",
+    translation('ai_label_creativity'),
+    translation('ai_tip_creativity'),
     creativities,
-    defaultCreativity
+    defaultCreativity,
+      "creativity"
   );
 }
 
 export function createLanguagePropbox() {
   return createPropbox(
     "aic-language",
-    "Language",
-    "The language in which the new email will be written.",
+    translation('ai_label_language'),
+    translation('ai_tip_language'),
     languages,
-    defaultLanguage
+    defaultLanguage,
+      "language"
   );
 }
