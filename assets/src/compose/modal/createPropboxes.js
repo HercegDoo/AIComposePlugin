@@ -17,7 +17,7 @@ function unCapitalizeFirstLetter(string) {
   return string;
 }
 
-console.log(languages[0]);
+
 
 function createPropbox(id, label, xinfoText, options, defaultValue, name) {
   const propbox = document.createElement("div");
@@ -26,7 +26,6 @@ function createPropbox(id, label, xinfoText, options, defaultValue, name) {
   const select = document.createElement("select");
   select.id = id;
   select.className = "form-control";
-  console.log(languages[0]);
   options.forEach((option) => {
     option = unCapitalizeFirstLetter(option);
     const optionElement = document.createElement("option");
