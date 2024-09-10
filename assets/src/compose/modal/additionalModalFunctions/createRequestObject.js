@@ -1,5 +1,6 @@
 import { getPreviousConversation } from "../../../compose";
 import { getSelectedText } from "./checkSelectedText";
+import {getRecipientInfo} from "./getRecipientInfo";
 
 export function showRequestData() {
   const generateEmailButton = document.getElementById("generate-email-button");
@@ -27,6 +28,7 @@ export function showRequestData() {
       previousConversation: `${previousConversation}`,
       previousGeneratedEmail: `${previousGeneratedEmailElement.value}`,
       textForFixing: `${textForFixing}`,
+      recipientEmail: `${getRecipientInfo().recipientEmail}`
     };
     console.log(requestData);
   });

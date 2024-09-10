@@ -3,6 +3,7 @@ import {
   openModal,
 } from "./compose/buttonToToolbar";
 import "./compose/style.css";
+import {getRecipientInfo} from "./compose/modal/additionalModalFunctions/getRecipientInfo";
 
 let previousConversation = "";
 
@@ -22,6 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", (e) => {
       e.preventDefault();
       openModal();
+      getRecipientInfo();
     });
 });
 
