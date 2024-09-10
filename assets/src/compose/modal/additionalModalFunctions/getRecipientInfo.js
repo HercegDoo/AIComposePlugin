@@ -4,17 +4,19 @@ export function getRecipientInfo(){
         let recipientEmail = document.querySelector('li.recipient span.email');
         const recipientNameInputField = document.getElementById('recipient-name');
 
-        if(recipientName.textContent.includes('@')){
+        if(recipientName && recipientName.textContent.includes('@')){
                 recipientEmail = recipientName;
                 recipientName = '';
 
         }
 
-        let trimmedEmail = recipientEmail.textContent.replace(/[<>]/g, '');
-        recipientNameInputField.value = recipientName.textContent;
+        const trimmedEmail = recipientEmail ? recipientEmail.textContent.replace(/[<>]/g, '').trim(): "";
+        const nameText = recipientName ? recipientName.textContent : '';
+
+        recipientNameInputField.value = nameText;
 
         return {
-                recipientName: `${recipientName.textContent}`,
+                recipientName: `${nameText}`,
                 recipientEmail: `${trimmedEmail}`
         };
 
