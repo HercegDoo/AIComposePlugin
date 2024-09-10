@@ -40,6 +40,10 @@ $labels['ai_language_english'] = 'English (US)';
 $labels['ai_language_german'] = 'German (Deutsch)';
 $labels['ai_language_dutch'] = 'Dutch (Nederlands)';
 
+$labels['ai_error_sender_name'] = 'Geben Sie den Namen des Absenders ein!';
+$labels['ai_error_recipient_name'] = 'Geben Sie den Namen des Empfängers ein!';
+$labels['ai_error_instructions'] = 'Geben Sie Anweisungen ein!';
+
 $labels['ai_insert_email'] = 'E-Mail einfügen';
 $labels['ai_generate_email'] = 'E-Mail generieren';
 $labels['ai_generate_again'] = 'Erneut generieren';

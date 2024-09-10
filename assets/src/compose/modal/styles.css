@@ -285,6 +285,14 @@ html.dark-mode
   #aic-instructions::placeholder {
   color: #5e5e5e;
 }
+.parsley-errors-list {
+  color: red; /* Boja teksta poruke greške */
+  font-size: 0.9rem; /* Veličina fonta poruke greške */
+  margin-top: 0.25rem; /* Razmak iznad poruke greške */
+  display: block; /* Prikaz poruke kao blok element */
+  list-style-type: none;
+  padding: 0;
+}
 
 .xdialog-mask .xdialog-box .xdialog-title .xdialog-close {
   position: absolute;

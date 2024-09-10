@@ -60,7 +60,7 @@ export function createRecipientPropbox() {
       </label>
       <span class="xinfo right"><div>${translation("ai_tip_to")}</div></span>
   </div>
-  <input type="text" id="recipient-name" class="form-control">`;
+  <input type="text" id="recipient-name" class="form-control" data-parsley-required="true" >`;
 
   return recipientPropbox;
 }
@@ -74,7 +74,7 @@ export function createSenderPropbox() {
       </label>
      <span class="xinfo"><div>${translation("ai_tip_from")}</div></span> 
   </div>
-  <input type="text" id="sender-name" class="form-control">`;
+  <input type="text" id="sender-name" class="form-control" data-parsley-required="true" >`;
 
   return senderPropbox;
 }
