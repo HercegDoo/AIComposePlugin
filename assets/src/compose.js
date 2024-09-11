@@ -11,10 +11,10 @@ import {getPreviousConversation} from "./compose/modal/additionalModalFunctions/
 
 document.addEventListener("DOMContentLoaded", function () {
   createButtonInToolbarMenu();
+  getPreviousConversation();
 
-getPreviousConversation();
 
-  document
+    document
     .getElementById("aicp-prompt-open-button")
     .addEventListener("click", (e) => {
       e.preventDefault();

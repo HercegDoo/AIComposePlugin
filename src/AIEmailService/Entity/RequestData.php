@@ -102,9 +102,10 @@ class RequestData
         return $this;
     }
 
-    public function setSubject(string $subject):self
+    public function setSubject(string $subject): self
     {
         $this->subject = $subject;
+
         return $this;
     }
 
