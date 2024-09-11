@@ -1,7 +1,8 @@
 import {getPreviousConversation} from "./getPreviousConversation";
-import { getSelectedText } from "./checkSelectedText";
-import {getRecipientInfo} from "./getRecipientInfo";
+import {getRecipientInfo} from "./recipientDataHandler";
 import {getSenderInfo, processSenderData} from "./senderDataHandler";
+import {fieldsValid} from "./fieldsValidation";
+import {getSubject} from "./subjectHandler";
 
 
 export function showRequestData() {
@@ -14,27 +15,28 @@ export function showRequestData() {
   const languageElement = document.getElementById("aic-language");
   const instructionsElement = document.getElementById("aic-instructions");
   const previousConversation = getPreviousConversation();
-  const previousGeneratedEmailElement = document.getElementById("aic-email");
   const recipientInfo = getRecipientInfo();
   const senderInfo = processSenderData(getSenderInfo());
+  const subject = getSubject();
 
   generateEmailButton.addEventListener("click", () => {
-    const textForFixing = getSelectedText();
 
-    const requestData = {
-      senderName: `${senderNameElement.value}`,
-      recipientName: `${recipientNameElement.value}`,
-      instructions: `${instructionsElement.value}`,
-      style: `${styleElement.value}`,
-      length: `${lengthElement.value}`,
-      creativity: `${creativityElement.value}`,
-      language: `${languageElement.value}`,
-      previousConversation: `${previousConversation}`,
-      previousGeneratedEmail: `${previousGeneratedEmailElement.value}`,
-      textForFixing: `${textForFixing}`,
-      recipientEmail: `${recipientInfo.recipientEmail}`,
-      senderEmail: `${senderInfo.senderEmail}`
-    };
-    console.log(requestData);
+    if(fieldsValid()){
+      const requestData = {
+        senderName: `${senderNameElement.value}`,
+        recipientName: `${recipientNameElement.value}`,
+        instructions: `${instructionsElement.value}`,
+        style: `${styleElement.value}`,
+        length: `${lengthElement.value}`,
+        creativity: `${creativityElement.value}`,
+        language: `${languageElement.value}`,
+        previousConversation: `${previousConversation}`,
+        recipientEmail: `${recipientInfo.recipientEmail}`,
+        senderEmail: `${senderInfo.senderEmail}`,
+        subject: `${subject}`
+      };
+      console.log(requestData);
+    }
+
   });
 }

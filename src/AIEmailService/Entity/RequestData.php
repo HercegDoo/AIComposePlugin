@@ -21,6 +21,8 @@ class RequestData
     private ?string $previousGeneratedEmail = null;
     private ?string $previousConversation = null;
 
+    private ?string $subject = null;
+
     private function __construct(string $recipientName, string $senderName, string $instruction, ?string $style, ?string $length, ?string $creativity, ?string $language)
     {
         $this->recipientName = $recipientName;
@@ -100,6 +102,12 @@ class RequestData
         return $this;
     }
 
+    public function setSubject(string $subject):self
+    {
+        $this->subject = $subject;
+        return $this;
+    }
+
     public function setFixText(?string $previousGeneratedEmail, string $fixText): self
     {
         $this->previousGeneratedEmail = $previousGeneratedEmail;
@@ -170,6 +178,11 @@ class RequestData
     public function getFixText(): ?string
     {
         return $this->fixText;
+    }
+
+    public function getSubject(): ?string
+    {
+        return $this->subject;
     }
 
     public function getPreviousGeneratedEmail(): ?string

@@ -41,7 +41,7 @@ $labels['ai_language_german'] = 'German (Deutsch)';
 $labels['ai_language_dutch'] = 'Dutch (Nederlands)';
 
 $labels['ai_error_sender_name'] = 'Unesite ime pošiljatelja!';
-$labels['ai_error_recipient_name'] = 'Unesite ime primatelja!';
+$labels['ai_error_recipient_name'] = ' Ime primatelja prazno (Opcionalno)';
 $labels['ai_error_instructions'] = 'Unesite upute!';
 
 $labels['ai_insert_email'] = 'Umetni e-mail';

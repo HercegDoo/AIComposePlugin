@@ -40,3 +40,11 @@ export function validateFields() {
         }
     });
 }
+
+export function fieldsValid() {
+const senderNameElement = document.getElementById('sender-name');
+const instructionsElement = document.getElementById('aic-instructions');
+
+    return senderNameElement.value !== ""  && instructionsElement.value !== "";
+}
+

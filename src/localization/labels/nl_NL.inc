@@ -41,7 +41,7 @@ $labels['ai_language_german'] = 'German (Deutsch)';
 $labels['ai_language_dutch'] = 'Dutch (Nederlands)';
 
 $labels['ai_error_sender_name'] = 'Voer de afzendernaam in!';
-$labels['ai_error_recipient_name'] = 'Voer de ontvangernaam in!';
+$labels['ai_error_recipient_name'] = 'Ontvangernaam is leeg (Optioneel)';
 $labels['ai_error_instructions'] = 'Voer instructies in!';
 
 $labels['ai_insert_email'] = 'E-mail invoegen';
