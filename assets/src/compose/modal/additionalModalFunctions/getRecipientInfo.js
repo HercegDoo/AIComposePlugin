@@ -12,7 +12,6 @@ export function getRecipientInfo() {
                 recipientName = '';
         }
 
-        // Postavi recipient name input field ako postoji ime
         if (recipientName) {
                 recipientNameInputField.value = recipientName;
         }

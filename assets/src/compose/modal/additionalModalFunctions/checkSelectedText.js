@@ -1,4 +1,4 @@
-let selectedTextMy = "";
+let savedSelectedText = "";
 
 export function checkSelectedText() {
   const textarea = document.querySelector("#aic-email");
@@ -14,7 +14,7 @@ export function checkSelectedText() {
       : "";
 
     if (isTextSelected) {
-      selectedTextMy = selectedText;
+      savedSelectedText = selectedText;
     }
 
     fixSelectedTextButton.classList.toggle("disabled", !isTextSelected);
@@ -46,5 +46,5 @@ export function checkSelectedText() {
 }
 
 export function getSelectedText() {
-  return selectedTextMy;
+  return savedSelectedText;
 }

@@ -20,28 +20,29 @@ export function getSenderInfo(){
 }
 
 export function processSenderData(senderInfo) {
-    // Promijenjeni regex koji traži ime i email
     const senderNameInputField =  document.getElementById('sender-name');
     const match = senderInfo.match(/^(.+?)\s+(.+@.+)$/);
     let senderName;
-    let sendereEmail;
+    let senderEmail;
 
     if (match) {
+        //Prvi slucaj: ime + email
         senderName = match[1].trim();
         let emailCandidate = match[2].trim();
 
-        sendereEmail = emailCandidate.replace(/[<>]/g, '').trim();
+        senderEmail = emailCandidate.replace(/[<>]/g, '').trim();
         senderNameInputField.value = senderName;
     } else if (senderInfo.includes('@')) {
-        sendereEmail = senderInfo.replace(/[<>]/g, '').trim(); // Provjeri i ukloni < i >, te trimuj
+        //Drugi slucaj: samo email
+        senderEmail = senderInfo.replace(/[<>]/g, '').trim(); // Provjeri i ukloni < i >, te trimuj
     } else {
-        // Treći slučaj: "Harun"
+        // Treći slucaj: samo ime
         senderName = senderInfo.trim();
         senderNameInputField.value = senderName;
     }
 
    return {
         senderName: `${senderName}`,
-        senderEmail: `${sendereEmail}`
+        senderEmail: `${senderEmail}`
    }
 }
