@@ -1,6 +1,8 @@
-import { getPreviousConversation } from "../../../compose";
+import {getPreviousConversation} from "./getPreviousConversation";
 import { getSelectedText } from "./checkSelectedText";
 import {getRecipientInfo} from "./getRecipientInfo";
+import {getSenderInfo, processSenderData} from "./senderDataHandler";
+
 
 export function showRequestData() {
   const generateEmailButton = document.getElementById("generate-email-button");
@@ -13,6 +15,8 @@ export function showRequestData() {
   const instructionsElement = document.getElementById("aic-instructions");
   const previousConversation = getPreviousConversation();
   const previousGeneratedEmailElement = document.getElementById("aic-email");
+  const recipientInfo = getRecipientInfo();
+  const senderInfo = processSenderData(getSenderInfo());
 
   generateEmailButton.addEventListener("click", () => {
     const textForFixing = getSelectedText();
@@ -28,7 +32,8 @@ export function showRequestData() {
       previousConversation: `${previousConversation}`,
       previousGeneratedEmail: `${previousGeneratedEmailElement.value}`,
       textForFixing: `${textForFixing}`,
-      recipientEmail: `${getRecipientInfo().recipientEmail}`
+      recipientEmail: `${recipientInfo.recipientEmail}`,
+      senderEmail: `${senderInfo.senderEmail}`
     };
     console.log(requestData);
   });

@@ -1,23 +1,24 @@
-export function getRecipientInfo(){
-
-        let recipientName = document.querySelector('li.recipient span.name');
-        let recipientEmail = document.querySelector('li.recipient span.email');
+export function getRecipientInfo() {
+        const recipientNameElement = document.querySelector('li.recipient span.name');
+        const recipientEmailElement = document.querySelector('li.recipient span.email');
         const recipientNameInputField = document.getElementById('recipient-name');
 
-        if(recipientName && recipientName.textContent.includes('@')){
+        let recipientName = recipientNameElement ? recipientNameElement.textContent.trim() : '';
+        let recipientEmail = recipientEmailElement ? recipientEmailElement.textContent.replace(/[<>]/g, '').trim() : '';
+
+        // Ako recipientName sadrži '@', tretiraj ga kao email
+        if (recipientName.includes('@')) {
                 recipientEmail = recipientName;
                 recipientName = '';
-
         }
 
-        const trimmedEmail = recipientEmail ? recipientEmail.textContent.replace(/[<>]/g, '').trim(): "";
-        const nameText = recipientName ? recipientName.textContent : '';
-
-        recipientNameInputField.value = nameText;
+        // Postavi recipient name input field ako postoji ime
+        if (recipientName) {
+                recipientNameInputField.value = recipientName;
+        }
 
         return {
-                recipientName: `${nameText}`,
-                recipientEmail: `${trimmedEmail}`
+                recipientName,
+                recipientEmail
         };
-
 }
