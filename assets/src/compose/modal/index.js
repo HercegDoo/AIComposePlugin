@@ -3,7 +3,7 @@ import { createDialogContents } from "./createDialogContents.js";
 import { checkSelectedText } from "./additionalModalFunctions/checkSelectedText";
 import { regulateHelpModal } from "./additionalModalFunctions/regulateHelpModal";
 import {translation, translation as t} from "../../utils";
-import {showRequestData} from "./additionalModalFunctions/createRequestObject";
+import {sendRequestData} from "./additionalModalFunctions/createRequestObject";
 import {validateFields} from "./additionalModalFunctions/fieldsValidation";
 
 export function createComposeModal() {
@@ -44,7 +44,7 @@ export function createComposeModal() {
 
   document.body.appendChild(dialogMask);
   validateFields();
-  showRequestData();
+  sendRequestData();
   const instructions = document.getElementById("aic-instructions");
   instructions.placeholder = translation("ai_instructions_placeholder");
   checkSelectedText();

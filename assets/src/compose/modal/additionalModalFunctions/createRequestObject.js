@@ -5,7 +5,7 @@ import {fieldsValid} from "./fieldsValidation";
 import {getSubject} from "./subjectHandler";
 
 
-export function showRequestData() {
+export function sendRequestData() {
   const generateEmailButton = document.getElementById("generate-email-button");
   const senderNameElement = document.getElementById("sender-name");
   const recipientNameElement = document.getElementById("recipient-name");
@@ -22,7 +22,8 @@ export function showRequestData() {
   generateEmailButton.addEventListener("click", () => {
 
     if(fieldsValid()){
-      const requestData = {
+
+      rcmail.http_post('plugin.AIComposePlugin_GenereteEmailAction', {
         senderName: `${senderNameElement.value}`,
         recipientName: `${recipientNameElement.value}`,
         instructions: `${instructionsElement.value}`,
@@ -34,9 +35,10 @@ export function showRequestData() {
         recipientEmail: `${recipientInfo.recipientEmail}`,
         senderEmail: `${senderInfo.senderEmail}`,
         subject: `${subject}`
-      };
-      console.log(requestData);
+      }, true);
     }
+
+
 
   });
 }
