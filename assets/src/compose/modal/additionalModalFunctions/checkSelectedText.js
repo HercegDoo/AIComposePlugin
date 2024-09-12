@@ -1,3 +1,5 @@
+let savedSelectedText = "";
+
 export function checkSelectedText() {
   const textarea = document.querySelector("#aic-email");
   const fixSelectedTextButton = document.getElementById("fixSelectedText");
@@ -7,8 +9,13 @@ export function checkSelectedText() {
     const end = textarea.selectionEnd;
 
     const isTextSelected = start !== end;
-    const selectedText = textarea.value.substring(start, end);
+    const selectedText = isTextSelected
+      ? textarea.value.substring(start, end)
+      : "";
 
+    if (isTextSelected) {
+      savedSelectedText = selectedText;
+    }
 
     fixSelectedTextButton.classList.toggle("disabled", !isTextSelected);
     fixSelectedTextButton.toggleAttribute("disabled", !isTextSelected);
@@ -23,15 +30,21 @@ export function checkSelectedText() {
   textarea.addEventListener("keyup", checkSelection);
   textarea.addEventListener("input", checkSelection);
 
-  document.addEventListener('selectionchange', () => {
-    if(document.activeElement === textarea){
+  document.addEventListener("selectionchange", () => {
+    if (document.activeElement === textarea) {
       checkSelection();
     }
-  })
-  document.addEventListener('click', (e)=>{
+  });
+
+  //Klik van textarea
+  document.addEventListener("click", (e) => {
     e.stopPropagation();
-    if(!textarea.contains(e.target)){
+    if (!textarea.contains(e.target)) {
       disableButton();
     }
-  })
+  });
+}
+
+export function getSelectedText() {
+  return savedSelectedText;
 }

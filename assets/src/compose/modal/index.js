@@ -3,8 +3,8 @@ import { createDialogContents } from "./createDialogContents.js";
 import { checkSelectedText } from "./additionalModalFunctions/checkSelectedText";
 import { regulateHelpModal } from "./additionalModalFunctions/regulateHelpModal";
 import {translation, translation as t} from "../../utils";
-
-
+import {showRequestData} from "./additionalModalFunctions/createRequestObject";
+import {validateFields} from "./additionalModalFunctions/fieldsValidation";
 
 export function createComposeModal() {
   const dialogMask = document.createElement("div");
@@ -18,7 +18,7 @@ export function createComposeModal() {
 
   const dialogTitle = document.createElement("div");
   dialogTitle.className = "xdialog-title";
-  dialogTitle.textContent = t('ai_dialog_title');
+  dialogTitle.textContent = t("ai_dialog_title");
 
   const closeButton = document.createElement("button");
   closeButton.className = "xdialog-close btn btn-secondary";
@@ -32,7 +32,6 @@ export function createComposeModal() {
 
   dialogMask.appendChild(dialogBox);
 
-
   closeButton.addEventListener("click", function () {
     document.body.removeChild(dialogMask);
   });
@@ -44,8 +43,10 @@ export function createComposeModal() {
   });
 
   document.body.appendChild(dialogMask);
-  const instructions = document.getElementById('aic-instructions');
-  instructions.placeholder=translation('ai_instructions_placeholder');
+  validateFields();
+  showRequestData();
+  const instructions = document.getElementById("aic-instructions");
+  instructions.placeholder = translation("ai_instructions_placeholder");
   checkSelectedText();
   regulateHelpModal();
 

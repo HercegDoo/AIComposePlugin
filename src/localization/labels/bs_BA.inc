@@ -6,7 +6,7 @@ $labels['ai_dialog_button_text'] = 'AI';
 $labels['ai_dialog_button_title'] = 'Sastavite poruku pomoću AI';
 $labels['ai_dialog_title'] = 'Sastavite poruku pomoću AI';
 
-$labels['ai_label_to'] = 'Ime primaoca';
+$labels['ai_label_to'] = 'Ime primatelja';
 $labels['ai_label_from'] = 'Ime pošiljaoca';
 $labels['ai_label_style'] = 'Stil';
 $labels['ai_label_length'] = 'Dužina';
@@ -39,6 +39,10 @@ $labels['ai_language_croatian'] = 'Croatian (Hrvatski)';
 $labels['ai_language_english'] = 'English (US)';
 $labels['ai_language_german'] = 'German (Deutsch)';
 $labels['ai_language_dutch'] = 'Dutch (Nederlands)';
+
+$labels['ai_error_sender_name'] = 'Unesite ime pošiljatelja!';
+$labels['ai_error_recipient_name'] = 'Ime primatelja prazno (Opcionalno)';
+$labels['ai_error_instructions'] = 'Unesite instrukciju!';
 
 $labels['ai_insert_email'] = 'Umetni e-mail';
 $labels['ai_generate_email'] = 'Generiši e-mail';
