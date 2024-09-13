@@ -16,37 +16,34 @@ abstract class AbstractAction
 
     public static function register(): void
     {
-        $actionClass = get_called_class();
+        $actionClass = static::class;
         $action = new $actionClass();
         self::$plugin->register_action(self::getActionSlug(), [$action, 'requestHandler']);
     }
 
-
     public static function getActionSlug(): string
     {
-        $fullClassName = get_called_class();
+        $fullClassName = static::class;
+
         return 'plugin.AIComposePlugin_' . substr((string) strrchr($fullClassName, '\\'), 1);
     }
-
-    abstract protected function handler(): void;
-
 
     public function requestHandler(): void
     {
         $this->validate();
 
-       if ($this->hasErrors()) {
-           foreach ($this->getErrors() as $error) {
-               $this->rcmail->output->show_message($error, 'error');
-           }
+        if ($this->hasErrors()) {
+            foreach ($this->getErrors() as $error) {
+                $this->rcmail->output->show_message($error, 'error');
+            }
 
-           // Prekini izvršavanje ako su podaci nevalidni
-           $this->rcmail->output->send();
-           return;
-       }
+            // Prekini izvršavanje ako su podaci nevalidni
+            $this->rcmail->output->send();
 
-       $this->handler();
+            return;
+        }
 
+        $this->handler();
     }
 
     public function hasErrors(): bool
@@ -55,12 +52,14 @@ abstract class AbstractAction
     }
 
     /**
-     * @return  string[]
+     * @return string[]
      */
     public function getErrors(): array
     {
         return $this->errors;
     }
+
+    abstract protected function handler(): void;
 
     /**
      * @param string[] $errors
@@ -72,13 +71,12 @@ abstract class AbstractAction
         return $this;
     }
 
-
     protected function setError(string $message): self
     {
         $this->setErrors([$message]);
+
         return $this;
     }
-
 
     abstract protected function validate(): void;
 }

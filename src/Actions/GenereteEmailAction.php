@@ -2,13 +2,26 @@
 
 namespace HercegDoo\AIComposePlugin\Actions;
 
-use HercegDoo\AIComposePlugin\Actions\AbstractAction;
+use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
-use rcube_utils;
-
+use HercegDoo\AIComposePlugin\AIEmailService\Request;
+use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 
 final class GenereteEmailAction extends AbstractAction
 {
+    private $senderName;
+    private $recipientName;
+    private $length;
+
+    private $style;
+    private $creativity;
+    private $language;
+    private $recipientEmail;
+    private $subject;
+    private $instructions;
+    private $senderEmail;
+
+    private $previousConversation;
 
     private RequestData $aiRequestData;
 
@@ -16,53 +29,124 @@ final class GenereteEmailAction extends AbstractAction
     {
         $this->preparePostData();
 
+        $email = AIEmail::generate($this->aiRequestData);
+        $response = $email->getBody();
 
+        // naci nacin da radis return u output
 
-        // ai generate email
+        // Postavite zaglavlje za JSON sadržaj
+        header('Content-Type: application/json');
 
-
-        //naci nacin da radis return u output
-
-
-        $this->rcmail->output->send([
-            'testporuka' => time()
+        sleep(4);
+        echo json_encode([
+            'test' => $response,
         ]);
-    }
-
-    private function preparePostData(): void
-    {
-
-
-        $senderName = rcube_utils::get_input_value('senderName', rcube_utils::INPUT_POST);;
-        $recipientName = rcube_utils::get_input_value('recipientName', rcube_utils::INPUT_POST);
-        $instructions = rcube_utils::get_input_value('instructions', rcube_utils::INPUT_POST);
-        $style = rcube_utils::get_input_value('style', rcube_utils::INPUT_POST);
-        $length = rcube_utils::get_input_value('length', rcube_utils::INPUT_POST);
-        $creativity = rcube_utils::get_input_value('creativity', rcube_utils::INPUT_POST);
-        $language = rcube_utils::get_input_value('language', rcube_utils::INPUT_POST);
-        $previousConversation = rcube_utils::get_input_value('previousConversation', rcube_utils::INPUT_POST);
-        $recipientEmail = rcube_utils::get_input_value('recipientEmail', rcube_utils::INPUT_POST);
-        $senderEmail = rcube_utils::get_input_value('senderEmail', rcube_utils::INPUT_POST);
-        $subject = rcube_utils::get_input_value('subject', rcube_utils::INPUT_POST);
-
-        $this->aiRequestData = RequestData::make($recipientName, $senderName, $instructions, $style, $length, $creativity, $language);
-        $this->aiRequestData->setSenderEmail($senderEmail)->setRecipientEmail($recipientEmail)->setSubject($subject);
-
-
-
-        // if send
+        exit;
     }
 
     protected function validate(): void
     {
-        $senderName = rcube_utils::get_input_value('senderName', rcube_utils::INPUT_POST);
-        if (empty($senderName)) {
-            $this->setError("Polje sender name obavezno");
+        $languages = array_values(Settings::getLanguages());
+        $lengths = array_values(Settings::getLengths());
+        $creativities = array_values(Settings::getCreativities());
+        $styles = array_values(Settings::getStyles());
+
+        $this->senderName = Request::postString('senderName');
+        $this->recipientName = Request::postString('recipientName');
+        $this->style = Request::postString('style');
+        $this->length = Request::postString('length');
+        $this->creativity = Request::postString('creativity');
+        $this->language = Request::postString('language');
+        $this->recipientEmail = Request::postString('recipientEmail');
+        $this->subject = Request::postString('subject');
+        $this->instructions = Request::postString('instructions');
+        $this->senderEmail = Request::postString('senderEmail');
+        $this->previousConversation = Request::postString('previousConversation');
+
+        $this->nameValidation($this->senderName, 'sender_name');
+        $this->nameValidation($this->recipientName, 'recipient_name');
+        $this->selectValidation($this->style, $styles, 'style');
+        $this->selectValidation($this->length, $lengths, 'length');
+        $this->selectValidation($this->creativity, $creativities, 'creativity');
+        $this->selectValidation($this->language, $languages, 'language');
+        $this->emailValidation($this->recipientEmail, 'recipient');
+        $this->emailValidation($this->senderEmail, 'sender');
+        $this->subjectValidation($this->subject);
+        $this->instructionsValidation($this->instructions);
+    }
+
+    private function preparePostData(): void
+    {
+        $this->aiRequestData = RequestData::make($this->recipientName, $this->senderName, $this->instructions, $this->style, $this->length, $this->creativity, $this->language);
+
+        $this->aiRequestData->setRecipientEmail($this->recipientEmail);
+        $this->aiRequestData->setSenderEmail($this->senderEmail);
+        $this->aiRequestData->setPreviousConversation($this->previousConversation);
+
+        // if send
+    }
+
+    private function hasNoLetters(string $string): bool
+    {
+        return !preg_match('/[a-zA-Z]/', $string);
+    }
+
+    private function nameValidation(?string $name, string $field): void
+    {
+        if (empty($name) && $field === 'recipient_name') {
+            $this->recipientName = '';
         }
 
-        if (strlen($senderName) < 3) {
-            $this->setError("Polje sender name mora biti minimlano 3 karaktera");
+        if (empty($name) && $field !== 'recipient_name') {
+            $this->setError($this->translation('ai_validation_error_sender_name_mandatory'));
         }
 
+        if ($this->hasNoLetters((string) $name) && \strlen((string) $name) > 1) {
+            $this->setError($this->translation('ai_validation_error_invalid_' . $field . '_text'));
+        }
+
+        if (!empty($name) && \strlen($name) < 3) {
+            $this->setError($this->translation('ai_validation_error_not_enough_characters_' . $field));
+        }
+    }
+
+    /**
+     * @param string[] $originalOptionsArray
+     */
+    private function selectValidation(?string $selectValue, array $originalOptionsArray, string $field): void
+    {
+        (string) $selectValue = $field === 'language' ? ucfirst((string) $selectValue) : $selectValue;
+        if (!\in_array($selectValue, $originalOptionsArray, true)) {
+            $this->setError($this->translation('ai_validation_error_invalid_' . $field));
+        }
+    }
+
+    private function emailValidation(?string $email, string $emailParticipant): void
+    {
+        if ((string) $email !== '' && !\rcube_utils::check_email((string) $email)) {
+            $this->setError($this->translation('ai_validation_error_invalid_' . $emailParticipant . '_email_address'));
+        }
+    }
+
+    private function subjectValidation(?string $subject): void
+    {
+        if (!empty($subject) && $this->hasNoLetters($subject)) {
+            $this->setError($this->translation('ai_validation_error_invalid_input_subject'));
+        }
+    }
+
+    private function instructionsValidation(?string $instructions): void
+    {
+        if ($this->hasNoLetters((string) $instructions)) {
+            $this->setError($this->translation('ai_validation_error_invalid_input_instructions'));
+        }
+        if (\strlen((string) $instructions) < 2) {
+            $this->setError($this->translation('ai_validation_error_not_enough_characters_instruction'));
+        }
+    }
+
+    private function translation(string $key): string
+    {
+        return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
     }
 }

@@ -18,11 +18,13 @@ export function sendRequestData() {
   const recipientInfo = getRecipientInfo();
   const senderInfo = processSenderData(getSenderInfo());
   const subject = getSubject();
+  const textarea = document.getElementById('aic-email');
 
   generateEmailButton.addEventListener("click", () => {
 
     if(fieldsValid()){
-
+      const lock = rcmail.set_busy(true, 'Genrisanje');
+      generateEmailButton.setAttribute('disabled', 'disabled');
       rcmail.http_post('plugin.AIComposePlugin_GenereteEmailAction', {
         senderName: `${senderNameElement.value}`,
         recipientName: `${recipientNameElement.value}`,
@@ -35,7 +37,11 @@ export function sendRequestData() {
         recipientEmail: `${recipientInfo.recipientEmail}`,
         senderEmail: `${senderInfo.senderEmail}`,
         subject: `${subject}`
-      }, true);
+      }, lock).done(  function(data) { textarea.value = data['test']; }).always(  function(data) {
+
+        rcmail.set_busy(false, '', lock)
+        generateEmailButton.removeAttribute('disabled');
+      });
     }
 
 

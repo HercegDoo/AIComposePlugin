@@ -35,4 +35,3 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
         $this->add_texts('src/localization/labels/', true);
     }
 }
-
