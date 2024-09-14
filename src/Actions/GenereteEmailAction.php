@@ -9,19 +9,19 @@ use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 
 final class GenereteEmailAction extends AbstractAction
 {
-    private $senderName;
-    private $recipientName;
-    private $length;
+    private ?string $senderName;
+    private ?string $recipientName;
+    private ?string $length;
 
-    private $style;
-    private $creativity;
-    private $language;
-    private $recipientEmail;
-    private $subject;
-    private $instructions;
-    private $senderEmail;
+    private ?string $style;
+    private ?string $creativity;
+    private ?string $language;
+    private ?string $recipientEmail;
+    private ?string $subject;
+    private ?string $instructions;
+    private ?string $senderEmail;
 
-    private $previousConversation;
+    private ?string $previousConversation;
 
     private RequestData $aiRequestData;
 
@@ -37,7 +37,6 @@ final class GenereteEmailAction extends AbstractAction
         // Postavite zaglavlje za JSON sadržaj
         header('Content-Type: application/json');
 
-        sleep(4);
         echo json_encode([
             'test' => $response,
         ]);
@@ -77,13 +76,11 @@ final class GenereteEmailAction extends AbstractAction
 
     private function preparePostData(): void
     {
-        $this->aiRequestData = RequestData::make($this->recipientName, $this->senderName, $this->instructions, $this->style, $this->length, $this->creativity, $this->language);
+        $this->aiRequestData = RequestData::make((string) $this->recipientName, (string) $this->senderName, (string) $this->instructions, $this->style, $this->length, $this->creativity, $this->language);
 
         $this->aiRequestData->setRecipientEmail($this->recipientEmail);
         $this->aiRequestData->setSenderEmail($this->senderEmail);
         $this->aiRequestData->setPreviousConversation($this->previousConversation);
-
-        // if send
     }
 
     private function hasNoLetters(string $string): bool
@@ -115,7 +112,7 @@ final class GenereteEmailAction extends AbstractAction
      */
     private function selectValidation(?string $selectValue, array $originalOptionsArray, string $field): void
     {
-        (string) $selectValue = $field === 'language' ? ucfirst((string) $selectValue) : $selectValue;
+        $selectValue = $field === 'language' ? ucfirst((string) $selectValue) : $selectValue;
         if (!\in_array($selectValue, $originalOptionsArray, true)) {
             $this->setError($this->translation('ai_validation_error_invalid_' . $field));
         }
@@ -123,7 +120,7 @@ final class GenereteEmailAction extends AbstractAction
 
     private function emailValidation(?string $email, string $emailParticipant): void
     {
-        if ((string) $email !== '' && !\rcube_utils::check_email((string) $email)) {
+        if (!empty($email) && !\rcube_utils::check_email($email)) {
             $this->setError($this->translation('ai_validation_error_invalid_' . $emailParticipant . '_email_address'));
         }
     }
@@ -137,10 +134,10 @@ final class GenereteEmailAction extends AbstractAction
 
     private function instructionsValidation(?string $instructions): void
     {
-        if ($this->hasNoLetters((string) $instructions)) {
+        if (!empty($instructions) && $this->hasNoLetters($instructions)) {
             $this->setError($this->translation('ai_validation_error_invalid_input_instructions'));
         }
-        if (\strlen((string) $instructions) < 2) {
+        if (!empty($instructions) && \strlen($instructions) < 2) {
             $this->setError($this->translation('ai_validation_error_not_enough_characters_instruction'));
         }
     }

@@ -7,6 +7,9 @@ abstract class AbstractAction
     public static \rcube_plugin $plugin;
     protected \rcmail $rcmail;
 
+    /**
+     * @var string[]
+     */
     private array $errors = [];
 
     public function __construct()

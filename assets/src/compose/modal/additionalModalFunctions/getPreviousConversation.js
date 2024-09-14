@@ -1,29 +1,26 @@
-
 let previousConversation = "";
 let editorHTML;
 
-export function getPreviousConversation(){
+export function getPreviousConversation() {
+  if (editorHTML) {
+    const value = editorHTML?.getContent({ format: "text" });
 
-    if (editorHTML) {
-        const value = editorHTML?.getContent({ format: 'text' });
-
-        if (value) {
-            return value;
-        }
+    if (value) {
+      return value;
     }
+  }
 
-    //Uzimanje prethodnog maila ako postoji
-    const previousConversationTextareaElement = document.querySelector(
-        "#composebodycontainer textarea"
-    );
-    if (previousConversationTextareaElement.value.trim() !== "") {
-        previousConversation = previousConversationTextareaElement.value.trim();
-    }
-    else previousConversation = "";
+  //Uzimanje prethodnog maila ako postoji
+  const previousConversationTextareaElement = document.querySelector(
+    "#composebodycontainer textarea"
+  );
+  if (previousConversationTextareaElement.value.trim() !== "") {
+    previousConversation = previousConversationTextareaElement.value.trim();
+  } else previousConversation = "";
 
-    return previousConversation;
+  return previousConversation;
 }
 
-rcmail.addEventListener('editor-load', (e) => {
-        editorHTML = e?.ref?.editor;
-    })
+rcmail.addEventListener("editor-load", (e) => {
+  editorHTML = e?.ref?.editor;
+});

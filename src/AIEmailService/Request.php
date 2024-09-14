@@ -24,12 +24,7 @@ final class Request
         return self::input($key, $default, \rcube_utils::INPUT_GET);
     }
 
-    /**
-     * @param null|string $default
-     *
-     * @return null|string
-     */
-    public static function postString(string $key, $default = null)
+    public static function postString(string $key, ?string $default = null): ?string
     {
         $data = self::post($key, $default);
         if (\is_array($data)) {
@@ -44,7 +39,7 @@ final class Request
      *
      * @return null|array|string
      */
-    private static function input(string $key, $default = null, string $source = \rcube_utils::INPUT_POST)
+    private static function input(string $key, $default = null, int $source = \rcube_utils::INPUT_POST)
     {
         $data = \rcube_utils::get_input_value($key, $source);
         $data = $data === '' ? null : $data;
