@@ -3,7 +3,7 @@ import { getRecipientInfo } from "./recipientDataHandler";
 import { getSenderInfo, processSenderData } from "./senderDataHandler";
 import { fieldsValid } from "./fieldsValidation";
 import { getSubject } from "./subjectHandler";
-import { translation } from "../../../utils";
+
 
 export function sendRequestData() {
   const generateEmailButton = document.getElementById("generate-email-button");
@@ -45,9 +45,6 @@ export function sendRequestData() {
         .done(function (data) {
           textarea.value =
             data && data["respond"] !== undefined ? data["respond"] : "";
-        })
-        .fail(function(jqXHR, textStatus, errorThrown,){
-         console.error(translation('ai_request_error'), textStatus, errorThrown);
         })
         .always(function (data) {
           rcmail.set_busy(false, "", lock);

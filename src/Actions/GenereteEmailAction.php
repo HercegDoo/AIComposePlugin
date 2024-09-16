@@ -27,17 +27,27 @@ final class GenereteEmailAction extends AbstractAction
 
     public function handler(): void
     {
-        $this->preparePostData();
-
-        $email = AIEmail::generate($this->aiRequestData);
-        $respond = $email->getBody();
-
-        // Postavite zaglavlje za JSON sadržaj
         header('Content-Type: application/json');
 
-        echo json_encode([
-            'respond' => $respond,
-        ]);
+        try {
+            $this->preparePostData();
+            $email = AIEmail::generate($this->aiRequestData);
+            $respond = $email->getBody();
+
+            echo json_encode([
+                'status' => 'success',
+                'respond' => $respond,
+            ]);
+        } catch (\Throwable $e) {
+            error_log('Error message: ' . $e->getMessage());
+            error_log('Error code: ' . $e->getCode());
+            error_log('Error file: ' . $e->getFile());
+            error_log('Error line: ' . $e->getLine());
+
+            $this->rcmail->output->show_message('Service unavailable. Please try again alter', 'error');
+            $this->rcmail->output->send();
+        }
+
         exit;
     }
 
