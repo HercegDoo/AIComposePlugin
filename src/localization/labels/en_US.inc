@@ -44,6 +44,8 @@ $labels['ai_error_sender_name'] = "Enter the sender's name!";
 $labels['ai_error_recipient_name'] = "Recipient's name is empty (Optional)";
 $labels['ai_error_instructions'] = 'Enter instructions!';
 
+$labels['ai_request_error'] = 'Error sending request:';
+
 $labels['ai_insert_email'] = 'Insert email';
 $labels['ai_generate_email'] = 'Generate email';
 $labels['ai_generate_again'] = 'Generate again';

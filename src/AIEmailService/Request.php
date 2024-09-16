@@ -5,9 +5,9 @@ namespace HercegDoo\AIComposePlugin\AIEmailService;
 final class Request
 {
     /**
-     * @param null|array|string $default
+     * @param null|array<string, mixed>|string $default
      *
-     * @return null|array|string
+     * @return null|array<string, mixed>|string
      */
     public static function post(string $key, $default = null)
     {
@@ -15,9 +15,9 @@ final class Request
     }
 
     /**
-     * @param null|array|string $default
+     * @param null|array<string, mixed>|string $default
      *
-     * @return null|array|string
+     * @return null|array<string, mixed>|string
      */
     public static function get(string $key, $default = null)
     {
@@ -35,9 +35,9 @@ final class Request
     }
 
     /**
-     * @param null|array|string $default
+     * @param null|array<string, mixed>|string $default
      *
-     * @return null|array|string
+     * @return null|array<string, mixed>|string
      */
     private static function input(string $key, $default = null, int $source = \rcube_utils::INPUT_POST)
     {

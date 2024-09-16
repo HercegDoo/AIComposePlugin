@@ -30,15 +30,13 @@ final class GenereteEmailAction extends AbstractAction
         $this->preparePostData();
 
         $email = AIEmail::generate($this->aiRequestData);
-        $response = $email->getBody();
-
-        // naci nacin da radis return u output
+        $respond = $email->getBody();
 
         // Postavite zaglavlje za JSON sadržaj
         header('Content-Type: application/json');
 
         echo json_encode([
-            'test' => $response,
+            'respond' => $respond,
         ]);
         exit;
     }
@@ -81,6 +79,7 @@ final class GenereteEmailAction extends AbstractAction
         $this->aiRequestData->setRecipientEmail($this->recipientEmail);
         $this->aiRequestData->setSenderEmail($this->senderEmail);
         $this->aiRequestData->setPreviousConversation($this->previousConversation);
+        $this->aiRequestData->setSubject((string) $this->subject);
     }
 
     private function hasNoLetters(string $string): bool

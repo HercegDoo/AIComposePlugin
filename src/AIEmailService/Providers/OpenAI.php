@@ -68,13 +68,13 @@ final class OpenAI extends AbstractProvider
 
     private function prompt(RequestData $requestData): string
     {
-        return "Write a {$requestData->getStyle()} email without a subject" .
-            ($requestData->getRecipientName() !== '' ? " to {$requestData->getRecipientName()}" : '') .
-            ($requestData->getSenderName() !== '' ? " from {$requestData->getSenderName()}" : '') . '.' .
-            " Email length: {$requestData->getLength()}." .
-            ($requestData->getLanguage() !== '-' ? " Email language: {$requestData->getLanguage()}." : '') .
-            " Email content: {$requestData->getInstruction()}." .
-
+        return "Create a {$requestData->getStyle()} email with the following specifications:" .
+            ($requestData->getSubject() !== '' ? "Subject: {$requestData->getSubject()}" : ' Without a subject') .
+            ($requestData->getRecipientName() !== '' ? "*Recipient: {$requestData->getRecipientName()}" : '') .
+            (" *Sender: {$requestData->getSenderName()}") .
+            (" *Language: {$requestData->getLanguage()}") .
+            (" *Length: {$requestData->getLength()}") .
+            (" *The email is about: {$requestData->getInstruction()}") .
             ($requestData->getFixText() ? " Write the same email as this {$requestData->getPreviousGeneratedEmail()} but change this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." : '') .
             ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '');
     }
