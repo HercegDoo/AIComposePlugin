@@ -44,7 +44,7 @@ final class GenereteEmailAction extends AbstractAction
             error_log('Error file: ' . $e->getFile());
             error_log('Error line: ' . $e->getLine());
 
-            $this->rcmail->output->show_message('Service unavailable. Please try again alter', 'error');
+            $this->rcmail->output->show_message($this->translation('ai_request_error'), 'error');
             $this->rcmail->output->send();
         }
     }

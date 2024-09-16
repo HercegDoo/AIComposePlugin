@@ -44,7 +44,7 @@ $labels['ai_error_sender_name'] = 'Voer de afzendernaam in!';
 $labels['ai_error_recipient_name'] = 'Ontvangernaam is leeg (Optioneel)';
 $labels['ai_error_instructions'] = 'Voer instructies in!';
 
-$labels['ai_request_error'] = 'Fout bij het verzenden van verzoek:';
+$labels['ai_request_error'] = 'Dienst niet beschikbaar. Probeer het later nog eens.';
 
 $labels['ai_insert_email'] = 'E-mail invoegen';
 $labels['ai_generate_email'] = 'E-mail genereren';
