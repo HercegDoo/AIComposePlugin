@@ -47,8 +47,6 @@ final class GenereteEmailAction extends AbstractAction
             $this->rcmail->output->show_message('Service unavailable. Please try again alter', 'error');
             $this->rcmail->output->send();
         }
-
-        exit;
     }
 
     protected function validate(): void

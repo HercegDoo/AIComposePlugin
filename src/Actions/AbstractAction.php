@@ -47,6 +47,7 @@ abstract class AbstractAction
         }
 
         $this->handler();
+        exit;
     }
 
     public function hasErrors(): bool
