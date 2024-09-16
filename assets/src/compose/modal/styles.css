@@ -286,17 +286,16 @@ html.dark-mode
   color: #5e5e5e;
 }
 .parsley-errors-list {
-  color: #CC3300; /* Boja teksta poruke greške */
+  color: #cc3300; /* Boja teksta poruke greške */
   font-size: 0.9rem; /* Veličina fonta poruke greške */
   margin-top: 0.25rem; /* Razmak iznad poruke greške */
   display: block; /* Prikaz poruke kao blok element */
   list-style-type: none;
   padding: 0;
-
 }
 
-#recipient-name + ul{
-  color: #E5B700;
+#recipient-name + ul {
+  color: #e5b700;
 }
 
 .xdialog-mask .xdialog-box .xdialog-title .xdialog-close {
@@ -349,7 +348,7 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   }
 }
 
-@media (max-width: 1024px) and (min-width: 350px) {
+@media (max-width: 1068px) and (min-width: 350px) {
   .xinfo {
     display: none;
   }

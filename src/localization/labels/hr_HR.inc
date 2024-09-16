@@ -44,6 +44,9 @@ $labels['ai_error_sender_name'] = 'Unesite ime pošiljatelja!';
 $labels['ai_error_recipient_name'] = ' Ime primatelja prazno (Opcionalno)';
 $labels['ai_error_instructions'] = 'Unesite upute!';
 
+$labels['ai_request_error'] = 'Usluga nije dostupna. Molimo pokušajte ponovo kasnije.
+';
+
 $labels['ai_insert_email'] = 'Umetni e-mail';
 $labels['ai_generate_email'] = 'Generiraj e-mail';
 $labels['ai_generate_again'] = 'Generiraj ponovo';

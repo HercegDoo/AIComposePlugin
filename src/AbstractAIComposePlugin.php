@@ -2,6 +2,7 @@
 
 namespace HercegDoo\AIComposePlugin;
 
+use HercegDoo\AIComposePlugin\Actions\AbstractAction;
 use HercegDoo\AIComposePlugin\Tasks\AbstractTask;
 
 abstract class AbstractAIComposePlugin extends \rcube_plugin
@@ -11,6 +12,8 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
     public function init(): void
     {
         $task = $this->api->task;
+        // register plugin attribute for actions, IMPORTNAT
+        AbstractAction::$plugin = $this;
 
         if (\is_string($task)) {
             $this->loadTranslations();

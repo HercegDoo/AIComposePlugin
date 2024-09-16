@@ -3,18 +3,18 @@ import {
   openModal,
 } from "./compose/buttonToToolbar";
 import "./compose/style.css";
-import {getRecipientInfo} from "./compose/modal/additionalModalFunctions/recipientDataHandler";
-import {getSenderInfo, processSenderData} from "./compose/modal/additionalModalFunctions/senderDataHandler";
-import {getPreviousConversation} from "./compose/modal/additionalModalFunctions/getPreviousConversation";
-
-
+import { getRecipientInfo } from "./compose/modal/additionalModalFunctions/recipientDataHandler";
+import {
+  getSenderInfo,
+  processSenderData,
+} from "./compose/modal/additionalModalFunctions/senderDataHandler";
+import { getPreviousConversation } from "./compose/modal/additionalModalFunctions/getPreviousConversation";
 
 document.addEventListener("DOMContentLoaded", function () {
   createButtonInToolbarMenu();
   getPreviousConversation();
 
-
-    document
+  document
     .getElementById("aicp-prompt-open-button")
     .addEventListener("click", (e) => {
       e.preventDefault();
@@ -23,4 +23,3 @@ document.addEventListener("DOMContentLoaded", function () {
       processSenderData(getSenderInfo());
     });
 });
-

@@ -44,6 +44,8 @@ $labels['ai_error_sender_name'] = 'Bitte geben Sie den Absendernamen ein!';
 $labels['ai_error_recipient_name'] = 'Empfängername leer (Optional)';
 $labels['ai_error_instructions'] = 'Geben Sie Anweisungen ein!';
 
+$labels['ai_request_error'] = 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal.';
+
 $labels['ai_insert_email'] = 'E-Mail einfügen';
 $labels['ai_generate_email'] = 'E-Mail generieren';
 $labels['ai_generate_again'] = 'Erneut generieren';
