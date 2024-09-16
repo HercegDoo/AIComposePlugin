@@ -51,6 +51,7 @@ final class OpenAI extends AbstractProvider
 
         $this->creativity = $this->creativityMap[Settings::getCreativity()];
         $prompt = $this->prompt($requestData);
+        error_log($prompt);
 
         $respond = $this->sendRequest($prompt);
 
@@ -69,8 +70,8 @@ final class OpenAI extends AbstractProvider
     private function prompt(RequestData $requestData): string
     {
         return "Create a {$requestData->getStyle()} email with the following specifications:" .
-            ($requestData->getSubject() !== '' ? "Subject: {$requestData->getSubject()}" : ' Without a subject') .
-            ($requestData->getRecipientName() !== '' ? "*Recipient: {$requestData->getRecipientName()}" : '') .
+            (!empty($requestData->getSubject()) ? "Subject: {$requestData->getSubject()}" : ' Without a subject') .
+            ($requestData->getRecipientName() !== '' ? " *Recipient: {$requestData->getRecipientName()}" : '') .
             (" *Sender: {$requestData->getSenderName()}") .
             (" *Language: {$requestData->getLanguage()}") .
             (" *Length: {$requestData->getLength()}") .
