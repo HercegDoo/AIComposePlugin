@@ -204,9 +204,8 @@ final class OpenAITest extends TestCase
         $OpenAi = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAi, 'prompt');
 
-
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail', 'professional', 'long', 'low', 'Spanish');
-        $requestData->setSubject("");
+        $requestData->setSubject('');
         $requestData->setFixText('dummyprevgenemail', 'fixThisExample');
         $requestData->setPreviousConversation('prevConvo');
 
@@ -218,7 +217,6 @@ final class OpenAITest extends TestCase
     public function testSendRequestSetters()
     {
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-
 
         $curlMock = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['setHeader', 'setOpts'])
