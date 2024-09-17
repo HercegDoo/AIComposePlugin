@@ -3,12 +3,13 @@ let savedSelectedText = "";
 export function checkSelectedText() {
   const textarea = document.querySelector("#aic-email");
   const fixSelectedTextButton = document.getElementById("fixSelectedText");
+  const instructionsTextArea = document.getElementById('aic-instructions');
 
   function checkSelection() {
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
 
-    const isTextSelected = start !== end;
+    const isTextSelected = start !== end && instructionsTextArea.value !== '';
     const selectedText = isTextSelected
       ? textarea.value.substring(start, end)
       : "";

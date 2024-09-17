@@ -5,6 +5,7 @@ import { regulateHelpModal } from "./additionalModalFunctions/regulateHelpModal"
 import { translation, translation as t } from "../../utils";
 import { sendRequestData } from "./additionalModalFunctions/createRequestObject";
 import { validateFields } from "./additionalModalFunctions/fieldsValidation";
+import { regulateFixTextModal } from "./additionalModalFunctions/regulateFixTextModal";
 
 export function createComposeModal() {
   const dialogMask = document.createElement("div");
@@ -49,6 +50,7 @@ export function createComposeModal() {
   instructions.placeholder = translation("ai_instructions_placeholder");
   checkSelectedText();
   regulateHelpModal();
+  regulateFixTextModal();
 
   $("select:not([multiple])", dialogMask).each(function () {
     UI.pretty_select(this);

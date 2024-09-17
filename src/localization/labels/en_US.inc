@@ -58,6 +58,10 @@ $labels['ai_button_fix_selected_text'] = 'Fix Selected Text';
 $labels['ai_help_title'] = 'Help & Examples';
 $labels['ai_help_use_example'] = '(Use this)';
 
+$labels['ai_fix_selected_text_title'] = 'Fix Selected Text';
+$labels['ai_selected_text'] = 'Selected Text';
+$labels['ai_fix_instructions'] = 'Correction Instructions';
+
 $labels['settings_menu_text'] = 'Artificial Intelligence';
 $labels['setting_default_options'] = 'Compose messages with AI';
 $labels['setting_ai_style'] = 'Style';

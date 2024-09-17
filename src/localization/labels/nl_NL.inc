@@ -58,6 +58,10 @@ $labels['ai_button_fix_selected_text'] = 'Geselecteerde Tekst Corrigeren';
 $labels['ai_help_title'] = 'Help & Voorbeelden';
 $labels['ai_help_use_example'] = '(Gebruik dit)';
 
+$labels['ai_fix_selected_text_title'] = 'Geselecteerde Tekst Corrigeren';
+$labels['ai_selected_text'] = 'Geselecteerde Tekst';
+$labels['ai_fix_instructions'] = 'Instructies voor Correctie';
+
 $labels['settings_menu_text'] = 'Kunstmatige Intelligentie';
 $labels['setting_default_options'] = 'Berichten samenstellen met AI';
 $labels['setting_ai_style'] = 'Stijl';
