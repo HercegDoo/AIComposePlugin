@@ -63,6 +63,9 @@ $labels['ai_fix_selected_text_title'] = 'Ispravi Odabrani Tekst';
 $labels['ai_selected_text'] = 'Odabrani Tekst';
 $labels['ai_fix_instructions'] = 'Upute za Ispravljanje';
 
+$labels['ai_generate_again'] = 'Generiraj ponovo';
+$labels['ai_fix_text_input_instructions'] = 'U ovom polju unesite detaljna objašnjenja ili upute o izmjenama koje želite napraviti na odabranom tekstu.';
+
 $labels['settings_menu_text'] = 'Umjetna Inteligencija';
 $labels['setting_default_options'] = 'Sastavljanje poruka s AI';
 $labels['setting_ai_style'] = 'Stil';

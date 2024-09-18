@@ -1,10 +1,12 @@
 import { fieldsValid } from "./fieldsValidation";
-import { getSelectedText } from "./checkSelectedText";
+import { getSelectedText } from "./selectedTextHandler";
 import { getRequestDataFields } from "./requestDataHandler";
 
 export function sendPostRequest(previousGeneratedEmail = "", instructionsElement =  document.getElementById("aic-instructions"), ){
   const generateEmailButton = document.getElementById("generate-email-button");
   const textarea = document.getElementById("aic-email");
+  const generateEmailSpan = document.getElementById('generate-email-span');
+  const generateAgainSpan = document.getElementById('generate-again-span');
 
   let requestData = getRequestDataFields();
   requestData = {
@@ -13,8 +15,6 @@ export function sendPostRequest(previousGeneratedEmail = "", instructionsElement
     instructions: `${instructionsElement.value}`,
     fixText: `${getSelectedText()}`
   }
-
-  console.log(requestData);
 
   if (fieldsValid()) {
     const lock = rcmail.set_busy(true, "Genrisanje");
@@ -42,6 +42,8 @@ export function sendPostRequest(previousGeneratedEmail = "", instructionsElement
       .done(function (data) {
         textarea.value =
           data && data["respond"] !== undefined ? data["respond"] : "";
+        generateEmailSpan.style.display = 'none';
+        generateAgainSpan.style.display = 'block';
       })
       .always(function (data) {
         rcmail.set_busy(false, "", lock);

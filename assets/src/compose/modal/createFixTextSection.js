@@ -12,17 +12,19 @@ export function createFixTextSection(){
 </div>
   
   <div id="fix-text-wrapper">
-  <div  class="fix-select-section" id="fix-text-selected">
-  <label for="selected-text">${translation('ai_selected_text')}</label>
-  <textarea class="form-control" name="selected-text" id="selected-text" cols="30" rows="10" disabled></textarea>
-</div>
-  <div class="fix-select-section" id="fix-text-instructions">
+  <div  class="fix-select-section" id="fix-text-instructions"> 
   <label for="selected-text">${translation('ai_fix_instructions')}</label>
-  <textarea class="form-control" name="fix-instructions" id="fix-instructions" cols="30" rows="10"></textarea>
+  <span class="xinfo right"><div>${translation("ai_fix_text_input_instructions")}</div></span>
+  <textarea class="form-control" name="fix-instructions" id="fix-instructions" cols="30" rows="10" ></textarea>
 </div>
 <div id="aic-fix-text-button-div">
-<button id="fix-text-generate-again" class ="btn btn-primary">Generate Again</button>
+<button id="fix-text-generate-again" class ="btn btn-primary">${translation('ai_generate_again')}</button>
 </div>
+  <div class="fix-select-section" id="fix-text-selected">
+  <label for="selected-text">${translation('ai_selected_text')}</label>
+  <div class="form-control"  id="selected-text" contenteditable="false"></div 
+</div>
+
   
 </div>`;
 

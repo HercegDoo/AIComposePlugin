@@ -1,10 +1,10 @@
-import { getSelectedText } from "./checkSelectedText";
+import { getFormattedPreviousGeneratedEmail } from "./selectedTextHandler";
 import { sendPostRequest } from "./sendPostRequest";
 
 
 export function regulateFixTextModal() {
   const fixTextContent = document.getElementById("aic-fix-text-section");
-  const fixSelectedTextBtn = document.getElementById("fixSelectedText");
+  const fixSelectedTextBtn = document.getElementById("fix-selected-text");
   const request = document.getElementById("aic-result");
   const result = document.getElementById("aic-request");
   const backBtn = document.getElementById("fix-text-back-btn");
@@ -12,7 +12,6 @@ export function regulateFixTextModal() {
   const previousGeneratedEmailTextarea = document.getElementById('aic-email');
   const generateAgain = document.getElementById('fix-text-generate-again');
   const fixInstructionsTextArea = document.getElementById('fix-instructions');
-
 
 
   fixSelectedTextBtn?.addEventListener("click", (e) => {
@@ -30,14 +29,14 @@ export function regulateFixTextModal() {
     request.setAttribute("hidden", "hidden");
     result.setAttribute("hidden", "hidden");
     fixTextContent.removeAttribute("hidden");
-    selectedTextTextarea.value = getSelectedText();
+    selectedTextTextarea.innerHTML =  getFormattedPreviousGeneratedEmail();
   }
 
   function closeFixTextModal() {
     request.removeAttribute("hidden");
     result.removeAttribute("hidden");
     fixTextContent.setAttribute("hidden", "true");
-    fixInstructionsTextArea.value = '';
+    fixInstructionsTextArea.textContent = '';
   }
 
   generateAgain.addEventListener('click', ()=>{

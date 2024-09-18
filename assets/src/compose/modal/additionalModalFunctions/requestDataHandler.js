@@ -20,8 +20,6 @@ export function getRequestDataFields(){
     creativity: `${creativityElement.value}`,
     language: `${languageElement.value}`,
     previousConversation: `${getPreviousConversation()}`,
-    recipientInfo: `${getRecipientInfo()}`,
-    senderInfo: `${getSenderInfo()}`,
     subject: `${getSubject()}`,
     recipientEmail: `${getRecipientInfo().recipientEmail}`,
     senderEmail: `${senderInfo.senderEmail}`

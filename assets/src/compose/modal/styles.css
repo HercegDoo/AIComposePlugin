@@ -332,15 +332,16 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   background: transparent !important;
 }
 
+#focused-selected-text{
+  color: #e5b700;
+  font-size: 1.1rem;
+}
+
 #fix-text-wrapper{
-  display: flex;
-  flex-direction: column;
+  height: 90%;
 }
 
 .fix-select-section{
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
   overflow-y: auto;
   padding: 1rem;
 }
@@ -348,6 +349,10 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
 .fix-text-header{
   position: relative;
   padding: 1rem;
+}
+
+#fix-text-instructions{
+  overflow-y: visible;
 }
 
 .fix-text-header button{
@@ -362,13 +367,30 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   text-align: center;
 }
 
-#selected-text{
+#fix-instructions{
   height: 40px;
 }
 
 #aic-fix-text-button-div{
 display: flex;
   justify-content: center;
+  padding: 10px 0;
+}
+
+#fix-text-selected{
+  height: 73%;
+}
+
+
+
+#selected-text{
+  height:92%;
+  white-space: pre-wrap;
+  overflow-y: scroll;
+}
+
+#aic-fix-text-section{
+ height: 100%;
 }
 
 @media (min-width: 500px) and (max-width: 1068px) {
@@ -400,6 +422,12 @@ display: flex;
 @media (max-width: 350px) {
   .xinfo {
     display: none;
+  }
+  .xdialog-mask .xdialog-box.full-screen{
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 /*# sourceMappingURL=styles.css.map */

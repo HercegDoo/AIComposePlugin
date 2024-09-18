@@ -62,6 +62,9 @@ $labels['ai_fix_selected_text_title'] = 'Fix Selected Text';
 $labels['ai_selected_text'] = 'Selected Text';
 $labels['ai_fix_instructions'] = 'Correction Instructions';
 
+$labels['ai_generate_again'] = 'Generate Again';
+$labels['ai_fix_text_input_instructions'] = 'In this field, enter detailed explanations or instructions about the changes you want to make to the selected text.';
+
 $labels['settings_menu_text'] = 'Artificial Intelligence';
 $labels['setting_default_options'] = 'Compose messages with AI';
 $labels['setting_ai_style'] = 'Style';
