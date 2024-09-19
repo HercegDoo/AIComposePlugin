@@ -7,6 +7,7 @@ export function sendPostRequest(previousGeneratedEmail = "", instructionsElement
   const textarea = document.getElementById("aic-email");
   const generateEmailSpan = document.getElementById('generate-email-span');
   const generateAgainSpan = document.getElementById('generate-again-span');
+  const insertEmailButton = document.getElementById('insert-email-button');
 
   let requestData = getRequestDataFields();
   requestData = {
@@ -19,6 +20,9 @@ export function sendPostRequest(previousGeneratedEmail = "", instructionsElement
   if (fieldsValid()) {
     const lock = rcmail.set_busy(true, "Genrisanje");
     generateEmailButton.setAttribute("disabled", "disabled");
+    if(!insertEmailButton.hasAttribute('hidden')){
+      insertEmailButton.setAttribute('disabled', 'disabled');
+    }
     rcmail
       .http_post(
         "plugin.AIComposePlugin_GenereteEmailAction",
@@ -44,6 +48,8 @@ export function sendPostRequest(previousGeneratedEmail = "", instructionsElement
           data && data["respond"] !== undefined ? data["respond"] : "";
         generateEmailSpan.style.display = 'none';
         generateAgainSpan.style.display = 'block';
+        insertEmailButton.removeAttribute('hidden');
+        insertEmailButton.removeAttribute('disabled');
       })
       .always(function (data) {
         rcmail.set_busy(false, "", lock);

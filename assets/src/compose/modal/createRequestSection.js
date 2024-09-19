@@ -36,7 +36,10 @@ export function createRequestSection() {
 
   const generateContainer = document.createElement("div");
   generateContainer.className = "generate-container";
-  generateContainer.innerHTML = `<button type="button" id="generate-email-button" class="btn btn-primary"">
+  generateContainer.innerHTML = ` <button type="button" id="insert-email-button" class="btn btn-success " hidden disabled>
+ <span>Insert Email</span>
+</button> 
+    <button type="button" id="generate-email-button" class="btn btn-primary">
       <span id="generate-email-span" >${translation("ai_generate_email")}</span>
       <span id="generate-again-span" style="display: none;">${translation('ai_generate_again')}</span>
   </button>

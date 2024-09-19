@@ -30,13 +30,13 @@ export function regulateFixTextModal() {
     result.setAttribute("hidden", "hidden");
     fixTextContent.removeAttribute("hidden");
     selectedTextTextarea.innerHTML =  getFormattedPreviousGeneratedEmail();
+    fixInstructionsTextArea.value = '';
   }
 
   function closeFixTextModal() {
     request.removeAttribute("hidden");
     result.removeAttribute("hidden");
     fixTextContent.setAttribute("hidden", "true");
-    fixInstructionsTextArea.textContent = '';
   }
 
   generateAgain.addEventListener('click', ()=>{

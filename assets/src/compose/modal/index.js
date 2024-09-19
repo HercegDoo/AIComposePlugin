@@ -6,6 +6,7 @@ import { translation, translation as t } from "../../utils";
 import { sendDefaultPostRequest } from "./additionalModalFunctions/defaultPostRequest";
 import { validateFields } from "./additionalModalFunctions/fieldsValidation";
 import { regulateFixTextModal } from "./additionalModalFunctions/regulateFixTextModal";
+import { insertEmail } from "./additionalModalFunctions/insertEmailHandler";
 
 export function createComposeModal() {
   const dialogMask = document.createElement("div");
@@ -46,6 +47,7 @@ export function createComposeModal() {
   document.body.appendChild(dialogMask);
   validateFields();
   sendDefaultPostRequest();
+  insertEmail();
   const instructions = document.getElementById("aic-instructions");
   instructions.placeholder = translation("ai_instructions_placeholder");
   checkSelectedText();
