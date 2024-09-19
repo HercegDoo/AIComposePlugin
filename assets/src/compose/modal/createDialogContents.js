@@ -1,6 +1,7 @@
 import { createRequestSection } from "./createRequestSection.js";
 import { createResultSection } from "./createResultSection.js";
 import { createHelpSection } from "./createHelpSection.js";
+import { createFixTextSection } from "./createFixTextSection";
 
 export function createDialogContents() {
   const dialogContents = document.createElement("div");
@@ -14,6 +15,9 @@ export function createDialogContents() {
 
   const helpDiv = createHelpSection();
   dialogContents.appendChild(helpDiv);
+
+  const fixText = createFixTextSection();
+  dialogContents.appendChild(fixText);
 
   return dialogContents;
 }

@@ -58,6 +58,11 @@ $labels['ai_button_fix_selected_text'] = ' Ispravi Odabrani Tekst';
 $labels['ai_help_title'] = 'Pomoć & Primjeri';
 $labels['ai_help_use_example'] = '(Koristi ovo)';
 
+$labels['ai_fix_selected_text_title'] = 'Ispravi Odabrani Tekst';
+$labels['ai_selected_text'] = 'Odabrani Tekst';
+$labels['ai_fix_instructions'] = 'Instrukcija za Ispravljanje';
+$labels['ai_fix_text_input_instructions'] = 'U ovom polju unesite detaljna objašnjenja ili instrukcije o izmjenama koje želite da napravite na odabranom tekstu.';
+
 $labels['settings_menu_text'] = 'Umjetna Inteligencija';
 $labels['setting_default_options'] = 'Sastavljanje poruka sa AI';
 $labels['setting_ai_style'] = 'Stil';

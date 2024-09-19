@@ -1,10 +1,11 @@
 import "./styles.css";
 import { createDialogContents } from "./createDialogContents.js";
-import { checkSelectedText } from "./additionalModalFunctions/checkSelectedText";
+import { checkSelectedText } from "./additionalModalFunctions/selectedTextHandler";
 import { regulateHelpModal } from "./additionalModalFunctions/regulateHelpModal";
 import { translation, translation as t } from "../../utils";
-import { sendRequestData } from "./additionalModalFunctions/createRequestObject";
+import { sendDefaultPostRequest } from "./additionalModalFunctions/defaultPostRequest";
 import { validateFields } from "./additionalModalFunctions/fieldsValidation";
+import { regulateFixTextModal } from "./additionalModalFunctions/regulateFixTextModal";
 
 export function createComposeModal() {
   const dialogMask = document.createElement("div");
@@ -44,11 +45,12 @@ export function createComposeModal() {
 
   document.body.appendChild(dialogMask);
   validateFields();
-  sendRequestData();
+  sendDefaultPostRequest();
   const instructions = document.getElementById("aic-instructions");
   instructions.placeholder = translation("ai_instructions_placeholder");
   checkSelectedText();
   regulateHelpModal();
+  regulateFixTextModal();
 
   $("select:not([multiple])", dialogMask).each(function () {
     UI.pretty_select(this);

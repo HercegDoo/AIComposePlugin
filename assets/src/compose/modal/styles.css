@@ -34,7 +34,6 @@
   top: 20px;
   padding: 8px;
   border-radius: 5px;
-  z-index: 99999;
   white-space: normal;
   background-color: #fff;
   border: 1px solid #d4dbde;
@@ -69,6 +68,9 @@ html.dark-mode .xinfo div {
   border: 1px solid;
   border-color: #ddd;
   background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+
 }
 html.dark-mode .xdialog-mask .xdialog-box {
   border-color: #4d6066;
@@ -87,6 +89,7 @@ html.dark-mode .xdialog-mask .xdialog-box {
   bottom: 5%;
 }
 
+
 .xdialog-mask .xdialog-box .xdialog-title {
   flex: 0 0 auto;
   position: relative;
@@ -96,6 +99,7 @@ html.dark-mode .xdialog-mask .xdialog-box {
   font-weight: bold;
   border-bottom: 1px solid;
   border-color: #ddd;
+  backdrop-filter: blur(10px);
 }
 html.dark-mode .xdialog-mask .xdialog-box .xdialog-title {
   border-color: #4d6066;
@@ -239,7 +243,7 @@ html.dark-mode
   flex-direction: column;
   height: 100%;
 }
-#aic-compose-dialog #aic-compose-dialog-box #aic-compose-help .help-header {
+#aic-compose-dialog #aic-compose-dialog-box #aic-compose-help .help-header{
   position: relative;
   padding: 1rem;
 }
@@ -328,6 +332,67 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   background: transparent !important;
 }
 
+#focused-selected-text{
+  color: #e5b700;
+  font-size: 1.1rem;
+}
+
+#fix-text-wrapper{
+  height: 90%;
+}
+
+.fix-select-section{
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.fix-text-header{
+  position: relative;
+  padding: 1rem;
+}
+
+#fix-text-instructions{
+  overflow-y: visible;
+}
+
+.fix-text-header button{
+  position: absolute;
+  left: 1rem;
+}
+
+.fix-text-header h3 {
+  font-size: 1.4rem;
+  margin: 0;
+  padding: 0.3rem 0;
+  text-align: center;
+}
+
+#fix-instructions{
+  height: 40px;
+}
+
+#aic-fix-text-button-div{
+display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+#fix-text-selected{
+  height: 73%;
+}
+
+
+
+#selected-text{
+  height:92%;
+  white-space: pre-wrap;
+  overflow-y: scroll;
+}
+
+#aic-fix-text-section{
+ height: 100%;
+}
+
 @media (min-width: 500px) and (max-width: 1068px) {
   #aic-compose-dialog
     #aic-compose-dialog-box
@@ -357,6 +422,12 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
 @media (max-width: 350px) {
   .xinfo {
     display: none;
+  }
+  .xdialog-mask .xdialog-box.full-screen{
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 }
 /*# sourceMappingURL=styles.css.map */

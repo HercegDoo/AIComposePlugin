@@ -58,6 +58,13 @@ $labels['ai_button_fix_selected_text'] = ' Ausgewählten Text Korrigieren';
 $labels['ai_help_title'] = 'Hilfe & Beispiele';
 $labels['ai_help_use_example'] = '(Verwenden Sie dies)';
 
+$labels['ai_fix_selected_text_title'] = 'Ausgewählten Text korrigieren';
+$labels['ai_selected_text'] = 'Ausgewählter Text';
+$labels['ai_fix_instructions'] = 'Korrekturanleitung';
+
+$labels['ai_generate_again'] = 'Erneut generieren';
+$labels['ai_fix_text_input_instructions'] = 'Geben Sie in dieses Feld detaillierte Erklärungen oder Anweisungen zu den Änderungen ein, die Sie am ausgewählten Text vornehmen möchten.';
+
 $labels['settings_menu_text'] = 'Künstliche Intelligenz';
 $labels['setting_default_options'] = 'Verfassen von Nachrichten mit KI';
 $labels['setting_ai_style'] = 'Stil';
