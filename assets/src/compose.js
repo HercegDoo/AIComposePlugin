@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", (e) => {
       e.preventDefault();
       openModal();
-      getRecipientInfo();
-      processSenderData(getSenderInfo());
+      document.getElementById('recipient-name').value = getRecipientInfo().recipientName;
+      document.getElementById('sender-name').value =  processSenderData(getSenderInfo()).senderName;
     });
 });

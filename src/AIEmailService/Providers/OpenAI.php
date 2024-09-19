@@ -69,15 +69,18 @@ final class OpenAI extends AbstractProvider
 
     private function prompt(RequestData $requestData): string
     {
-        return "Create a {$requestData->getStyle()} email with the following specifications:" .
+        return
+
+            "Create a {$requestData->getStyle()} email with the following specifications:" .
             (!empty($requestData->getSubject()) ? "Subject: {$requestData->getSubject()}" : ' Without a subject') .
             ($requestData->getRecipientName() !== '' ? " *Recipient: {$requestData->getRecipientName()}" : '') .
             (" *Sender: {$requestData->getSenderName()}") .
             (" *Language: {$requestData->getLanguage()}") .
             (" *Length: {$requestData->getLength()}") .
             (" *The email is about: {$requestData->getInstruction()}") .
+            ( "Create an email with a simple greeting. If the previous conversation text {$requestData->getPreviousConversation()} contains the sender's name, do not include a signature. Instead, end the email with a goodbye greeting that does not indicate who it is from. For example, 'Goodbye!'. Please make sure the goodbye message is not followed by any additional signs, such as dashes, periods, or exclamation marks. The goal is to keep the goodbye message standalone") .
             ($requestData->getFixText() ? " Write the same email as this {$requestData->getPreviousGeneratedEmail()} but change this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." : '') .
-            ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '');
+            ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '') ;
     }
 
     private function sendRequest(string $prompt): \stdClass

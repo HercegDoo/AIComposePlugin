@@ -36,7 +36,7 @@ export function sendPostRequest(previousGeneratedEmail = "", instructionsElement
           language: `${requestData.language}`,
           previousConversation: `${requestData.previousConversation}`,
           previousGeneratedEmailText: `${requestData.previousGeneratedEmail}`,
-          fixText: `${requestData.fixText}`,
+         fixText: `${requestData.fixText}`,
           recipientEmail: `${requestData.recipientEmail}`,
           senderEmail: `${requestData.senderEmail}`,
           subject: `${requestData.subject}`,
