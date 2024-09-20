@@ -18,6 +18,7 @@ export function sendPostRequest(previousGeneratedEmail = "", instructionsElement
   }
 
   if (fieldsValid()) {
+    console.log(requestData);
     const lock = rcmail.set_busy(true, "Genrisanje");
     generateEmailButton.setAttribute("disabled", "disabled");
     if(!insertEmailButton.hasAttribute('hidden')){

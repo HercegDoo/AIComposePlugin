@@ -2,6 +2,7 @@ import { getPreviousConversation } from "./getPreviousConversation";
 import { getRecipientInfo } from "./recipientDataHandler";
 import { getSenderInfo, processSenderData } from "./senderDataHandler";
 import { getSubject } from "./subjectHandler";
+import { detectSignature } from "./signaturesHandler";
 
 export function getRequestDataFields(){
   const styleElement = document.getElementById("aic-style");
@@ -19,7 +20,7 @@ export function getRequestDataFields(){
     length: `${lengthElement.value}`,
     creativity: `${creativityElement.value}`,
     language: `${languageElement.value}`,
-    previousConversation: `${getPreviousConversation()}`,
+    previousConversation: `${getPreviousConversation(detectSignature())}`,
     subject: `${getSubject()}`,
     recipientEmail: `${getRecipientInfo().recipientEmail}`,
     senderEmail: `${senderInfo.senderEmail}`
