@@ -35,3 +35,8 @@ export function getPreviousConversation(textt = "") {
 rcmail.addEventListener("editor-load", (e) => {
   editorHTML = e?.ref?.editor;
 });
+
+export function getActiveEditorHTML(){
+  if(editorHTML){return editorHTML;}
+  else return false;
+}

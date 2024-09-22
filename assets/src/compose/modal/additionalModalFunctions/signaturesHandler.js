@@ -1,41 +1,52 @@
 import { getPreviousConversation } from "./getPreviousConversation";
 
 let editorHTML = "";
-let signaturesText= "";
-let previousConversationText = "";
+let formattedSignatureText= "";
+let formattedPreviousConversationText = "";
 export function detectSignature(){
-const potentialSignature = document.getElementById('composebody').textContent;
-const potentialSignatureFormatted = potentialSignature.replace(/\\n/g, '\n');
+const textareaContent = document.getElementById('composebody').value;
+console.log(textareaContent);
+// const potentialSignatureFormatted = potentialSignature.replace(/\\n/g, '\n');
 
-if(editorHTML){
-   const divEditorText = document.createElement('div');
-   divEditorText.innerHTML = editorHTML.getContent({ format: "html" });
-
-  const divSignaturesText = document.createElement('div');
-   divSignaturesText.innerHTML = rcmail.env.signatures['1']['html'];
-
-   signaturesText = divSignaturesText.innerText.replace(/\s+/g, ' ').trim();
-   previousConversationText = divEditorText.innerText.replace(/\s+/g, ' ').trim();
+  if(editorHTML.editorContainer){
+console.log("editor aktivan");
+ const signature = rcmail.env.signatures['1']['text'];
+const editorText = editorHTML.getContent({format: 'text'});
+ formattedSignatureText = removeEmptyLinesAndSpaces(signature).replace(/\s+/g, ' ').trim();
+ formattedPreviousConversationText = removeEmptyLinesAndSpaces(editorText).replace(/\s+/g, ' ').trim();
 }
-
 else{
-  console.log('Uso u else');
-  signaturesText = rcmail.env.signatures['1']['text'].replace(/\s+/g, ' ').trim();
-  previousConversationText = potentialSignatureFormatted.replace(/\s+/g, ' ').trim();
+  console.log("editor neaktivan");
+  const textareaContentFormatted = textareaContent.replace(/\\n/g, '\n').trim();
+  const signatureText = rcmail.env.signatures['1']['text'].trim();
+  formattedSignatureText = removeEmptyLinesAndSpaces(signatureText);
+  formattedPreviousConversationText = removeEmptyLinesAndSpaces(textareaContentFormatted);
 }
 
-console.log(previousConversationText);
-console.log(signaturesText);
 
-console.log(previousConversationText.includes(signaturesText));
-
-if(previousConversationText.includes(signaturesText)){
-  console.log(`${signaturesText}--signaturue`);
-  return signaturesText;
+if(formattedPreviousConversationText.includes(formattedSignatureText)){
+  console.log(removeSubstring(formattedPreviousConversationText, formattedSignatureText))
+  return removeSubstring(formattedPreviousConversationText, formattedSignatureText);
 }
-
+else{
+  console.log(formattedPreviousConversationText);
+  return formattedPreviousConversationText;
+}
 }
 
 rcmail.addEventListener("editor-load", (e) => {
   editorHTML = e?.ref?.editor;
 });
+
+function removeEmptyLinesAndSpaces(text) {
+  return text
+    .split('\n') // Podelite tekst na redove
+    .filter(line => line.trim() !== '') // Uklonite prazne redove
+    .map(line => line.trim()) // Uklonite razmake sa početka i kraja
+    .join('\n'); // Spojite redove nazad
+}
+
+function removeSubstring(originalString, substringToRemove) {
+  return originalString.split(substringToRemove).join('');
+}
+
