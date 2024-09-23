@@ -26,6 +26,7 @@ final class GenereteEmailAction extends AbstractAction
     private ?string $fixText;
 
     private ?string $previousGeneratedEmailText;
+    private ?string $signaturePresent;
 
     private RequestData $aiRequestData;
 
@@ -73,6 +74,7 @@ final class GenereteEmailAction extends AbstractAction
         $this->previousConversation = Request::postString('previousConversation');
         $this->fixText = Request::postString('fixText');
         $this->previousGeneratedEmailText = Request::postString('previousGeneratedEmailText');
+        $this->signaturePresent = Request::postString('signaturePresent');
 
         $this->nameValidation($this->senderName, 'sender_name');
         $this->nameValidation($this->recipientName, 'recipient_name');
@@ -96,6 +98,7 @@ final class GenereteEmailAction extends AbstractAction
         $this->aiRequestData->setPreviousConversation($this->previousConversation);
         $this->aiRequestData->setSubject((string) $this->subject);
         $this->aiRequestData->setFixText($this->previousGeneratedEmailText, (string) $this->fixText);
+        $this->aiRequestData->setSignaturePresent((bool) $this->signaturePresent);
     }
 
     private function hasNoLetters(string $string): bool

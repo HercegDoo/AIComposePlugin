@@ -3,8 +3,9 @@ export function getRecipientInfo() {
   const recipientEmailElement = document.querySelector(
     "li.recipient span.email"
   );
-  const inputElement = document.querySelector('ul.form-control.recipient-input.ac-input.rounded-left.ui-sortable li.input input');
-
+  const inputElement = document.querySelector(
+    "ul.form-control.recipient-input.ac-input.rounded-left.ui-sortable li.input input"
+  );
 
   const recipientNameInputField = document.getElementById("recipient-name");
 

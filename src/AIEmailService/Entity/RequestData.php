@@ -21,6 +21,8 @@ class RequestData
     private ?string $previousGeneratedEmail = null;
     private ?string $previousConversation = null;
 
+    private bool $signaturePresent;
+
     private ?string $subject = null;
 
     private function __construct(string $recipientName, string $senderName, string $instruction, ?string $style, ?string $length, ?string $creativity, ?string $language)
@@ -129,6 +131,18 @@ class RequestData
         $this->previousGeneratedEmail = $previousGeneratedEmail;
 
         return $this;
+    }
+
+    public function setSignaturePresent(bool $signaturePresent): self
+    {
+        $this->signaturePresent = $signaturePresent;
+
+        return $this;
+    }
+
+    public function getSignaturePresent(): bool
+    {
+        return $this->signaturePresent;
     }
 
     public function getRecipientName(): string

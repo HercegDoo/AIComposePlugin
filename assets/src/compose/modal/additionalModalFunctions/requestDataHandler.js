@@ -1,10 +1,9 @@
-import { getPreviousConversation } from "./getPreviousConversation";
 import { getRecipientInfo } from "./recipientDataHandler";
 import { getSenderInfo, processSenderData } from "./senderDataHandler";
 import { getSubject } from "./subjectHandler";
-import { detectSignature } from "./signaturesHandler";
+import { signatureCheckedPreviousConversation } from "./signaturesHandler";
 
-export function getRequestDataFields(){
+export function getRequestDataFields() {
   const styleElement = document.getElementById("aic-style");
   const senderNameElement = document.getElementById("sender-name");
   const recipientNameElement = document.getElementById("recipient-name");
@@ -20,9 +19,10 @@ export function getRequestDataFields(){
     length: `${lengthElement.value}`,
     creativity: `${creativityElement.value}`,
     language: `${languageElement.value}`,
-    previousConversation: `${getPreviousConversation(detectSignature())}`,
+    previousConversation: `${signatureCheckedPreviousConversation().previousConversation}`,
+    signaturePresent: `${signatureCheckedPreviousConversation().signaturePresent}`,
     subject: `${getSubject()}`,
     recipientEmail: `${getRecipientInfo().recipientEmail}`,
-    senderEmail: `${senderInfo.senderEmail}`
-  }
+    senderEmail: `${senderInfo.senderEmail}`,
+  };
 }
