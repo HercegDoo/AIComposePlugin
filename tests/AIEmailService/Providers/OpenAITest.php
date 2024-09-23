@@ -215,7 +215,7 @@ final class OpenAITest extends TestCase
 
         $result = $privateMethodInvoker($requestData);
 
-        self::assertSame( ' Write the same email as this dummyprevgenemail but change this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.', $result);
+        self::assertSame(' Write the same email as this dummyprevgenemail but change this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.', $result);
     }
 
     public function testSendRequestSetters()
