@@ -11,6 +11,8 @@ export function getRequestDataFields() {
   const creativityElement = document.getElementById("aic-creativity");
   const languageElement = document.getElementById("aic-language");
   const senderInfo = processSenderData(getSenderInfo());
+  const signatureCheckObject = signatureCheckedPreviousConversation();
+
 
   return {
     style: `${styleElement.value}`,
@@ -19,8 +21,8 @@ export function getRequestDataFields() {
     length: `${lengthElement.value}`,
     creativity: `${creativityElement.value}`,
     language: `${languageElement.value}`,
-    previousConversation: `${signatureCheckedPreviousConversation().previousConversation}`,
-    signaturePresent: `${signatureCheckedPreviousConversation().signaturePresent}`,
+    previousConversation: `${signatureCheckObject.previousConversation}`,
+    signaturePresent: `${signatureCheckObject.signaturePresent}`,
     subject: `${getSubject()}`,
     recipientEmail: `${getRecipientInfo().recipientEmail}`,
     senderEmail: `${senderInfo.senderEmail}`,

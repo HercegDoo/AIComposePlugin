@@ -1,7 +1,7 @@
 let editorHTML = "";
 let formattedPreviousConversationText = "";
 export function signatureCheckedPreviousConversation() {
-  const textareaContent = document.getElementById("composebody").value;
+
   let signaturesArray = [];
   const size = Object.keys(rcmail.env.signatures).length; // Broj potpisa
 
@@ -22,6 +22,7 @@ export function signatureCheckedPreviousConversation() {
       .replace(/\s+/g, " ")
       .trim();
   } else {
+    const textareaContent = document.getElementById("composebody").value;
     const textareaContentFormatted = textareaContent
       .replace(/\\n/g, "\n")
       .replace(/\s+/g, " ")
