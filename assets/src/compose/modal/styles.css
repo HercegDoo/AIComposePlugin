@@ -70,7 +70,6 @@ html.dark-mode .xinfo div {
   background-color: #fff;
   background-color: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
-
 }
 html.dark-mode .xdialog-mask .xdialog-box {
   border-color: #4d6066;
@@ -88,7 +87,6 @@ html.dark-mode .xdialog-mask .xdialog-box {
   right: 5%;
   bottom: 5%;
 }
-
 
 .xdialog-mask .xdialog-box .xdialog-title {
   flex: 0 0 auto;
@@ -243,7 +241,7 @@ html.dark-mode
   flex-direction: column;
   height: 100%;
 }
-#aic-compose-dialog #aic-compose-dialog-box #aic-compose-help .help-header{
+#aic-compose-dialog #aic-compose-dialog-box #aic-compose-help .help-header {
   position: relative;
   padding: 1rem;
 }
@@ -332,30 +330,30 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   background: transparent !important;
 }
 
-#focused-selected-text{
+#focused-selected-text {
   color: #e5b700;
   font-size: 1.1rem;
 }
 
-#fix-text-wrapper{
+#fix-text-wrapper {
   height: 90%;
 }
 
-.fix-select-section{
+.fix-select-section {
   overflow-y: auto;
   padding: 1rem;
 }
 
-.fix-text-header{
+.fix-text-header {
   position: relative;
   padding: 1rem;
 }
 
-#fix-text-instructions{
+#fix-text-instructions {
   overflow-y: visible;
 }
 
-.fix-text-header button{
+.fix-text-header button {
   position: absolute;
   left: 1rem;
 }
@@ -367,30 +365,28 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   text-align: center;
 }
 
-#fix-instructions{
+#fix-instructions {
   height: 40px;
 }
 
-#aic-fix-text-button-div{
-display: flex;
+#aic-fix-text-button-div {
+  display: flex;
   justify-content: center;
   padding: 10px 0;
 }
 
-#fix-text-selected{
+#fix-text-selected {
   height: 73%;
 }
 
-
-
-#selected-text{
-  height:92%;
+#selected-text {
+  height: 92%;
   white-space: pre-wrap;
   overflow-y: scroll;
 }
 
-#aic-fix-text-section{
- height: 100%;
+#aic-fix-text-section {
+  height: 100%;
 }
 
 @media (min-width: 500px) and (max-width: 1068px) {
@@ -423,7 +419,7 @@ display: flex;
   .xinfo {
     display: none;
   }
-  .xdialog-mask .xdialog-box.full-screen{
+  .xdialog-mask .xdialog-box.full-screen {
     top: 0;
     left: 0;
     right: 0;

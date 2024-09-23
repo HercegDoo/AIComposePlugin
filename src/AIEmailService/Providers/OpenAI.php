@@ -69,15 +69,22 @@ final class OpenAI extends AbstractProvider
 
     private function prompt(RequestData $requestData): string
     {
-        return "Create a {$requestData->getStyle()} email with the following specifications:" .
-            (!empty($requestData->getSubject()) ? "Subject: {$requestData->getSubject()}" : ' Without a subject') .
-            ($requestData->getRecipientName() !== '' ? " *Recipient: {$requestData->getRecipientName()}" : '') .
-            (" *Sender: {$requestData->getSenderName()}") .
-            (" *Language: {$requestData->getLanguage()}") .
-            (" *Length: {$requestData->getLength()}") .
-            (" *The email is about: {$requestData->getInstruction()}") .
-            ($requestData->getFixText() ? " Write the same email as this {$requestData->getPreviousGeneratedEmail()} but change this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." : '') .
-            ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '');
+        if ($requestData->getFixText()) {
+            $prompt = " Write the same email as this {$requestData->getPreviousGeneratedEmail()} but change this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." .
+                ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '');
+        } else {
+            $prompt = "Create a {$requestData->getStyle()} email with the following specifications:" .
+                (!empty($requestData->getSubject()) ? " Subject: {$requestData->getSubject()}" : ' Without a subject') .
+                ($requestData->getRecipientName() !== '' ? " *Recipient: {$requestData->getRecipientName()}" : '') .
+                " *Sender: {$requestData->getSenderName()}" .
+                " *Language: {$requestData->getLanguage()}" .
+                " *Length: {$requestData->getLength()}" .
+                " *The email is about: {$requestData->getInstruction()}." .
+                ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '') .
+                ($requestData->getSignaturePresent() ? 'Do not sign the email off in any way' : '');
+        }
+
+        return $prompt;
     }
 
     private function sendRequest(string $prompt): \stdClass

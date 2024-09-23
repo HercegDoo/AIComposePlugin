@@ -82,6 +82,7 @@ final class OpenAITest extends TestCase
         $openAI = new OpenAI($mockCurl);
 
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
+        $requestData->setSignaturePresent(false);
 
         Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
 
@@ -107,6 +108,7 @@ final class OpenAITest extends TestCase
         $openAI = new OpenAI($mockCurl);
 
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
+        $requestData->setSignaturePresent(false);
         $settingsMock = $this->createMock(Settings::class);
 
         $openAI->setError('dummyError');
@@ -120,6 +122,7 @@ final class OpenAITest extends TestCase
     {
         $requestData = RequestData::make('Meho', 'Muhi', 'jabuka', 'casual', 'medium', 'low', 'Bosnian');
         $requestData->setInstruction('afdsafsd');
+        $requestData->setSignaturePresent(false);
 
         $curlMock = $this->createMock(Curl::class);
         $mockResponse = new \stdClass();
@@ -154,6 +157,7 @@ final class OpenAITest extends TestCase
 
         Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
+        $requestData->setSignaturePresent(false);
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('No email content found');
@@ -167,10 +171,10 @@ final class OpenAITest extends TestCase
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAI, 'prompt');
 
         $requestData = RequestData::make('Meho', 'Muhamed', 'TestInstrukcija');
-
+        $requestData->setSignaturePresent(false);
         $result = $privateMethodInvoker($requestData);
 
-        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhamed *Language: Bosnian *Length: medium *The email is about: TestInstrukcija', $result);
+        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhamed *Language: Bosnian *Length: medium *The email is about: TestInstrukcija.', $result);
     }
 
     public function testPromptNoFixCustom()
@@ -179,10 +183,10 @@ final class OpenAITest extends TestCase
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAi, 'prompt');
 
         $requestData = RequestData::make('Ime1', 'Ime2', 'Sastavi Mail', 'professional', 'long', 'low', 'Spanish');
-
+        $requestData->setSignaturePresent(true);
         $result = $privateMethodInvoker($requestData);
 
-        self::assertSame('Create a professional email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Spanish *Length: long *The email is about: Sastavi Mail', $result);
+        self::assertSame('Create a professional email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Spanish *Length: long *The email is about: Sastavi Mail.Do not sign the email off in any way', $result);
     }
 
     public function testPromptFixDefault()
@@ -196,7 +200,7 @@ final class OpenAITest extends TestCase
 
         $result = $privateMethodInvoker($requestData);
 
-        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Bosnian *Length: medium *The email is about: SastaviMail Write the same email as this dummyprevgenemail but change this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.', $result);
+        self::assertSame(' Write the same email as this dummyprevgenemail but change this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.', $result);
     }
 
     public function testPromptFixCustom()
@@ -211,13 +215,13 @@ final class OpenAITest extends TestCase
 
         $result = $privateMethodInvoker($requestData);
 
-        self::assertSame('Create a professional email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Spanish *Length: long *The email is about: SastaviMail Write the same email as this dummyprevgenemail but change this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.', $result);
+        self::assertSame(' Write the same email as this dummyprevgenemail but change this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.', $result);
     }
 
     public function testSendRequestSetters()
     {
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-
+        $requestData->setSignaturePresent(true);
         $curlMock = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['setHeader', 'setOpts'])
             ->getMock()
@@ -255,6 +259,7 @@ final class OpenAITest extends TestCase
     public function testSendRequestPostMethod()
     {
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
+        $requestData->setSignaturePresent(false);
 
         $curlMock = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['post'])
@@ -271,7 +276,7 @@ final class OpenAITest extends TestCase
                     'model' => 'model-test',
                     'messages' => [
                         ['role' => 'system', 'content' => 'You are a helpful personal assistant.'],
-                        ['role' => 'user', 'content' => 'Create a casual email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Bosnian *Length: medium *The email is about: SastaviMail'],
+                        ['role' => 'user', 'content' => 'Create a casual email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Bosnian *Length: medium *The email is about: SastaviMail.'],
                     ],
                     'max_tokens' => 2000,
                     'temperature' => 0.5,
@@ -289,7 +294,7 @@ final class OpenAITest extends TestCase
     public function testSendRequestUnathorized()
     {
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-
+        $requestData->setSignaturePresent(true);
         $OpenAi = new OpenAI();
 
         $this->expectException(ProviderException::class);
@@ -302,7 +307,7 @@ final class OpenAITest extends TestCase
     public function testSendRequestNotFound()
     {
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-
+        $requestData->setSignaturePresent(true);
         $OpenAi = new OpenAI();
 
         $this->expectException(ProviderException::class);
@@ -313,7 +318,7 @@ final class OpenAITest extends TestCase
     public function testSendRequestBadRequest()
     {
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-
+        $requestData->setSignaturePresent(true);
         $OpenAi = new OpenAI();
 
         ReflectionHelper::setPrivateProperty($OpenAi, 'creativityMap', [Settings::getCreativities()[0] => -55,
@@ -328,7 +333,7 @@ final class OpenAITest extends TestCase
     public function testSendRequestThrowable()
     {
         $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-
+        $requestData->setSignaturePresent(true);
         $mockCurl = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['post'])
             ->getMock()

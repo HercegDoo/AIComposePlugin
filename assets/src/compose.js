@@ -8,18 +8,18 @@ import {
   getSenderInfo,
   processSenderData,
 } from "./compose/modal/additionalModalFunctions/senderDataHandler";
-import { getPreviousConversation } from "./compose/modal/additionalModalFunctions/getPreviousConversation";
 
 document.addEventListener("DOMContentLoaded", function () {
   createButtonInToolbarMenu();
-  getPreviousConversation();
 
   document
     .getElementById("aicp-prompt-open-button")
     .addEventListener("click", (e) => {
       e.preventDefault();
       openModal();
-      getRecipientInfo();
-      processSenderData(getSenderInfo());
+      document.getElementById("recipient-name").value =
+        getRecipientInfo().recipientName;
+      document.getElementById("sender-name").value =
+        processSenderData(getSenderInfo()).senderName;
     });
 });
