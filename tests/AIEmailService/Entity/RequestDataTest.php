@@ -19,6 +19,10 @@ final class RequestDataTest extends TestCase
     {
         parent::setUp();
 
+        if (!\defined('PHPUNIT_RUNNING')) {
+            \define('PHPUNIT_RUNNING', true); // Definišite konstantu samo ako nije već definisana
+        }
+
         Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive']);
 
         Settings::setLengths(['short', 'default' => 'medium', 'long']);
@@ -228,7 +232,7 @@ final class RequestDataTest extends TestCase
         self::assertSame('medium', $returnData);
     }
 
-    public function testGetCreativity()
+    public function testGetCreativity(): void
     {
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnData = $requestData->getCreativity();

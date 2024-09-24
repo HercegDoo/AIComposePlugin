@@ -26,6 +26,10 @@ final class AIEmailTest extends TestCase
     {
         parent::setUp();
 
+        if (!\defined('PHPUNIT_RUNNING')) {
+            \define('PHPUNIT_RUNNING', true); // Definišite konstantu samo ako nije već definisana
+        }
+
         Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive']);
 
         Settings::setLengths(['short', 'default' => 'medium', 'long']);

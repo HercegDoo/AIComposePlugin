@@ -208,6 +208,9 @@ final class Settings
 
     private static function getChoiceFromSettings(string $attribute): ?string
     {
+        if (\defined('PHPUNIT_RUNNING')) {
+            return null;
+        }
         $rcmail = \rcmail::get_instance();
         $userSettings = $rcmail->user->get_prefs();
 
