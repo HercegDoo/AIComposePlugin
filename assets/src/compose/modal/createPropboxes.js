@@ -29,7 +29,7 @@ function createPropbox(id, label, xinfoText, options, defaultValue) {
     option = unCapitalizeFirstLetter(option);
     const optionElement = document.createElement("option");
     optionElement.value = option;
-    if (option === defaultValue) {
+    if (option === defaultValue.toLowerCase()) {
       optionElement.setAttribute("selected", "selected");
     }
     optionElement.textContent = translation(`ai_${id}_${option}`);
