@@ -152,7 +152,6 @@ final class Settings
 
     public static function getDefaultLanguage(): string
     {
-        error_log('Ovo je language: ' . print_r(self::getChoiceFromSettings('language'), true));
         if ($userChoice = self::getChoiceFromSettings('language')) {
             return $userChoice;
         }

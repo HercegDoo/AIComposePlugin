@@ -109,7 +109,7 @@ class SettingsTask extends AbstractTask
     {
         $dropdown = '<select name="data[aic][' . $name . ']">'; // Ispravno ime za formu
         foreach ($options as $option) {
-            $dropdown .= '<option ' . ($option === $default ? 'selected' : '') . ' value="' . htmlspecialchars($option) . '">' . htmlspecialchars($this->translation('ai_' . $name . '_' . strtolower($option))) . '</option>';
+            $dropdown .= '<option ' . ($option === $default ? 'selected' : '') . ' value="' . ($option) . '">' . ($this->translation('ai_' . $name . '_' . strtolower($option))) . '</option>';
         }
         $dropdown .= '</select>';
 
