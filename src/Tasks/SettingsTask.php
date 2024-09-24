@@ -27,7 +27,7 @@ class SettingsTask extends AbstractTask
 
         $list['aic'] = [
             'id' => 'aic',
-            'section' => 'AICompose Settings',
+            'section' => $this->translation('ai_compose_settings'),
         ];
 
         $args['list'] = $list;
