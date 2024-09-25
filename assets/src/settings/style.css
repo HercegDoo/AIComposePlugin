@@ -7,3 +7,14 @@
   display: flex;
   align-items: baseline;
 }
+
+.formcontent{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#aic-predefined-instructions-value-textarea{
+  resize: none;
+}
+
