@@ -52,6 +52,8 @@ $labels['ai_generate_again'] = 'Erneut generieren';
 $labels['ai_stop_generating'] = 'Generierung stoppen';
 $labels['ai_error_help_button'] = 'Hilfe';
 
+$labels['ai_compose_settings'] = 'AICompose Einstellungen';
+
 $labels['ai_button_show_instructions'] = 'Beispielanweisungen';
 $labels['ai_help_button_back'] = 'Zurück';
 $labels['ai_button_fix_selected_text'] = ' Ausgewählten Text Korrigieren';

@@ -68,11 +68,19 @@ final class Settings
 
     public static function getDefaultLength(): string
     {
+        if ($userChoice = self::getChoiceFromSettings('length')) {
+            return $userChoice;
+        }
+
         return self::getLengths()['default'] ?? self::getLengths()[0] ?? 'medium';
     }
 
     public static function getCreativity(): string
     {
+        if ($userChoice = self::getChoiceFromSettings('creativity')) {
+            return $userChoice;
+        }
+
         return self::$creativity;
     }
 
@@ -127,6 +135,10 @@ final class Settings
 
     public static function getDefaultStyle(): string
     {
+        if ($userDefaultStyle = self::getChoiceFromSettings('style')) {
+            return $userDefaultStyle;
+        }
+
         return self::getStyles()['default'] ?? self::getStyles()[0] ?? 'casual';
     }
 
@@ -140,6 +152,10 @@ final class Settings
 
     public static function getDefaultLanguage(): string
     {
+        if ($userChoice = self::getChoiceFromSettings('language')) {
+            return $userChoice;
+        }
+
         return self::getLanguages()['default'] ?? self::getLanguages()[0] ?? 'Bosnian';
     }
 
@@ -187,5 +203,16 @@ final class Settings
     public static function setProviderConfig(array $providerConfig): void
     {
         self::$providerConfig = $providerConfig;
+    }
+
+    private static function getChoiceFromSettings(string $attribute): ?string
+    {
+        if (\defined('PHPUNIT_RUNNING')) {
+            return null;
+        }
+        $rcmail = \rcmail::get_instance();
+        $userSettings = $rcmail->user->get_prefs();
+
+        return $userSettings['aicDefaults'][$attribute] ?? null;
     }
 }

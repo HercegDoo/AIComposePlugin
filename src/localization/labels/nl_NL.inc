@@ -62,6 +62,8 @@ $labels['ai_fix_selected_text_title'] = 'Geselecteerde Tekst Corrigeren';
 $labels['ai_selected_text'] = 'Geselecteerde Tekst';
 $labels['ai_fix_instructions'] = 'Instructies voor Correctie';
 
+$labels['ai_compose_settings'] = 'AICompose Instellingen';
+
 $labels['ai_generate_again'] = 'Genereer opnieuw';
 $labels['ai_fix_text_input_instructions'] = 'Voer in dit veld gedetailleerde uitleg of instructies in over de wijzigingen die u wilt aanbrengen in de geselecteerde tekst.';
 
