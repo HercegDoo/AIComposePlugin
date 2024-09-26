@@ -8,6 +8,10 @@
   align-items: baseline;
 }
 
+.name::before{
+  content: "\f075";
+}
+
 .formcontent{
   display: flex;
   flex-direction: column;
