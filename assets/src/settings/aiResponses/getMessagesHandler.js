@@ -20,7 +20,8 @@ function scrollerDisplay(listingInfo,data,tbody){
       const td = document.createElement('td');
       td.textContent = message.title;
       td.className="name";
-      tr.id= `aicpredefined${index}`;
+      console.log(message);
+      td.id= `${message.id}`;
       tr.append(td);
       tbody.append(tr);
     })

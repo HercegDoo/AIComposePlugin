@@ -18,28 +18,39 @@ class SettingsTask extends AbstractTask
         $this->plugin->register_action('plugin.aicresponses', [$this, 'aicresponses']);
         $this->plugin->register_action('plugin.aicresponsesrequest', [$this, 'aicresponsesrequest']);
         $this->plugin->register_action('plugin.aicresponsesgetrequest', [$this, 'aicresponsesgetrequest']);
+        $this->plugin->register_action('plugin.aicr', [$this, 'aicr']);
     }
 
-    public function aicresponses() : void
+    public function aicresponses(): void
     {
         error_log('Uso u responses hendler');
         $this->plugin->include_script('assets/dist/settings.bundle.js');
     }
 
-    public function aicresponsesrequest() : void
+    public function aicresponsesrequest(): void
     {
         $rcmail = \rcmail::get_instance();
         $this->plugin->include_script('assets/dist/settings.bundle.js');
         $predefinedMessages = $rcmail->user->get_prefs()['predefinedMessages'] ?? [];
-        $predefinedMessage = ['title' => $_POST['title'], 'value' => $_POST['value']];
+        $predefinedMessage = ['title' => $_POST['title'], 'value' => $_POST['value'], 'id' => uniqid('predefined-message-')];
+
         $predefinedMessages[] = $predefinedMessage;
+        //       array_splice($predefinedMessages, 0);
 
         $rcmail->user->save_prefs([
             'predefinedMessages' => $predefinedMessages,
         ]);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Ovde obradi podatke iz forme
+            // ...
+
+            // Preusmjeri na istu stranicu bez podataka
+            header('Location: https://harunhost/mail/?_task=settings&_action=plugin.aicresponses');
+            exit();
+        }
     }
 
-    public function aicresponsesgetrequest() : void
+    public function aicresponsesgetrequest(): void
     {
         $rcmail = \rcmail::get_instance();
         $currentPrefs = $rcmail->user->get_prefs();
@@ -50,6 +61,19 @@ class SettingsTask extends AbstractTask
         exit;
     }
 
+    public function aicr()
+    {
+        $rcmail = \rcmail::get_instance();
+        $id = \rcube_utils::get_input_value('id', \rcube_utils::INPUT_GET);
+        $predefinedMessages = $rcmail->user->get_prefs()['predefinedMessages'];
+        foreach ($predefinedMessages as $predefinedMessage) {
+            if ($predefinedMessage['id'] === $id) {
+                header('Content-Type: application/json');
+                echo json_encode(['predefinedMessage' => $predefinedMessage ?? []]);
+                exit;
+            }
+        }
+    }
 
     /**
      * @param array<string, mixed> $args
@@ -71,12 +95,13 @@ class SettingsTask extends AbstractTask
 
         return $args;
     }
+
     /**
      * @param array<string, mixed> $args
      *
      * @return array<string, mixed>
      */
-    public function addSettingsSection(array $args) : array
+    public function addSettingsSection(array $args): array
     {
         // Definiramo novu sekciju (tab) unutar postavki
         $new_section = [
@@ -87,11 +112,11 @@ class SettingsTask extends AbstractTask
             'id' => 'settingstabaipredefinedresponses',
         ];
 
-        if (!isset($args['actions']) || !is_array($args['actions'])) {
+        if (!isset($args['actions']) || !\is_array($args['actions'])) {
             $args['actions'] = [];
         }
 
-        //Proveravamo da li sekcija već postoji kako ne bi došlo do dupliranja
+        // Proveravamo da li sekcija već postoji kako ne bi došlo do dupliranja
         $already_exists = false;
         foreach ($args['actions'] as $action) {
             if ($action['label'] === 'airesponses') {
@@ -101,7 +126,7 @@ class SettingsTask extends AbstractTask
         }
 
         // Ako sekcija ne postoji, dodajemo je
-        if (!$already_exists ) {
+        if (!$already_exists) {
             $args['actions'][] = $new_section; // Dodajemo u array
         }
 
