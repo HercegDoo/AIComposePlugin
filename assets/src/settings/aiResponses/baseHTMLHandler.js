@@ -9,11 +9,12 @@ export function setBaseHTML(){
   formDiv.id = "form-div";
   formDiv.setAttribute("hidden", "hidden");
   formDiv.innerHTML = `
-  <form name="form" action="./" method="post" class="propform">
+  <form name="form" action="./" method="post" class="propform" id="form-post-add-edit">
     <div class="formcontent">
     <input type="hidden" name="_token" id="hidden-input" class="form-control">
     <input type="hidden" name="_task" value="settings" class="form-control">
     <input type="hidden" name="_action" value="plugin.aicresponsesrequest" class="form-control">
+    <input type="hidden" id="edit-id" name="id">
        <div class="inner-div">
   <label for="aic-predefined-instructions-title-input"><span>Naziv</span></label> 
 <input name="title" id="aic-predefined-instructions-title-input" class="form-control" type="text">
@@ -38,7 +39,7 @@ export function setBaseHTML(){
 </a>
 </li>
 <li role="menuitem">
-<a class="delete disabled" title="Obriši" id="rcmbtn116" role="button" tabindex="-1" aria-disabled="true" href="#" onclick="return rcmail.command(\'delete\',\'\',this,event)">
+<a class="delete disabled" title="Obriši" id="delete-button" role="button" tabindex="-1" aria-disabled="true" href="#"">
 <span class="inner">Obriši</span>
 </a>
 </li>

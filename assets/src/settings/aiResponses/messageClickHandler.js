@@ -1,16 +1,19 @@
-import { getSpecificPredefinedMessage } from "./getSpecificPredefinedMessage";
+
+import { getPredefinedMessages, getSpecificMessage } from "./getMessagesHandler";
+import { handleDelete } from "./deleteHandler";
+import { handleEdit } from "./editHandler";
 
 export function messageClickHandle(){
-  const createButton = document.querySelector('li[role="menuitem"] a.create');
-  const iframeWrapper = document.querySelector('.iframe-wrapper');
-  const formDiv = document.querySelector('#form-div');
-  const messageTextArea = document.getElementById('aic-predefined-instructions-value-textarea');
-  const titleInput = document.getElementById('aic-predefined-instructions-title-input');
-
   const layourMenuScrollbar = document.querySelector("#layout-list .scroller");
 
 layourMenuScrollbar.addEventListener('click', (event)=>{
-getSpecificPredefinedMessage(event.target.id);
+  const id = event.target.tagName.toLowerCase() === 'td' ? event.target.id: null;
+  if(id){
+    getSpecificMessage(id);
+     handleDelete(id);
+     handleEdit(id);
+  }
+
 })
 
 }
