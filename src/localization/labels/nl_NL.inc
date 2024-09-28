@@ -52,6 +52,15 @@ $labels['ai_generate_again'] = 'Opnieuw genereren';
 $labels['ai_stop_generating'] = 'Stop met genereren';
 $labels['ai_error_help_button'] = 'Help';
 
+$labels['ai_predefined_submit'] = 'Opslaan';
+$labels['ai_predefined_create'] = 'Aanmaken';
+$labels['ai_predefined_delete'] = 'Verwijderen';
+$labels['ai_predefined_successful_save'] = 'Succesvol opgeslagen';
+$labels['ai_predefined_unsuccessful_save'] = 'Fout bij het opslaan van het bericht';
+$labels['ai_predefined_successful_delete'] = 'Succesvol verwijderd';
+$labels['ai_predefined_unsuccessful_delete'] = 'Fout bij het verwijderen van het bericht';
+
+
 $labels['ai_button_show_instructions'] = 'Voorbeelden van instructies';
 $labels['ai_help_button_back'] = 'Terug';
 $labels['ai_button_fix_selected_text'] = 'Geselecteerde Tekst Corrigeren';

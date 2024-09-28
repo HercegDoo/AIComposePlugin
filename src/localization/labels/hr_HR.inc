@@ -53,6 +53,16 @@ $labels['ai_generate_again'] = 'Generiraj ponovo';
 $labels['ai_stop_generating'] = 'Zaustavi Generiranje';
 $labels['ai_error_help_button'] = 'Pomoć';
 
+$labels['ai_predefined_submit'] = 'Spremi';
+$labels['ai_predefined_create'] = 'Kreiraj';
+$labels['ai_predefined_delete'] = 'Izbriši';
+$labels['ai_predefined_successful_save'] = 'Uspješno spremljeno';
+$labels['ai_predefined_unsuccessful_save'] = 'Greška pri spremanju poruke';
+$labels['ai_predefined_successful_delete'] = 'Uspješno izbrisano';
+$labels['ai_predefined_unsuccessful_delete'] = 'Greška pri brisanju poruke';
+$labels['ai_predefined_invalid_input'] = 'Neispravan unos';
+
+
 $labels['ai_button_show_instructions'] = 'Primjeri Uputa';
 $labels['ai_help_button_back'] = 'Natrag';
 $labels['ai_button_fix_selected_text'] = 'Ispravi Odabrani Tekst';

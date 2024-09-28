@@ -22,3 +22,8 @@
   resize: none;
 }
 
+#settingstabaipredefinedresponses::before{
+  content: "\f544";
+  font-size: 1.1212rem;
+}
+

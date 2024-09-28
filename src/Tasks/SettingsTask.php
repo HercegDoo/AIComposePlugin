@@ -21,6 +21,7 @@ class SettingsTask extends AbstractTask
         $this->plugin->register_action('plugin.aicr', [$this, 'aicr']);
         $this->plugin->register_action('plugin.aicdeletemessage', [$this, 'aicdeletemessage']);
         $this->plugin->register_action('plugin.getMessageById', [$this, 'getMessageById']);
+        $this->plugin->include_script('assets/dist/settings.bundle.js');
     }
 
     public function aicresponses(): void
@@ -33,101 +34,169 @@ class SettingsTask extends AbstractTask
     {
         $rcmail = \rcmail::get_instance();
         $this->plugin->include_script('assets/dist/settings.bundle.js');
-        $predefinedMessages = $rcmail->user->get_prefs()['predefinedMessages'] ?? [];
-        $found = false; // Varijabla za praćenje da li je element pronađen
 
-        error_log('Post id: ');
-        if (isset($_POST['id'])) {
-            // Provjerava da li postoji element s tim id
-            $id = $_POST['id'];
+        header('Content-Type: application/json');
 
-            foreach ($predefinedMessages as &$message) {
-                if ($message['id'] === $id) {
-                    // Ako se element pronađe, ažuriraj title i value
-                    $message['title'] = $_POST['title'];
-                    $message['value'] = $_POST['value'];
-                    $found = true; // Postavi na true kada pronađe
+        try {
+            $predefinedMessages = $rcmail->user->get_prefs()['predefinedMessages'] ?? [];
+            $found = false;
 
-                    break; // Izlazak iz petlje
+            if (isset($_POST['id'])) {
+                $id = $_POST['id'];
+                foreach ($predefinedMessages as &$message) {
+                    if ($message['id'] === $id) {
+                        $message['title'] = $_POST['title'];
+                        $message['value'] = $_POST['value'];
+                        $found = true;
+                        break;
+                    }
                 }
             }
+
+            if (!$found) {
+                $predefinedMessage = [
+                    'title' => $_POST['title'],
+                    'value' => $_POST['value'],
+                    'id' => uniqid('predefined-message-'),
+                ];
+                $predefinedMessages[] = $predefinedMessage;
+            }
+
+            // Sačuvaj promjene
+            $rcmail->user->save_prefs(['predefinedMessages' => $predefinedMessages]);
+
+            // Vraćamo uspješan odgovor
+            echo json_encode([
+                'status' => 'success',
+                'returnValue' => $predefinedMessages,
+            ]);
+        } catch (\Throwable $e) {
+            // Prikazujemo greške u logu
+            error_log('Error message (Add or Edit) : ' . $e->getMessage());
+            error_log('Error code (Add or Edit) : ' . $e->getCode());
+            error_log('Error file (Add or Edit) : ' . $e->getFile());
+            error_log('Error line (Add or Edit) : ' . $e->getLine());
+
+            // Vraćamo grešku na frontend
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Došlo je do greške prilikom obrade zahtjeva.',
+            ]);
         }
 
-        // Ako element nije pronađen i nema id, dodaj novi
-        if (!$found) {
-            $predefinedMessage = [
-                'title' => $_POST['title'],
-                'value' => $_POST['value'],
-                'id' => uniqid('predefined-message-'),
-            ];
-            $predefinedMessages[] = $predefinedMessage;
-        }
-
-        error_log('Ovo mi je dodani ili ažurirani predefined message: ' . print_r($predefinedMessages, true));
-
-        // Sačuvaj promijenjene prefs
-        $rcmail->user->save_prefs([
-            'predefinedMessages' => $predefinedMessages,
-        ]);
-
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Preusmjeri na istu stranicu bez podataka
-            header('Content-Type: application/json');
-            echo json_encode(['returnValue' => $predefinedMessages]);
-            exit();
-        }
+        exit();
     }
 
-    public function aicdeletemessage()
+
+    public function aicdeletemessage(): void
     {
         $rcmail = \rcmail::get_instance();
         $this->plugin->include_script('assets/dist/settings.bundle.js');
-        $predefinedMessages = $rcmail->user->get_prefs()['predefinedMessages'] ?? [];
-        $id = \rcube_utils::get_input_value('id', \rcube_utils::INPUT_POST);
 
-        $filteredMessageArray = $this->removeItemById($predefinedMessages, $id);
-        $rcmail->output->show_message('Došlo je do greške prilikom spremanja.', 'error');
-        $rcmail->output->show_message('Poruka je uspješno sačuvana!', 'confirmation');
-        $rcmail->user->save_prefs([
-            'predefinedMessages' => $filteredMessageArray,
-        ]);
+        header('Content-Type: application/json');
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Ovde obradi podatke iz forme
-            // ...
+        try {
+            $predefinedMessages = $rcmail->user->get_prefs()['predefinedMessages'] ?? [];
+            $id = \rcube_utils::get_input_value('id', \rcube_utils::INPUT_POST);
 
-            // Preusmjeri na istu stranicu bez podataka
-            header('Content-Type: application/json');
+            // Funkcija koja uklanja poruku po ID-ju
+            $filteredMessageArray = $this->removeItemById($predefinedMessages, $id);
 
-            echo json_encode(['returnValue' => $filteredMessageArray]);
-            exit();
+            // Sačuvaj izmjene
+            $rcmail->user->save_prefs([
+                'predefinedMessages' => $filteredMessageArray,
+            ]);
+
+            // Vraćanje uspješnog odgovora
+            echo json_encode([
+                'status' => 'success',
+                'returnValue' => $filteredMessageArray,
+            ]);
+        } catch (\Throwable $e) {
+            // Prikaz grešaka u logu
+            error_log('Error message (Delete Message) : ' . $e->getMessage());
+            error_log('Error code (Delete Message) : ' . $e->getCode());
+            error_log('Error file (Delete Message) : ' . $e->getFile());
+            error_log('Error line (Delete Message) : ' . $e->getLine());
+
+            // Vraćanje greške na frontend
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Došlo je do greške prilikom brisanja poruke.',
+            ]);
         }
+
+        exit();
     }
+
 
     public function aicresponsesgetrequest(): void
     {
         $rcmail = \rcmail::get_instance();
-        $predefinedMessages = $rcmail->user->get_prefs()['predefinedMessages'] ?? [];
-
         header('Content-Type: application/json');
-        echo json_encode(['returnValue' => $predefinedMessages]);
-        exit;
+
+        try {
+            // Dohvati unaprijed definirane poruke
+            $predefinedMessages = $rcmail->user->get_prefs()['predefinedMessages'] ?? [];
+
+            // Vraćanje uspješnog odgovora
+            echo json_encode([
+                'status' => 'success',
+                'returnValue' => $predefinedMessages,
+            ]);
+        } catch (\Throwable $e) {
+            // Prikaz grešaka u logu
+            error_log('Error message: (Get All Messages) ' . $e->getMessage());
+            error_log('Error code (Get All Messages) : ' . $e->getCode());
+            error_log('Error file (Get All Messages) : ' . $e->getFile());
+            error_log('Error line (Get All Messages) : ' . $e->getLine());
+
+            // Vraćanje greške na frontend
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Došlo je do greške prilikom dohvaćanja poruka.',
+            ]);
+        }
+
+        exit();
     }
 
-    public function getMessageById(): array
+
+    public function getMessageById(): void
     {
         $rcmail = \rcmail::get_instance();
-        // Preuzmi predefinedMessages iz prefs
-        $predefinedMessages = $rcmail->user->get_prefs()['predefinedMessages'] ?? [];
-        $id = \rcube_utils::get_input_value('id', \rcube_utils::INPUT_GET);
-
-        // Ako je id postavljen, filtriraj poruke po id-u
-        $return = $id ? array_values(array_filter($predefinedMessages, static fn ($msg) => $msg['id'] === $id))[0] ?? [] : [];
-
         header('Content-Type: application/json');
-        echo json_encode(['returnValue' => $return]);
+
+        try {
+            // Preuzmi predefinedMessages iz prefs
+            $predefinedMessages = $rcmail->user->get_prefs()['predefinedMessages'] ?? [];
+            $id = \rcube_utils::get_input_value('id', \rcube_utils::INPUT_GET);
+
+            // Ako je id postavljen, filtriraj poruke po id-u
+            $return = $id ? array_values(array_filter($predefinedMessages, static fn($msg) => $msg['id'] === $id))[0] ?? [] : [];
+
+            // Uspješan odgovor
+            echo json_encode([
+                'status' => 'success',
+                'returnValue' => $return,
+            ]);
+        } catch (\Throwable $e) {
+            // Prikaz grešaka u logu
+            error_log('Error message (Get Message By Id) : ' . $e->getMessage());
+            error_log('Error code (Get Message By Id) : ' . $e->getCode());
+            error_log('Error file (Get Message By Id) : ' . $e->getFile());
+            error_log('Error line (Get Message By Id) : ' . $e->getLine());
+
+            // Vraćanje greške na frontend
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Došlo je do greške prilikom dohvaćanja poruke.',
+            ]);
+        }
+
         exit;
     }
+
 
     /**
      * @param array<string, mixed> $args
@@ -157,6 +226,7 @@ class SettingsTask extends AbstractTask
      */
     public function addSettingsSection(array $args): array
     {
+        $this->plugin->include_script('assets/dist/settings.bundle.js');
         // Definiramo novu sekciju (tab) unutar postavki
         $new_section = [
             'action' => 'plugin.aicresponses',
@@ -194,7 +264,7 @@ class SettingsTask extends AbstractTask
      */
     public function preferencesList(array $args): array
     {
-        //        $this->plugin->include_script('assets/dist/settings.bundle.js');
+                $this->plugin->include_stylesheet('assets/src/settings/style.css');
         /** @var array<string, array<string, mixed>> $blocks */
         $blocks = $args['blocks'] ?? [];
 
@@ -217,16 +287,6 @@ class SettingsTask extends AbstractTask
                     [
                         'title' => 'Language',
                         'content' => $this->getDropdownHtml(Settings::getLanguages(), 'language', Settings::getDefaultLanguage()),
-                    ],
-                    [
-                        'title' => 'Input',
-                        'content' => ' <input list="options" id="dynamicInput" placeholder="Unesite vrijednost ili odaberite" />
-
-    <datalist id="options">
-        <option value="Opcija 1">
-        <option value="Opcija 2">
-        <option value="Opcija 3">
-    </datalist>',
                     ],
                 ],
             ];

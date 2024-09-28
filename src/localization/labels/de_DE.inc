@@ -44,6 +44,15 @@ $labels['ai_error_sender_name'] = 'Bitte geben Sie den Absendernamen ein!';
 $labels['ai_error_recipient_name'] = 'Empfängername leer (Optional)';
 $labels['ai_error_instructions'] = 'Geben Sie Anweisungen ein!';
 
+$labels['ai_predefined_submit'] = 'Speichern';
+$labels['ai_predefined_create'] = 'Erstellen';
+$labels['ai_predefined_delete'] = 'Löschen';
+$labels['ai_predefined_successful_save'] = 'Erfolgreich gespeichert';
+$labels['ai_predefined_unsuccessful_save'] = 'Fehler beim Speichern der Nachricht';
+$labels['ai_predefined_successful_delete'] = 'Erfolgreich gelöscht';
+$labels['ai_predefined_unsuccessful_delete'] = 'Fehler beim Löschen der Nachricht';
+$labels['ai_predefined_invalid_input'] = 'Ungültige Eingabe';
+
 $labels['ai_request_error'] = 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal.';
 
 $labels['ai_insert_email'] = 'E-Mail einfügen';

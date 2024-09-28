@@ -63,6 +63,16 @@ $labels['ai_selected_text'] = 'Odabrani Tekst';
 $labels['ai_fix_instructions'] = 'Instrukcija za Ispravljanje';
 $labels['ai_fix_text_input_instructions'] = 'U ovom polju unesite detaljna objašnjenja ili instrukcije o izmjenama koje želite da napravite na odabranom tekstu.';
 
+$labels['ai_predefined_submit'] = "Spremi";
+$labels['ai_predefined_create'] = "Kreiraj";
+$labels['ai_predefined_delete'] = "Obriši";
+$labels['ai_predefined_successful_save'] = "Uspješno sačuvano";
+$labels['ai_predefined_unsuccessful_save'] = "Greška prilikom čuvanja poruke";
+$labels['ai_predefined_successful_delete'] = "Uspješno obrisano";
+$labels['ai_predefined_unsuccessful_delete'] = "Greška prilikom brisanja poruke";
+$labels['ai_predefined_invalid_input'] = 'Neispravan unos';
+
+
 $labels['settings_menu_text'] = 'Umjetna Inteligencija';
 $labels['setting_default_options'] = 'Sastavljanje poruka sa AI';
 $labels['setting_ai_style'] = 'Stil';

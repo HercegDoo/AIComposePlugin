@@ -60,6 +60,15 @@ $labels['ai_help_use_example'] = '(Use this)';
 
 $labels['ai_compose_settings'] = 'AICompose Settings';
 
+$labels['ai_predefined_submit'] = 'Save';
+$labels['ai_predefined_create'] = 'Create';
+$labels['ai_predefined_delete'] = 'Delete';
+$labels['ai_predefined_successful_save'] = 'Successfully saved';
+$labels['ai_predefined_unsuccessful_save'] = 'Error saving the message';
+$labels['ai_predefined_successful_delete'] = 'Successfully deleted';
+$labels['ai_predefined_unsuccessful_delete'] = 'Error deleting the message';
+$labels['ai_predefined_invalid_input'] = 'Invalid input';
+
 $labels['ai_fix_selected_text_title'] = 'Fix Selected Text';
 $labels['ai_selected_text'] = 'Selected Text';
 $labels['ai_fix_instructions'] = 'Correction Instructions';
