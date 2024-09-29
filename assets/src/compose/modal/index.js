@@ -7,6 +7,7 @@ import { sendDefaultPostRequest } from "./additionalModalFunctions/defaultPostRe
 import { validateFields } from "./additionalModalFunctions/fieldsValidation";
 import { regulateFixTextModal } from "./additionalModalFunctions/regulateFixTextModal";
 import { insertEmail } from "./additionalModalFunctions/insertEmailHandler";
+import { regulatePredefinedInstructionsModal } from "./additionalModalFunctions/regulatePredefinedInstructionsModal";
 
 export function createComposeModal() {
   const dialogMask = document.createElement("div");
@@ -52,6 +53,7 @@ export function createComposeModal() {
   instructions.placeholder = translation("ai_instructions_placeholder");
   checkSelectedText();
   regulateHelpModal();
+  regulatePredefinedInstructionsModal();
   regulateFixTextModal();
 
   $("select:not([multiple])", dialogMask).each(function () {

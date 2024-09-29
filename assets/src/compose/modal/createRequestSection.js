@@ -44,6 +44,7 @@ export function createRequestSection() {
       <span id="generate-again-span" style="display: none;">${translation("ai_generate_again")}</span>
   </button>
   <button type="button" class="btn btn-default" id="instruction-example" >${translation("ai_button_show_instructions")}</button>
+   <button type="button" class="btn btn-default" id="predefined-instructions-button" >${translation("ai_predefined_section_title")}</button>
   <button disabled type="button" class="btn btn-default disabled" id="fix-selected-text" >${translation("ai_button_fix_selected_text")}</button>`;
 
   aicRequest.appendChild(generateContainer);

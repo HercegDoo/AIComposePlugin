@@ -8,6 +8,7 @@ export function getPredefinedInstructions() {
   rcmail.http_get('plugin.aicGetAllInstructions', {})
     .done(function(data) {
       if (data.status === 'success') {
+        console.log(data);
         clearInputFields();
         document.getElementById('edit-id').value = "";
         hideDeleteButton();
