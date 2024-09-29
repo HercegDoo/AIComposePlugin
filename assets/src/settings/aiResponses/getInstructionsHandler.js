@@ -1,4 +1,5 @@
 import { clearInputFields, hideDeleteButton, showInputFields} from "./displayHandler";
+import { translation } from "../../utils";
 
 export function getPredefinedInstructions() {
   const listingInfo = document.querySelector('.listing-info');
@@ -12,11 +13,11 @@ export function getPredefinedInstructions() {
         hideDeleteButton();
         scrollerDisplay(listingInfo, data, tbody);
       } else {
-        rcmail.display_message(`Greška: ${data.message}`, 'error');
+        rcmail.display_message(`${translation('ai_predefined_error')}: ${data.message}`, 'error');
       }
     })
     .fail(function() {
-      rcmail.display_message('Greška prilikom dohvaćanja poruka', 'error');
+      rcmail.display_message(`${translation('ai_predefined_instructions_error')}`, 'error');
     });
 }
 

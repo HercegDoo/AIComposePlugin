@@ -26,3 +26,4 @@ $messages['ai_predefined_delete_error'] = 'An error occurred while deleting the 
 $messages['ai_predefined_get_all_instructions_error'] = 'An error occurred while fetching instructions.';
 $messages['ai_predefined_get_specific_instruction_error'] = 'An error occurred while fetching information for the instruction.';
 $messages['ai_predefined_content_error'] = 'Error displaying the page.';
+$messages['ai_predefined_max_instructions_error'] = "The maximum number of available instructions is 10!";

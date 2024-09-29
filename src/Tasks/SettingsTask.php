@@ -38,13 +38,11 @@ class SettingsTask extends AbstractTask
     {
         $rcmail = \rcmail::get_instance();
         $this->plugin->include_script('assets/dist/settings.bundle.js');
-
+        $maxPredefinedMessages = $rcmail->config->get('aiMaxPredefinedInstructions');
         header('Content-Type: application/json');
-
         try {
             $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
             $found = false;
-
             if (isset($_POST['id'])) {
                 $id = $_POST['id'];
                 foreach ($predefinedInstructions as &$instruction) {
@@ -58,6 +56,13 @@ class SettingsTask extends AbstractTask
             }
 
             if (!$found) {
+                if (count($predefinedInstructions) >= $maxPredefinedMessages) {
+                    echo json_encode([
+                        'status' => 'error',
+                        'message' => $this->translation('ai_predefined_max_instructions_error'),
+                    ]);
+                  exit();
+                }
                 $predefinedInstruction = [
                     'title' => $_POST['title'],
                     'value' => $_POST['value'],

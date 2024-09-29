@@ -26,11 +26,11 @@ export function postMethodHandler() {
           rcmail.display_message(translation('ai_predefined_successful_save'), 'confirmation');
           getPredefinedInstructions(); // Osvježi listu nakon uspješnog dodavanja
         } else {
-          rcmail.display_message(translation('ai_predefined_unsuccessful_save') + data.message, 'error');
+          rcmail.display_message(translation('ai_predefined_unsuccessful_save') + ": " +  data.message, 'error');
         }
       })
-      .fail(function() {
-        rcmail.display_message(translation('ai_predefined_unsuccessful_save'), 'error');
+      .fail(function(data) {
+        rcmail.display_message( data.message, 'error');
       });
   });
 }
