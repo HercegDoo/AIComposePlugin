@@ -63,15 +63,21 @@ $labels['ai_selected_text'] = 'Odabrani Tekst';
 $labels['ai_fix_instructions'] = 'Instrukcija za Ispravljanje';
 $labels['ai_fix_text_input_instructions'] = 'U ovom polju unesite detaljna objašnjenja ili instrukcije o izmjenama koje želite da napravite na odabranom tekstu.';
 
-$labels['ai_predefined_submit'] = "Spremi";
-$labels['ai_predefined_create'] = "Kreiraj";
-$labels['ai_predefined_delete'] = "Obriši";
-$labels['ai_predefined_successful_save'] = "Uspješno sačuvano";
-$labels['ai_predefined_unsuccessful_save'] = "Greška prilikom čuvanja poruke";
-$labels['ai_predefined_successful_delete'] = "Uspješno obrisano";
-$labels['ai_predefined_unsuccessful_delete'] = "Greška prilikom brisanja poruke";
+$labels['ai_predefined_submit'] = 'Spremi';
+$labels['ai_predefined_create'] = 'Kreiraj';
+$labels['ai_predefined_delete'] = 'Obriši';
+$labels['ai_predefined_successful_save'] = 'Uspješno sačuvano';
+$labels['ai_predefined_unsuccessful_save'] = 'Greška prilikom čuvanja poruke';
+$labels['ai_predefined_successful_delete'] = 'Uspješno obrisano';
+$labels['ai_predefined_unsuccessful_delete'] = 'Greška prilikom brisanja poruke';
 $labels['ai_predefined_invalid_input'] = 'Neispravan unos';
-
+$labels['ai_predefined_cancel'] = 'Otkaži';
+$labels['ai_predefined_popup_title'] = 'Da li ste sigurni?';
+$labels['ai_predefined_popup_body'] = 'Da li zaista želite obrisati ovu predefinisanu instrukciju?';
+$labels['ai_predefined_listing_empty'] = "Lista je prazna. Koristite dugme 'Kreiraj' da dodate novu instrukciju.";
+$labels['ai_predefined_title'] = 'Naslov';
+$labels['ai_predefined_content'] = 'Sadržaj';
+$labels['ai_predefined_section_title'] = 'AI Predefinisane Instrukcije';
 
 $labels['settings_menu_text'] = 'Umjetna Inteligencija';
 $labels['setting_default_options'] = 'Sastavljanje poruka sa AI';

@@ -1,10 +1,10 @@
 import { clearInputFields, hideDeleteButton, showInputFields} from "./displayHandler";
 
-export function getPredefinedMessages() {
+export function getPredefinedInstructions() {
   const listingInfo = document.querySelector('.listing-info');
   const tbody = document.querySelector('#responses-table tbody');
 
-  rcmail.http_get('plugin.aicresponsesgetrequest', {})
+  rcmail.http_get('plugin.aicGetAllInstructions', {})
     .done(function(data) {
       if (data.status === 'success') {
         clearInputFields();
@@ -22,9 +22,9 @@ export function getPredefinedMessages() {
 
 
 
-export function getSpecificMessage(id) {
+export function getSpecificInstruction(id) {
 
-  rcmail.http_get('plugin.getMessageById', { id: `${id}` })
+  rcmail.http_get('plugin.getInstructionById', { id: `${id}` })
     .done(function(data) {
       if (data.status === 'success') {
         showInputFields(data.returnValue.title, data.returnValue.value);

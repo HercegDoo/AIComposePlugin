@@ -1,5 +1,5 @@
 
-import { getSpecificMessage } from "./getMessagesHandler";
+import { getSpecificInstruction } from "./getInstructionsHandler";
 import { handleDelete } from "./deleteHandler";
 import { handleEdit } from "./editHandler";
 import { putInFocus, removeFocus } from "./displayHandler";
@@ -16,7 +16,7 @@ layourMenuScrollbar.addEventListener('click', (event)=>{
       removeFocus(previousSelectedRow);
     }
 
-    getSpecificMessage(id);
+    getSpecificInstruction(id);
      handleDelete(id);
      handleEdit(id);
 
@@ -28,3 +28,5 @@ layourMenuScrollbar.addEventListener('click', (event)=>{
 })
 
 }
+
+export {previousSelectedRow};

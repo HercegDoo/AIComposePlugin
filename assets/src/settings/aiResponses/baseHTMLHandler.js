@@ -1,3 +1,5 @@
+import { translation } from "../../utils";
+
 export function setBaseHTML(){
 
   const layourMenuScrollbar = document.querySelector("#layout-list .scroller");
@@ -16,11 +18,11 @@ export function setBaseHTML(){
     <input type="hidden" name="_action" value="plugin.aicresponsesrequest" class="form-control">
     <input type="hidden" id="edit-id" name="id">
        <div class="inner-div">
-  <label for="aic-predefined-instructions-title-input"><span>Naziv</span></label> 
+  <label for="aic-predefined-instructions-title-input"><span id="predefined-instruction-title"></span></label> 
 <input name="title" id="aic-predefined-instructions-title-input" class="form-control" type="text">
 </div>
 <div class="inner-div">
-<label for="aic-predefined-instructions-value-textarea"> <span>Sadrzaj</span></label>
+<label for="aic-predefined-instructions-value-textarea"> <span id="predefined-instruction-content"></span></label>
 <textarea name="value" id="aic-predefined-instructions-value-textarea" class="form-control" cols="30" rows="10"></textarea>
 </div>
 <div>
@@ -30,23 +32,31 @@ export function setBaseHTML(){
 </form>
   `;
 
+
+
   layoutContent.insertBefore(formDiv, iframeWrapper);
 
   header.innerHTML = `<ul class="menu toolbar listing iconized" id="toolbar-menu">
 <li role="menuitem">
-<a class="create" title="Kreiraj novi odgovor" data-fab="true" id="rcmbtn115" role="button" tabindex="0" aria-disabled="false" href="#" onclick="return rcmail.command(\'add\',\'\',this,event)">
-<span class="inner">Kreiraj</span>
+<a class="create"   role="button" tabindex="0" aria-disabled="false" href="#" >
+<span class="inner" id="create-text"></span>
 </a>
 </li>
 <li role="menuitem">
-<a class="delete disabled" title="Obriši" id="delete-button" role="button" tabindex="-1" aria-disabled="true" href="#"">
-<span class="inner">Obriši</span>
+<a class="delete disabled"  id="delete-button" role="button" tabindex="-1" aria-disabled="true" href="#"">
+<span class="inner" id="delete-text">Obriši</span>
 </a>
 </li>
 </ul>`;
 
+  document.getElementById('delete-text').textContent = translation('ai_predefined_delete');
+  document.getElementById('create-text').textContent = translation('ai_predefined_create');
+
   layourMenuScrollbar.innerHTML = `
-<table id="responses-table" class="listing focus" role="listbox" data-list="responses_list"  data-label-ext="Use the Create button to add a new record." data-create-command="add"><tbody></tbody></table><div class="listing-info">The list is empty. Use the Create button to add a new record.</div>
+<table id="responses-table" class="listing focus" role="listbox" ><tbody></tbody></table><div class="listing-info" id="listing-info-text"></div>
 `;
 
+  document.getElementById('listing-info-text').innerText = translation('ai_predefined_listing_empty');
+  document.getElementById('predefined-instruction-title').textContent = translation('ai_predefined_title');
+  document.getElementById('predefined-instruction-content').textContent = translation('ai_predefined_content');
 }

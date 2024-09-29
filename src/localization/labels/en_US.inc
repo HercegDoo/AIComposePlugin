@@ -68,6 +68,13 @@ $labels['ai_predefined_unsuccessful_save'] = 'Error saving the message';
 $labels['ai_predefined_successful_delete'] = 'Successfully deleted';
 $labels['ai_predefined_unsuccessful_delete'] = 'Error deleting the message';
 $labels['ai_predefined_invalid_input'] = 'Invalid input';
+$labels['ai_predefined_cancel'] = 'Cancel';
+$labels['ai_predefined_popup_title'] = 'Are you sure?';
+$labels['ai_predefined_popup_body'] = 'Do you really want to delete this predefined instruction?';
+$labels['ai_predefined_listing_empty'] = 'The list is empty. Use the Create button to add a new instruction.';
+$labels['ai_predefined_title'] = 'Title';
+$labels['ai_predefined_content'] = 'Content';
+$labels['ai_predefined_section_title'] = 'AI Predefined Instructions';
 
 $labels['ai_fix_selected_text_title'] = 'Fix Selected Text';
 $labels['ai_selected_text'] = 'Selected Text';

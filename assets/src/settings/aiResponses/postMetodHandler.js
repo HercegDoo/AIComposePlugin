@@ -1,4 +1,4 @@
-import { getPredefinedMessages } from "./getMessagesHandler";
+import { getPredefinedInstructions } from "./getInstructionsHandler";
 import { fieldsValid } from "./fieldsValid";
 import { translation } from "../../utils";
 
@@ -16,7 +16,7 @@ export function postMethodHandler() {
       return;
     }
 
-    rcmail.http_post('plugin.aicresponsesrequest', {
+    rcmail.http_post('plugin.aicCreateOrEdit', {
       title: `${title}`,
       value: `${value}`,
       id: `${editMessageId}`
@@ -24,7 +24,7 @@ export function postMethodHandler() {
       .done(function(data) {
         if (data.status === 'success') {
           rcmail.display_message(translation('ai_predefined_successful_save'), 'confirmation');
-          getPredefinedMessages(); // Osvježi listu nakon uspješnog dodavanja
+          getPredefinedInstructions(); // Osvježi listu nakon uspješnog dodavanja
         } else {
           rcmail.display_message(translation('ai_predefined_unsuccessful_save') + data.message, 'error');
         }

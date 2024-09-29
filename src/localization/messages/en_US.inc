@@ -20,3 +20,9 @@ $messages['ai_validation_error_invalid_sender_name_text'] = "The 'Sender Name' f
 $messages['ai_validation_error_invalid_recipient_name_text'] = "The 'Recipient Name' field must contain valid text!";
 $messages['ai_validation_error_not_enough_characters_sender_name'] = "The 'Sender Name' field must be at least 3 characters long.";
 $messages['ai_validation_error_not_enough_characters_recipient_name'] = "The 'Recipient Name' field must be at least 3 characters long if it is provided.";
+
+$messages['ai_predefined_request_error'] = 'An error occurred while processing the request.';
+$messages['ai_predefined_delete_error'] = 'An error occurred while deleting the instruction.';
+$messages['ai_predefined_get_all_instructions_error'] = 'An error occurred while fetching instructions.';
+$messages['ai_predefined_get_specific_instruction_error'] = 'An error occurred while fetching information for the instruction.';
+$messages['ai_predefined_content_error'] = 'Error displaying the page.';

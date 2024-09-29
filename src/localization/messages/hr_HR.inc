@@ -20,3 +20,9 @@ $messages['ai_validation_error_invalid_sender_name_text'] = "Polje 'Ime pošilja
 $messages['ai_validation_error_invalid_recipient_name_text'] = "Polje 'Ime primatelja' mora sadržavati valjan tekst!";
 $messages['ai_validation_error_not_enough_characters_sender_name'] = "Polje 'Ime pošiljatelja' mora imati najmanje 3 znaka.";
 $messages['ai_validation_error_not_enough_characters_recipient_name'] = "Polje 'Ime primatelja' mora imati najmanje 3 znaka ako je navedeno.";
+
+$messages['ai_predefined_request_error'] = 'Došlo je do greške prilikom obrade zahtjeva.';
+$messages['ai_predefined_delete_error'] = 'Došlo je do greške prilikom brisanja instrukcije.';
+$messages['ai_predefined_get_all_instructions_error'] = 'Došlo je do greške prilikom dohvaćanja instrukcija.';
+$messages['ai_predefined_get_specific_instruction_error'] = 'Došlo je do greške prilikom dohvaćanja informacija za instrukciju.';
+$messages['ai_predefined_content_error'] = 'Greška prilikom prikaza stranice.';

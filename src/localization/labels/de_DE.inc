@@ -52,8 +52,14 @@ $labels['ai_predefined_unsuccessful_save'] = 'Fehler beim Speichern der Nachrich
 $labels['ai_predefined_successful_delete'] = 'Erfolgreich gelöscht';
 $labels['ai_predefined_unsuccessful_delete'] = 'Fehler beim Löschen der Nachricht';
 $labels['ai_predefined_invalid_input'] = 'Ungültige Eingabe';
-
+$labels['ai_predefined_cancel'] = 'Abbrechen';
+$labels['ai_predefined_popup_title'] = 'Sind Sie sicher?';
+$labels['ai_predefined_popup_body'] = 'Möchten Sie diese vordefinierte Anweisung wirklich löschen?';
+$labels['ai_predefined_listing_empty'] = "Die Liste ist leer. Verwenden Sie die Schaltfläche 'Erstellen', um eine neue Anweisung hinzuzufügen.";
 $labels['ai_request_error'] = 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal.';
+$labels['ai_predefined_title'] = 'Titel';
+$labels['ai_predefined_content'] = 'Inhalt';
+$labels['ai_predefined_section_title'] = 'AI Vorgegebene Anweisungen';
 
 $labels['ai_insert_email'] = 'E-Mail einfügen';
 $labels['ai_generate_email'] = 'E-Mail generieren';

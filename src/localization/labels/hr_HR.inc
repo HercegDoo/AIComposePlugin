@@ -61,7 +61,13 @@ $labels['ai_predefined_unsuccessful_save'] = 'Greška pri spremanju poruke';
 $labels['ai_predefined_successful_delete'] = 'Uspješno izbrisano';
 $labels['ai_predefined_unsuccessful_delete'] = 'Greška pri brisanju poruke';
 $labels['ai_predefined_invalid_input'] = 'Neispravan unos';
-
+$labels['ai_predefined_cancel'] = 'Otkaži';
+$labels['ai_predefined_popup_title'] = 'Jeste li sigurni?';
+$labels['ai_predefined_popup_body'] = 'Želite li zaista obrisati ovu predefiniranu instrukciju?';
+$labels['ai_predefined_listing_empty'] = "Lista je prazna. Iskoristite gumb 'Kreiraj' za dodavanje nove instrukcije.";
+$labels['ai_predefined_title'] = 'Naslov';
+$labels['ai_predefined_content'] = 'Sadržaj';
+$labels['ai_predefined_section_title'] = 'AI Predefinirane Upute';
 
 $labels['ai_button_show_instructions'] = 'Primjeri Uputa';
 $labels['ai_help_button_back'] = 'Natrag';

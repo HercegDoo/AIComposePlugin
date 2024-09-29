@@ -20,3 +20,9 @@ $messages['ai_validation_error_invalid_sender_name_text'] = "Das Feld 'Absendern
 $messages['ai_validation_error_invalid_recipient_name_text'] = "Das Feld 'Empfängername' muss gültigen Text enthalten!";
 $messages['ai_validation_error_not_enough_characters_sender_name'] = "Das Feld 'Absendername' muss mindestens 3 Zeichen lang sein.";
 $messages['ai_validation_error_not_enough_characters_recipient_name'] = "Das Feld 'Empfängername' muss mindestens 3 Zeichen lang sein, wenn es angegeben ist.";
+
+$messages['ai_predefined_request_error'] = 'Bei der Verarbeitung der Anfrage ist ein Fehler aufgetreten.';
+$messages['ai_predefined_delete_error'] = 'Beim Löschen der Anleitung ist ein Fehler aufgetreten.';
+$messages['ai_predefined_get_all_instructions_error'] = 'Beim Abrufen der Anleitungen ist ein Fehler aufgetreten.';
+$messages['ai_predefined_get_specific_instruction_error'] = 'Beim Abrufen der Informationen zur Anleitung ist ein Fehler aufgetreten.';
+$messages['ai_predefined_content_error'] = 'Fehler beim Anzeigen der Seite.';
