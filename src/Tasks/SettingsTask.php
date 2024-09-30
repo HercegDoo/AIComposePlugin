@@ -222,7 +222,7 @@ class SettingsTask extends AbstractTask
         if (!isset($args['actions']) || !\is_array($args['actions'])) {
             $args['actions'] = [];
         }
-        
+
         $already_exists = false;
         foreach ($args['actions'] as $action) {
             if ($action['label'] === $this->translation('ai_predefined_section_title')) {
@@ -232,7 +232,7 @@ class SettingsTask extends AbstractTask
         }
 
         if (!$already_exists) {
-            $args['actions'][] = $new_section; 
+            $args['actions'][] = $new_section;
         }
 
         return $args;

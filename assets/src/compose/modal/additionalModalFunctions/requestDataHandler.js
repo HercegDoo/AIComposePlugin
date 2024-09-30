@@ -13,7 +13,6 @@ export function getRequestDataFields() {
   const senderInfo = processSenderData(getSenderInfo());
   const signatureCheckObject = signatureCheckedPreviousConversation();
 
-
   return {
     style: `${styleElement.value}`,
     senderName: `${senderNameElement.value}`,

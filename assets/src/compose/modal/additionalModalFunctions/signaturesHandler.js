@@ -1,7 +1,6 @@
 let editorHTML = "";
 let formattedPreviousConversationText = "";
 export function signatureCheckedPreviousConversation() {
-
   let signaturesArray = [];
   const size = Object.keys(rcmail.env.signatures).length; // Broj potpisa
 

@@ -10,12 +10,9 @@ export function createPredefinedInstructionsSection() {
       <h3>${translation("ai_predefined_section_title")}</h3>
   </div>
 <div class="predefined-instructions-content">
-  <p>${translation('ai_predefined_modal_description')}</p>
+  <p>${translation("ai_predefined_modal_description")}</p>
   
  </div>`;
-
-
-
 
   return predefinedInstructionsDiv;
 }

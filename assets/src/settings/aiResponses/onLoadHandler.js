@@ -1,4 +1,4 @@
-import {getPredefinedInstructions} from "./requests/getInstructionsHandler";
+import { getPredefinedInstructions } from "./requests/getInstructionsHandler";
 import { setBaseHTML } from "./baseHTMLHandler";
 import { postMethodHandler } from "./requests/postMetodHandler";
 

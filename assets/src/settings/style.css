@@ -8,22 +8,21 @@
   align-items: baseline;
 }
 
-.name::before{
+.name::before {
   content: "\f075";
 }
 
-.formcontent{
+.formcontent {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-#aic-predefined-instructions-value-textarea{
+#aic-predefined-instructions-value-textarea {
   resize: none;
 }
 
-#settingstabaipredefinedresponses::before{
+#settingstabaipredefinedresponses::before {
   content: "\f544";
   font-size: 1.1212rem;
 }
-

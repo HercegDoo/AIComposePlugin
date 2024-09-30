@@ -1,7 +1,6 @@
 import { translation } from "../../utils";
 
-export function setBaseHTML(){
-
+export function setBaseHTML() {
   const layourMenuScrollbar = document.querySelector("#layout-list .scroller");
   const header = document.querySelector("#layout-content .header");
   const layoutContent = document.getElementById("layout-content");
@@ -32,8 +31,6 @@ export function setBaseHTML(){
 </form>
   `;
 
-
-
   layoutContent.insertBefore(formDiv, iframeWrapper);
 
   header.innerHTML = `<ul class="menu toolbar listing iconized" id="toolbar-menu">
@@ -49,14 +46,22 @@ export function setBaseHTML(){
 </li>
 </ul>`;
 
-  document.getElementById('delete-text').textContent = translation('ai_predefined_delete');
-  document.getElementById('create-text').textContent = translation('ai_predefined_create');
+  document.getElementById("delete-text").textContent = translation(
+    "ai_predefined_delete"
+  );
+  document.getElementById("create-text").textContent = translation(
+    "ai_predefined_create"
+  );
 
   layourMenuScrollbar.innerHTML = `
 <table id="responses-table" class="listing focus" role="listbox" ><tbody></tbody></table><div class="listing-info" id="listing-info-text"></div>
 `;
 
-  document.getElementById('listing-info-text').innerText = translation('ai_predefined_listing_empty');
-  document.getElementById('predefined-instruction-title').textContent = translation('ai_predefined_title');
-  document.getElementById('predefined-instruction-content').textContent = translation('ai_predefined_content');
+  document.getElementById("listing-info-text").innerText = translation(
+    "ai_predefined_listing_empty"
+  );
+  document.getElementById("predefined-instruction-title").textContent =
+    translation("ai_predefined_title");
+  document.getElementById("predefined-instruction-content").textContent =
+    translation("ai_predefined_content");
 }
