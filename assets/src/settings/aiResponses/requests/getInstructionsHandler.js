@@ -10,7 +10,7 @@ export function getPredefinedInstructions() {
   const tbody = document.querySelector("#responses-table tbody");
 
   rcmail
-    .http_get("plugin.aicGetAllInstructions", {})
+    .http_get("plugin.AIComposePlugin_GetInstructionsAction", {})
     .done(function (data) {
       if (data.status === "success") {
         clearInputFields();
@@ -34,7 +34,7 @@ export function getPredefinedInstructions() {
 
 export function getSpecificInstruction(id) {
   rcmail
-    .http_get("plugin.getInstructionById", { id: `${id}` })
+    .http_get("plugin.AIComposePlugin_GetInstructionById", { id: `${id}` })
     .done(function (data) {
       if (data.status === "success") {
         showInputFields(data.returnValue.title, data.returnValue.value);

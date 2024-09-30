@@ -3,7 +3,7 @@ import { displayModalContent } from "./displayModalContent";
 
 export function fillPredefinedInstructionsModal() {
   rcmail
-    .http_get("plugin.aicGetAllInstructions", {})
+    .http_get("plugin.AIComposePlugin_GetInstructionsAction", {})
     .done(function (data) {
       if (data.status === "success") {
         displayModalContent(data.returnValue);

@@ -24,7 +24,7 @@ export function postMethodHandler() {
     }
 
     rcmail
-      .http_post("plugin.aicCreateOrEdit", {
+      .http_post("plugin.AIComposePlugin_CreateOrEdit", {
         title: `${title}`,
         value: `${value}`,
         id: `${editMessageId}`,

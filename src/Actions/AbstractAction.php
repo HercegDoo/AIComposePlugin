@@ -83,4 +83,9 @@ abstract class AbstractAction
     }
 
     abstract protected function validate(): void;
+
+    protected function translation(string $key): string
+    {
+        return $this->rcmail->gettext("AIComposePlugin.{$key}");
+    }
 }

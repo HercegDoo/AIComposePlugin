@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace HercegDoo\AIComposePlugin\Tasks;
 
+use HercegDoo\AIComposePlugin\Actions\GetInstructionsAction;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use html;
 
 class SettingsTask extends AbstractTask
 {
@@ -14,11 +16,91 @@ class SettingsTask extends AbstractTask
         $this->plugin->add_hook('preferences_list', [$this, 'preferencesList']);
         $this->plugin->add_hook('preferences_save', [$this, 'preferencesSave']);
         $this->plugin->add_hook('settings_actions', [$this, 'addSettingsSection']);
+        $this->plugin->add_hook('settings_actions', [$this, 'addSCustomSection']);
         $this->plugin->register_action('plugin.aicresponses', [$this, 'aicresponses']);
-        $this->plugin->register_action('plugin.aicCreateOrEdit', [$this, 'aicCreateOrEdit']);
-        $this->plugin->register_action('plugin.aicGetAllInstructions', [$this, 'aicGetAllInstructions']);
-        $this->plugin->register_action('plugin.aicDeleteInstruction', [$this, 'aicDeleteInstruction']);
-        $this->plugin->register_action('plugin.getInstructionById', [$this, 'getInstructionById']);
+        $this->plugin->register_action('plugin.custom', [$this, 'custom']);
+        $this->plugin->register_handler('plugin.custom', [$this, 'customHandler']);
+
+        GetInstructionsAction::register();
+    }
+
+    public function custom()
+    {
+        $this->plugin->register_handler('plugin.body', [$this, 'infohtml']);
+
+        $rcmail = \rcmail::get_instance();
+        $rcmail->output->set_pagetitle($this->plugin->gettext('userinfo'));
+        $rcmail->output->send('plugin');
+    }
+
+    public function infohtml()
+    {
+        $rcmail = \rcmail::get_instance();
+        $user = $rcmail->user;
+
+        // Kreiranje tabele za formu
+        $table = new \html_table(['cols' => 2, 'class' => 'propform']);
+
+        // Dodavanje input polja
+        $input_field = new \html_inputfield([
+            'name' => 'custom_input',
+            'class' => 'textinput',
+            'placeholder' => $this->plugin->gettext('input_placeholder'),
+        ]);
+        $table->add('title', \html::label('custom_input', \rcube::Q($this->plugin->gettext('custominput'))));
+        $table->add('', $input_field->show());
+
+        // Dodavanje textarea
+        $textarea = new \html_textarea();
+        $textarea_html = $textarea->show('', [
+            'name' => 'custom_textarea',
+            'rows' => 5,
+            'cols' => 40,
+            'class' => 'textinput',
+        ]);
+        $table->add('title', \html::label('custom_textarea', \rcube::Q($this->plugin->gettext('customtextarea'))));
+        $table->add('', $textarea_html);
+
+        // Generisanje HTML izlaza sa parent div-om
+        $out = \html::tag('fieldset', '', $table->show());
+
+        // Generisanje scroller sadržaja
+        $scroller_content = \html::tag(
+            'tbody',
+            \html::tag(
+                'tr',
+                [
+                    'id' => 'rcmrow',
+                    'role' => 'option',
+                    'aria-labelledby' => 'l:rcmrow',
+                    'class' => 'selected focused',
+                    'aria-selected' => 'true',
+                    'style' => 'display: none;',
+                ],
+                \html::tag('td', 'The list is empty. Use the Create button to add a new record.')
+            )
+        );
+
+        // Kreiranje scroller div-a
+        $scroller_div = \html::div(
+            ['class' => 'scroller'],
+            \html::tag('table', [
+                'id' => 'responses-table',
+                'class' => 'listing',
+                'role' => 'listbox',
+                'data-list' => 'responses_list',
+                'data-label-ext' => 'Use the Create button to add a new record.',
+                'data-create-command' => 'add',
+                'tabindex' => '0',
+            ], $scroller_content) .
+            \html::div(['class' => 'listing-info'], 'The list is empty. Use the Create button to add a new record.')
+        );
+
+        // Vraćanje izlaza sa box formcontent i scroller kao sibling
+        return \html::div(
+            ['class' => 'box formcontent'],
+            $out // Sadržaj forme
+        ) . $scroller_div; // Dodaj scroller kao sibling
     }
 
     public function aicresponses(): void
@@ -32,156 +114,6 @@ class SettingsTask extends AbstractTask
             error_log('Error line (Add or Edit) : ' . $e->getLine());
             \rcmail::get_instance()->output->show_message($this->translation('ai_predefined_content_error'), 'error');
         }
-    }
-
-    public function aicCreateOrEdit(): void
-    {
-        $rcmail = \rcmail::get_instance();
-        $this->plugin->include_script('assets/dist/settings.bundle.js');
-        $maxPredefinedMessages = $rcmail->config->get('aiMaxPredefinedInstructions');
-        header('Content-Type: application/json');
-        try {
-            $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
-            $found = false;
-            if (isset($_POST['id'])) {
-                $id = $_POST['id'];
-                foreach ($predefinedInstructions as &$instruction) {
-                    if ($instruction['id'] === $id) {
-                        $instruction['title'] = htmlspecialchars($_POST['title'], \ENT_QUOTES, 'UTF-8');
-                        $instruction['value'] = htmlspecialchars($_POST['value'], \ENT_QUOTES, 'UTF-8');
-                        $found = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!$found) {
-                if (\count($predefinedInstructions) >= $maxPredefinedMessages) {
-                    echo json_encode([
-                        'status' => 'error',
-                        'message' => $this->translation('ai_predefined_max_instructions_error'),
-                    ]);
-                    exit();
-                }
-                $predefinedInstruction = [
-                    'title' => htmlspecialchars($_POST['title'], \ENT_QUOTES, 'UTF-8'),
-                    'value' => htmlspecialchars($_POST['value'], \ENT_QUOTES, 'UTF-8'),
-                    'id' => uniqid('predefined-instruction-'),
-                ];
-                $predefinedInstructions[] = $predefinedInstruction;
-            }
-
-            $rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
-
-            echo json_encode([
-                'status' => 'success',
-                'returnValue' => $predefinedInstructions,
-            ]);
-        } catch (\Throwable $e) {
-            error_log('Error message (Add or Edit) : ' . $e->getMessage());
-            error_log('Error code (Add or Edit) : ' . $e->getCode());
-            error_log('Error file (Add or Edit) : ' . $e->getFile());
-            error_log('Error line (Add or Edit) : ' . $e->getLine());
-
-            echo json_encode([
-                'status' => 'error',
-                'message' => $this->translation('ai_predefined_request_error'),
-            ]);
-        }
-
-        exit();
-    }
-
-    public function aicDeleteInstruction(): void
-    {
-        $rcmail = \rcmail::get_instance();
-        $this->plugin->include_script('assets/dist/settings.bundle.js');
-
-        header('Content-Type: application/json');
-
-        try {
-            $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
-            $id = \rcube_utils::get_input_value('id', \rcube_utils::INPUT_POST);
-            $filteredInstructionsArray = $this->removeItemById($predefinedInstructions, $id);
-
-            $rcmail->user->save_prefs([
-                'predefinedInstructions' => $filteredInstructionsArray,
-            ]);
-
-            echo json_encode([
-                'status' => 'success',
-                'returnValue' => $filteredInstructionsArray,
-            ]);
-        } catch (\Throwable $e) {
-            error_log('Error message (Delete Message) : ' . $e->getMessage());
-            error_log('Error code (Delete Message) : ' . $e->getCode());
-            error_log('Error file (Delete Message) : ' . $e->getFile());
-            error_log('Error line (Delete Message) : ' . $e->getLine());
-
-            echo json_encode([
-                'status' => 'error',
-                'message' => $this->translation('ai_predefined_delete_error'),
-            ]);
-        }
-
-        exit();
-    }
-
-    public function aicGetAllInstructions(): void
-    {
-        $rcmail = \rcmail::get_instance();
-        header('Content-Type: application/json');
-
-        try {
-            $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
-
-            echo json_encode([
-                'status' => 'success',
-                'returnValue' => $predefinedInstructions,
-            ]);
-        } catch (\Throwable $e) {
-            error_log('Error message: (Get All Messages) ' . $e->getMessage());
-            error_log('Error code (Get All Messages) : ' . $e->getCode());
-            error_log('Error file (Get All Messages) : ' . $e->getFile());
-            error_log('Error line (Get All Messages) : ' . $e->getLine());
-
-            echo json_encode([
-                'status' => 'error',
-                'message' => $this->translation('ai_predefined_get_all_instructions_error'),
-            ]);
-        }
-
-        exit();
-    }
-
-    public function getInstructionById(): void
-    {
-        $rcmail = \rcmail::get_instance();
-        header('Content-Type: application/json');
-
-        try {
-            $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
-            $id = \rcube_utils::get_input_value('id', \rcube_utils::INPUT_GET);
-
-            $return = $id ? array_values(array_filter($predefinedInstructions, static fn ($msg) => $msg['id'] === $id))[0] ?? [] : [];
-
-            echo json_encode([
-                'status' => 'success',
-                'returnValue' => $return,
-            ]);
-        } catch (\Throwable $e) {
-            error_log('Error message (Get Message By Id) : ' . $e->getMessage());
-            error_log('Error code (Get Message By Id) : ' . $e->getCode());
-            error_log('Error file (Get Message By Id) : ' . $e->getFile());
-            error_log('Error line (Get Message By Id) : ' . $e->getLine());
-
-            echo json_encode([
-                'status' => 'error',
-                'message' => $this->translation('ai_predefined_get_specific_instruction_error'),
-            ]);
-        }
-
-        exit;
     }
 
     /**
@@ -214,7 +146,7 @@ class SettingsTask extends AbstractTask
         $new_section = [
             'action' => 'plugin.aicresponses',
             'type' => 'link',
-            'label' => $this->translation('ai_predefined_section_title'),
+            'label' => 'AIComposePlugin.ai_predefined_section_title',
             'title' => 'aimanageresponses',
             'id' => 'settingstabaipredefinedresponses',
         ];
@@ -225,7 +157,36 @@ class SettingsTask extends AbstractTask
 
         $already_exists = false;
         foreach ($args['actions'] as $action) {
-            if ($action['label'] === $this->translation('ai_predefined_section_title')) {
+            if ($action['label'] === 'AIComposePlugin.ai_predefined_section_title') {
+                $already_exists = true;
+                break;
+            }
+        }
+
+        if (!$already_exists) {
+            $args['actions'][] = $new_section;
+        }
+
+        return $args;
+    }
+
+    public function addSCustomSection(array $args): array
+    {
+        $new_section = [
+            'action' => 'plugin.custom',
+            'type' => 'link',
+            'label' => 'title',
+            'title' => 'customsection',
+            'id' => 'mycustomsection',
+        ];
+
+        if (!isset($args['actions']) || !\is_array($args['actions'])) {
+            $args['actions'] = [];
+        }
+
+        $already_exists = false;
+        foreach ($args['actions'] as $action) {
+            if ($action['label'] === 'title') {
                 $already_exists = true;
                 break;
             }
@@ -330,20 +291,5 @@ class SettingsTask extends AbstractTask
     private function translation(string $key): string
     {
         return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
-    }
-
-    /**
-     * @param array<array<string, string>> $items
-     * @param null|array<string>|string    $id
-     *
-     * @return array<array<string, string>>
-     */
-    private function removeItemById(array $items, $id): array
-    {
-        $filteredItems = array_filter($items, static function ($item) use ($id) {
-            return $item['id'] !== $id;
-        });
-
-        return array_values($filteredItems);
     }
 }

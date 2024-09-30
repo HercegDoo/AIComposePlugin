@@ -40,7 +40,7 @@ export function handleDelete(id) {
 
     const deleteButtonClickListener = () => {
       rcmail
-        .http_post("plugin.aicDeleteInstruction", { id: `${id}` })
+        .http_post("plugin.AIComposePlugin_DeleteInstruction", { id: `${id}` })
         .done(function (data) {
           if (data.status === "success") {
             rcmail.display_message(

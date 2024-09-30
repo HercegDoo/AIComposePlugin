@@ -1,7 +1,8 @@
 <?php
 
-namespace HercegDoo\AIComposePlugin\Actions;
+namespace HercegDoo\AIComposePlugin\Actions\Mail;
 
+use HercegDoo\AIComposePlugin\Actions\AbstractAction;
 use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Request;
@@ -158,10 +159,5 @@ final class GenereteEmailAction extends AbstractAction
         if (!empty($instructions) && \strlen($instructions) < 2) {
             $this->setError($this->translation('ai_validation_error_not_enough_characters_instruction'));
         }
-    }
-
-    private function translation(string $key): string
-    {
-        return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
     }
 }
