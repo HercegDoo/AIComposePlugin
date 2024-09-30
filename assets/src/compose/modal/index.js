@@ -3,11 +3,11 @@ import { createDialogContents } from "./createDialogContents.js";
 import { checkSelectedText } from "./additionalModalFunctions/selectedTextHandler";
 import { regulateHelpModal } from "./additionalModalFunctions/regulateHelpModal";
 import { translation, translation as t } from "../../utils";
-import { sendDefaultPostRequest } from "./additionalModalFunctions/defaultPostRequest";
+import { sendDefaultPostRequest } from "./additionalModalFunctions/requests/defaultPostRequest";
 import { validateFields } from "./additionalModalFunctions/fieldsValidation";
 import { regulateFixTextModal } from "./additionalModalFunctions/regulateFixTextModal";
 import { insertEmail } from "./additionalModalFunctions/insertEmailHandler";
-import { regulatePredefinedInstructionsModal } from "./additionalModalFunctions/regulatePredefinedInstructionsModal";
+import { regulatePredefinedInstructionsModal } from "./additionalModalFunctions/predefinedInstructions/regulatePredefinedInstructionsModal";
 
 export function createComposeModal() {
   const dialogMask = document.createElement("div");

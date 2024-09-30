@@ -1,5 +1,5 @@
-import { clearInputFields, hideDeleteButton, showInputFields} from "./displayHandler";
-import { translation } from "../../utils";
+import { clearInputFields, hideDeleteButton, showInputFields} from "../displayHandler";
+import { translation } from "../../../utils";
 
 export function getPredefinedInstructions() {
   const listingInfo = document.querySelector('.listing-info');
@@ -8,7 +8,6 @@ export function getPredefinedInstructions() {
   rcmail.http_get('plugin.aicGetAllInstructions', {})
     .done(function(data) {
       if (data.status === 'success') {
-        console.log(data);
         clearInputFields();
         document.getElementById('edit-id').value = "";
         hideDeleteButton();

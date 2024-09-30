@@ -70,6 +70,8 @@ $labels['ai_predefined_listing_empty'] = "Lista je prazna. Iskoristite gumb 'Kre
 $labels['ai_predefined_title'] = 'Naslov';
 $labels['ai_predefined_content'] = 'Sadržaj';
 $labels['ai_predefined_section_title'] = 'AI Predefinirane Upute';
+$labels['ai_predefined_modal_description'] = 'Definirajte vlastite unaprijed definirane upute u polju postavki kako biste olakšali generiranje e-pošte. Prilagodite ove upute uobičajenim scenarijima kao što su imena, datumi i specifični detalji koje često koristite. Kada ih kreirate, lako ih možete odabrati, prilagoditi i umetnuti na AI stranicu. Ovi personalizirani obrasci će vam uštedjeti vrijeme i osigurati dosljednost u vašim e-porukama.';
+$labels['ai_predefined_no_instructions'] = 'Trenutno nemate dostupnih unaprijed definiranih uputa. Napravite novu unaprijed definiranu uputu u postavkama.';
 
 $labels['ai_button_show_instructions'] = 'Primjeri Uputa';
 $labels['ai_help_button_back'] = 'Natrag';

@@ -1,6 +1,6 @@
 import { getPredefinedInstructions } from "./getInstructionsHandler";
-import { fieldsValid } from "./fieldsValid";
-import { translation } from "../../utils";
+import { fieldsValid } from "../fieldsValid";
+import { translation } from "../../../utils";
 
 export function postMethodHandler() {
   const form = document.getElementById('form-post-add-edit');

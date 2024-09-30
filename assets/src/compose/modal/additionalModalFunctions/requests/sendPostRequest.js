@@ -1,6 +1,6 @@
-import { fieldsValid } from "./fieldsValidation";
-import { getSelectedText } from "./selectedTextHandler";
-import { getRequestDataFields } from "./requestDataHandler";
+import { fieldsValid } from "../fieldsValidation";
+import { getSelectedText } from "../selectedTextHandler";
+import { getRequestDataFields } from "../requestDataHandler";
 
 export function sendPostRequest(
   previousGeneratedEmail = "",

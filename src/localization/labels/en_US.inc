@@ -77,6 +77,8 @@ $labels['ai_predefined_listing_empty'] = 'The list is empty. Use the Create butt
 $labels['ai_predefined_title'] = 'Title';
 $labels['ai_predefined_content'] = 'Content';
 $labels['ai_predefined_section_title'] = 'AI Predefined Instructions';
+$labels['ai_predefined_modal_description'] = 'Define your own predefined instructions in the settings field to streamline email generation. Tailor these instructions to common scenarios such as names, dates, and specific details you frequently use. Once created, you can easily select, adjust, and insert them into the AI page. These personalized templates will save you time and ensure consistency across your emails.';
+$labels['ai_predefined_no_instructions'] = 'You currently have no available predefined instructions. Create a new predefined instruction in the settings section.';
 
 $labels['ai_fix_selected_text_title'] = 'Fix Selected Text';
 $labels['ai_selected_text'] = 'Selected Text';

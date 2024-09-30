@@ -26,4 +26,4 @@ $messages['ai_predefined_delete_error'] = 'Došlo je do greške prilikom brisanj
 $messages['ai_predefined_get_all_instructions_error'] = 'Došlo je do greške prilikom dohvaćanja instrukcija.';
 $messages['ai_predefined_get_specific_instruction_error'] = 'Došlo je do greške prilikom dohvaćanja informacija za instrukciju.';
 $messages['ai_predefined_content_error'] = 'Greška prilikom prikaza stranice.';
-$messages['ai_predefined_max_instructions_error'] = "Maksimalan broj dostupnih uputa je 10!";
+$messages['ai_predefined_max_instructions_error'] = 'Maksimalan broj dostupnih uputa je 10!';

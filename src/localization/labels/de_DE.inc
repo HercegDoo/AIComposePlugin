@@ -62,6 +62,8 @@ $labels['ai_request_error'] = 'Dienst nicht verfügbar. Bitte versuchen Sie es s
 $labels['ai_predefined_title'] = 'Titel';
 $labels['ai_predefined_content'] = 'Inhalt';
 $labels['ai_predefined_section_title'] = 'AI Vorgegebene Anweisungen';
+$labels['ai_predefined_modal_description'] = 'Definieren Sie Ihre eigenen vordefinierten Anweisungen im Einstellungsfeld, um die E-Mail-Generierung zu optimieren. Passen Sie diese Anweisungen an häufige Szenarien wie Namen, Daten und spezifische Details an, die Sie häufig verwenden. Sobald sie erstellt sind, können Sie sie einfach auswählen, anpassen und in die AI-Seite einfügen. Diese personalisierten Vorlagen sparen Ihnen Zeit und sorgen für Konsistenz in Ihren E-Mails.';
+$labels['ai_predefined_no_instructions'] = 'Derzeit stehen Ihnen keine vordefinierten Anweisungen zur Verfügung. Erstellen Sie eine neue vordefinierte Anweisung in den Einstellungen.';
 
 $labels['ai_insert_email'] = 'E-Mail einfügen';
 $labels['ai_generate_email'] = 'E-Mail generieren';

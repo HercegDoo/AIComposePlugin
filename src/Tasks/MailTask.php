@@ -75,7 +75,6 @@ class MailTask extends AbstractTask
         exit();
     }
 
-
     private function translation(string $key): string
     {
         return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");

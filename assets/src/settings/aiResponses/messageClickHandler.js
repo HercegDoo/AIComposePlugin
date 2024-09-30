@@ -1,6 +1,6 @@
 
-import { getSpecificInstruction } from "./getInstructionsHandler";
-import { handleDelete } from "./deleteHandler";
+import { getSpecificInstruction } from "./requests/getInstructionsHandler";
+import { handleDelete } from "./requests/deleteHandler";
 import { handleEdit } from "./editHandler";
 import { putInFocus, removeFocus } from "./displayHandler";
 

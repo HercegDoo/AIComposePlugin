@@ -1,18 +1,18 @@
 import { fillPredefinedInstructionsModal } from "./fillPredefinedInstructionsModal";
-
+let filled = false;
 export function regulatePredefinedInstructionsModal(){
   const request = document.getElementById("aic-result");
   const result = document.getElementById("aic-request");
   const predefinedInstructionsButton = document.getElementById('predefined-instructions-button');
   const predefinedInstructionsDiv = document.getElementById('aic-compose-predefined');
   const backBtn = document.getElementById("predefined-back-btn");
-  const helpAs = document.querySelectorAll(".predefined-a");
-  const instructionsTextarea = document.getElementById("aic-instructions");
 
   predefinedInstructionsButton.addEventListener('click', ()=>{
     openModal(request, result, predefinedInstructionsDiv);
-    fillPredefinedInstructionsModal();
-    console.log(helpAs);
+    if(!filled){
+      fillPredefinedInstructionsModal();
+      filled = true;
+    }
   })
 
   backBtn?.addEventListener("click", (e) => {

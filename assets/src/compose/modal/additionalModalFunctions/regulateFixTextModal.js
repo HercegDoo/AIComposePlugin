@@ -1,5 +1,5 @@
 import { getFormattedPreviousGeneratedEmail } from "./selectedTextHandler";
-import { sendPostRequest } from "./sendPostRequest";
+import { sendPostRequest } from "./requests/sendPostRequest";
 
 export function regulateFixTextModal() {
   const fixTextContent = document.getElementById("aic-fix-text-section");

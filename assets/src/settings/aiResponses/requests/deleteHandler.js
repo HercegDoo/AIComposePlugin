@@ -1,5 +1,5 @@
 import { getPredefinedInstructions } from "./getInstructionsHandler";
-import { translation } from "../../utils";
+import { translation } from "../../../utils";
 
 export function handleDelete(id) {
   const deleteButton = document.getElementById('delete-button');

@@ -47,8 +47,8 @@ class SettingsTask extends AbstractTask
                 $id = $_POST['id'];
                 foreach ($predefinedInstructions as &$instruction) {
                     if ($instruction['id'] === $id) {
-                        $instruction['title'] = $_POST['title'];
-                        $instruction['value'] = $_POST['value'];
+                        $instruction['title'] = htmlspecialchars($_POST['title'], \ENT_QUOTES, 'UTF-8');
+                        $instruction['value'] = htmlspecialchars($_POST['value'], \ENT_QUOTES, 'UTF-8');
                         $found = true;
                         break;
                     }
@@ -56,16 +56,16 @@ class SettingsTask extends AbstractTask
             }
 
             if (!$found) {
-                if (count($predefinedInstructions) >= $maxPredefinedMessages) {
+                if (\count($predefinedInstructions) >= $maxPredefinedMessages) {
                     echo json_encode([
                         'status' => 'error',
                         'message' => $this->translation('ai_predefined_max_instructions_error'),
                     ]);
-                  exit();
+                    exit();
                 }
                 $predefinedInstruction = [
-                    'title' => $_POST['title'],
-                    'value' => $_POST['value'],
+                    'title' => htmlspecialchars($_POST['title'], \ENT_QUOTES, 'UTF-8'),
+                    'value' => htmlspecialchars($_POST['value'], \ENT_QUOTES, 'UTF-8'),
                     'id' => uniqid('predefined-instruction-'),
                 ];
                 $predefinedInstructions[] = $predefinedInstruction;
@@ -211,14 +211,6 @@ class SettingsTask extends AbstractTask
      */
     public function addSettingsSection(array $args): array
     {
-        // Originalni string
-        $airesponses = "airesponses";
-
-// Uklanjanje svih '[' i ']' znakova iz stringa
-        $result = str_replace(['[', ']'], '', $airesponses);
-
-
-
         $new_section = [
             'action' => 'plugin.aicresponses',
             'type' => 'link',
@@ -230,8 +222,7 @@ class SettingsTask extends AbstractTask
         if (!isset($args['actions']) || !\is_array($args['actions'])) {
             $args['actions'] = [];
         }
-
-        // Proveravamo da li sekcija već postoji kako ne bi došlo do dupliranja
+        
         $already_exists = false;
         foreach ($args['actions'] as $action) {
             if ($action['label'] === $this->translation('ai_predefined_section_title')) {
@@ -241,7 +232,7 @@ class SettingsTask extends AbstractTask
         }
 
         if (!$already_exists) {
-            $args['actions'][] = $new_section; // Dodajemo u array
+            $args['actions'][] = $new_section; 
         }
 
         return $args;
