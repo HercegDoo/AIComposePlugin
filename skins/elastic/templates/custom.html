@@ -27,14 +27,14 @@
     <span class="header-title"></span>
     <!-- toolbar -->
     <div id="responsestoolbar" class="toolbar menu">
-      <roundcube:button command="add" type="link" class="create " classAct="create"
+      <roundcube:button command="add" type="link" class="create disabled" classAct="create"
                         label="create" title="newresponse" innerClass="inner" data-fab="true" />
       <roundcube:button command="delete" type="link" class="delete disabled" classAct="delete"
                         label="delete" title="delete" innerClass="inner" />
     </div>
   </div>
   <div class="iframe-wrapper">
-    <roundcube:object name="" id="preferences-frame" src="env:blankpage" title="arialabelresponseeditfrom" />
+    <roundcube:object name="contentframe" id="preferences-frame" src="env:blankpage" title="arialabelresponseeditfrom" />
   </div>
 </div>
 

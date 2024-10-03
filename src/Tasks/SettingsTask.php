@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\Actions\GetInstructionsAction;
+use HercegDoo\AIComposePlugin\Actions\Settings\AddInstruction;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use html;
 
@@ -20,254 +21,69 @@ class SettingsTask extends AbstractTask
         $this->plugin->register_action('plugin.aicresponses', [$this, 'aicresponses']);
         $this->plugin->register_action('plugin.custom', [$this, 'custom']);
         $this->plugin->register_action('plugin.customcreate', [$this, 'customcreate']);
-
+        AddInstruction::register();
         GetInstructionsAction::register();
     }
 
-    public function custom() : void
+    public function custom($args = [])
     {
         $rcmail = \rcmail::get_instance();
-
-        $rcmail->output->set_pagetitle($rcmail->gettext('preferences'));  // Promijenjeno u preferences
-        $rcmail->output->include_script('list.js');
-        $rcmail->output->add_label('updatepreferencesconfirm');  // Promijenjen label
-        $rcmail->output->add_handlers(['instructionslist' => [$this, 'preferences_list']]);
+        $this->plugin->include_script('assets/dist/settings.bundle.js');
+        $rcmail->output->set_pagetitle($rcmail->gettext('responses'));
+        $rcmail->output->add_label('deleteresponseconfirm');
+        $rcmail->output->add_handlers(['instructionslist' => [$this, 'responses_listt']]);
         $rcmail->output->send('AIComposePlugin.custom');
     }
 
-    public static function preferences_list($attrib)
+    /**
+     * Create template object 'responseslist'.
+     *
+     * @param array $attrib Object attributes
+     *
+     * @return string HTML table output
+     */
+    public static function responses_listt($attrib)
     {
         $rcmail = \rcmail::get_instance();
 
-        $attrib += ['id' => 'rcmpreferenceslist', 'tagname' => 'table'];  // ID promijenjen u preferenceslist
+        $attrib += ['id' => 'rcmresponseslist', 'tagname' => 'table'];
 
-        // Dohvatanje korisničkih postavki
-        $user_prefs = $rcmail->user->get_prefs();  // Dohvati sve korisničke postavke
+        $plugin = [
+            'list' => [
+                [
+                    'id' => 'static-1234567890abcdef',
+                    'name' => 'Default Response 1',
+                    'static' => true,
+                ],
+                [
+                    'id' => 'static-abcdef1234567890',
+                    'name' => 'Default Response 2',
+                    'static' => true,
+                ],
+                [
+                    'id' => 'user-9876543210fedcba',
+                    'name' => 'User Custom Response',
+                    'static' => false,
+                ],
+            ],
+            'cols' => ['name'],
+        ];
 
-        // Primjer korisničke postavke koje želimo prikazati
-        $plugin = $rcmail->plugins->exec_hook('preferences_list', [
-            'list' => $user_prefs,  // Umjesto responses, koristimo user preferences
-            'cols' => ['preference', 'value']  // Kolone: preference name i value
-        ]);
-
-        // Generišemo HTML izlaz koristeći table_output
         $out = \rcmail_action::table_output($attrib, $plugin['list'], $plugin['cols'], 'id');
 
-        // Nema readonly items ovdje, ali ako postoji, možeš ga prilagoditi
-        $readonly_prefs = [];
+        $readonly_responses = [];
         foreach ($plugin['list'] as $item) {
-            if (!empty($item['readonly'])) {
-                $readonly_prefs[] = $item['id'];
+            if (!empty($item['static'])) {
+                $readonly_responses[] = $item['id'];
             }
         }
 
         // set client env
-        $rcmail->output->add_gui_object('preferenceslist', $attrib['id']);
-        $rcmail->output->set_env('readonly_prefs', $readonly_prefs);
+        $rcmail->output->add_gui_object('instructionslist', $attrib['id']);
+        $rcmail->output->set_env('readonly_responses', $readonly_responses);
 
         return $out;
     }
-
-    public function customcreate(){
-        $this->plugin->register_handler('plugin.custom', [$this, 'customHandler']);
-        $this->plugin->include_script('assets/dist/settings.bundle.js');
-    }
-
-
-
-public function customHandler() {
-
-    $this->plugin->include_script('assets/dist/settings.bundle.js');
-    $rcmail = \rcmail::get_instance();
-    $user = $rcmail->user;
-
-    // Kreiranje divova za input polje
-    $input_field = new \html_inputfield([
-        'name' => 'custom_input',
-        'class' => 'form-control',
-        'placeholder' => $this->plugin->gettext('input_placeholder'),
-    ]);
-
-    // Labela za input polje
-    $input_label = \html::label('custom_input', \rcube::Q($this->plugin->gettext('custominput')));
-
-    // Div za input polje i labelu
-    $input_div = \html::div(
-        ['class' => 'input-field-container'], // klasa za stilizaciju
-        $input_label . $input_field->show()
-    );
-
-    // Kreiranje textarea
-    $textarea = new \html_textarea();
-    $textarea_html = $textarea->show('', [
-        'name' => 'custom_textarea',
-        'rows' => 5,
-        'cols' => 40,
-        'class' => 'form-control',
-    ]);
-
-    // Labela za textarea
-    $textarea_label = \html::label('custom_textarea', \rcube::Q($this->plugin->gettext('customtextarea')));
-
-    // Div za textarea i labelu
-    $textarea_div = \html::div(
-        ['class' => 'textarea-container'], // klasa za stilizaciju
-        $textarea_label . $textarea_html
-    );
-
-    // Kreiranje glavnog izlaza za input i textarea
-    $out = \html::div(
-        ['class' => 'form-fields'], // glavni div koji sadrži input i textarea
-        $input_div . $textarea_div
-    );
-
-    // Generisanje scroller sadržaja
-    $scroller_content = \html::tag(
-        'tbody',
-        \html::tag(
-            'tr',
-            [
-                'id' => 'rcmrow',
-                'role' => 'option',
-                'aria-labelledby' => 'l:rcmrow',
-                'class' => 'selected focused',
-                'aria-selected' => 'true',
-                'style' => 'display: none;'
-            ],
-            \html::tag('td', ['id' => 'empty'], 'The list is empty. Use the Create button to add a new record.')
-        )
-    );
-
-    // Kreiranje scroller div-a
-    $scroller_div = \html::div(
-        ['class' => 'scroller'],
-        \html::tag('table', [
-            'id' => 'responses-table',
-            'class' => 'listing',
-            'role' => 'listbox',
-            'data-list' => 'responses_list',
-            'data-label-ext' => 'Use the Create button to add a new record.',
-            'data-create-command' => 'add',
-            'tabindex' => '0',
-        ], $scroller_content) .
-        \html::div(['class' => 'listing-info'], 'The list is empty. Use the Create button to add a new record.')
-    );
-
-    // Vraćanje izlaza sa box formcontent i scroller kao sibling
-    return \html::div(
-            ['class' => 'box formcontent'],
-            $out // Sadržaj forme u divovima
-        );
-    }
-
-
-    public function infohtml()
-    {
-        $rcmail = \rcmail::get_instance();
-        $user = $rcmail->user;
-
-        // Kreiranje divova za input polje
-        $input_field = new \html_inputfield([
-            'name' => 'custom_input',
-            'class' => 'form-control',
-            'placeholder' => $this->plugin->gettext('input_placeholder'),
-        ]);
-
-        // Labela za input polje
-        $input_label = \html::label('custom_input', \rcube::Q($this->plugin->gettext('custominput')));
-
-        // Div za input polje i labelu
-        $input_div = \html::div(
-            ['class' => 'input-field-container'], // klasa za stilizaciju
-            $input_label . $input_field->show()
-        );
-
-        // Kreiranje textarea
-        $textarea = new \html_textarea();
-        $textarea_html = $textarea->show('', [
-            'name' => 'custom_textarea',
-            'rows' => 5,
-            'cols' => 40,
-            'class' => 'form-control',
-        ]);
-
-        // Labela za textarea
-        $textarea_label = \html::label('custom_textarea', \rcube::Q($this->plugin->gettext('customtextarea')));
-
-        // Div za textarea i labelu
-        $textarea_div = \html::div(
-            ['class' => 'textarea-container'], // klasa za stilizaciju
-            $textarea_label . $textarea_html
-        );
-
-        // Kreiranje glavnog izlaza za input i textarea
-        $out = \html::div(
-            ['class' => 'form-fields'], // glavni div koji sadrži input i textarea
-            $input_div . $textarea_div
-        );
-
-        // Generisanje scroller sadržaja
-        $scroller_content = \html::tag(
-            'tbody',
-            \html::tag(
-                'tr',
-                [
-                    'id' => 'rcmrow',
-                    'role' => 'option',
-                    'aria-labelledby' => 'l:rcmrow',
-                    'class' => 'selected focused',
-                    'aria-selected' => 'true',
-                    'style' => 'display: none;'
-                ],
-                \html::tag('td', ['id' => 'empty'], 'The list is empty. Use the Create button to add a new record.')
-            )
-        );
-
-        // Kreiranje scroller div-a
-        $scroller_div = \html::div(
-            ['class' => 'scroller'],
-            \html::tag('table', [
-                'id' => 'responses-table',
-                'class' => 'listing',
-                'role' => 'listbox',
-                'data-list' => 'responses_list',
-                'data-label-ext' => 'Use the Create button to add a new record.',
-                'data-create-command' => 'add',
-                'tabindex' => '0',
-            ], $scroller_content) .
-            \html::div(['class' => 'listing-info'], 'The list is empty. Use the Create button to add a new record.')
-        );
-
-        // Vraćanje izlaza sa box formcontent i scroller kao sibling
-        return \html::div(
-                ['class' => 'box formcontent'],
-                $out // Sadržaj forme u divovima
-            ) . $scroller_div; // Dodaj scroller kao sibling
-    }
-
-
-//    public function addButtonsToHeader()
-//    {
-//        // Kreiramo dva dugmeta
-//        $button1 = \html::tag('button', ['class' => 'btn btn-primary', 'type' => 'button'], 'Button 1');
-//        $button2 = \html::tag('button', ['class' => 'btn btn-secondary', 'type' => 'button'], 'Button 2');
-//
-//        // Grupisanje dugmadi unutar div-a
-//        $buttons_div = \html::div(['class' => 'buttons-container'], $button1 . $button2);
-//
-//        // Pronalazimo 'header' div unutar 'layout-content'
-//        $layout_content = \rcmail::get_instance()->output->get_env('layout-content');
-//
-//        // Dodaj dugmad u 'header' div unutar layout-content-a
-//        return \html::div(
-//            ['id' => 'layout-content'],
-//            \html::div(
-//                ['class' => 'header'],
-//                $buttons_div // Dugmad unutar 'header' diva
-//            )
-//        );
-//    }
-
 
     public function aicresponses(): void
     {
@@ -287,21 +103,6 @@ public function customHandler() {
      *
      * @return array<string, mixed>
      */
-    public function preferencesSectionsList(array $args): array
-    {
-        /** @var array<string, array<string, mixed>> $list */
-        $list = $args['list'] ?? [];
-
-        $list['aic'] = [
-            'id' => 'aic',
-            'section' => $this->translation('ai_compose_settings'),
-        ];
-
-        $args['list'] = $list;
-
-        return $args;
-    }
-
     /**
      * @param array<string, mixed> $args
      *
@@ -361,6 +162,21 @@ public function customHandler() {
         if (!$already_exists) {
             $args['actions'][] = $new_section;
         }
+
+        return $args;
+    }
+
+    public function preferencesSectionsList(array $args): array
+    {
+        /** @var array<string, array<string, mixed>> $list */
+        $list = $args['list'] ?? [];
+
+        $list['aic'] = [
+            'id' => 'aic',
+            'section' => $this->translation('ai_compose_settings'),
+        ];
+
+        $args['list'] = $list;
 
         return $args;
     }
