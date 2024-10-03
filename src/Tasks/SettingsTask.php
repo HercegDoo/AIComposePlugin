@@ -6,6 +6,7 @@ namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\Actions\GetInstructionsAction;
 use HercegDoo\AIComposePlugin\Actions\Settings\AddInstruction;
+use HercegDoo\AIComposePlugin\Actions\Settings\SaveInstruction;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use html;
 
@@ -21,6 +22,7 @@ class SettingsTask extends AbstractTask
         $this->plugin->register_action('plugin.aicresponses', [$this, 'aicresponses']);
         $this->plugin->register_action('plugin.custom', [$this, 'custom']);
         $this->plugin->register_action('plugin.customcreate', [$this, 'customcreate']);
+        SaveInstruction::register();
         AddInstruction::register();
         GetInstructionsAction::register();
     }
@@ -48,22 +50,22 @@ class SettingsTask extends AbstractTask
 
         $attrib += ['id' => 'rcmresponseslist', 'tagname' => 'table'];
 
+        $preferences = $rcmail->user->get_prefs();
+        $saved_responses = $preferences['predefinedInstructionsSet'] ?? [];
+
         $plugin = [
             'list' => [
                 [
                     'id' => 'static-1234567890abcdef',
                     'name' => 'Default Response 1',
-                    'static' => true,
                 ],
                 [
                     'id' => 'static-abcdef1234567890',
                     'name' => 'Default Response 2',
-                    'static' => true,
                 ],
                 [
                     'id' => 'user-9876543210fedcba',
                     'name' => 'User Custom Response',
-                    'static' => false,
                 ],
             ],
             'cols' => ['name'],

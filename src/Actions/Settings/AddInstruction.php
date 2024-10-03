@@ -22,7 +22,7 @@ class AddInstruction extends AbstractAction
         $id = self::$response['id'] ?? '';
         $hidden = ['name' => '_id', 'value' => $id];
 
-        [$form_start, $form_end] = \rcmail_action::get_form_tags($attrib, 'save-response', $id, $hidden);
+        [$form_start, $form_end] = \rcmail_action::get_form_tags($attrib, 'plugin.AIComposePlugin_SaveInstruction', $id, $hidden);
         unset($attrib['form'], $attrib['id']);
 
         $name_attr = [
@@ -54,13 +54,13 @@ class AddInstruction extends AbstractAction
         $table->add(null, \html::label('fftext', \rcube::Q($rcmail->gettext('responsetext'))));
         $table->add(null, \rcube_output::get_edit_field('text', self::$response['data'] ?? '', $text_attr, 'textarea'));
 
-        error_log('Na kraju response_form');
-
-        error_log('Ono sto se vraca iz response_form' . print_r("{$form_start}\n" . $table->show($attrib) . $form_end, true));
 
         // return the complete edit form as table
         return "{$form_start}\n" . $table->show($attrib) . $form_end;
     }
+
+
+
 
     protected function handler($args = []): void
     {
@@ -81,6 +81,7 @@ class AddInstruction extends AbstractAction
         error_log('Posslije set page title');
         $rcmail->output->set_env('readonly', !empty(self::$response['static']));
         $rcmail->output->add_handler('responseform', [$this, 'response_form']);
+        $rcmail->output->add_handler('submitbtn', [$this, 'submit_handler']);
         $rcmail->output->show_message('Test message from handler', 'confirmation');
 
         $rcmail->output->send('AIComposePlugin.instructionedit');
