@@ -47,7 +47,6 @@ class SettingsTask extends AbstractTask
     public static function responses_listt($attrib)
     {
         $rcmail = \rcmail::get_instance();
-
         $attrib += ['id' => 'rcmresponseslist', 'tagname' => 'table'];
 
         $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];

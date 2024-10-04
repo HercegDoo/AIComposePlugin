@@ -22,9 +22,11 @@ class AddInstruction extends AbstractAction
         $id = self::$response['id'] ?? '';
         $hidden = ['name' => '_id', 'value' => $id];
 
-        [$form_start, $form_end] = \rcmail_action::get_form_tags($attrib, 'plugin.AIComposePlugin_SaveInstruction', $id, $hidden);
-        unset($attrib['form'], $attrib['id']);
+        // Ručno postavljanje form početka i kraja
+        $form_start = '<form method="post" action="">'; // Akcija prazna, forma se šalje na trenutni URL
+        $form_end = '</form>';
 
+        // Ostatak koda za prikaz forme
         $name_attr = [
             'id' => 'ffname',
             'size' => $attrib['size'] ?? null,
@@ -32,7 +34,7 @@ class AddInstruction extends AbstractAction
             'required' => true,
         ];
 
-        // Atributi za običan textarea
+        // Atributi za textarea
         $text_attr = [
             'id' => 'fftext',
             'size' => $attrib['textareacols'] ?? null,
@@ -40,24 +42,22 @@ class AddInstruction extends AbstractAction
             'readonly' => $readonly,
             'spellcheck' => true,
         ];
+        $rcmail->output->command('konj');
+        // Kreiranje tabele
+        $table = new \html_table(['cols' => 1]);
 
-        // Ukloniti HTML editor skripte
-        // \rcmail_action::html_editor('response', 'fftext');
-
-        $table = new \html_table(['cols' => 1]); // Postavi samo jedan kolonu
-
-        // Dodaj ime
+        // Dodavanje imena
         $table->add(null, \html::label('ffname', \rcube::Q($rcmail->gettext('responsename'))));
         $table->add(null, \rcube_output::get_edit_field('name', self::$response['name'] ?? '', $name_attr, 'text'));
 
-        // Dodaj tekst odgovora
+        // Dodavanje textarea
         $table->add(null, \html::label('fftext', \rcube::Q($rcmail->gettext('responsetext'))));
         $table->add(null, \rcube_output::get_edit_field('text', self::$response['data'] ?? '', $text_attr, 'textarea'));
 
-
-        // return the complete edit form as table
+        // Vraćanje kompletne forme kao tabela
         return "{$form_start}\n" . $table->show($attrib) . $form_end;
     }
+
 
 
 

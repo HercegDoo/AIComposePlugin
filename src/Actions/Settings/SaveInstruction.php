@@ -39,41 +39,30 @@ class SaveInstruction extends AbstractAction
         // Spremanje podataka u user preferences pod nazivom 'predefinedInstructionsSet'
         $predefinedInstructions[] = $response;
         $rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
-
+        $rcmail->output->add_handler('instructionslist', [$this, 'update_instructions']);
 
         // Poruka o uspjehu
         $rcmail->output->show_message('successfullysaved', 'confirmation');
-        error_log("Nakon poruke o uspjehu");
-        $rcmail->output->send('AIComposePlugin.custom');
+        $rcmail->output->send('plugin.custom');
     }
 
     public static function update_instructions($attrib){
 
-        error_log("Uso u update instructions");
         $rcmail = \rcmail::get_instance();
 
         $attrib += ['id' => 'rcmresponseslist', 'tagname' => 'table'];
 
-        $preferences = $rcmail->user->get_prefs();
-        $saved_responses = $preferences['predefinedInstructionsSet'] ?? [];
+        $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
 
-        error_log("Sacuvani odgovori u update handler" . print_r($saved_responses, true));
+        error_log("predefinisane instrukcije" . print_r($predefinedInstructions, true));
+        $instructionsArray = [];
+        foreach ($predefinedInstructions as $instruction){
+            $instructionsArray[] = ['id'=>$instruction['id'], 'name'=>$instruction['title']];
+        }
+
 
         $plugin = [
-            'list' => [
-                [
-                    'id' => 'static-1234567890abcdef',
-                    'name' => 'Default Response 4',
-                ],
-                [
-                    'id' => 'static-abcdef1234567890',
-                    'name' => 'Default Response 7',
-                ],
-                [
-                    'id' => 'user-9876543210fedcba',
-                    'name' => 'User Custom Response',
-                ],
-            ],
+            'list' => $instructionsArray,
             'cols' => ['name'],
         ];
 
@@ -89,8 +78,6 @@ class SaveInstruction extends AbstractAction
         // set client env
         $rcmail->output->add_gui_object('instructionslist', $attrib['id']);
         $rcmail->output->set_env('readonly_responses', $readonly_responses);
-
-        error_log("kraj update instructions");
 
         return $out;
     }

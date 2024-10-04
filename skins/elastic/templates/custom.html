@@ -12,7 +12,7 @@
     <a class="button icon toolbar-menu-button" href="#list-menu"><span class="inner"><roundcube:label name="menu" /></span></a>
   </div>
   <div class="scroller">
-    <roundcube:object name="instructionslist" id="responses-table" class="listing"
+    <roundcube:object name="instructionslist" id="instructions-table" class="listing"
                       noheader="true" role="listbox" data-list="responses_list"
                       data-label-msg="listempty" data-label-ext="listusebutton" data-create-command="add" />
   </div>
@@ -27,7 +27,7 @@
     <span class="header-title"></span>
     <!-- toolbar -->
     <div id="responsestoolbar" class="toolbar menu">
-      <roundcube:button command="add" type="link" class="create " classAct="create"
+      <roundcube:button command="print" type="link" class="create " classAct="create"
                         label="create" title="newresponse" innerClass="inner" data-fab="true" />
       <roundcube:button command="delete" type="link" class="delete disabled" classAct="delete"
                         label="delete" title="delete" innerClass="inner" />
