@@ -9,6 +9,7 @@ class SaveInstruction extends AbstractAction
 
     protected function handler(): void
     {
+        error_log("Uso u error handler");
 
         $rcmail = \rcmail::get_instance();
 
@@ -16,13 +17,18 @@ class SaveInstruction extends AbstractAction
         $name    = trim(\rcube_utils::get_input_string('_name', \rcube_utils::INPUT_POST));
         $text    = trim(\rcube_utils::get_input_string('_text', \rcube_utils::INPUT_POST));
 
-        $rcmail->output->add_handler('instructionslist', [$this, 'update_instructions']);
+        $rcmail->output->add_handlers(['instructionslist' => [$this, 'update_instructions']]);
+        $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
 
         // Pravljenje asocijativnog niza
         $response = [
-            'name'    => $name,
-            'data'    => $text,
+            'title'    => $name,
+            'message'    => $text,
+            'id'=> uniqid(),
         ];
+
+
+        error_log("Napravljeni asocijativni niz: " . print_r($response, true));
 
         // Provjera da li su obavezna polja prazna
         if (empty($name) || empty($text)) {
@@ -31,23 +37,27 @@ class SaveInstruction extends AbstractAction
         }
 
         // Spremanje podataka u user preferences pod nazivom 'predefinedInstructionsSet'
-        $preferences = $rcmail->user->get_prefs();
-        $preferences['predefinedInstructionsSet'] = $response;
-        $rcmail->user->save_prefs($preferences);
-        error_log("Predefinisane insttt" . print_r($preferences['predefinedInstructionsSet'], true));
+        $predefinedInstructions[] = $response;
+        $rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
+
 
         // Poruka o uspjehu
         $rcmail->output->show_message('successfullysaved', 'confirmation');
+        error_log("Nakon poruke o uspjehu");
+        $rcmail->output->send('AIComposePlugin.custom');
     }
 
     public static function update_instructions($attrib){
 
+        error_log("Uso u update instructions");
         $rcmail = \rcmail::get_instance();
 
         $attrib += ['id' => 'rcmresponseslist', 'tagname' => 'table'];
 
         $preferences = $rcmail->user->get_prefs();
         $saved_responses = $preferences['predefinedInstructionsSet'] ?? [];
+
+        error_log("Sacuvani odgovori u update handler" . print_r($saved_responses, true));
 
         $plugin = [
             'list' => [
@@ -79,6 +89,8 @@ class SaveInstruction extends AbstractAction
         // set client env
         $rcmail->output->add_gui_object('instructionslist', $attrib['id']);
         $rcmail->output->set_env('readonly_responses', $readonly_responses);
+
+        error_log("kraj update instructions");
 
         return $out;
     }

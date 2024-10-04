@@ -50,24 +50,17 @@ class SettingsTask extends AbstractTask
 
         $attrib += ['id' => 'rcmresponseslist', 'tagname' => 'table'];
 
-        $preferences = $rcmail->user->get_prefs();
-        $saved_responses = $preferences['predefinedInstructionsSet'] ?? [];
+        $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
+
+        error_log("predefinisane instrukcije" . print_r($predefinedInstructions, true));
+        $instructionsArray = [];
+        foreach ($predefinedInstructions as $instruction){
+            $instructionsArray[] = ['id'=>$instruction['id'], 'name'=>$instruction['title']];
+        }
+
 
         $plugin = [
-            'list' => [
-                [
-                    'id' => 'static-1234567890abcdef',
-                    'name' => 'Default Response 1',
-                ],
-                [
-                    'id' => 'static-abcdef1234567890',
-                    'name' => 'Default Response 2',
-                ],
-                [
-                    'id' => 'user-9876543210fedcba',
-                    'name' => 'User Custom Response',
-                ],
-            ],
+            'list' => $instructionsArray,
             'cols' => ['name'],
         ];
 
