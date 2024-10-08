@@ -33,16 +33,18 @@ class SaveInstruction extends AbstractAction
 
         // Spremanje podataka u user preferences pod nazivom 'predefinedInstructionsSet'
         $predefinedInstructions[] = $response;
-        $rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
+        $this->rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
 
-        // Poruka o uspjehu
         $rcmail->output->show_message('successfullysaved', 'confirmation');
-        $rcmail->output->add_handler('responseform', [$this, 'response_form']);
-        $rcmail->output->send('AIComposePlugin.instructionedit');
-    }
+        $rcmail->output->command('parent.updateinstructionlist', $response['id'], $response['title']);
+        $rcmail->overwrite_action('plugin.AIComposePlugin_AddInstruction', ['post' => $response]);
+        error_log("Akcija" . print_r($rcmail->action, true));
 
-    protected function validate(): void
-    {
-        // TODO: Implement validate() method.
     }
+        protected
+        function validate(): void
+        {
+            // TODO: Implement validate() method.
+        }
+
 }
