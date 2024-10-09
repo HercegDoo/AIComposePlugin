@@ -1,16 +1,12 @@
 
 document.addEventListener('DOMContentLoaded', ()=>{
-  rcmail.enable_command('add-instruction-template', true);
+  rcmail.enable_command('addinstructiontemplate', true);
+  rcmail.enable_command('lol', true);
 })
 
 rcmail.register_command('updateinstructionlist', rcube_webmail.prototype.updateinstructionlist);
-rcmail.register_command('add-instruction-template', function() {
-  let win;
-
-  if (win = rcmail.get_frame_window(rcmail.env.contentframe)) {
-    rcmail.location_href({_action: "plugin.AIComposePlugin_AddInstruction", _id: 0, _framed: 1}, win, true);
-  }
-});
+// rcmail.register_command('lol', rcube_webmail.prototype.lol);
+rcmail.register_command('addinstructiontemplate', rcube_webmail.prototype.addinstructiontemplate);
 
 
 rcube_webmail.prototype.updateinstructionlist = function(id, title)
@@ -25,4 +21,17 @@ rcube_webmail.prototype.updateinstructionlist = function(id, title)
   trow.append(td);
   console.log("aaa");
   tbody.append(trow);
+};
+
+
+rcube_webmail.prototype.addinstructiontemplate = function()
+{
+  let win;
+  console.log("pozvan");
+  console.log(rcmail.env.action);
+  if (win = rcmail.get_frame_window(rcmail.env.contentframe)) {
+    console.log(rcmail.env.action);
+    rcmail.location_href({_action: "plugin.AIComposePlugin_AddInstruction", _id: 0, _framed: 1}, win, true);
+    console.log(rcmail.env.action);
+  }
 };

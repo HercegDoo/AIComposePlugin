@@ -22,7 +22,7 @@ class SettingsTask extends AbstractTask
         $this->plugin->register_action('plugin.basepredefinedinstructions', [$this, 'base_predefined_instructions']);
         $this->plugin->include_stylesheet('assets/src/settings/style.css');
 
-        GetInstructionsAction::register();
+//        GetInstructionsAction::register();
     }
 
     public function base_predefined_instructions($args = [])
@@ -53,6 +53,7 @@ class SettingsTask extends AbstractTask
 
         $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
         $instructionsArray = [];
+
 
         foreach ($predefinedInstructions as $instruction) {
             $instructionsArray[] = ['id' => $instruction['id'], 'name' => $instruction['title']];

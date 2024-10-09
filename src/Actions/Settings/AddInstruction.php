@@ -10,114 +10,50 @@ class AddInstruction extends AbstractAction
 
     public static function response_form($attrib)
     {
+
+        error_log("SAtributi za addInstruction: " . print_r($attrib, true));
         error_log('Uso u handler addinstruction');
-//        $rcmail = \rcmail::get_instance();
-//
-//        // add some labels to client
-//        $rcmail->output->add_label('converting', 'editorwarning');
-//
-//        // Set form tags and hidden fields
-//        $readonly = !empty(self::$response['static']);
-//        $id = self::$response['id'] ?? '';
-//        $hidden = ['name' => '_id', 'value' => $id];
-//
-//        [$form_start, $form_end] = \rcmail_action::get_form_tags($attrib, 'plugin.AIComposePlugin_SaveInstruction', $id, $hidden);
-//        unset($attrib['form'], $attrib['id']);
-//
-//        $name_attr = [
-//            'id' => 'ffname',
-//            'size' => $attrib['size'] ?? null,
-//            'readonly' => $readonly,
-//            'required' => true,
-//        ];
-//
-//        // Atributi za običan textarea
-//        $text_attr = [
-//            'id' => 'fftext',
-//            'size' => $attrib['textareacols'] ?? null,
-//            'rows' => $attrib['textarearows'] ?? null,
-//            'readonly' => $readonly,
-//            'spellcheck' => true,
-//        ];
-//
-//        $table = new \html_table(['cols' => 1]); // Postavi samo jedan kolonu
-//
-//        // Dodaj ime
-//        $table->add(null, \html::label('ffname', \rcube::Q($rcmail->gettext('responsename'))));
-//        $table->add(null, \rcube_output::get_edit_field('name', self::$response['name'] ?? '', $name_attr, 'text'));
-//
-//        // Dodaj tekst odgovora
-//        $table->add(null, \html::label('fftext', \rcube::Q($rcmail->gettext('responsetext'))));
-//        $table->add(null, \rcube_output::get_edit_field('text', self::$response['data'] ?? '', $text_attr, 'textarea'));
-//
-//        // return the complete edit form as table
-//        return "{$form_start}\n" . $table->show($attrib) . $form_end;
         $rcmail = \rcmail::get_instance();
 
-        // add some labels to client
         $rcmail->output->add_label('converting', 'editorwarning');
 
-        // Set form tags and hidden fields
         $readonly = !empty(self::$response['static']);
-        $is_html  = self::$response['is_html'] ?? false;
-        $id       = self::$response['id'] ?? '';
-        $hidden   = ['name' => '_id', 'value' => $id];
+        $id = self::$response['id'] ?? '';
+        $hidden = ['name' => '_id', 'value' => $id];
 
-        list($form_start, $form_end) = \rcmail_action::get_form_tags($attrib, 'plugin.AIComposePlugin_SaveInstruction', $id, $hidden);
+        [$form_start, $form_end] = \rcmail_action::get_form_tags($attrib, 'plugin.AIComposePlugin_SaveInstruction', $id, $hidden);
         unset($attrib['form'], $attrib['id']);
 
         $name_attr = [
-            'id'       => 'ffname',
-            'size'     => $attrib['size'] ?? null,
+            'id' => 'ffname',
+            'size' => $attrib['size'] ?? null,
             'readonly' => $readonly,
             'required' => true,
         ];
 
         $text_attr = [
-            'id'       => 'fftext',
-            'size'     => $attrib['textareacols'] ?? null,
-            'rows'     => $attrib['textarearows'] ?? null,
+            'id' => 'fftext',
+            'size' => $attrib['textareacols'] ?? null,
+            'rows' => $attrib['textarearows'] ?? null,
             'readonly' => $readonly,
-            'spellcheck'       => true,
-            'data-html-editor' => true
+            'spellcheck' => true,
         ];
 
-        $chk_attr = [
-            'id'       => 'ffis_html',
-            'disabled' => $readonly,
-            'onclick'  => "return rcmail.command('toggle-editor', {id: 'fftext', html: this.checked}, '', event)"
-        ];
+        $table = new \html_table(['cols' => 1]); // Postavi samo jedan kolonu
 
-        // Add HTML editor script(s)
-        \rcmail_action::html_editor('response', 'fftext');
-
-        // Enable TinyMCE editor
-        if ($is_html) {
-            $text_attr['class']      = 'mce_editor';
-            $text_attr['is_escaped'] = true;
-
-            // Correctly handle HTML entities in HTML editor (#1488483)
-            self::$response['data'] = htmlspecialchars(self::$response['data'], ENT_NOQUOTES, RCUBE_CHARSET);
-        }
-
-        $table = new \html_table(['cols' => 2]);
-
-        $table->add('title', \html::label('ffname', \rcube::Q($rcmail->gettext('responsename'))));
+        $table->add(null, \html::label('ffname', \rcube::Q($rcmail->gettext('responsename'))));
         $table->add(null, \rcube_output::get_edit_field('name', self::$response['name'] ?? '', $name_attr, 'text'));
 
-        $table->add('title', \html::label('fftext', \rcube::Q($rcmail->gettext('responsetext'))));
+        $table->add(null, \html::label('fftext', \rcube::Q($rcmail->gettext('responsetext'))));
         $table->add(null, \rcube_output::get_edit_field('text', self::$response['data'] ?? '', $text_attr, 'textarea'));
 
-        $table->add('title', \html::label('ffis_html', \rcube::Q($rcmail->gettext('htmltoggle'))));
-        $table->add(null, \rcube_output::get_edit_field('is_html', $is_html, $chk_attr, 'checkbox'));
-
-        // return the complete edit form as table
-        return "$form_start\n" . $table->show($attrib) . $form_end;
-
+        return "{$form_start}\n" . $table->show($attrib) . $form_end;
     }
 
-    protected function handler($args = []): void
+    protected function handler($args=[]): void
     {
+
+        error_log("Mjesto handler - args: " . print_r($args, true));
         $rcmail = \rcmail::get_instance();
         $title = $rcmail->gettext($rcmail->action == 'add-response' ? 'addresponse' : 'editresponse');
 
@@ -137,11 +73,6 @@ class AddInstruction extends AbstractAction
         $rcmail->output->send('AIComposePlugin.instructionedit');
     }
 
-    //
-    //    protected function validate(): void
-    //    {
-    //       error_log("nista");
-    //    }
     protected function validate(): void
     {
         // TODO: Implement validate() method.

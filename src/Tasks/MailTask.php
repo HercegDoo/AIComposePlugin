@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace HercegDoo\AIComposePlugin\Tasks;
 
-use HercegDoo\AIComposePlugin\Actions\GetInstructionsAction;
+
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 
 class MailTask extends AbstractTask
@@ -14,7 +14,7 @@ class MailTask extends AbstractTask
         $this->plugin->add_hook('startup', [$this, 'startup']);
         $this->plugin->add_hook('render_page', [$this, 'load_resources']);
 
-        GetInstructionsAction::register();
+//        GetInstructionsAction::register();
     }
 
     /**
