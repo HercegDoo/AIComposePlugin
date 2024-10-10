@@ -46,8 +46,8 @@ class SettingsTask extends AbstractTask
 
         $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
         $instructionsArray = [];
-        //        $predefinedInstructions= [];
-        //        $rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
+//                $predefinedInstructions= [];
+//                $rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
 
         foreach ($predefinedInstructions as $instruction) {
             $instructionsArray[] = ['id' => $instruction['id'], 'name' => $instruction['title']];

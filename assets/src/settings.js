@@ -20,17 +20,29 @@ rcmail.register_command('addinstructiontemplate', rcube_webmail.prototype.addins
 
 rcube_webmail.prototype.updateinstructionlist = function(id, title)
 {
-  console.log(`Id iz updateinstructionlist${id}`);
-  const tbody = document.querySelector('#responses-table tbody');
-  console.log(document.querySelector('#responses-table tbody'));
-  const trow = document.createElement('tr');
-  trow.id =  id;
-  const td = document.createElement('td');
-  td.textContent = title;
-  td.className = "name";
-  trow.append(td);
-  console.log("aaa");
-  tbody.append(trow);
+  let found = false;
+
+  console.log(document.querySelectorAll('#responses-table tbody tr td'));
+  const tdElements = document.querySelectorAll('#responses-table tbody tr td');
+  tdElements.forEach((tdElement)=>{
+    if (tdElement.parentElement.id === id){
+     tdElement.textContent = title;
+     found = true;
+    }
+  })
+
+  if(!found){
+    const tbody = document.querySelector('#responses-table tbody');
+    const trow = document.createElement('tr');
+    trow.id =  id;
+    const td = document.createElement('td');
+    td.textContent = title;
+    td.className = "name";
+    trow.append(td);
+    console.log("aaa");
+    tbody.append(trow);
+  }
+
 };
 
 
