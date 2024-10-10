@@ -20,6 +20,7 @@ rcmail.register_command('addinstructiontemplate', rcube_webmail.prototype.addins
 
 rcube_webmail.prototype.updateinstructionlist = function(id, title)
 {
+  console.log(`Id iz updateinstructionlist${id}`);
   const tbody = document.querySelector('#responses-table tbody');
   console.log(document.querySelector('#responses-table tbody'));
   const trow = document.createElement('tr');
@@ -36,6 +37,7 @@ rcube_webmail.prototype.updateinstructionlist = function(id, title)
 rcube_webmail.prototype.addinstructiontemplate = function(id = null)
 {
   let win;
+  console.log(`Id iz addinstructiontemplate${id}`);
   console.log("pozvan");
   console.log(rcmail.env.action);
   if (win = rcmail.get_frame_window(rcmail.env.contentframe)) {

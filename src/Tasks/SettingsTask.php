@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace HercegDoo\AIComposePlugin\Tasks;
 
-use HercegDoo\AIComposePlugin\Actions\GetInstructionsAction;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
-use html;
 
 class SettingsTask extends AbstractTask
 {
@@ -18,37 +16,38 @@ class SettingsTask extends AbstractTask
         $this->plugin->add_hook('settings_actions', [$this, 'addPredefinedInstructionsSection']);
         $this->plugin->register_action('plugin.basepredefinedinstructions', [$this, 'base_predefined_instructions']);
         $this->plugin->include_stylesheet('assets/src/settings/style.css');
-
-        //        GetInstructionsAction::register();
     }
 
-    public function base_predefined_instructions($args = [])
+    /**
+     * @param array<string, string> $args
+     */
+    public function base_predefined_instructions(array $args = []): void
     {
         $rcmail = \rcmail::get_instance();
 
         $this->plugin->include_script('assets/dist/settings.bundle.js');
 
         $rcmail->output->set_pagetitle($rcmail->gettext('AIComposePlugin.ai_predefined_section_title'));
-        //        $rcmail->output->add_label('deleteresponseconfirm');
         $rcmail->output->add_handlers(['instructionslist' => [$this, 'responses_listt']]);
-
         $rcmail->output->send('AIComposePlugin.basepredefinedinstructions');
     }
 
     /**
      * Create template object 'responseslist'.
      *
-     * @param array $attrib Object attributes
+     * @param array<string, string> $attrib
      *
      * @return string HTML table output
      */
-    public static function responses_listt($attrib)
+    public static function responses_listt(array $attrib): string
     {
         $rcmail = \rcmail::get_instance();
         $attrib += ['id' => 'rcmresponseslist', 'tagname' => 'table'];
 
         $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
         $instructionsArray = [];
+        //        $predefinedInstructions= [];
+        //        $rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
 
         foreach ($predefinedInstructions as $instruction) {
             $instructionsArray[] = ['id' => $instruction['id'], 'name' => $instruction['title']];
