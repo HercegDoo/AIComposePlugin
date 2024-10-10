@@ -2,6 +2,15 @@
 document.addEventListener('DOMContentLoaded', ()=>{
   rcmail.enable_command('addinstructiontemplate', true);
   rcmail.enable_command('lol', true);
+
+  const table = document.querySelector('#responses-table tbody');
+  console.log(table);
+  table.addEventListener('click', (event)=>{
+    if(event.target.tagName === 'TD'){
+      console.log(event.target.parentElement.id);
+      rcmail.addinstructiontemplate(event.target.parentElement.id);
+    }
+  })
 })
 
 rcmail.register_command('updateinstructionlist', rcube_webmail.prototype.updateinstructionlist);
@@ -14,7 +23,7 @@ rcube_webmail.prototype.updateinstructionlist = function(id, title)
   const tbody = document.querySelector('#responses-table tbody');
   console.log(document.querySelector('#responses-table tbody'));
   const trow = document.createElement('tr');
-  trow.id = "rcmrow" + id;
+  trow.id =  id;
   const td = document.createElement('td');
   td.textContent = title;
   td.className = "name";
@@ -24,14 +33,16 @@ rcube_webmail.prototype.updateinstructionlist = function(id, title)
 };
 
 
-rcube_webmail.prototype.addinstructiontemplate = function()
+rcube_webmail.prototype.addinstructiontemplate = function(id = null)
 {
   let win;
   console.log("pozvan");
   console.log(rcmail.env.action);
   if (win = rcmail.get_frame_window(rcmail.env.contentframe)) {
     console.log(rcmail.env.action);
-    rcmail.location_href({_action: "plugin.AIComposePlugin_AddInstruction", _id: 0, _framed: 1}, win, true);
+    rcmail.location_href({_action: "plugin.AIComposePlugin_AddInstruction", _id:id, _framed: 1}, win, true);
     console.log(rcmail.env.action);
   }
 };
+
+

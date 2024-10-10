@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\Actions\GetInstructionsAction;
-use HercegDoo\AIComposePlugin\Actions\Settings\AddInstruction;
-use HercegDoo\AIComposePlugin\Actions\Settings\SaveInstruction;
-use HercegDoo\AIComposePlugin\Actions\Settings\TestRun;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use html;
 
@@ -22,7 +19,7 @@ class SettingsTask extends AbstractTask
         $this->plugin->register_action('plugin.basepredefinedinstructions', [$this, 'base_predefined_instructions']);
         $this->plugin->include_stylesheet('assets/src/settings/style.css');
 
-//        GetInstructionsAction::register();
+        //        GetInstructionsAction::register();
     }
 
     public function base_predefined_instructions($args = [])
@@ -36,7 +33,6 @@ class SettingsTask extends AbstractTask
         $rcmail->output->add_handlers(['instructionslist' => [$this, 'responses_listt']]);
 
         $rcmail->output->send('AIComposePlugin.basepredefinedinstructions');
-
     }
 
     /**
@@ -53,7 +49,6 @@ class SettingsTask extends AbstractTask
 
         $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
         $instructionsArray = [];
-
 
         foreach ($predefinedInstructions as $instruction) {
             $instructionsArray[] = ['id' => $instruction['id'], 'name' => $instruction['title']];
