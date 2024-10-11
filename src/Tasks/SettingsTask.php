@@ -46,8 +46,8 @@ class SettingsTask extends AbstractTask
 
         $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
         $instructionsArray = [];
-//                $predefinedInstructions= [];
-//                $rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
+        //                $predefinedInstructions= [];
+        //                $rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
 
         foreach ($predefinedInstructions as $instruction) {
             $instructionsArray[] = ['id' => $instruction['id'], 'name' => $instruction['title']];
@@ -100,8 +100,13 @@ class SettingsTask extends AbstractTask
         return $args;
     }
 
+    /**
+     * @param array<string, array<string, array<string, mixed>|string>> $args
+     * @return array<string, array<string, array<string, mixed>|string>>
+     */
     public function preferencesSectionsList(array $args): array
     {
+        error_log("Args u pref sections " . print_r($args, true));
         /** @var array<string, array<string, mixed>> $list */
         $list = $args['list'] ?? [];
 
