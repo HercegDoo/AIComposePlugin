@@ -11,7 +11,7 @@ class AddInstruction extends AbstractAction
     /**
      * @param array<string, string> $attrib
      */
-    public static function response_form(array $attrib): string
+    public function response_form(array $attrib): string
     {
         $rcmail = \rcmail::get_instance();
 
@@ -37,7 +37,6 @@ class AddInstruction extends AbstractAction
         $name_attr = [
             'id' => 'ffname',
             'size' => $attrib['size'] ?? null,
-            //            'readonly' => $readonly,
             'required' => true,
         ];
 
@@ -45,16 +44,15 @@ class AddInstruction extends AbstractAction
             'id' => 'fftext',
             'size' => $attrib['textareacols'] ?? null,
             'rows' => $attrib['textarearows'] ?? null,
-            //            'readonly' => $readonly,
             'spellcheck' => true,
         ];
 
         $table = new \html_table(['cols' => 1]); // Postavi samo jedan kolonu
 
-        $table->add([], \html::label('ffname', \rcube::Q($rcmail->gettext('responsename'))));
+        $table->add([], \html::label('ffname', \rcube::Q($this->translation('ai_predefined_title'))));
         $table->add([], \rcube_output::get_edit_field('name', $title, $name_attr, 'text'));
 
-        $table->add([], \html::label('fftext', \rcube::Q($rcmail->gettext('responsetext'))));
+        $table->add([], \html::label('fftext', \rcube::Q($this->translation('ai_predefined_content'))));
         $table->add([], \rcube_output::get_edit_field('text', $content, $text_attr, 'textarea'));
 
         return "{$form_start}\n" . $table->show($attrib) . $form_end;

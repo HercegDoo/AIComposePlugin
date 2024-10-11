@@ -103,23 +103,20 @@ function selectInstruction(instruction){
   instruction.classList.add("selected");
   instruction.classList.add("focused");
   previousInstruction = instruction;
+
 }
 
 function displayPopup(id){
 
-  let content = 'Da li želite obrisati?';
-  let title = 'Obrisati?';
-
+  let content = translation('ai_predefined_popup_body');
+  let title = translation('ai_predefined_popup_title');
 
   const buttons = {
-    'Obrisi': function() {
-      console.log('Obrisano!');
+    [translation('ai_predefined_delete')]: function() {
       popup.remove();
-      // rcmail.deleteinstruction(id);
       deleteInstructionPostRequest(id);
     },
-    'Cancel': function() {
-      console.log('Otkaženo!');
+   [translation('ai_predefined_cancel')]: function() {
       popup.remove();
 
     }
@@ -141,6 +138,7 @@ const popup = rcmail.show_popup_dialog(content, title, buttons, options);
 function deleteInstructionPostRequest(id){
   rcmail.http_post("plugin.AIComposePlugin_DeleteInstruction", {_id: `${id}`}, true).done(function(data){
     rcmail.show_contentframe(false);
+    rcmail.enable_command('deleteinstruction', false);
   });
 }
 

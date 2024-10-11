@@ -28,7 +28,7 @@ class SettingsTask extends AbstractTask
         $this->plugin->include_script('assets/dist/settings.bundle.js');
 
         $rcmail->output->set_pagetitle($rcmail->gettext('AIComposePlugin.ai_predefined_section_title'));
-        $rcmail->output->add_handlers(['instructionslist' => [$this, 'responses_listt']]);
+        $rcmail->output->add_handlers(['instructionslist' => [$this, 'instructions_list']]);
         $rcmail->output->send('AIComposePlugin.basepredefinedinstructions');
     }
 
@@ -39,15 +39,13 @@ class SettingsTask extends AbstractTask
      *
      * @return string HTML table output
      */
-    public static function responses_listt(array $attrib): string
+    public static function instructions_list(array $attrib): string
     {
         $rcmail = \rcmail::get_instance();
         $attrib += ['id' => 'rcmresponseslist', 'tagname' => 'table'];
 
         $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
         $instructionsArray = [];
-        //                $predefinedInstructions= [];
-        //                $rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
 
         foreach ($predefinedInstructions as $instruction) {
             $instructionsArray[] = ['id' => $instruction['id'], 'name' => $instruction['title']];
@@ -60,7 +58,6 @@ class SettingsTask extends AbstractTask
 
         $out = \rcmail_action::table_output($attrib, $plugin['list'], $plugin['cols'], 'id');
 
-        // set client env
         $rcmail->output->add_gui_object('instructionslist', $attrib['id']);
 
         return $out;
@@ -102,11 +99,12 @@ class SettingsTask extends AbstractTask
 
     /**
      * @param array<string, array<string, array<string, mixed>|string>> $args
+     *
      * @return array<string, array<string, array<string, mixed>|string>>
      */
     public function preferencesSectionsList(array $args): array
     {
-        error_log("Args u pref sections " . print_r($args, true));
+        error_log('Args u pref sections ' . print_r($args, true));
         /** @var array<string, array<string, mixed>> $list */
         $list = $args['list'] ?? [];
 

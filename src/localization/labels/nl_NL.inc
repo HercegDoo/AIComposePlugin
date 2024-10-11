@@ -63,6 +63,7 @@ $labels['ai_predefined_successful_delete'] = 'Succesvol verwijderd';
 $labels['ai_predefined_unsuccessful_delete'] = 'Fout bij het verwijderen van de instructie';
 $labels['ai_predefined_cancel'] = 'Annuleren';
 $labels['ai_predefined_popup_title'] = 'Weet je het zeker?';
+$labels['ai_predefined_invalid_input'] = 'Onvolledige invoer, een of meer velden zijn leeg!';
 $labels['ai_predefined_popup_body'] = 'Wilt u deze vooraf gedefinieerde instructie echt verwijderen?';
 $labels['ai_predefined_listing_empty'] = "De lijst is leeg. Gebruik de knop 'Aanmaken' om een nieuwe instructie toe te voegen.";
 $labels['ai_predefined_title'] = 'Titel';

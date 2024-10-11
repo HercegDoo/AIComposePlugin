@@ -17,7 +17,7 @@ class SaveInstruction extends AbstractAction
         $predefinedInstructions = $this->rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
 
         if (empty($name) || empty($text)) {
-            $this->rcmail->output->show_message('formincomplete', 'error');
+            $this->rcmail->output->show_message($this->translation('ai_predefined_invalid_input'), 'error');
             $this->rcmail->output->command('addinstructiontemplate');
             $this->rcmail->output->send('iframe');
         }
@@ -42,7 +42,7 @@ class SaveInstruction extends AbstractAction
             $predefinedInstructions[] = $response;
         }
 
-        $this->rcmail->output->show_message('successfullysaved', 'confirmation');
+        $this->rcmail->output->show_message($this->translation('ai_predefined_successful_save'), 'confirmation');
         $this->rcmail->output->command('parent.updateinstructionlist', $id, $name);
         $this->rcmail->output->command('addinstructiontemplate', $id);
         $this->rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);

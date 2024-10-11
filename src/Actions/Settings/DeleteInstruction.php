@@ -6,25 +6,21 @@ use HercegDoo\AIComposePlugin\Actions\AbstractAction;
 
 class DeleteInstruction extends AbstractAction
 {
-
     protected function handler(): void
     {
         $idToRemove = \rcube_utils::get_input_string('_id', \rcube_utils::INPUT_POST);
-        error_log("Id za obrisati: " . print_r($idToRemove, true));
         $predefinedInstructions = $this->rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
 
-        $updatedPredefinedInstructions = array_filter($predefinedInstructions, function($predefinedInstruction) use ($idToRemove){
+        if ($idToRemove) {
+            $updatedPredefinedInstructions = array_filter($predefinedInstructions, static function ($predefinedInstruction) use ($idToRemove) {
+                return !str_contains($idToRemove, $predefinedInstruction['id']);
+            });
 
-            return strpos($idToRemove, $predefinedInstruction['id']) === false;
-
-        });
-
-
-        $this->rcmail->user->save_prefs(['predefinedInstructions' => $updatedPredefinedInstructions]);
-        error_log('Updated Predefined Instructions ' . print_r($updatedPredefinedInstructions, true));
-        $this->rcmail->output->command('display_message', "E obriso si ga", 'confirmation');
-        $this->rcmail->output->command('deleteinstruction', $idToRemove);
-        $this->rcmail->output->send('AIComposePlugin.basepredefinedinstructions');
+            $this->rcmail->user->save_prefs(['predefinedInstructions' => $updatedPredefinedInstructions]);
+            $this->rcmail->output->command('display_message', $this->translation('ai_predefined_successful_delete'), 'confirmation');
+            $this->rcmail->output->command('deleteinstruction', $idToRemove);
+        }
+        $this->rcmail->output->send();
     }
 
     protected function validate(): void
