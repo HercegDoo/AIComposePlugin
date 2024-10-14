@@ -3,8 +3,9 @@
 namespace HercegDoo\AIComposePlugin\Actions\Settings;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
+use HercegDoo\AIComposePlugin\Actions\SkipValidationInterface;
 
-class AddInstruction extends AbstractAction
+class AddInstruction extends AbstractAction implements SkipValidationInterface
 {
     protected static string $instructionId;
 
@@ -70,6 +71,5 @@ class AddInstruction extends AbstractAction
 
     protected function validate(): void
     {
-        // TODO: Implement validate() method.
     }
 }

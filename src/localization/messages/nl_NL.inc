@@ -26,4 +26,4 @@ $messages['ai_predefined_delete_error'] = 'Er is een fout opgetreden bij het ver
 $messages['ai_predefined_get_all_instructions_error'] = 'Er is een fout opgetreden bij het ophalen van instructies.';
 $messages['ai_predefined_get_specific_instruction_error'] = 'Er is een fout opgetreden bij het ophalen van informatie voor de instructie.';
 $messages['ai_predefined_content_error'] = 'Fout bij het weergeven van de pagina.';
-$messages['ai_predefined_max_instructions_error'] = 'Het maximale aantal beschikbare instructies is 10!';
+$messages['ai_predefined_max_instructions_error'] = 'Het maximale aantal beschikbare instructies is 20!';

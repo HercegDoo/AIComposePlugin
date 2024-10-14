@@ -12,8 +12,6 @@ class MailTask extends AbstractTask
     {
         $this->plugin->add_hook('startup', [$this, 'startup']);
         $this->plugin->add_hook('render_page', [$this, 'load_resources']);
-
-        //        GetInstructionsAction::register();
     }
 
     /**

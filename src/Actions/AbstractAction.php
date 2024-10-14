@@ -33,17 +33,19 @@ abstract class AbstractAction
 
     public function requestHandler(): void
     {
-        $this->validate();
+        if (!($this instanceof SkipValidationInterface)) {
+            $this->validate();
 
-        if ($this->hasErrors()) {
-            foreach ($this->getErrors() as $error) {
-                $this->rcmail->output->show_message($error, 'error');
+            if ($this->hasErrors()) {
+                foreach ($this->getErrors() as $error) {
+                    $this->rcmail->output->show_message($error, 'error');
+                }
+
+                // Prekini izvršavanje ako su podaci nevalidni
+                $this->rcmail->output->send('iframe');
+
+                return;
             }
-
-            // Prekini izvršavanje ako su podaci nevalidni
-            $this->rcmail->output->send();
-
-            return;
         }
 
         $this->handler();

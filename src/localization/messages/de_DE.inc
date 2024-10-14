@@ -29,4 +29,4 @@ $messages['ai_predefined_content_error'] = 'Fehler beim Anzeigen der Seite.';
 $messages['ai_predefined_max_instructions_error'] = 'Die maximale Anzahl verfügbarer Anweisungen beträgt 10!';
 $messages['ai_predefined_max_instructions_error'] = 'The maximum number of available instructions is 10!';
 $messages['ai_predefined_max_instructions_error'] = 'Maksimalan broj dostupnih uputa je 10!';
-$messages['ai_predefined_max_instructions_error'] = 'Het maximale aantal beschikbare instructies is 10!';
+$messages['ai_predefined_max_instructions_error'] = 'Het maximale aantal beschikbare instructies is 20!';

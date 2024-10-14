@@ -3,8 +3,9 @@
 namespace HercegDoo\AIComposePlugin\Actions\Settings;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
+use HercegDoo\AIComposePlugin\Actions\SkipValidationInterface;
 
-class DeleteInstruction extends AbstractAction
+class DeleteInstruction extends AbstractAction implements SkipValidationInterface
 {
     protected function handler(): void
     {
@@ -25,6 +26,5 @@ class DeleteInstruction extends AbstractAction
 
     protected function validate(): void
     {
-        // TODO: Implement validate() method.
     }
 }
