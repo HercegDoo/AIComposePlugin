@@ -30,8 +30,6 @@ class AddInstruction extends AbstractAction implements SkipValidationInterface
             }
         }
 
-        $rcmail->output->add_label('converting', 'editorwarning');
-
         [$form_start, $form_end] = \rcmail_action::get_form_tags($attrib, 'plugin.AIComposePlugin_SaveInstruction', self::$instructionId, ['name' => '_id', 'value' => self::$instructionId]);
         unset($attrib['form'], $attrib['id']);
 

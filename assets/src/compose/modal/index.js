@@ -8,6 +8,7 @@ import { validateFields } from "./additionalModalFunctions/fieldsValidation";
 import { regulateFixTextModal } from "./additionalModalFunctions/regulateFixTextModal";
 import { insertEmail } from "./additionalModalFunctions/insertEmailHandler";
 import { regulatePredefinedInstructionsModal } from "./additionalModalFunctions/predefinedInstructions/regulatePredefinedInstructionsModal";
+import {  setFilled } from "./additionalModalFunctions/predefinedInstructions/regulatePredefinedInstructionsModal";
 
 export function createComposeModal() {
   const dialogMask = document.createElement("div");
@@ -36,11 +37,13 @@ export function createComposeModal() {
   dialogMask.appendChild(dialogBox);
 
   closeButton.addEventListener("click", function () {
+    setFilled(false);
     document.body.removeChild(dialogMask);
   });
 
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
+      setFilled(false);
       document.body.removeChild(dialogMask);
     }
   });

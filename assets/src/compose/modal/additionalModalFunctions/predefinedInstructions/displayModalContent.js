@@ -1,5 +1,6 @@
 import { translation } from "../../../../utils";
 import { closeModal } from "./regulatePredefinedInstructionsModal";
+import { sendPostRequest } from "../requests/sendPostRequest";
 
 export function displayModalContent(array) {
   const predefinedContent = document.querySelector(
@@ -25,7 +26,7 @@ export function displayModalContent(array) {
       instructionLi.setAttribute("hidden", "hidden");
 
       titleSpan.textContent = instruction.title;
-      instructionLi.textContent = instruction.value;
+      instructionLi.textContent = instruction.message;
 
       titleA.textContent = translation("ai_help_use_example");
       titleA.classList.add("predefined-a");
@@ -36,6 +37,7 @@ export function displayModalContent(array) {
         const titleAParent = titleA.parentElement;
         instructionsTextarea.value =
           titleAParent.nextElementSibling.textContent;
+        sendPostRequest();
       });
 
       titleLi.append(titleSpan, titleA);

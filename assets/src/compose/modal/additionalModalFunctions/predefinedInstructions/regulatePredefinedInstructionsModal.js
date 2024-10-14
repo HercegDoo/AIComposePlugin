@@ -1,5 +1,10 @@
 import { fillPredefinedInstructionsModal } from "./fillPredefinedInstructionsModal";
 let filled = false;
+
+export function setFilled(value){
+  filled = value;
+}
+
 export function regulatePredefinedInstructionsModal() {
   const request = document.getElementById("aic-result");
   const result = document.getElementById("aic-request");
