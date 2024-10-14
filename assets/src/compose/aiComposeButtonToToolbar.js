@@ -14,6 +14,7 @@ export const createButtonInToolbarMenu = function () {
   parentMenu.append(liElement1);
 };
 
+
 export const openModal = function () {
   createComposeModal();
 };
