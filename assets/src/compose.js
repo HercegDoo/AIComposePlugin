@@ -9,9 +9,6 @@ import {
   processSenderData,
 } from "./compose/modal/additionalModalFunctions/senderDataHandler";
 import { createPredefinedInstructionsButtonInToolbarMenu } from "./compose/aiPredefinedInstructionsButtonToToolbar";
-rcmail.http_get('plugin.AIComposePlugin_PredefinedInstructionsButtonAction', {}).done(function(data){
-  console.log(data);
-});
 document.addEventListener("DOMContentLoaded", function () {
   createButtonInToolbarMenu();
   createPredefinedInstructionsButtonInToolbarMenu();

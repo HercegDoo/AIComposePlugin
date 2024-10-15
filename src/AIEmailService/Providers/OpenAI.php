@@ -81,7 +81,7 @@ final class OpenAI extends AbstractProvider
                 " *Length: {$requestData->getLength()}" .
                 " *The email is about: {$requestData->getInstruction()}." .
                 ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '') .
-                ($requestData->getSignaturePresent() ? 'Do not sign the email with any name, do not write anything after the last greeting, no names' : '');
+                ($requestData->getSignaturePresent() ? 'Do not sign the email with any name, do not write anything after the last greeting, no names at the end of the email' : '');
         }
 
         return $prompt;

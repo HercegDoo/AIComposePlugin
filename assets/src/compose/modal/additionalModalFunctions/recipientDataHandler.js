@@ -1,4 +1,5 @@
 export function getRecipientInfo() {
+  const aiComposeModal = document.getElementById("aic-compose-dialog");
   const recipientNameElement = document.querySelector("li.recipient span.name");
   const recipientEmailElement = document.querySelector(
     "li.recipient span.email"
@@ -23,7 +24,7 @@ export function getRecipientInfo() {
     recipientName = "";
   }
 
-  if (recipientName) {
+  if (recipientName && aiComposeModal) {
     recipientNameInputField.value = recipientName;
   }
 

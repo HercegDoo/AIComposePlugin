@@ -3,6 +3,7 @@ import $ from "jquery";
 import { translation } from "../../../utils";
 
 export function validateFields() {
+
   $("#generate-email-button").on("click", function (event) {
     event.preventDefault();
 
@@ -54,8 +55,14 @@ export function validateFields() {
 }
 
 export function fieldsValid() {
+  const aiComposeModal = document.getElementById("aic-compose-dialog");
   const senderNameElement = document.getElementById("sender-name");
   const instructionsElement = document.getElementById("aic-instructions");
 
-  return senderNameElement.value !== "" && instructionsElement.value !== "";
+  if(aiComposeModal){
+    return senderNameElement.value !== "" && instructionsElement.value !== "";
+  }
+  else return true;
+
+
 }

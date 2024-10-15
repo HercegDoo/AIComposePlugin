@@ -39,7 +39,7 @@ export function regulateFixTextModal() {
   generateAgain.addEventListener("click", () => {
     sendPostRequest(
       previousGeneratedEmailTextarea.value,
-      fixInstructionsTextArea
+      fixInstructionsTextArea.value
     );
     closeFixTextModal();
   });

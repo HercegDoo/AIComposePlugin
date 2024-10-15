@@ -14,12 +14,12 @@ export function getRequestDataFields() {
   const signatureCheckObject = signatureCheckedPreviousConversation();
 
   return {
-    style: `${styleElement.value}`,
-    senderName: `${senderNameElement.value}`,
-    recipientName: `${recipientNameElement.value}`,
-    length: `${lengthElement.value}`,
-    creativity: `${creativityElement.value}`,
-    language: `${languageElement.value}`,
+    style: `${styleElement?.value || rcmail.env.aiPluginOptions.defaultStyle}`,
+    senderName: `${senderNameElement?.value || senderInfo.senderName }`,
+    recipientName: `${recipientNameElement?.value || getRecipientInfo().recipientName}`,
+    length: `${lengthElement?.value || rcmail.env.aiPluginOptions.defaultLength}`,
+    creativity: `${creativityElement?.value || rcmail.env.aiPluginOptions.defaultCreativity}`,
+    language: `${languageElement?.value || rcmail.env.aiPluginOptions.defaultLanguage}`,
     previousConversation: `${signatureCheckObject.previousConversation}`,
     signaturePresent: `${signatureCheckObject.signaturePresent}`,
     subject: `${getSubject()}`,

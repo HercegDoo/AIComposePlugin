@@ -1,31 +1,37 @@
 import { fieldsValid } from "../fieldsValidation";
 import { getSelectedText } from "../selectedTextHandler";
 import { getRequestDataFields } from "../requestDataHandler";
+import { insertEmail } from "../insertEmailHandler";
 
 export function sendPostRequest(
   previousGeneratedEmail = "",
-  instructionsElement = document.getElementById("aic-instructions")
+  instructionsElementValue = document.getElementById("aic-instructions").value
 ) {
   const generateEmailButton = document.getElementById("generate-email-button");
   const textarea = document.getElementById("aic-email");
   const generateEmailSpan = document.getElementById("generate-email-span");
   const generateAgainSpan = document.getElementById("generate-again-span");
   const insertEmailButton = document.getElementById("insert-email-button");
+  const aiComposeModal = document.getElementById("aic-compose-dialog");
 
   let requestData = getRequestDataFields();
   requestData = {
     ...requestData,
     previousGeneratedEmail: `${previousGeneratedEmail}`,
-    instructions: `${instructionsElement.value}`,
+    instructions: `${instructionsElementValue}`,
     fixText: `${getSelectedText()}`,
   };
 
   if (fieldsValid()) {
     const lock = rcmail.set_busy(true, "Genrisanje");
-    generateEmailButton.setAttribute("disabled", "disabled");
-    if (!insertEmailButton.hasAttribute("hidden")) {
-      insertEmailButton.setAttribute("disabled", "disabled");
+    if(aiComposeModal){
+      generateEmailButton.setAttribute("disabled", "disabled");
+      if (!insertEmailButton.hasAttribute("hidden")) {
+        insertEmailButton.setAttribute("disabled", "disabled");
+      }
     }
+    console.log("Prije slanja zahtjeva");
+    console.log(requestData);
     rcmail
       .http_post(
         "plugin.AIComposePlugin_GenereteEmailAction",
@@ -48,16 +54,19 @@ export function sendPostRequest(
         lock
       )
       .done(function (data) {
-        textarea.value =
-          data && data["respond"] !== undefined ? data["respond"] : "";
-        generateEmailSpan.style.display = "none";
-        generateAgainSpan.style.display = "block";
-        insertEmailButton.removeAttribute("hidden");
-        insertEmailButton.removeAttribute("disabled");
+        if(aiComposeModal){
+          textarea.value =
+            data && data["respond"] !== undefined ? data["respond"] : "";
+          generateEmailSpan.style.display = "none";
+          generateAgainSpan.style.display = "block";
+          insertEmailButton.removeAttribute("hidden");
+          insertEmailButton.removeAttribute("disabled");
+        }
+        else  insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
       })
       .always(function (data) {
         rcmail.set_busy(false, "", lock);
-        generateEmailButton.removeAttribute("disabled");
+       aiComposeModal && generateEmailButton.removeAttribute("disabled");
       });
   }
 }
