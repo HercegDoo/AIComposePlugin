@@ -2,7 +2,7 @@
 
 $labels = [];
 
-$labels['ai_dialog_button_text'] = 'AI';
+
 $labels['ai_dialog_button_title'] = 'Sastavite poruku pomoću AI';
 $labels['ai_dialog_title'] = 'Sastavite poruku pomoću AI';
 
@@ -82,6 +82,10 @@ $labels['ai_predefined_content'] = 'Sadržaj';
 $labels['ai_predefined_section_title'] = 'AI Predefinisane Instrukcije';
 $labels['ai_predefined_modal_description'] = 'Definišite vlastite predefinisane instrukcije u polju postavki kako biste olakšali generisanje e-pošte. Prilagodite ove instrukcije uobičajenim scenarijima kao što su imena, datumi i specifični detalji koje često koristite. Kada ih kreirate, lako ih možete odabrati, prilagoditi i umetnuti na AI stranicu. Ovi personalizovani šabloni će vam uštedjeti vrijeme i osigurati dosljednost u vašim e-porukama.';
 $labels['ai_predefined_no_instructions'] = 'Trenutno nemate dostupnih predefinisanih instrukcija. Napravite novu predefinisanu instrukciju u postavkama.';
+$labels['ai_predefined_edit_instructions'] = 'Uredi instrukcije';
+$labels['ai_predefined_use_instructions'] = 'Koristi instrukcije';
+$labels['ai_predefined_manage_instructions'] = 'Upravljaj instrukcijama';
+$labels['ai_predefined_use_predefined_instructions'] = 'Koristi unaprijed definirane instrukcije';
 
 $labels['settings_menu_text'] = 'Umjetna Inteligencija';
 $labels['setting_default_options'] = 'Sastavljanje poruka sa AI';
