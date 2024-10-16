@@ -10,7 +10,7 @@ export  function addDropdownToAIButton(){
   const predefinedInstructions = rcmail.env.aiPredefinedInstructions;
 
   dataDiv.innerHTML = `
-    <div class="popover-header">Naslov Menija</div>
+  
   <h3 class="voice">Canned instructions menu</h3>
 \t<ul class="menu listing" role="menu">
 \t\t<li role="separator" class="separator"><label>${translation('ai_predefined_use_instructions')}</label></li>
