@@ -2,7 +2,8 @@ import { fieldsValid } from "../fieldsValidation";
 import { getSelectedText } from "../selectedTextHandler";
 import { getRequestDataFields } from "../requestDataHandler";
 import { insertEmail } from "../insertEmailHandler";
-
+import { signatureCheckedPreviousConversation } from "../signaturesHandler";
+let previousGeneratedMailToRemove = "";
 export function sendPostRequest(
   previousGeneratedEmail = "",
   instructionsElementValue = document.getElementById("aic-instructions").value
@@ -21,6 +22,11 @@ export function sendPostRequest(
     instructions: `${instructionsElementValue}`,
     fixText: `${getSelectedText()}`,
   };
+
+  if(!document.getElementById("aic-instructions")){
+    console.log("Nema aic instructions");
+    requestData.previousConversation = signatureCheckedPreviousConversation(previousGeneratedMailToRemove).previousConversation;
+  }
 
   if (fieldsValid()) {
     const lock = rcmail.set_busy(true, "Genrisanje");
@@ -63,6 +69,7 @@ export function sendPostRequest(
           insertEmailButton.removeAttribute("disabled");
         }
         else  insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
+        previousGeneratedMailToRemove = data && data["respond"] !== undefined ? data["respond"] : "";
       })
       .always(function (data) {
         rcmail.set_busy(false, "", lock);
