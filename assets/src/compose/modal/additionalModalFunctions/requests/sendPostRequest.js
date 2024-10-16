@@ -29,7 +29,7 @@ export function sendPostRequest(
   }
 
   if (fieldsValid()) {
-    const lock = rcmail.set_busy(true, "Genrisanje");
+    rcmail.lock_frame(document.body);
     if(aiComposeModal){
       generateEmailButton.setAttribute("disabled", "disabled");
       if (!insertEmailButton.hasAttribute("hidden")) {
@@ -57,7 +57,7 @@ export function sendPostRequest(
           senderEmail: `${requestData.senderEmail}`,
           subject: `${requestData.subject}`,
         },
-        lock
+        true
       )
       .done(function (data) {
         if(aiComposeModal){
@@ -72,7 +72,7 @@ export function sendPostRequest(
         previousGeneratedMailToRemove = data && data["respond"] !== undefined ? data["respond"] : "";
       })
       .always(function (data) {
-        rcmail.set_busy(false, "", lock);
+        rcmail.unlock_frame();
        aiComposeModal && generateEmailButton.removeAttribute("disabled");
       });
   }

@@ -2,7 +2,6 @@
 
 $labels = [];
 
-
 $labels['ai_dialog_button_title'] = 'Sastavite poruku pomoću AI';
 $labels['ai_dialog_title'] = 'Sastavite poruku pomoću AI';
 

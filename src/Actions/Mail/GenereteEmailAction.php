@@ -34,7 +34,6 @@ final class GenereteEmailAction extends AbstractAction
     public function handler(): void
     {
         header('Content-Type: application/json');
-
         try {
             $this->preparePostData();
             $email = AIEmail::generate($this->aiRequestData);

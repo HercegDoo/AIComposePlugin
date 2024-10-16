@@ -2,7 +2,6 @@
 
 $labels = [];
 
-
 $labels['ai_dialog_button_title'] = 'Verfassen Sie eine Nachricht mit KI';
 $labels['ai_dialog_title'] = 'Verfassen Sie eine Nachricht mit KI';
 

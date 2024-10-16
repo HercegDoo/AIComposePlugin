@@ -2,7 +2,6 @@
 
 $labels = [];
 
-
 $labels['ai_dialog_button_title'] = 'Sastavite poruku pomoću AI';
 $labels['ai_dialog_title'] = 'Sastavite poruku pomoću AI';
 
@@ -76,7 +75,6 @@ $labels['ai_predefined_edit_instructions'] = 'Uredi instrukcije';
 $labels['ai_predefined_use_instructions'] = 'Koristi instrukcije';
 $labels['ai_predefined_manage_instructions'] = 'Upravljaj instrukcijama';
 $labels['ai_predefined_use_predefined_instructions'] = 'Koristi unaprijed definirane instrukcije';
-
 
 $labels['ai_button_show_instructions'] = 'Primjeri Uputa';
 $labels['ai_help_button_back'] = 'Natrag';

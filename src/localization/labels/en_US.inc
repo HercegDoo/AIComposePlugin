@@ -2,7 +2,6 @@
 
 $labels = [];
 
-
 $labels['ai_dialog_button_title'] = 'Compose message using AI';
 $labels['ai_dialog_title'] = 'Compose message using AI';
 
@@ -80,9 +79,9 @@ $labels['ai_predefined_section_title'] = 'AI Predefined Instructions';
 $labels['ai_predefined_modal_description'] = 'Define your own predefined instructions in the settings field to streamline email generation. Tailor these instructions to common scenarios such as names, dates, and specific details you frequently use. Once created, you can easily select, adjust, and insert them into the AI page. These personalized templates will save you time and ensure consistency across your emails.';
 $labels['ai_predefined_no_instructions'] = 'You currently have no available predefined instructions. Create a new predefined instruction in the settings section.';
 $labels['ai_predefined_edit_instructions'] = 'Edit instructions';
-$labels['ai_predefined_use_instructions'] = "Use instructions";
+$labels['ai_predefined_use_instructions'] = 'Use instructions';
 $labels['ai_predefined_manage_instructions'] = 'Manage instructions';
-$labels['ai_predefined_use_predefined_instructions'] = "Use predefined instructions";
+$labels['ai_predefined_use_predefined_instructions'] = 'Use predefined instructions';
 
 $labels['ai_fix_selected_text_title'] = 'Fix Selected Text';
 $labels['ai_selected_text'] = 'Selected Text';
