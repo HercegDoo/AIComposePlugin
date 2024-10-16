@@ -8,10 +8,8 @@ import {
   getSenderInfo,
   processSenderData,
 } from "./compose/modal/additionalModalFunctions/senderDataHandler";
-import { createPredefinedInstructionsButtonInToolbarMenu } from "./compose/aiPredefinedInstructionsButtonToToolbar";
 document.addEventListener("DOMContentLoaded", function () {
   createButtonInToolbarMenu();
-  createPredefinedInstructionsButtonInToolbarMenu();
 
 
   document
