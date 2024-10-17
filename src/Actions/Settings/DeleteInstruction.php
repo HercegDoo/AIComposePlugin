@@ -17,6 +17,8 @@ class DeleteInstruction extends AbstractAction implements SkipValidationInterfac
                 return !str_contains($idToRemove, $predefinedInstruction['id']);
             });
 
+            $updatedPredefinedInstructions = array_values($updatedPredefinedInstructions);
+
             $this->rcmail->user->save_prefs(['predefinedInstructions' => $updatedPredefinedInstructions]);
             $this->rcmail->output->command('display_message', $this->translation('ai_predefined_successful_delete'), 'confirmation');
             $this->rcmail->output->command('deleteinstruction', $idToRemove);

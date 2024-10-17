@@ -1,5 +1,5 @@
 import { translation } from "./utils";
-import { getPredefinedInstructions } from "./settings/aiResponses/requests/getInstructionsHandler";
+import { mobileDisplayInstructionsHandle } from "./settings/aiResponses/mobileDisplayInstructionsHandler";
 
 let previousInstruction = null;
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -75,6 +75,7 @@ rcube_webmail.prototype.addinstructiontemplate = function(id = null)
   else{  rcmail.enable_command('deleteinstruction', false)}
   if (win = rcmail.get_frame_window(rcmail.env.contentframe)) {
     rcmail.location_href({_action: "plugin.AIComposePlugin_AddInstruction", _id:id, _framed: 1}, win, true);
+    mobileDisplayInstructionsHandle(id);
   }
 };
 
@@ -86,9 +87,6 @@ rcube_webmail.prototype.deleteinstruction = function(id)
   const instructionToRemove = document.getElementById(id);
   if (tbody.contains(instructionToRemove)) {
     tbody.removeChild(instructionToRemove);
-  }
-  if (win = rcmail.get_frame_window(rcmail.env.contentframe)) {
-
   }
 };
 
@@ -121,7 +119,6 @@ function displayPopup(id){
 
     }
   };
-
   const options = {
     width: 500,
     height: 45,
@@ -131,7 +128,6 @@ function displayPopup(id){
   };
 
 const popup = rcmail.show_popup_dialog(content, title, buttons, options);
-
 }
 
 

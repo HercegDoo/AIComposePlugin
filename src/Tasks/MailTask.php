@@ -42,6 +42,5 @@ class MailTask extends AbstractTask
             'defaultStyle' => Settings::getDefaultStyle(),
         ];
         $rcmail->output->set_env('aiPluginOptions', $settings);
-        $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
     }
 }
