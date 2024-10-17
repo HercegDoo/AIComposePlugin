@@ -3,7 +3,7 @@ import { getSelectedText } from "../selectedTextHandler";
 import { getRequestDataFields } from "../requestDataHandler";
 import { insertEmail } from "../insertEmailHandler";
 import { signatureCheckedPreviousConversation } from "../signaturesHandler";
-let previousGeneratedMailToRemove = "";
+let globalPreviousGeneratedEmail = "";
 export function sendPostRequest(
   previousGeneratedEmail = "",
   instructionsElementValue = document.getElementById("aic-instructions").value
@@ -18,15 +18,15 @@ export function sendPostRequest(
   let requestData = getRequestDataFields();
   requestData = {
     ...requestData,
-    previousGeneratedEmail: `${previousGeneratedEmail}`,
+    previousGeneratedEmail: `${previousGeneratedEmail !== "" ? previousGeneratedEmail : globalPreviousGeneratedEmail}`,
     instructions: `${instructionsElementValue}`,
     fixText: `${getSelectedText()}`,
   };
 
-  if(!document.getElementById("aic-instructions")){
-    console.log("Nema aic instructions");
-    requestData.previousConversation = signatureCheckedPreviousConversation(previousGeneratedMailToRemove).previousConversation;
-  }
+
+    //Uzimanje prethodnog razgovora bez prethodno generisanog maila
+    requestData.previousConversation = signatureCheckedPreviousConversation(requestData.previousGeneratedEmail).previousConversation;
+
 
   if (fieldsValid()) {
     rcmail.lock_frame(document.body);
@@ -36,8 +36,6 @@ export function sendPostRequest(
         insertEmailButton.setAttribute("disabled", "disabled");
       }
     }
-    console.log("Prije slanja zahtjeva");
-    console.log(requestData);
     rcmail
       .http_post(
         "plugin.AIComposePlugin_GenereteEmailAction",
@@ -69,7 +67,7 @@ export function sendPostRequest(
           insertEmailButton.removeAttribute("disabled");
         }
         else  insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
-        previousGeneratedMailToRemove = data && data["respond"] !== undefined ? data["respond"] : "";
+        globalPreviousGeneratedEmail = data && data["respond"] !== undefined ? data["respond"] : "";
       })
       .always(function (data) {
         rcmail.unlock_frame();

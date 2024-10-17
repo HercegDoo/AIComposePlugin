@@ -25,7 +25,6 @@ editorText = editorText.replace(previousGeneratedEmail, "");
       .trim();
   } else {
     const textareaContent = document.getElementById("composebody").value.replace(previousGeneratedEmail, "");
-    console.log(previousGeneratedEmail);
     const textareaContentFormatted = textareaContent
       .replace(/\\n/g, "\n")
       .replace(/\s+/g, " ")

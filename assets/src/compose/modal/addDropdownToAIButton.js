@@ -27,7 +27,6 @@ export  function addDropdownToAIButton(){
   const instructionsList = document.getElementById('instructionslist');
 
   predefinedInstructions.forEach((predefinedInstruction) => {
-    console.log(predefinedInstruction);
     const liInstruction = document.createElement('li');
     const aInstruction = document.createElement('a');
     aInstruction.classList.add('insertresponse');
