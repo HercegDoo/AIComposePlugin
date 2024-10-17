@@ -1,4 +1,5 @@
-import { fillPredefinedInstructionsModal } from "./fillPredefinedInstructionsModal";
+
+import { displayModalContent } from "./displayModalContent";
 let filled = false;
 
 export function setFilled(value){
@@ -19,7 +20,7 @@ export function regulatePredefinedInstructionsModal() {
   predefinedInstructionsButton.addEventListener("click", () => {
     openModal(request, result, predefinedInstructionsDiv);
     if (!filled) {
-      fillPredefinedInstructionsModal();
+     displayModalContent(rcmail.env.aiPredefinedInstructions);
       filled = true;
     }
   });
