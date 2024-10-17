@@ -69,7 +69,7 @@ export function sendPostRequest(
         else  insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
         globalPreviousGeneratedEmail = data && data["respond"] !== undefined ? data["respond"] : "";
       })
-      .always(function (data) {
+      .always(function () {
         rcmail.unlock_frame();
        aiComposeModal && generateEmailButton.removeAttribute("disabled");
       });

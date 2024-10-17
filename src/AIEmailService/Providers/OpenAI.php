@@ -51,7 +51,6 @@ final class OpenAI extends AbstractProvider
 
         $this->creativity = $this->creativityMap[Settings::getCreativity()];
         $prompt = $this->prompt($requestData);
-        error_log($prompt);
 
         $respond = $this->sendRequest($prompt);
 
@@ -80,6 +79,7 @@ final class OpenAI extends AbstractProvider
                 " *Language: {$requestData->getLanguage()}" .
                 " *Length: {$requestData->getLength()}" .
                 " *The email is about: {$requestData->getInstruction()}." .
+                'Do not write the subject if provided, it is only there for your context' .
                 ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '') .
                 ($requestData->getSignaturePresent() ? 'Do not sign the email with any name, do not write anything after the last greeting, no names at the end of the email' : '');
         }

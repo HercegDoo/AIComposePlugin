@@ -42,7 +42,7 @@ class SettingsTask extends AbstractTask
     public static function instructions_list(array $attrib): string
     {
         $rcmail = \rcmail::get_instance();
-        $attrib += ['id' => 'rcmresponseslist', 'tagname' => 'table'];
+        $attrib += ['id' => 'rcminstructionslist', 'tagname' => 'table'];
 
         $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
         $instructionsArray = [];
@@ -104,7 +104,6 @@ class SettingsTask extends AbstractTask
      */
     public function preferencesSectionsList(array $args): array
     {
-        error_log('Args u pref sections ' . print_r($args, true));
         /** @var array<string, array<string, mixed>> $list */
         $list = $args['list'] ?? [];
 
