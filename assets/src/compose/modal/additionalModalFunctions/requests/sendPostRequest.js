@@ -36,7 +36,6 @@ export function sendPostRequest(
       }
     }
 
-    console.log(requestData);
     rcmail
       .http_post(
         "plugin.AIComposePlugin_GenereteEmailAction",
