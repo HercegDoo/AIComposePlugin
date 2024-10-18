@@ -1,12 +1,11 @@
 import { fieldsValid } from "../fieldsValidation";
-import { getSelectedText } from "../selectedTextHandler";
 import { getRequestDataFields } from "../requestDataHandler";
 import { insertEmail } from "../insertEmailHandler";
 import { signatureCheckedPreviousConversation } from "../signaturesHandler";
 let globalPreviousGeneratedEmail = "";
 export function sendPostRequest(
   previousGeneratedEmail = "",
-  instructionsElementValue = document.getElementById("aic-instructions").value
+  instructionsElementValue = document.getElementById("aic-instructions").value, fixText = ""
 ) {
   const generateEmailButton = document.getElementById("generate-email-button");
   const textarea = document.getElementById("aic-email");
@@ -20,7 +19,7 @@ export function sendPostRequest(
     ...requestData,
     previousGeneratedEmail: `${previousGeneratedEmail !== "" ? previousGeneratedEmail : globalPreviousGeneratedEmail}`,
     instructions: `${instructionsElementValue}`,
-    fixText: `${getSelectedText()}`,
+    fixText: `${fixText}`,
   };
 
 
@@ -36,6 +35,8 @@ export function sendPostRequest(
         insertEmailButton.setAttribute("disabled", "disabled");
       }
     }
+
+    console.log(requestData);
     rcmail
       .http_post(
         "plugin.AIComposePlugin_GenereteEmailAction",
@@ -66,7 +67,8 @@ export function sendPostRequest(
           insertEmailButton.removeAttribute("hidden");
           insertEmailButton.removeAttribute("disabled");
         }
-        else  insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
+        else
+          insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
         globalPreviousGeneratedEmail = data && data["respond"] !== undefined ? data["respond"] : "";
       })
       .always(function () {

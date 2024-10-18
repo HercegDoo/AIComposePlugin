@@ -1,5 +1,6 @@
 
 import { displayModalContent } from "./displayModalContent";
+import { closeModal, openModal } from "../../../../utils";
 let filled = false;
 
 export function setFilled(value){
@@ -7,15 +8,15 @@ export function setFilled(value){
 }
 
 export function regulatePredefinedInstructionsModal() {
-  const request = document.getElementById("aic-result");
-  const result = document.getElementById("aic-request");
-  const predefinedInstructionsButton = document.getElementById(
+  const request = document.getElementById("aic-result"),
+   result = document.getElementById("aic-request"),
+   predefinedInstructionsButton = document.getElementById(
     "predefined-instructions-button"
-  );
-  const predefinedInstructionsDiv = document.getElementById(
+  ),
+   predefinedInstructionsDiv = document.getElementById(
     "aic-compose-predefined"
-  );
-  const backBtn = document.getElementById("predefined-back-btn");
+  ),
+  backBtn = document.getElementById("predefined-back-btn");
 
   predefinedInstructionsButton.addEventListener("click", () => {
     openModal(request, result, predefinedInstructionsDiv);
@@ -31,18 +32,4 @@ export function regulatePredefinedInstructionsModal() {
   });
 }
 
-function openModal(request, result, modal) {
-  request.setAttribute("hidden", "hidden");
-  result.setAttribute("hidden", "hidden");
-  modal.removeAttribute("hidden");
-}
 
-export function closeModal(
-  request = document.getElementById("aic-result"),
-  result = document.getElementById("aic-request"),
-  modal = document.getElementById("aic-compose-predefined")
-) {
-  request.removeAttribute("hidden");
-  result.removeAttribute("hidden");
-  modal.setAttribute("hidden", "true");
-}

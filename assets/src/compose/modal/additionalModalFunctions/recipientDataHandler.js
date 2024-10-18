@@ -1,7 +1,7 @@
 export function getRecipientInfo() {
-  const aiComposeModal = document.getElementById("aic-compose-dialog");
-  const recipientNameElement = document.querySelector("li.recipient span.name");
-  const recipientEmailElement = document.querySelector(
+  const aiComposeModal = document.getElementById("aic-compose-dialog"),
+   recipientNameElement = document.querySelector("li.recipient span.name"),
+   recipientEmailElement = document.querySelector(
     "li.recipient span.email"
   );
   const inputElement = document.querySelector(

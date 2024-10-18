@@ -1,40 +1,32 @@
+import { closeModal, openModal } from "../../../utils";
+
+
 export function regulateHelpModal() {
-  const instructionExampleBtn = document.getElementById("instruction-example");
-  const request = document.getElementById("aic-result");
-  const result = document.getElementById("aic-request");
-  const helpContent = document.getElementById("aic-compose-help");
-  const backBtn = document.getElementById("help-back-btn");
-  const helpAs = document.querySelectorAll(".help-a");
-  const instructionsTextarea = document.getElementById("aic-instructions");
+  const instructionExampleBtn = document.getElementById("instruction-example"),
+   request = document.getElementById("aic-result"),
+   result = document.getElementById("aic-request"),
+   helpContent = document.getElementById("aic-compose-help"),
+   backBtn = document.getElementById("help-back-btn"),
+   helpAs = document.querySelectorAll(".help-a"),
+   instructionsTextarea = document.getElementById("aic-instructions");
 
   instructionExampleBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
-    openHelpModal();
+    openModal(request, result, helpContent);
   });
 
   backBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
-    closeHelpModal();
+    closeModal(undefined, undefined, helpContent);
   });
 
   helpAs?.forEach((helpA) => {
     helpA.addEventListener("click", (event) => {
       event.stopPropagation();
-      closeHelpModal();
+      closeModal(undefined, undefined, helpContent);
       instructionsTextarea.value =
         event.target.previousElementSibling.innerText;
     });
   });
 
-  function openHelpModal() {
-    request.setAttribute("hidden", "hidden");
-    result.setAttribute("hidden", "hidden");
-    helpContent.removeAttribute("hidden");
-  }
-
-  function closeHelpModal() {
-    request.removeAttribute("hidden");
-    result.removeAttribute("hidden");
-    helpContent.setAttribute("hidden", "true");
-  }
 }

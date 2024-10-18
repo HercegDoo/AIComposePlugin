@@ -1,28 +1,20 @@
-import { translation } from "../../../../utils";
-import { closeModal } from "./regulatePredefinedInstructionsModal";
+import { closeModal, createElementWithId, translation } from "../../../../utils";
 import { sendPostRequest } from "../requests/sendPostRequest";
 
 export function displayModalContent(array) {
   const predefinedContent = document.querySelector(
     ".predefined-instructions-content"
-  );
-  const predefinedInstructionsUl = document.createElement("ul");
-  predefinedInstructionsUl.id = "predefined-instruction-ul";
-  const noInstructionsDiv = document.createElement("div");
-  noInstructionsDiv.id = "no-instructions-div";
-  const instructionsTextarea = document.getElementById("aic-instructions");
+  ),
+    predefinedInstructionsUl = createElementWithId("ul", "predefined-instruction-ul"),
+    noInstructionsDiv = createElementWithId("div", "no-instructions-div"),
+    instructionsTextarea = document.getElementById("aic-instructions");
 
   if (array.length > 0) {
     array.forEach((instruction, index) => {
-      const titleLi = document.createElement("li");
-      titleLi.id = `predefined-title-li${index}`;
-      const titleSpan = document.createElement("span");
-      titleSpan.id = `predefined-title-span${index}`;
-      const titleA = document.createElement("a");
-      titleA.id = `predefined-title-a${index}`;
-
-      const instructionLi = document.createElement("li");
-      instructionLi.id = `predefined-instruction-li${index}`;
+      const titleLi = createElementWithId("li", `predefined-title-li${index}`);
+      const titleSpan = createElementWithId("span", `predefined-title-span${index}`);
+      const titleA = createElementWithId("a", `predefined-title-a${index}`);
+      const instructionLi = createElementWithId("li", `predefined-instruction-li${index}`);
       instructionLi.setAttribute("hidden", "hidden");
 
       titleSpan.textContent = instruction.title;
@@ -31,7 +23,7 @@ export function displayModalContent(array) {
       titleA.textContent = translation("ai_help_use_example");
       titleA.classList.add("predefined-a");
       titleA.setAttribute("href", "javascript:void(0)");
-      titleA.addEventListener("click", () => {
+      titleA.addEventListener("click", (event) => {
         event.stopPropagation();
         closeModal();
         const titleAParent = titleA.parentElement;
@@ -55,3 +47,5 @@ export function displayModalContent(array) {
   predefinedContent.append(noInstructionsDiv);
   predefinedContent.append(predefinedInstructionsUl);
 }
+
+

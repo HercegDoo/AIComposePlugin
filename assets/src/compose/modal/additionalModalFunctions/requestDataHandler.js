@@ -4,14 +4,14 @@ import { getSubject } from "./subjectHandler";
 import { signatureCheckedPreviousConversation } from "./signaturesHandler";
 
 export function getRequestDataFields() {
-  const styleElement = document.getElementById("aic-style");
-  const senderNameElement = document.getElementById("sender-name");
-  const recipientNameElement = document.getElementById("recipient-name");
-  const lengthElement = document.getElementById("aic-length");
-  const creativityElement = document.getElementById("aic-creativity");
-  const languageElement = document.getElementById("aic-language");
-  const senderInfo = processSenderData(getSenderInfo());
-  const signatureCheckObject = signatureCheckedPreviousConversation();
+  const styleElement = document.getElementById("aic-style"),
+   senderNameElement = document.getElementById("sender-name"),
+   recipientNameElement = document.getElementById("recipient-name"),
+   lengthElement = document.getElementById("aic-length"),
+   creativityElement = document.getElementById("aic-creativity"),
+   languageElement = document.getElementById("aic-language"),
+   senderInfo = processSenderData(getSenderInfo()),
+   signatureCheckObject = signatureCheckedPreviousConversation();
 
   return {
     style: `${styleElement?.value || rcmail.env.aiPluginOptions.defaultStyle}`,

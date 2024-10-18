@@ -1,9 +1,9 @@
 let editorHTML;
 let previousGeneratedEmail = "";
 export function insertEmail(generatedEmail) {
-  const insertEmailButton = document.getElementById("insert-email-button");
-  const modalTextArea = document.getElementById("aic-email");
-  const aiComposeModal = document.getElementById("aic-compose-dialog");
+  const insertEmailButton = document.getElementById("insert-email-button"),
+   modalTextArea = document.getElementById("aic-email"),
+   aiComposeModal = document.getElementById("aic-compose-dialog");
 
   if(aiComposeModal){
     insertEmailButton.addEventListener("click", () => {
@@ -17,23 +17,22 @@ export function insertEmail(generatedEmail) {
 
 }
 
-function regulateInsertion(emailToInsert){
+function regulateInsertion(emailToInsert) {
   const targetTextArea = document.getElementById("composebody");
-  if (editorHTML) {
-    const formattedContent = emailToInsert.replace(/\n/g, "<br>");
-    let content = tinymce.activeEditor.dom.decode(editorHTML.getContent());
-    content = content.replace(previousGeneratedEmail, "");
-    editorHTML.setContent(`${formattedContent + content}`);
+  let formattedContent = emailToInsert;
 
-    previousGeneratedEmail = formattedContent;
-    previousGeneratedEmail = `<p>${previousGeneratedEmail}</p>`;
-    previousGeneratedEmail = previousGeneratedEmail.replace(/<br>/g, '<br />');
+  if (editorHTML) {
+    formattedContent = emailToInsert.replace(/\n/g, "<br>");
+    const content = tinymce.activeEditor.dom.decode(editorHTML.getContent()).replace(previousGeneratedEmail, "");
+    editorHTML.setContent(`${formattedContent}${content}`);
+    previousGeneratedEmail = `<p>${formattedContent.replace(/<br>/g, '<br />')}</p>`;
   } else {
     targetTextArea.value = targetTextArea.value.replace(previousGeneratedEmail, "");
-    targetTextArea.value = emailToInsert + "\n\n" + targetTextArea.value;
+    targetTextArea.value = `${emailToInsert}\n\n${targetTextArea.value}`;
     previousGeneratedEmail = emailToInsert;
   }
 }
+
 
 rcmail.addEventListener("editor-load", (e) => {
   editorHTML = e?.ref?.editor;

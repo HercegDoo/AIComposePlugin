@@ -1,4 +1,4 @@
-import "parsleyjs"; // Importuje Parsley
+import "parsleyjs";
 import $ from "jquery";
 import { translation } from "../../../utils";
 
@@ -55,14 +55,9 @@ export function validateFields() {
 }
 
 export function fieldsValid() {
-  const aiComposeModal = document.getElementById("aic-compose-dialog");
-  const senderNameElement = document.getElementById("sender-name");
-  const instructionsElement = document.getElementById("aic-instructions");
+  const aiComposeModal = document.getElementById("aic-compose-dialog"),
+   senderNameElement = document.getElementById("sender-name"),
+   instructionsElement = document.getElementById("aic-instructions");
 
-  if(aiComposeModal){
-    return senderNameElement.value !== "" && instructionsElement.value !== "";
-  }
-  else return true;
-
-
+  return aiComposeModal ? senderNameElement.value !== "" && instructionsElement.value !== "" : true;
 }
