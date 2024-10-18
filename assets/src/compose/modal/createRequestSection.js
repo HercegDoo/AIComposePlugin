@@ -6,14 +6,12 @@ import {
   createCreativityPropbox,
   createLanguagePropbox,
 } from "./createPropboxes.js";
-import { translation } from "../../utils";
+import { createElementWithClassName, createElementWithId, translation } from "../../utils";
 
 export function createRequestSection() {
-  const aicRequest = document.createElement("div");
-  aicRequest.id = "aic-request";
+  const aicRequest = createElementWithId('div', "aic-request");
 
-  const properties = document.createElement("div");
-  properties.className = "properties";
+  const properties = createElementWithClassName('div',"properties" );
 
   properties.appendChild(createRecipientPropbox());
   properties.appendChild(createSenderPropbox());
@@ -24,8 +22,7 @@ export function createRequestSection() {
 
   aicRequest.appendChild(properties);
 
-  const instructionsDiv = document.createElement("div");
-  instructionsDiv.className = "instructions";
+  const instructionsDiv = createElementWithClassName('div', "instructions" );
   instructionsDiv.innerHTML = `<div>
       <label for="aic-instructions">${translation("ai_label_instructions")}</label>
       <span class="xinfo right"><div>${translation("ai_tip_instructions")}</div></span>
@@ -34,8 +31,7 @@ export function createRequestSection() {
 
   aicRequest.appendChild(instructionsDiv);
 
-  const generateContainer = document.createElement("div");
-  generateContainer.className = "generate-container";
+  const generateContainer = createElementWithClassName('div', "generate-container" );
   generateContainer.innerHTML = ` <button type="button" id="insert-email-button" class="btn btn-success " hidden disabled>
  <span>${translation("ai_insert_email")}</span>
 </button> 

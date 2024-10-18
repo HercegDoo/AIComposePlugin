@@ -1,8 +1,7 @@
-import { translation } from "../../utils";
+import { createElementWithId, translation } from "../../utils";
 
 export function createPredefinedInstructionsSection() {
-  const predefinedInstructionsDiv = document.createElement("div");
-  predefinedInstructionsDiv.id = "aic-compose-predefined";
+  const predefinedInstructionsDiv = createElementWithId('div', "aic-compose-predefined");
   predefinedInstructionsDiv.setAttribute("hidden", "true");
 
   predefinedInstructionsDiv.innerHTML = `<div class="predefined-instructions-header">

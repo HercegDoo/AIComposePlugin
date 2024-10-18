@@ -1,9 +1,8 @@
 import { sendPostRequest } from "./additionalModalFunctions/requests/sendPostRequest";
-import { translation } from "../../utils";
+import { createElementWithId, translation } from "../../utils";
 
 export  function addDropdownToAIButton(){
-  const dataDiv = document.createElement('div');
-  dataDiv.id = "predefinedInstructionsMenu";
+  const dataDiv =  createElementWithId('div', "predefinedInstructionsMenu" );
   dataDiv.classList.add('popupmenu');
   dataDiv.style.display = "none";
 
