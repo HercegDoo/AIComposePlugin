@@ -102,16 +102,20 @@ abstract class AbstractTask
                 return;
             }
 
-            foreach (scandir($dirActions) as $file) {
-                if (\in_array($file, ['.', '..'])) {
-                    continue;
-                }
+            $files = scandir($dirActions);
 
-                $className = basename($file, '.php');
-                $taskClass = "HercegDoo\\AIComposePlugin\\Actions\\{$task}\\{$className}";
+            if (\is_array($files)) {
+                foreach ($files as $file) {
+                    if (\in_array($file, ['.', '..'])) {
+                        continue;
+                    }
 
-                if (class_exists($taskClass) && is_subclass_of($taskClass, AbstractAction::class)) {
-                    $taskClass::register();
+                    $className = basename($file, '.php');
+                    $taskClass = "HercegDoo\\AIComposePlugin\\Actions\\{$task}\\{$className}";
+
+                    if (class_exists($taskClass) && is_subclass_of($taskClass, AbstractAction::class)) {
+                        $taskClass::register();
+                    }
                 }
             }
         }
