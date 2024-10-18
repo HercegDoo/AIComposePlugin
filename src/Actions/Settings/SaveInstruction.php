@@ -3,9 +3,21 @@
 namespace HercegDoo\AIComposePlugin\Actions\Settings;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
+use HercegDoo\AIComposePlugin\Actions\ValidateAction;
 
-class SaveInstruction extends AbstractAction
+class SaveInstruction extends AbstractAction implements ValidateAction
 {
+    public function validate(): void
+    {
+        $name = trim(\rcube_utils::get_input_string('_name', \rcube_utils::INPUT_POST));
+        $text = trim(\rcube_utils::get_input_string('_text', \rcube_utils::INPUT_POST));
+
+        if (empty($name) || empty($text)) {
+            $this->rcmail->output->command('addinstructiontemplate');
+            $this->setError($this->translation('ai_predefined_invalid_input'));
+        }
+    }
+
     /**
      * @param array<string, string> $args
      */
@@ -32,17 +44,6 @@ class SaveInstruction extends AbstractAction
         $this->rcmail->output->command('addinstructiontemplate', $id);
         $this->rcmail->user->save_prefs(['predefinedInstructions' => $predefinedInstructions]);
         $this->rcmail->output->send('iframe');
-    }
-
-    protected function validate(): void
-    {
-        $name = trim(\rcube_utils::get_input_string('_name', \rcube_utils::INPUT_POST));
-        $text = trim(\rcube_utils::get_input_string('_text', \rcube_utils::INPUT_POST));
-
-        if (empty($name) || empty($text)) {
-            $this->rcmail->output->command('addinstructiontemplate');
-            $this->setError($this->translation('ai_predefined_invalid_input'));
-        }
     }
 
     /**

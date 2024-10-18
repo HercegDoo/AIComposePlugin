@@ -3,9 +3,8 @@
 namespace HercegDoo\AIComposePlugin\Actions\Settings;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
-use HercegDoo\AIComposePlugin\Actions\SkipValidationInterface;
 
-class DeleteInstruction extends AbstractAction implements SkipValidationInterface
+class DeleteInstruction extends AbstractAction
 {
     protected function handler(): void
     {
@@ -24,9 +23,5 @@ class DeleteInstruction extends AbstractAction implements SkipValidationInterfac
             $this->rcmail->output->command('deleteinstruction', $idToRemove);
         }
         $this->rcmail->output->send();
-    }
-
-    protected function validate(): void
-    {
     }
 }

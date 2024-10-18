@@ -3,9 +3,8 @@
 namespace HercegDoo\AIComposePlugin\Actions\Settings;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
-use HercegDoo\AIComposePlugin\Actions\SkipValidationInterface;
 
-class AddInstruction extends AbstractAction implements SkipValidationInterface
+class AddInstruction extends AbstractAction
 {
     protected static string $instructionId;
 
@@ -14,9 +13,7 @@ class AddInstruction extends AbstractAction implements SkipValidationInterface
      */
     public function response_form(array $attrib): string
     {
-        $rcmail = \rcmail::get_instance();
-
-        $predefinedInstructions = $rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
+        $predefinedInstructions = $this->rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
 
         $title = '';
         $content = '';
@@ -65,9 +62,5 @@ class AddInstruction extends AbstractAction implements SkipValidationInterface
         self::$instructionId = \rcube_utils::get_input_string('_id', \rcube_utils::INPUT_GET);
         $this->rcmail->output->add_handler('responseform', [$this, 'response_form']);
         $this->rcmail->output->send('AIComposePlugin.instructionedit');
-    }
-
-    protected function validate(): void
-    {
     }
 }

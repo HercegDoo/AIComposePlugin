@@ -3,12 +3,13 @@
 namespace HercegDoo\AIComposePlugin\Actions\Mail;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
+use HercegDoo\AIComposePlugin\Actions\ValidateAction;
 use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Request;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 
-final class GenereteEmailAction extends AbstractAction
+final class GenereteEmailAction extends AbstractAction implements ValidateAction
 {
     private ?string $senderName;
     private ?string $recipientName;
@@ -54,7 +55,7 @@ final class GenereteEmailAction extends AbstractAction
         }
     }
 
-    protected function validate(): void
+    public function validate(): void
     {
         $languages = array_values(Settings::getLanguages());
         $lengths = array_values(Settings::getLengths());

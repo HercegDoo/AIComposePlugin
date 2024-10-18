@@ -33,7 +33,7 @@ abstract class AbstractAction
 
     public function requestHandler(): void
     {
-        if (!($this instanceof SkipValidationInterface)) {
+        if ($this instanceof ValidateAction) {
             $this->validate();
 
             if ($this->hasErrors()) {
@@ -83,8 +83,6 @@ abstract class AbstractAction
 
         return $this;
     }
-
-    abstract protected function validate(): void;
 
     protected function translation(string $key): string
     {
