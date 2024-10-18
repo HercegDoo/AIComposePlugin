@@ -87,7 +87,6 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
         $this->emailValidation($this->senderEmail, 'sender');
         $this->subjectValidation($this->subject);
         $this->instructionsValidation($this->instructions);
-        $this->instructionsValidation($this->fixText);
     }
 
     private function preparePostData(): void
