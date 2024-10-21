@@ -1,5 +1,5 @@
 
-# AI Email Generator Plugin for Roundcube - README
+# AI Email Generator Plugin for Roundcube
 
 ## Overview
 
