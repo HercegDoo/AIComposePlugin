@@ -2,28 +2,26 @@ import "./styles.css";
 import { createDialogContents } from "./createDialogContents.js";
 import { checkSelectedText } from "./additionalModalFunctions/selectedTextHandler";
 import { regulateHelpModal } from "./additionalModalFunctions/regulateHelpModal";
-import { translation, translation as t } from "../../utils";
-import { sendDefaultPostRequest } from "./additionalModalFunctions/defaultPostRequest";
+import { createElementWithClassName, translation as t } from "../../utils";
+import { sendDefaultPostRequest } from "./additionalModalFunctions/requests/defaultPostRequest";
 import { validateFields } from "./additionalModalFunctions/fieldsValidation";
 import { regulateFixTextModal } from "./additionalModalFunctions/regulateFixTextModal";
 import { insertEmail } from "./additionalModalFunctions/insertEmailHandler";
+import { regulatePredefinedInstructionsModal } from "./additionalModalFunctions/predefinedInstructions/regulatePredefinedInstructionsModal";
+import {  setFilled } from "./additionalModalFunctions/predefinedInstructions/regulatePredefinedInstructionsModal";
 
 export function createComposeModal() {
-  const dialogMask = document.createElement("div");
+  const dialogMask = createElementWithClassName('div', "xdialog-mask" );
   dialogMask.id = "aic-compose-dialog";
-  dialogMask.className = "xdialog-mask";
   dialogMask.style.display = "block";
 
-  const dialogBox = document.createElement("div");
-  dialogBox.className = "xdialog-box full-screen";
+  const dialogBox = createElementWithClassName('div', "xdialog-box full-screen" );
   dialogBox.id = "aic-compose-dialog-box";
 
-  const dialogTitle = document.createElement("div");
-  dialogTitle.className = "xdialog-title";
+  const dialogTitle = createElementWithClassName('div', "xdialog-title" );
   dialogTitle.textContent = t("ai_dialog_title");
 
-  const closeButton = document.createElement("button");
-  closeButton.className = "xdialog-close btn btn-secondary";
+  const closeButton = createElementWithClassName('button', "xdialog-close btn btn-secondary" );
   closeButton.textContent = "×";
 
   dialogTitle.appendChild(closeButton);
@@ -35,11 +33,13 @@ export function createComposeModal() {
   dialogMask.appendChild(dialogBox);
 
   closeButton.addEventListener("click", function () {
+    setFilled(false);
     document.body.removeChild(dialogMask);
   });
 
   document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
+      setFilled(false);
       document.body.removeChild(dialogMask);
     }
   });
@@ -48,13 +48,13 @@ export function createComposeModal() {
   validateFields();
   sendDefaultPostRequest();
   insertEmail();
-  const instructions = document.getElementById("aic-instructions");
-  instructions.placeholder = translation("ai_instructions_placeholder");
   checkSelectedText();
   regulateHelpModal();
+  regulatePredefinedInstructionsModal();
   regulateFixTextModal();
 
   $("select:not([multiple])", dialogMask).each(function () {
     UI.pretty_select(this);
   });
 }
+

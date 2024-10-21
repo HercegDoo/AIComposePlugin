@@ -6,14 +6,12 @@ import {
   createCreativityPropbox,
   createLanguagePropbox,
 } from "./createPropboxes.js";
-import { translation } from "../../utils";
+import { createElementWithClassName, createElementWithId, translation } from "../../utils";
 
 export function createRequestSection() {
-  const aicRequest = document.createElement("div");
-  aicRequest.id = "aic-request";
+  const aicRequest = createElementWithId('div', "aic-request");
 
-  const properties = document.createElement("div");
-  properties.className = "properties";
+  const properties = createElementWithClassName('div',"properties" );
 
   properties.appendChild(createRecipientPropbox());
   properties.appendChild(createSenderPropbox());
@@ -24,18 +22,16 @@ export function createRequestSection() {
 
   aicRequest.appendChild(properties);
 
-  const instructionsDiv = document.createElement("div");
-  instructionsDiv.className = "instructions";
+  const instructionsDiv = createElementWithClassName('div', "instructions" );
   instructionsDiv.innerHTML = `<div>
       <label for="aic-instructions">${translation("ai_label_instructions")}</label>
       <span class="xinfo right"><div>${translation("ai_tip_instructions")}</div></span>
   </div>
-  <textarea id="aic-instructions" class="form-control" data-parsley-required="true" ></textarea>`;
+  <textarea id="aic-instructions" class="form-control" data-parsley-required="true" placeholder="${ translation("ai_instructions_placeholder")}"></textarea>`;
 
   aicRequest.appendChild(instructionsDiv);
 
-  const generateContainer = document.createElement("div");
-  generateContainer.className = "generate-container";
+  const generateContainer = createElementWithClassName('div', "generate-container" );
   generateContainer.innerHTML = ` <button type="button" id="insert-email-button" class="btn btn-success " hidden disabled>
  <span>${translation("ai_insert_email")}</span>
 </button> 
@@ -44,6 +40,7 @@ export function createRequestSection() {
       <span id="generate-again-span" style="display: none;">${translation("ai_generate_again")}</span>
   </button>
   <button type="button" class="btn btn-default" id="instruction-example" >${translation("ai_button_show_instructions")}</button>
+   <button type="button" class="btn btn-default" id="predefined-instructions-button" >${translation("ai_predefined_section_title")}</button>
   <button disabled type="button" class="btn btn-default disabled" id="fix-selected-text" >${translation("ai_button_fix_selected_text")}</button>`;
 
   aicRequest.appendChild(generateContainer);

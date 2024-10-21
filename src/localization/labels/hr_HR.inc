@@ -2,7 +2,6 @@
 
 $labels = [];
 
-$labels['ai_dialog_button_text'] = 'AI';
 $labels['ai_dialog_button_title'] = 'Sastavite poruku pomoću AI';
 $labels['ai_dialog_title'] = 'Sastavite poruku pomoću AI';
 
@@ -52,6 +51,30 @@ $labels['ai_generate_email'] = 'Generiraj e-mail';
 $labels['ai_generate_again'] = 'Generiraj ponovo';
 $labels['ai_stop_generating'] = 'Zaustavi Generiranje';
 $labels['ai_error_help_button'] = 'Pomoć';
+
+$labels['ai_predefined_submit'] = 'Spremi';
+$labels['ai_predefined_create'] = 'Kreiraj';
+$labels['ai_predefined_delete'] = 'Izbriši';
+$labels['ai_predefined_error'] = 'Greška';
+$labels['ai_predefined_successful_save'] = 'Uspješno spremljeno';
+$labels['ai_predefined_get_instructions_error'] = 'Greška prilikom dohvaćanja instrukcija';
+$labels['ai_predefined_unsuccessful_save'] = 'Greška prilikom spremanja upute';
+$labels['ai_predefined_successful_delete'] = 'Uspješno izbrisano';
+$labels['ai_predefined_unsuccessful_delete'] = 'Greška prilikom brisanja upute';
+$labels['ai_predefined_invalid_input'] = 'Nepotpun unos, jedno ili više polja je prazno!';
+$labels['ai_predefined_cancel'] = 'Otkaži';
+$labels['ai_predefined_popup_title'] = 'Jeste li sigurni?';
+$labels['ai_predefined_popup_body'] = 'Želite li zaista obrisati ovu predefiniranu instrukciju?';
+$labels['ai_predefined_listing_empty'] = "Lista je prazna. Iskoristite gumb 'Kreiraj' za dodavanje nove instrukcije.";
+$labels['ai_predefined_title'] = 'Naslov';
+$labels['ai_predefined_content'] = 'Sadržaj';
+$labels['ai_predefined_section_title'] = 'AI Predefinirane Upute';
+$labels['ai_predefined_modal_description'] = 'Definirajte vlastite unaprijed definirane upute u polju postavki kako biste olakšali generiranje e-pošte. Prilagodite ove upute uobičajenim scenarijima kao što su imena, datumi i specifični detalji koje često koristite. Kada ih kreirate, lako ih možete odabrati, prilagoditi i umetnuti na AI stranicu. Ovi personalizirani obrasci će vam uštedjeti vrijeme i osigurati dosljednost u vašim e-porukama.';
+$labels['ai_predefined_no_instructions'] = 'Trenutno nemate dostupnih unaprijed definiranih uputa. Napravite novu unaprijed definiranu uputu u postavkama.';
+$labels['ai_predefined_edit_instructions'] = 'Uredi instrukcije';
+$labels['ai_predefined_use_instructions'] = 'Koristi instrukcije';
+$labels['ai_predefined_manage_instructions'] = 'Upravljaj instrukcijama';
+$labels['ai_predefined_use_predefined_instructions'] = 'Koristi unaprijed definirane instrukcije';
 
 $labels['ai_button_show_instructions'] = 'Primjeri Uputa';
 $labels['ai_help_button_back'] = 'Natrag';

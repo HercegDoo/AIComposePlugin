@@ -1,4 +1,4 @@
-import { translation } from "../../utils";
+import { createElementWithClassName, createElementWithId, translation } from "../../utils";
 
 const {
   languages,
@@ -22,8 +22,7 @@ function createPropbox(id, label, xinfoText, options, defaultValue) {
   const propbox = document.createElement("div");
   propbox.className = "propbox";
 
-  const select = document.createElement("select");
-  select.id = `aic-${id}`;
+  const select = createElementWithId('select', `aic-${id}`);
   select.className = "form-control";
   options.forEach((option) => {
     option = unCapitalizeFirstLetter(option);
@@ -51,9 +50,7 @@ function createPropbox(id, label, xinfoText, options, defaultValue) {
 }
 
 export function createRecipientPropbox() {
-  const recipientPropbox = document.createElement("div");
-
-  recipientPropbox.className = "propbox";
+  const recipientPropbox = createElementWithClassName('div', "propbox" );
   recipientPropbox.innerHTML = `<div>
       <label for="aic-to">
           <span class="regular-size">${translation("ai_label_to")}</span>
@@ -66,8 +63,7 @@ export function createRecipientPropbox() {
 }
 
 export function createSenderPropbox() {
-  const senderPropbox = document.createElement("div");
-  senderPropbox.className = "propbox";
+  const senderPropbox = createElementWithClassName('div', "propbox" );
   senderPropbox.innerHTML = `<div>
       <label for="aic-from">
           <span class="regular-size">${translation("ai_label_from")}</span>

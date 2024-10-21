@@ -2,7 +2,6 @@
 
 $labels = [];
 
-$labels['ai_dialog_button_text'] = 'AI';
 $labels['ai_dialog_button_title'] = 'Sastavite poruku pomoću AI';
 $labels['ai_dialog_title'] = 'Sastavite poruku pomoću AI';
 
@@ -62,6 +61,30 @@ $labels['ai_fix_selected_text_title'] = 'Ispravi Odabrani Tekst';
 $labels['ai_selected_text'] = 'Odabrani Tekst';
 $labels['ai_fix_instructions'] = 'Instrukcija za Ispravljanje';
 $labels['ai_fix_text_input_instructions'] = 'U ovom polju unesite detaljna objašnjenja ili instrukcije o izmjenama koje želite da napravite na odabranom tekstu.';
+
+$labels['ai_predefined_submit'] = 'Spremi';
+$labels['ai_predefined_create'] = 'Kreiraj';
+$labels['ai_predefined_delete'] = 'Obriši';
+$labels['ai_predefined_error'] = 'Greška';
+$labels['ai_predefined_successful_save'] = 'Uspješno sačuvano';
+$labels['ai_predefined_unsuccessful_save'] = 'Greška prilikom čuvanja instrukcije';
+$labels['ai_predefined_get_instructions_error'] = 'Greška prilikom dohvaćanja instrukcija';
+$labels['ai_predefined_successful_delete'] = 'Uspješno obrisano';
+$labels['ai_predefined_unsuccessful_delete'] = 'Greška prilikom brisanja instrukcije';
+$labels['ai_predefined_invalid_input'] = 'Nepotpun unos, jedno ili više polja je prazno!';
+$labels['ai_predefined_cancel'] = 'Otkaži';
+$labels['ai_predefined_popup_title'] = 'Da li ste sigurni?';
+$labels['ai_predefined_popup_body'] = 'Da li zaista želite obrisati ovu predefinisanu instrukciju?';
+$labels['ai_predefined_listing_empty'] = "Lista je prazna. Koristite dugme 'Kreiraj' da dodate novu instrukciju.";
+$labels['ai_predefined_title'] = 'Naslov';
+$labels['ai_predefined_content'] = 'Sadržaj';
+$labels['ai_predefined_section_title'] = 'AI Predefinisane Instrukcije';
+$labels['ai_predefined_modal_description'] = 'Definišite vlastite predefinisane instrukcije u polju postavki kako biste olakšali generisanje e-pošte. Prilagodite ove instrukcije uobičajenim scenarijima kao što su imena, datumi i specifični detalji koje često koristite. Kada ih kreirate, lako ih možete odabrati, prilagoditi i umetnuti na AI stranicu. Ovi personalizovani šabloni će vam uštedjeti vrijeme i osigurati dosljednost u vašim e-porukama.';
+$labels['ai_predefined_no_instructions'] = 'Trenutno nemate dostupnih predefinisanih instrukcija. Napravite novu predefinisanu instrukciju u postavkama.';
+$labels['ai_predefined_edit_instructions'] = 'Uredi instrukcije';
+$labels['ai_predefined_use_instructions'] = 'Koristi instrukcije';
+$labels['ai_predefined_manage_instructions'] = 'Upravljaj instrukcijama';
+$labels['ai_predefined_use_predefined_instructions'] = 'Koristi unaprijed definirane instrukcije';
 
 $labels['settings_menu_text'] = 'Umjetna Inteligencija';
 $labels['setting_default_options'] = 'Sastavljanje poruka sa AI';

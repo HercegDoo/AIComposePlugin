@@ -51,7 +51,6 @@ final class OpenAI extends AbstractProvider
 
         $this->creativity = $this->creativityMap[Settings::getCreativity()];
         $prompt = $this->prompt($requestData);
-        error_log($prompt);
 
         $respond = $this->sendRequest($prompt);
 
@@ -70,7 +69,7 @@ final class OpenAI extends AbstractProvider
     private function prompt(RequestData $requestData): string
     {
         if ($requestData->getFixText()) {
-            $prompt = " Write the same email as this {$requestData->getPreviousGeneratedEmail()} but change this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." .
+            $prompt = " Write the same email as this {$requestData->getPreviousGeneratedEmail()}, in the same language, but change this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." .
                 ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '');
         } else {
             $prompt = "Create a {$requestData->getStyle()} email with the following specifications:" .
@@ -80,8 +79,10 @@ final class OpenAI extends AbstractProvider
                 " *Language: {$requestData->getLanguage()}" .
                 " *Length: {$requestData->getLength()}" .
                 " *The email is about: {$requestData->getInstruction()}." .
+                'Do not write the subject if provided, it is only there for your context' .
+                'Only greet the recipient, never the sender' .
                 ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '') .
-                ($requestData->getSignaturePresent() ? 'Do not sign the email off in any way' : '');
+                ($requestData->getSignaturePresent() ? 'Do not sign the email with any name, do not write anything after the last greeting, no names at the end of the email' : '');
         }
 
         return $prompt;

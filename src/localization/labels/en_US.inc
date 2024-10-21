@@ -2,7 +2,6 @@
 
 $labels = [];
 
-$labels['ai_dialog_button_text'] = 'AI';
 $labels['ai_dialog_button_title'] = 'Compose message using AI';
 $labels['ai_dialog_title'] = 'Compose message using AI';
 
@@ -59,6 +58,30 @@ $labels['ai_help_title'] = 'Help & Examples';
 $labels['ai_help_use_example'] = '(Use this)';
 
 $labels['ai_compose_settings'] = 'AICompose Settings';
+
+$labels['ai_predefined_submit'] = 'Save';
+$labels['ai_predefined_create'] = 'Create';
+$labels['ai_predefined_delete'] = 'Delete';
+$labels['ai_predefined_error'] = 'Error';
+$labels['ai_predefined_successful_save'] = 'Successfully saved';
+$labels['ai_predefined_get_instructions_error'] = 'Error while fetching instructions';
+$labels['ai_predefined_unsuccessful_save'] = 'Error saving the instruction';
+$labels['ai_predefined_successful_delete'] = 'Successfully deleted';
+$labels['ai_predefined_unsuccessful_delete'] = 'Error deleting the instruction';
+$labels['ai_predefined_invalid_input'] = 'Incomplete input, one or more fields are empty!';
+$labels['ai_predefined_cancel'] = 'Cancel';
+$labels['ai_predefined_popup_title'] = 'Are you sure?';
+$labels['ai_predefined_popup_body'] = 'Do you really want to delete this predefined instruction?';
+$labels['ai_predefined_listing_empty'] = 'The list is empty. Use the Create button to add a new instruction.';
+$labels['ai_predefined_title'] = 'Title';
+$labels['ai_predefined_content'] = 'Content';
+$labels['ai_predefined_section_title'] = 'AI Predefined Instructions';
+$labels['ai_predefined_modal_description'] = 'Define your own predefined instructions in the settings field to streamline email generation. Tailor these instructions to common scenarios such as names, dates, and specific details you frequently use. Once created, you can easily select, adjust, and insert them into the AI page. These personalized templates will save you time and ensure consistency across your emails.';
+$labels['ai_predefined_no_instructions'] = 'You currently have no available predefined instructions. Create a new predefined instruction in the settings section.';
+$labels['ai_predefined_edit_instructions'] = 'Edit instructions';
+$labels['ai_predefined_use_instructions'] = 'Use instructions';
+$labels['ai_predefined_manage_instructions'] = 'Manage instructions';
+$labels['ai_predefined_use_predefined_instructions'] = 'Use predefined instructions';
 
 $labels['ai_fix_selected_text_title'] = 'Fix Selected Text';
 $labels['ai_selected_text'] = 'Selected Text';

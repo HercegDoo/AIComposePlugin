@@ -4,25 +4,21 @@ import { getSubject } from "./subjectHandler";
 import { signatureCheckedPreviousConversation } from "./signaturesHandler";
 
 export function getRequestDataFields() {
-  const styleElement = document.getElementById("aic-style");
-  const senderNameElement = document.getElementById("sender-name");
-  const recipientNameElement = document.getElementById("recipient-name");
-  const lengthElement = document.getElementById("aic-length");
-  const creativityElement = document.getElementById("aic-creativity");
-  const languageElement = document.getElementById("aic-language");
-  const senderInfo = processSenderData(getSenderInfo());
-  const signatureCheckObject = signatureCheckedPreviousConversation();
-
+  const styleElement = document.getElementById("aic-style"),
+   senderNameElement = document.getElementById("sender-name"),
+   recipientNameElement = document.getElementById("recipient-name"),
+   lengthElement = document.getElementById("aic-length"),
+   creativityElement = document.getElementById("aic-creativity"),
+   languageElement = document.getElementById("aic-language"),
+   senderInfo = processSenderData(getSenderInfo());
 
   return {
-    style: `${styleElement.value}`,
-    senderName: `${senderNameElement.value}`,
-    recipientName: `${recipientNameElement.value}`,
-    length: `${lengthElement.value}`,
-    creativity: `${creativityElement.value}`,
-    language: `${languageElement.value}`,
-    previousConversation: `${signatureCheckObject.previousConversation}`,
-    signaturePresent: `${signatureCheckObject.signaturePresent}`,
+    style: `${styleElement?.value || rcmail.env.aiPluginOptions.defaultStyle}`,
+    senderName: `${senderNameElement?.value || senderInfo.senderName }`,
+    recipientName: `${recipientNameElement?.value || getRecipientInfo().recipientName}`,
+    length: `${lengthElement?.value || rcmail.env.aiPluginOptions.defaultLength}`,
+    creativity: `${creativityElement?.value || rcmail.env.aiPluginOptions.defaultCreativity}`,
+    language: `${languageElement?.value || rcmail.env.aiPluginOptions.defaultLanguage}`,
     subject: `${getSubject()}`,
     recipientEmail: `${getRecipientInfo().recipientEmail}`,
     senderEmail: `${senderInfo.senderEmail}`,

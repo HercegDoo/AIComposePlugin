@@ -1,13 +1,15 @@
 <?php
 
-namespace HercegDoo\AIComposePlugin\Actions;
+namespace HercegDoo\AIComposePlugin\Actions\Mail;
 
+use HercegDoo\AIComposePlugin\Actions\AbstractAction;
+use HercegDoo\AIComposePlugin\Actions\ValidateAction;
 use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Request;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 
-final class GenereteEmailAction extends AbstractAction
+final class GenereteEmailAction extends AbstractAction implements ValidateAction
 {
     private ?string $senderName;
     private ?string $recipientName;
@@ -33,7 +35,6 @@ final class GenereteEmailAction extends AbstractAction
     public function handler(): void
     {
         header('Content-Type: application/json');
-
         try {
             $this->preparePostData();
             $email = AIEmail::generate($this->aiRequestData);
@@ -54,7 +55,7 @@ final class GenereteEmailAction extends AbstractAction
         }
     }
 
-    protected function validate(): void
+    public function validate(): void
     {
         $languages = array_values(Settings::getLanguages());
         $lengths = array_values(Settings::getLengths());
@@ -86,7 +87,6 @@ final class GenereteEmailAction extends AbstractAction
         $this->emailValidation($this->senderEmail, 'sender');
         $this->subjectValidation($this->subject);
         $this->instructionsValidation($this->instructions);
-        $this->instructionsValidation($this->fixText);
     }
 
     private function preparePostData(): void
@@ -158,10 +158,5 @@ final class GenereteEmailAction extends AbstractAction
         if (!empty($instructions) && \strlen($instructions) < 2) {
             $this->setError($this->translation('ai_validation_error_not_enough_characters_instruction'));
         }
-    }
-
-    private function translation(string $key): string
-    {
-        return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
     }
 }

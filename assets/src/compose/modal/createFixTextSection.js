@@ -1,8 +1,7 @@
-import { translation } from "../../utils";
+import { createElementWithId, translation } from "../../utils";
 
 export function createFixTextSection() {
-  const fixTextSection = document.createElement("div");
-  fixTextSection.id = "aic-fix-text-section";
+  const fixTextSection = createElementWithId('div',"aic-fix-text-section" );
   fixTextSection.setAttribute("hidden", "hidden");
 
   fixTextSection.innerHTML = `

@@ -2,7 +2,6 @@
 
 $labels = [];
 
-$labels['ai_dialog_button_text'] = 'AI';
 $labels['ai_dialog_button_title'] = 'Stel een bericht samen met AI';
 $labels['ai_dialog_title'] = 'Stel een bericht samen met AI';
 
@@ -51,6 +50,30 @@ $labels['ai_generate_email'] = 'E-mail genereren';
 $labels['ai_generate_again'] = 'Opnieuw genereren';
 $labels['ai_stop_generating'] = 'Stop met genereren';
 $labels['ai_error_help_button'] = 'Help';
+
+$labels['ai_predefined_submit'] = 'Opslaan';
+$labels['ai_predefined_create'] = 'Aanmaken';
+$labels['ai_predefined_delete'] = 'Verwijderen';
+$labels['ai_predefined_error'] = 'Fout';
+$labels['ai_predefined_get_instructions_error'] = 'Fout bij het ophalen van instructies';
+$labels['ai_predefined_successful_save'] = 'Succesvol opgeslagen';
+$labels['ai_predefined_unsuccessful_save'] = 'Fout bij het opslaan van de instructie';
+$labels['ai_predefined_successful_delete'] = 'Succesvol verwijderd';
+$labels['ai_predefined_unsuccessful_delete'] = 'Fout bij het verwijderen van de instructie';
+$labels['ai_predefined_cancel'] = 'Annuleren';
+$labels['ai_predefined_popup_title'] = 'Weet je het zeker?';
+$labels['ai_predefined_invalid_input'] = 'Onvolledige invoer, een of meer velden zijn leeg!';
+$labels['ai_predefined_popup_body'] = 'Wilt u deze vooraf gedefinieerde instructie echt verwijderen?';
+$labels['ai_predefined_listing_empty'] = "De lijst is leeg. Gebruik de knop 'Aanmaken' om een nieuwe instructie toe te voegen.";
+$labels['ai_predefined_title'] = 'Titel';
+$labels['ai_predefined_content'] = 'Inhoud';
+$labels['ai_predefined_section_title'] = 'AI Vooraf gedefinieerde instructies';
+$labels['ai_predefined_modal_description'] = "Definieer uw eigen vooraf gedefinieerde instructies in het instellingenveld om het genereren van e-mails te stroomlijnen. Pas deze instructies aan op veelvoorkomende scenario's zoals namen, data en specifieke details die u vaak gebruikt. Zodra ze zijn aangemaakt, kunt u ze eenvoudig selecteren, aanpassen en in de AI-pagina invoegen. Deze gepersonaliseerde sjablonen besparen u tijd en zorgen voor consistentie in uw e-mails.";
+$labels['ai_predefined_no_instructions'] = 'Trenutno nemate dostupnih unaprijed definiranih uputa. Napravite novu unaprijed definiranu uputu u postavkama.';
+$labels['ai_predefined_edit_instructions'] = 'Bewerk instructies';
+$labels['ai_predefined_use_instructions'] = 'Gebruik instructies';
+$labels['ai_predefined_manage_instructions'] = 'Beheer instructies';
+$labels['ai_predefined_use_predefined_instructions'] = 'Gebruik vooraf gedefinieerde instructies';
 
 $labels['ai_button_show_instructions'] = 'Voorbeelden van instructies';
 $labels['ai_help_button_back'] = 'Terug';

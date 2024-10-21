@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HercegDoo\AIComposePlugin\Tasks;
 
+use HercegDoo\AIComposePlugin\Actions\AbstractAction;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 
 abstract class AbstractTask
@@ -17,6 +18,7 @@ abstract class AbstractTask
         $this->api = $plugin->api;
 
         $this->initSettings();
+        $this->autoRegisterActions();
         $this->init();
     }
 
@@ -84,5 +86,38 @@ abstract class AbstractTask
         /** @var array<string> $config */
         $config = $rcmail->config->get('aiProvider' . $provider . 'Config', []);
         Settings::setProviderConfig($config);
+
+        $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
+    }
+
+    private function autoRegisterActions(): void
+    {
+        $task = $this->api->task;
+
+        if (\is_string($task)) {
+            $task = ucfirst($task);
+            $dirActions = implode(\DIRECTORY_SEPARATOR, [__DIR__, '..', 'Actions', $task]);
+
+            if (!is_dir($dirActions)) {
+                return;
+            }
+
+            $files = scandir($dirActions);
+
+            if (\is_array($files)) {
+                foreach ($files as $file) {
+                    if (\in_array($file, ['.', '..'])) {
+                        continue;
+                    }
+
+                    $className = basename($file, '.php');
+                    $taskClass = "HercegDoo\\AIComposePlugin\\Actions\\{$task}\\{$className}";
+
+                    if (class_exists($taskClass) && is_subclass_of($taskClass, AbstractAction::class)) {
+                        $taskClass::register();
+                    }
+                }
+            }
+        }
     }
 }

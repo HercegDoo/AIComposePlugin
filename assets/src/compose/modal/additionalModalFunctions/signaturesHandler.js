@@ -1,7 +1,7 @@
 let editorHTML = "";
 let formattedPreviousConversationText = "";
-export function signatureCheckedPreviousConversation() {
 
+export function signatureCheckedPreviousConversation(previousGeneratedEmail = "") {
   let signaturesArray = [];
   const size = Object.keys(rcmail.env.signatures).length; // Broj potpisa
 
@@ -17,12 +17,14 @@ export function signatureCheckedPreviousConversation() {
     const editorTextDiv = document.createElement("div");
     editorTextDiv.innerHTML = editorText;
     editorText = editorTextDiv.textContent;
+   previousGeneratedEmail =  previousGeneratedEmail.replace(/\n/g, '').replace(/\s{2,}/g, '');
+editorText = editorText.replace(previousGeneratedEmail, "");
     formattedPreviousConversationText = removeEmptyLinesAndSpaces(editorText)
       .replace(/\\n/g, "\n")
       .replace(/\s+/g, " ")
       .trim();
   } else {
-    const textareaContent = document.getElementById("composebody").value;
+    const textareaContent = document.getElementById("composebody").value.replace(previousGeneratedEmail, "");
     const textareaContentFormatted = textareaContent
       .replace(/\\n/g, "\n")
       .replace(/\s+/g, " ")

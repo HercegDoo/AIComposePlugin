@@ -1,18 +1,18 @@
-let savedSelectedText = "";
-let beforeText = "";
-let afterText = "";
+let savedSelectedText = "",
+ beforeText = "",
+ afterText = "";
 
 export function checkSelectedText() {
-  const textarea = document.querySelector("#aic-email");
-  const fixSelectedTextButton = document.getElementById("fix-selected-text");
-  const instructionsTextArea = document.getElementById("aic-instructions");
+  const textarea = document.querySelector("#aic-email"),
+   fixSelectedTextButton = document.getElementById("fix-selected-text"),
+   instructionsTextArea = document.getElementById("aic-instructions");
 
   function checkSelection() {
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
+    const start = textarea.selectionStart,
+     end = textarea.selectionEnd;
 
-    const isTextSelected = start !== end && instructionsTextArea.value !== "";
-    const selectedText = isTextSelected
+    const isTextSelected = start !== end && instructionsTextArea.value !== "",
+     selectedText = isTextSelected
       ? textarea.value.substring(start, end)
       : "";
 

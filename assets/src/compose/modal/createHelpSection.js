@@ -1,8 +1,7 @@
-import { translation } from "../../utils";
+import { createElementWithId, translation } from "../../utils";
 
 export function createHelpSection() {
-  const helpDiv = document.createElement("div");
-  helpDiv.id = "aic-compose-help";
+  const helpDiv = createElementWithId('div', "aic-compose-help" );
   helpDiv.setAttribute("hidden", "true");
 
   helpDiv.innerHTML = `<div class="help-header">

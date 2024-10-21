@@ -1,27 +1,24 @@
 export function getSenderInfo() {
   const iconLink = document.querySelector("a.iconlink.input-group-text");
-  let senderInfo;
-  let senderInfoElement;
+  let senderInfo,
+   senderInfoElement;
 
   if (iconLink) {
-    if (iconLink.classList.contains("custom-from-on")) {
-      senderInfoElement = document.getElementById("_from");
-      senderInfo =
-        senderInfoElement.options[senderInfoElement.selectedIndex].textContent;
-    } else {
-      senderInfoElement = document.querySelector(
-        "input.custom_from.form-control"
-      );
-      senderInfo = senderInfoElement.value;
-    }
+    senderInfoElement = iconLink.classList.contains("custom-from-on")
+      ? document.getElementById("_from")
+      : document.querySelector("input.custom_from.form-control");
+
+    senderInfo = iconLink.classList.contains("custom-from-on")
+      ? senderInfoElement.options[senderInfoElement.selectedIndex].textContent
+      : senderInfoElement.value;
 
     return senderInfo;
   }
 }
 
 export function processSenderData(senderInfo) {
-  let senderName = "";
-  let senderEmail = "";
+  let senderName = "",
+   senderEmail = "";
 
   // Regex za razdvajanje imena i emaila
   const match = senderInfo.match(/^(.+?)\s+<(.+?)>$/);

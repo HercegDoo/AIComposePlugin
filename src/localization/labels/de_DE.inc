@@ -2,7 +2,6 @@
 
 $labels = [];
 
-$labels['ai_dialog_button_text'] = 'AI';
 $labels['ai_dialog_button_title'] = 'Verfassen Sie eine Nachricht mit KI';
 $labels['ai_dialog_title'] = 'Verfassen Sie eine Nachricht mit KI';
 
@@ -44,7 +43,30 @@ $labels['ai_error_sender_name'] = 'Bitte geben Sie den Absendernamen ein!';
 $labels['ai_error_recipient_name'] = 'Empfängername leer (Optional)';
 $labels['ai_error_instructions'] = 'Geben Sie Anweisungen ein!';
 
+$labels['ai_predefined_submit'] = 'Speichern';
+$labels['ai_predefined_create'] = 'Erstellen';
+$labels['ai_predefined_delete'] = 'Löschen';
+$labels['ai_predefined_error'] = 'Fehler';
+$labels['ai_predefined_successful_save'] = 'Erfolgreich gespeichert';
+$labels['ai_predefined_get_instructions_error'] = 'Fehler beim Abrufen von Anweisungen';
+$labels['ai_predefined_unsuccessful_save'] = 'Fehler beim Speichern der Anweisung';
+$labels['ai_predefined_successful_delete'] = 'Erfolgreich gelöscht';
+$labels['ai_predefined_unsuccessful_delete'] = 'Fehler beim Löschen der Anweisung';
+$labels['ai_predefined_invalid_input'] = 'Unvollständige Eingabe, eines oder mehrere Felder sind leer!';
+$labels['ai_predefined_cancel'] = 'Abbrechen';
+$labels['ai_predefined_popup_title'] = 'Sind Sie sicher?';
+$labels['ai_predefined_popup_body'] = 'Möchten Sie diese vordefinierte Anweisung wirklich löschen?';
+$labels['ai_predefined_listing_empty'] = "Die Liste ist leer. Verwenden Sie die Schaltfläche 'Erstellen', um eine neue Anweisung hinzuzufügen.";
 $labels['ai_request_error'] = 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal.';
+$labels['ai_predefined_title'] = 'Titel';
+$labels['ai_predefined_content'] = 'Inhalt';
+$labels['ai_predefined_section_title'] = 'AI Vorgegebene Anweisungen';
+$labels['ai_predefined_modal_description'] = 'Definieren Sie Ihre eigenen vordefinierten Anweisungen im Einstellungsfeld, um die E-Mail-Generierung zu optimieren. Passen Sie diese Anweisungen an häufige Szenarien wie Namen, Daten und spezifische Details an, die Sie häufig verwenden. Sobald sie erstellt sind, können Sie sie einfach auswählen, anpassen und in die AI-Seite einfügen. Diese personalisierten Vorlagen sparen Ihnen Zeit und sorgen für Konsistenz in Ihren E-Mails.';
+$labels['ai_predefined_no_instructions'] = 'Derzeit stehen Ihnen keine vordefinierten Anweisungen zur Verfügung. Erstellen Sie eine neue vordefinierte Anweisung in den Einstellungen.';
+$labels['ai_predefined_edit_instructions'] = 'Bearbeite Anweisungen';
+$labels['ai_predefined_use_instructions'] = 'Verwenden Sie Anweisungen';
+$labels['ai_predefined_manage_instructions'] = 'Verwalten Sie Anweisungen';
+$labels['ai_predefined_use_predefined_instructions'] = 'Verwende vordefinierte Anweisungen';
 
 $labels['ai_insert_email'] = 'E-Mail einfügen';
 $labels['ai_generate_email'] = 'E-Mail generieren';

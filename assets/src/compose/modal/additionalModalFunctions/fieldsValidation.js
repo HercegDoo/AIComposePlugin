@@ -1,8 +1,9 @@
-import "parsleyjs"; // Importuje Parsley
+import "parsleyjs";
 import $ from "jquery";
 import { translation } from "../../../utils";
 
 export function validateFields() {
+
   $("#generate-email-button").on("click", function (event) {
     event.preventDefault();
 
@@ -54,8 +55,9 @@ export function validateFields() {
 }
 
 export function fieldsValid() {
-  const senderNameElement = document.getElementById("sender-name");
-  const instructionsElement = document.getElementById("aic-instructions");
+  const aiComposeModal = document.getElementById("aic-compose-dialog"),
+   senderNameElement = document.getElementById("sender-name"),
+   instructionsElement = document.getElementById("aic-instructions");
 
-  return senderNameElement.value !== "" && instructionsElement.value !== "";
+  return aiComposeModal ? senderNameElement.value !== "" && instructionsElement.value !== "" : true;
 }

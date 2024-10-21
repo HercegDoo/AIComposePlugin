@@ -20,3 +20,10 @@ $messages['ai_validation_error_invalid_sender_name_text'] = "Het veld 'Naam afze
 $messages['ai_validation_error_invalid_recipient_name_text'] = "Het veld 'Naam ontvanger' moet geldige tekst bevatten!";
 $messages['ai_validation_error_not_enough_characters_sender_name'] = "Het veld 'Naam afzender' moet minimaal 3 tekens bevatten.";
 $messages['ai_validation_error_not_enough_characters_recipient_name'] = "Het veld 'Naam ontvanger' moet minimaal 3 tekens bevatten als het is ingevuld.";
+
+$messages['ai_predefined_request_error'] = 'Er is een fout opgetreden bij het verwerken van het verzoek.';
+$messages['ai_predefined_delete_error'] = 'Er is een fout opgetreden bij het verwijderen van de instructie.';
+$messages['ai_predefined_get_all_instructions_error'] = 'Er is een fout opgetreden bij het ophalen van instructies.';
+$messages['ai_predefined_get_specific_instruction_error'] = 'Er is een fout opgetreden bij het ophalen van informatie voor de instructie.';
+$messages['ai_predefined_content_error'] = 'Fout bij het weergeven van de pagina.';
+$messages['ai_predefined_max_instructions_error'] = 'Het maximale aantal beschikbare instructies is 20!';

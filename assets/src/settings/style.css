@@ -7,3 +7,16 @@
   display: flex;
   align-items: baseline;
 }
+
+
+#aic-predefined-instructions-value-textarea {
+  resize: none;
+}
+
+
+
+#aicpredefinedinstructions::before {
+  content: "\f544";
+  font-size: 1.1212rem;
+}
+
