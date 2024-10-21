@@ -174,7 +174,7 @@ final class OpenAITest extends TestCase
         $requestData->setSignaturePresent(false);
         $result = $privateMethodInvoker($requestData);
 
-        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhamed *Language: Bosnian *Length: medium *The email is about: TestInstrukcija.Do not write the subject if provided, it is only there for your context', $result);
+        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhamed *Language: Bosnian *Length: medium *The email is about: TestInstrukcija.Do not write the subject if provided, it is only there for your contextOnly greet the recipient, never the sender', $result);
     }
 
     public function testPromptNoFixCustom()
@@ -186,7 +186,7 @@ final class OpenAITest extends TestCase
         $requestData->setSignaturePresent(true);
         $result = $privateMethodInvoker($requestData);
 
-        self::assertSame('Create a professional email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Spanish *Length: long *The email is about: Sastavi Mail.Do not write the subject if provided, it is only there for your contextDo not sign the email with any name, do not write anything after the last greeting, no names at the end of the email', $result);
+        self::assertSame('Create a professional email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Spanish *Length: long *The email is about: Sastavi Mail.Do not write the subject if provided, it is only there for your contextOnly greet the recipient, never the senderDo not sign the email with any name, do not write anything after the last greeting, no names at the end of the email', $result);
     }
 
     public function testPromptFixDefault()
@@ -276,7 +276,7 @@ final class OpenAITest extends TestCase
                     'model' => 'model-test',
                     'messages' => [
                         ['role' => 'system', 'content' => 'You are a helpful personal assistant.'],
-                        ['role' => 'user', 'content' => 'Create a casual email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Bosnian *Length: medium *The email is about: SastaviMail.Do not write the subject if provided, it is only there for your context'],
+                        ['role' => 'user', 'content' => 'Create a casual email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Bosnian *Length: medium *The email is about: SastaviMail.Do not write the subject if provided, it is only there for your contextOnly greet the recipient, never the sender'],
                     ],
                     'max_tokens' => 2000,
                     'temperature' => 0.5,
