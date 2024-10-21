@@ -19,10 +19,12 @@ The AI Email Generator plugin for Roundcube enhances the email composing experie
    - Creativity: Adjust the level of creativity in the email (low, medium, or high).
 
    - Language: Choose from Bosnian, Croatian, English, German, or Dutch.
-
-3. **Predefined Instructions:**
-   - Users can select from a list of predefined instructions for quick email creation.
-4. **Seamless Integration:**
+   
+3. **User-Defined Predefined Instructions:**
+     - Users can create custom predefined instructions that they can reuse for generating emails. Instead of typing instructions each time, users can save and select frequently used ones, enhancing productivity.
+4. **Default Settings:**
+     - Users can set default values for style, length, creativity, and language. These default settings will be automatically applied during email generation, allowing for a more streamlined experience.
+5. **Seamless Integration:**
    - Adds a new button to the Compose page in Roundcube that opens a prompt for email generation.
 
 ## Install
