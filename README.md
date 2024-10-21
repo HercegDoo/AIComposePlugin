@@ -12,11 +12,11 @@ The AI Email Generator plugin for Roundcube enhances the email composing experie
 
 2. **Customizable Parameters: Users can choose:**
 
-   - Style: The tone and style of the email (e.g., formal, friendly, informational, etc.).
+   - Style: The tone and style of the email (e.g., formal, casual, informational, etc.).
 
    - Length: How long the generated email should be (short, medium, or long).
 
-   - Creativity: Adjust the level of creativity in the email (from factual to more imaginative).
+   - Creativity: Adjust the level of creativity in the email (low, medium, or high).
 
    - Language: Choose from Bosnian, Croatian, English, German, or Dutch.
 
@@ -28,14 +28,14 @@ The AI Email Generator plugin for Roundcube enhances the email composing experie
 ## Install
 
 1. Clone repository content to a AIComposePlugin directory inside your RoundCube plugins directory.
-2. Then reference plugin by adding an item "AIComposePlugin" to RoundCube plugins list in configuration (variable `$config['plugins']` variable in file $ROUNDCUBE_INSTALL_DIRECTORY/config/main.inc.php). Ensure your web user has read access to the plugin directory and all files in it.
+2. Then reference plugin by adding an item "AIComposePlugin" to RoundCube plugins list in configuration (`$config['plugins']` variable in file $ROUNDCUBE_INSTALL_DIRECTORY/config/main.inc.php). Ensure your web user has read access to the plugin directory and all files in it.
 3. Rename config.inc.php.dist to config.inc.php in the AIComposePlugin directory
 
 ## Usage
 1. **Compose a New Email:**
 
     - Open Roundcube and start composing a new email.
-    - A new button labeled **Generate Email** will appear on the Compose page.
+    - A new button labeled **Generate** will appear on the Compose page.
 
 2. **Open the AI Prompt:**
 
