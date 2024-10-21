@@ -10,8 +10,7 @@ export function getRequestDataFields() {
    lengthElement = document.getElementById("aic-length"),
    creativityElement = document.getElementById("aic-creativity"),
    languageElement = document.getElementById("aic-language"),
-   senderInfo = processSenderData(getSenderInfo()),
-   signatureCheckObject = signatureCheckedPreviousConversation();
+   senderInfo = processSenderData(getSenderInfo());
 
   return {
     style: `${styleElement?.value || rcmail.env.aiPluginOptions.defaultStyle}`,
@@ -20,8 +19,6 @@ export function getRequestDataFields() {
     length: `${lengthElement?.value || rcmail.env.aiPluginOptions.defaultLength}`,
     creativity: `${creativityElement?.value || rcmail.env.aiPluginOptions.defaultCreativity}`,
     language: `${languageElement?.value || rcmail.env.aiPluginOptions.defaultLanguage}`,
-    previousConversation: `${signatureCheckObject.previousConversation}`,
-    signaturePresent: `${signatureCheckObject.signaturePresent}`,
     subject: `${getSubject()}`,
     recipientEmail: `${getRecipientInfo().recipientEmail}`,
     senderEmail: `${senderInfo.senderEmail}`,

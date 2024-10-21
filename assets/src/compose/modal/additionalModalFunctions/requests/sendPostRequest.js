@@ -1,8 +1,8 @@
 import { fieldsValid } from "../fieldsValidation";
 import { getRequestDataFields } from "../requestDataHandler";
-import { insertEmail } from "../insertEmailHandler";
+import { getPreviousGeneratedInsertedEmail, insertEmail } from "../insertEmailHandler";
 import { signatureCheckedPreviousConversation } from "../signaturesHandler";
-let globalPreviousGeneratedEmail = "";
+
 export function sendPostRequest(
   previousGeneratedEmail = "",
   instructionsElementValue = document.getElementById("aic-instructions").value, fixText = ""
@@ -17,14 +17,16 @@ export function sendPostRequest(
   let requestData = getRequestDataFields();
   requestData = {
     ...requestData,
-    previousGeneratedEmail: `${previousGeneratedEmail !== "" ? previousGeneratedEmail : globalPreviousGeneratedEmail}`,
+    previousGeneratedEmail: `${previousGeneratedEmail !== "" ? previousGeneratedEmail : getPreviousGeneratedInsertedEmail()}`,
     instructions: `${instructionsElementValue}`,
     fixText: `${fixText}`,
   };
 
 
     //Uzimanje prethodnog razgovora bez prethodno generisanog maila
-    requestData.previousConversation = signatureCheckedPreviousConversation(requestData.previousGeneratedEmail).previousConversation;
+  const previousConversationObject = signatureCheckedPreviousConversation(requestData.previousGeneratedEmail);
+    requestData.previousConversation = previousConversationObject.previousConversation;
+    requestData.signaturePresent = previousConversationObject.signaturePresent;
 
 
   if (fieldsValid()) {
@@ -35,7 +37,6 @@ export function sendPostRequest(
         insertEmailButton.setAttribute("disabled", "disabled");
       }
     }
-
     rcmail
       .http_post(
         "plugin.AIComposePlugin_GenereteEmailAction",
@@ -58,6 +59,7 @@ export function sendPostRequest(
         true
       )
       .done(function (data) {
+        //Ako se generisanje maila desava u modalu
         if(aiComposeModal){
           textarea.value =
             data && data["respond"] !== undefined ? data["respond"] : "";
@@ -66,9 +68,9 @@ export function sendPostRequest(
           insertEmailButton.removeAttribute("hidden");
           insertEmailButton.removeAttribute("disabled");
         }
+        //Ako se generisanje maila desava van modala (Dropdown predefinisane instrukcije)
         else
           insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
-        globalPreviousGeneratedEmail = data && data["respond"] !== undefined ? data["respond"] : "";
       })
       .always(function () {
         rcmail.unlock_frame();

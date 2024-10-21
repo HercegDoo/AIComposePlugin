@@ -1,3 +1,5 @@
+import { setFilled } from "./predefinedInstructions/regulatePredefinedInstructionsModal";
+
 let editorHTML;
 let previousGeneratedEmail = "";
 export function insertEmail(generatedEmail) {
@@ -7,6 +9,7 @@ export function insertEmail(generatedEmail) {
 
   if(aiComposeModal){
     insertEmailButton.addEventListener("click", () => {
+      setFilled(false);
       document.body.removeChild(aiComposeModal);
      regulateInsertion(modalTextArea.value);
     });
@@ -37,3 +40,8 @@ function regulateInsertion(emailToInsert) {
 rcmail.addEventListener("editor-load", (e) => {
   editorHTML = e?.ref?.editor;
 });
+
+ export function getPreviousGeneratedInsertedEmail(){
+  return previousGeneratedEmail;
+}
+
