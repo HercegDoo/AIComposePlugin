@@ -1,5 +1,5 @@
 export function getSenderInfo() {
-  const iconLink = document.querySelector("a.iconlink.input-grrroup-text");
+  const iconLink = document.querySelector("a.iconlink.input-group-text");
   let senderInfo,
     senderInfoElement;
   if (iconLink) {
