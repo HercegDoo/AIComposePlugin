@@ -1,8 +1,7 @@
 export function getSenderInfo() {
   const iconLink = document.querySelector("a.iconlink.input-group-text");
   let senderInfo,
-   senderInfoElement;
-
+    senderInfoElement;
   if (iconLink) {
     senderInfoElement = iconLink.classList.contains("custom-from-on")
       ? document.getElementById("_from")
@@ -14,11 +13,16 @@ export function getSenderInfo() {
 
     return senderInfo;
   }
+  else{
+    senderInfoElement = document.querySelector('.input-group select#_from');
+    senderInfo = senderInfoElement[senderInfoElement.selectedIndex].textContent;
+    return senderInfo;
+  }
 }
 
 export function processSenderData(senderInfo) {
   let senderName = "",
-   senderEmail = "";
+    senderEmail = "";
 
   // Regex za razdvajanje imena i emaila
   const match = senderInfo.match(/^(.+?)\s+<(.+?)>$/);
