@@ -3,14 +3,11 @@ let formattedPreviousConversationText = "";
 
 export function signatureCheckedPreviousConversation(previousGeneratedEmail = "") {
   let signaturesArray = [];
-  const size = Object.keys(rcmail.env.signatures).length; // Broj potpisa
 
-  for (let i = 0; i <= size; i++) {
-    if (rcmail.env.signatures[i]) {
-      const signatureText = rcmail.env.signatures[i]["text"];
-      signaturesArray.push(signatureText);
-    }
-  }
+  Object.keys(rcmail.env.signatures).forEach(key => {
+    signaturesArray.push(rcmail.env.signatures[key]['text']);
+  });
+
 
   if (editorHTML.editorContainer) {
     let editorText = editorHTML.getContent({ format: "html" });
