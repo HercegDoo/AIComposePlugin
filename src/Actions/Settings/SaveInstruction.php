@@ -9,11 +9,12 @@ class SaveInstruction extends AbstractAction implements ValidateAction
 {
     public function validate(): void
     {
+        $id = trim(\rcube_utils::get_input_string('_id', \rcube_utils::INPUT_POST));
         $name = trim(\rcube_utils::get_input_string('_name', \rcube_utils::INPUT_POST));
         $text = trim(\rcube_utils::get_input_string('_text', \rcube_utils::INPUT_POST));
 
         if (empty($name) || empty($text)) {
-            $this->rcmail->output->command('addinstructiontemplate');
+            $this->rcmail->output->command('addinstructiontemplate', $id);
             $this->setError($this->translation('ai_predefined_invalid_input'));
         }
     }
