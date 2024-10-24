@@ -46,7 +46,7 @@ export function processSenderData(senderInfo) {
     senderEmail = senderInfo.replace(/[<>]/g, "").trim(); // Ukloni < i >, te trimuj
 
     const emailParts = senderEmail.split("@")[0].split(".");
-    if (emailParts.length > 0) {
+    if (emailParts.length > 1) {
       // Kapitalizuj svaku reč u imenu
       const capitalizedParts = emailParts.map(part => capitalize(part));
       // Spoj sve kapitalizovane delove u jedno ime

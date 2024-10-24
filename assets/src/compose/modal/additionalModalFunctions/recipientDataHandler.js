@@ -22,7 +22,7 @@ export function getRecipientInfo() {
   // Ako recipientName sadrži '@', tretiraj ga kao email
   if (recipientName.includes("@")) {
     recipientEmail = recipientName;
-
+    recipientName = '';
     const emailParts = recipientEmail.split("@")[0].split(".");
     if (emailParts.length >= 2) {
       const firstName = capitalize(emailParts[0]);
