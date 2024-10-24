@@ -210,17 +210,17 @@ class RequestData
         return $this->previousConversation;
     }
 
-    function getLengthWords(string $length):string
+    public function getLengthWords(string $length): string
     {
         switch ($length) {
             case 'short':
-                return "30 to 70 words ";
+                return '30 to 70 words ';
             case 'medium':
-                return "70 to 150 words ";
+                return '70 to 150 words ';
             case 'long':
-                return "150 to 250 words";
+                return '150 to 250 words';
             default:
-                return "";
+                return '';
         }
     }
 }

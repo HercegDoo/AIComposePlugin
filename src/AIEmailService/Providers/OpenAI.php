@@ -79,15 +79,16 @@ final class OpenAI extends AbstractProvider
                 " *Language: {$requestData->getLanguage()}" .
                 " *Length: {$requestData->getLength()}" .
                 " Compose a well-structured email based on this instruction: {$requestData->getInstruction()}. The instruction should be rewritten in the tone and format of a {$requestData->getStyle()} email to a reader. " .
-                "Ensure that the generated email does not contain the exact same text as the instruction." .
+                'Ensure that the generated email does not contain the exact same text as the instruction.' .
                 " If the instruction contains pronouns (like 'he', 'she', 'they', etc.), assume they refer to the recipient unless specified otherwise." .
-
                 " The number of words should be {$requestData->getLengthWords($requestData->getLength())}. " .
-                "If the instruction contains pronouns (like 'he', 'she', 'they', etc.), assume they refer to the recipient unless specified otherwise." .
                 'Do not write the subject if provided, it is only there for your context. ' .
                 'Only greet the recipient, never the sender. ' .
-                'Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided.' .
-
+                'IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. ' .
+                'The format should be as follows:' . PHP_EOL .
+                'Greeting' . PHP_EOL .
+                'Content' . PHP_EOL .
+                'Closing Greeting' . PHP_EOL .
                 ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '') .
                 ($requestData->getSignaturePresent() ? 'CRUCIAL: Do not sign the email with any name, do not write anything after the last greeting, no names at the end of the email' : '');
         }
