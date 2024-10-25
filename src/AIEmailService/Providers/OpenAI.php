@@ -85,10 +85,10 @@ final class OpenAI extends AbstractProvider
                 'Do not write the subject if provided, it is only there for your context. ' .
                 'Only greet the recipient, never the sender. ' .
                 'IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. ' .
-                'The format should be as follows:' . PHP_EOL .
-                'Greeting' . PHP_EOL .
-                'Content' . PHP_EOL .
-                'Closing Greeting' . PHP_EOL .
+                'The format should be as follows:' . "\n" .
+                'Greeting' . "\n\n" .
+                'Content' . "\n\n" .
+                'Closing Greeting' . "\n" .
                 ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '') .
                 ($requestData->getSignaturePresent() ? 'CRUCIAL: Do not sign the email with any name, do not write anything after the last greeting, no names at the end of the email' : '');
         }

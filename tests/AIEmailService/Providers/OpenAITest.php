@@ -174,7 +174,13 @@ final class OpenAITest extends TestCase
         $requestData->setSignaturePresent(false);
         $result = $privateMethodInvoker($requestData);
 
-        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhamed *Language: Bosnian *Length: medium *The email is about: TestInstrukcija.Do not write the subject if provided, it is only there for your contextOnly greet the recipient, never the sender', $result);
+        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhamed *Language: Bosnian *Length: medium Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader. Ensure that the generated email does not contain the exact same text as the instruction. If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. The format should be as follows:
+Greeting
+
+Content
+
+Closing Greeting
+', $result);
     }
 
     public function testPromptNoFixCustom()
@@ -186,7 +192,13 @@ final class OpenAITest extends TestCase
         $requestData->setSignaturePresent(true);
         $result = $privateMethodInvoker($requestData);
 
-        self::assertSame('Create a professional email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Spanish *Length: long *The email is about: Sastavi Mail.Do not write the subject if provided, it is only there for your contextOnly greet the recipient, never the senderDo not sign the email with any name, do not write anything after the last greeting, no names at the end of the email', $result);
+        self::assertSame('Create a professional email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Spanish *Length: long Compose a well-structured email based on this instruction: Sastavi Mail. The instruction should be rewritten in the tone and format of a professional email to a reader. Ensure that the generated email does not contain the exact same text as the instruction. If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 150 to 250 words. Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. The format should be as follows:
+Greeting
+
+Content
+
+Closing Greeting
+CRUCIAL: Do not sign the email with any name, do not write anything after the last greeting, no names at the end of the email', $result);
     }
 
     public function testPromptFixDefault()
@@ -276,7 +288,14 @@ final class OpenAITest extends TestCase
                     'model' => 'model-test',
                     'messages' => [
                         ['role' => 'system', 'content' => 'You are a helpful personal assistant.'],
-                        ['role' => 'user', 'content' => 'Create a casual email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Bosnian *Length: medium *The email is about: SastaviMail.Do not write the subject if provided, it is only there for your contextOnly greet the recipient, never the sender'],
+                        ['role' => 'user', 'content' => 'Create a casual email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Bosnian *Length: medium Compose a well-structured email based on this instruction: SastaviMail. The instruction should be rewritten in the tone and format of a casual email to a reader. Ensure that the generated email does not contain the exact same text as the instruction. If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. The format should be as follows:
+Greeting
+
+Content
+
+Closing Greeting
+',
+                        ],
                     ],
                     'max_tokens' => 2000,
                     'temperature' => 0.5,
