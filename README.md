@@ -28,11 +28,21 @@ The AI Email Generator plugin for Roundcube enhances the email composing experie
    - Adds a new button to the Compose page in Roundcube that opens a prompt for email generation.
 
 ## Install
+1. Clone repository content to an `AIComposePlugin` directory inside your RoundCube `plugins` directory.
+2. Then reference the plugin by adding an item `AIComposePlugin` to the RoundCube plugins list in the configuration:
 
-1. Clone repository content to a AIComposePlugin directory inside your RoundCube plugins directory.
-2. Then reference plugin by adding an item `AIComposePlugin` to RoundCube plugins list in configuration (`$config['plugins']` variable in file `$ROUNDCUBE_INSTALL_DIRECTORY/config/config.inc.php`). Ensure your web user has read access to the plugin directory and all files in it.
-3. Rename config.inc.php.dist to config.inc.php in the AIComposePlugin directory
+   ```php
+   $config['plugins'] = array('AIComposePlugin', ...);
+   
+3. You can install the required dependencies using Composer, npm, and run the development build. Navigate to the plugin directory and run the following commands:
 
+```bash
+composer install --no-dev
+npm install
+npm run dev
+```
+4. Fill in the settings in the config.inc.php.dist file according to the instructions provided within it. After completing the configuration, rename the file to config.inc.php.
+ 
 ## Usage
 1. **Compose a New Email:**
 
