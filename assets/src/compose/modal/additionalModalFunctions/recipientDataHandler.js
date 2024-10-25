@@ -16,7 +16,7 @@ export function getRecipientInfo() {
     : inputElement.value;
 
   let recipientEmail = recipientEmailElement
-    ? recipientEmailElement.textContent.replace(/[<>]/g, "").trim()
+    ? recipientEmailElement.textContent.match(/<([^>]+)>/)?.[1]?.trim() || ""
     : "";
 
   // Ako recipientName sadrži '@', tretiraj ga kao email
@@ -43,6 +43,6 @@ export function getRecipientInfo() {
 
   return {
     recipientName,
-    recipientEmail,
+    recipientEmail
   };
 }
