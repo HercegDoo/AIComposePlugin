@@ -1,3 +1,5 @@
+import { formatText } from "../../../utils";
+
 let editorHTML = "";
 let formattedPreviousConversationText = "";
 
@@ -11,16 +13,10 @@ export function signatureCheckedPreviousConversation(previousGeneratedEmail = ""
     editorTextDiv.innerHTML = editorText;
     editorText = editorTextDiv.textContent;
 editorText = editorText.replace(previousGeneratedEmail, "");
-    formattedPreviousConversationText = removeEmptyLinesAndSpaces(editorText)
-      .replace(/\\n/g, "\n")
-      .replace(/\s+/g, " ")
-      .trim();
+    formattedPreviousConversationText = formatText(removeEmptyLinesAndSpaces(editorText));
   } else {
     const textareaContent = document.getElementById("composebody").value.replace(previousGeneratedEmail, "");
-    const textareaContentFormatted = textareaContent
-      .replace(/\\n/g, "\n")
-      .replace(/\s+/g, " ")
-      .trim();
+    const textareaContentFormatted = formatText(textareaContent);
     formattedPreviousConversationText = removeEmptyLinesAndSpaces(
       textareaContentFormatted
     );
@@ -66,15 +62,9 @@ function containsSubstring(formattedPreviousConversationText) {
       const div = document.createElement("div");
       div.innerHTML = rcmail.env.signatures[key]['html']; // Koristi samo signature bez indeksa
 
-      formattedSignature = removeEmptyLinesAndSpaces(div.textContent)
-        .replace(/\\n/g, "\n")
-        .replace(/\s+/g, " ")
-        .trim();
+      formattedSignature =formatText(removeEmptyLinesAndSpaces(div.textContent));
     } else {
-      formattedSignature = removeEmptyLinesAndSpaces(rcmail.env.signatures[key]['text'])
-        .replace(/\\n/g, "\n")
-        .replace(/\s+/g, " ")
-        .trim();
+      formattedSignature = formatText(removeEmptyLinesAndSpaces(rcmail.env.signatures[key]['text']));
     }
     if (formattedPreviousConversationText.includes(formattedSignature)) {
       return formattedSignature;

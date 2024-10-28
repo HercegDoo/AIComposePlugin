@@ -49,3 +49,9 @@ export function containsHtmlCharacters(inputString) {
   const htmlCharacterRegex = /[<>&"']/;
   return htmlCharacterRegex.test(inputString);
 }
+
+export function formatText(text){
+  return text.replace(/\\n/g, "\n")
+    .replace(/\s+/g, " ")
+    .trim();
+}
