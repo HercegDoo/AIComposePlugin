@@ -24,9 +24,9 @@ function regulateInsertion(emailToInsert) {
   const targetTextArea = document.getElementById("composebody");
   let formattedContent = emailToInsert;
 
-  if (editorHTML) {
+  if (editorHTML && tinymce.activeEditor) {
     formattedContent = emailToInsert.replace(/\n/g, "<br>");
-    const content = tinymce.activeEditor.dom.decode(editorHTML.getContent()).replace(previousGeneratedEmail, "");
+    const content = tinymce?.activeEditor?.dom.decode(editorHTML.getContent()).replace(previousGeneratedEmail, "");
     editorHTML.setContent(`${formattedContent}${content}`);
     previousGeneratedEmail = `<p>${formattedContent.replace(/<br>/g, '<br />')}</p>`;
   } else {

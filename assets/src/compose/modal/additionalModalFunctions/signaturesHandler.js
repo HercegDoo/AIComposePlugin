@@ -2,11 +2,7 @@ let editorHTML = "";
 let formattedPreviousConversationText = "";
 
 export function signatureCheckedPreviousConversation(previousGeneratedEmail = "") {
-  let signaturesArray = [];
 
-  Object.keys(rcmail.env.signatures).forEach(key => {
-    signaturesArray.push([rcmail.env.signatures[key]['text'], rcmail.env.signatures[key]['html']]);
-  });
 
 
   if (editorHTML.editorContainer) {
@@ -15,7 +11,12 @@ export function signatureCheckedPreviousConversation(previousGeneratedEmail = ""
     editorTextDiv.innerHTML = editorText;
     editorText = editorTextDiv.textContent;
    previousGeneratedEmail =  previousGeneratedEmail.replace(/\n/g, '').replace(/\s{2,}/g, '');
-editorText = editorText.replace(previousGeneratedEmail, "");
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = previousGeneratedEmail;
+    const prevGeneratedEmailToRemove = tempDiv.textContent.replace(/<br\s*\/?>/gi, "")
+      .replace(/\s+/g, " ")
+      .trim()
+editorText = editorText.replace(prevGeneratedEmailToRemove, "");
     formattedPreviousConversationText = removeEmptyLinesAndSpaces(editorText)
       .replace(/\\n/g, "\n")
       .replace(/\s+/g, " ")
@@ -32,8 +33,7 @@ editorText = editorText.replace(previousGeneratedEmail, "");
   }
 
   const formattedSignaturePresent = containsSubstring(
-    formattedPreviousConversationText,
-    signaturesArray
+    formattedPreviousConversationText
   );
 
   if (formattedSignaturePresent) {
@@ -65,18 +65,19 @@ function removeEmptyLinesAndSpaces(text) {
     .join("\n");
 }
 
-function containsSubstring(formattedPreviousConversationText, signaturesArray) {
-  for (const signature of signaturesArray) {
+function containsSubstring(formattedPreviousConversationText) {
+  for (const key of Object.keys(rcmail.env.signatures)) {
     let formattedSignature;
     if (editorHTML.editorContainer) {
       const div = document.createElement("div");
-      div.innerHTML = signature[1]; // Koristi samo signature bez indeksa
+      div.innerHTML = rcmail.env.signatures[key]['html']; // Koristi samo signature bez indeksa
+
       formattedSignature = removeEmptyLinesAndSpaces(div.textContent)
         .replace(/\\n/g, "\n")
         .replace(/\s+/g, " ")
         .trim();
     } else {
-      formattedSignature = removeEmptyLinesAndSpaces(signature[0])
+      formattedSignature = removeEmptyLinesAndSpaces(rcmail.env.signatures[key]['text'])
         .replace(/\\n/g, "\n")
         .replace(/\s+/g, " ")
         .trim();
