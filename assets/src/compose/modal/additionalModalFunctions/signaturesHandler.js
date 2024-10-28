@@ -5,7 +5,7 @@ export function signatureCheckedPreviousConversation(previousGeneratedEmail = ""
   let signaturesArray = [];
 
   Object.keys(rcmail.env.signatures).forEach(key => {
-    signaturesArray.push(rcmail.env.signatures[key]['text']);
+    signaturesArray.push([rcmail.env.signatures[key]['text'], rcmail.env.signatures[key]['html']]);
   });
 
 
@@ -66,17 +66,17 @@ function removeEmptyLinesAndSpaces(text) {
 }
 
 function containsSubstring(formattedPreviousConversationText, signaturesArray) {
-  for (const [index, signature] of signaturesArray.entries()) {
+  for (const signature of signaturesArray) {
     let formattedSignature;
     if (editorHTML.editorContainer) {
       const div = document.createElement("div");
-      div.innerHTML = rcmail.env.signatures[`${String(index + 1)}`]["html"];
+      div.innerHTML = signature[1]; // Koristi samo signature bez indeksa
       formattedSignature = removeEmptyLinesAndSpaces(div.textContent)
         .replace(/\\n/g, "\n")
         .replace(/\s+/g, " ")
         .trim();
     } else {
-      formattedSignature = removeEmptyLinesAndSpaces(signature)
+      formattedSignature = removeEmptyLinesAndSpaces(signature[0])
         .replace(/\\n/g, "\n")
         .replace(/\s+/g, " ")
         .trim();

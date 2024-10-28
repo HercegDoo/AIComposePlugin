@@ -52,6 +52,9 @@ export function processSenderData(senderInfo) {
       // Spoj sve kapitalizovane delove u jedno ime
       senderName = capitalizedParts.join(" ");
     }
+    else {
+      senderName = capitalize(emailParts[0]);
+    }
   }
   else {
       // Treći slučaj: samo ime
