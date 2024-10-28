@@ -33,3 +33,19 @@ export function closeModal(
 export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
+
+export function getFormattedMail(mail){
+  if(containsHtmlCharacters(mail)){
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = mail;
+    mail = tempDiv.textContent.replace(/<br\s*\/?>/gi, "")
+      .replace(/\s+/g, " ")
+      .trim()
+  }
+  return mail;
+}
+
+export function containsHtmlCharacters(inputString) {
+  const htmlCharacterRegex = /[<>&"']/;
+  return htmlCharacterRegex.test(inputString);
+}

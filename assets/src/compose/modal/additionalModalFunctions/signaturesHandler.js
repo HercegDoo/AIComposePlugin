@@ -11,12 +11,7 @@ export function signatureCheckedPreviousConversation(previousGeneratedEmail = ""
     editorTextDiv.innerHTML = editorText;
     editorText = editorTextDiv.textContent;
    previousGeneratedEmail =  previousGeneratedEmail.replace(/\n/g, '').replace(/\s{2,}/g, '');
-    const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = previousGeneratedEmail;
-    const prevGeneratedEmailToRemove = tempDiv.textContent.replace(/<br\s*\/?>/gi, "")
-      .replace(/\s+/g, " ")
-      .trim()
-editorText = editorText.replace(prevGeneratedEmailToRemove, "");
+editorText = editorText.replace(previousGeneratedEmail, "");
     formattedPreviousConversationText = removeEmptyLinesAndSpaces(editorText)
       .replace(/\\n/g, "\n")
       .replace(/\s+/g, " ")
