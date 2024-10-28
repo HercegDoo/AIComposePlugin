@@ -209,4 +209,18 @@ class RequestData
     {
         return $this->previousConversation;
     }
+
+    public function getLengthWords(string $length): string
+    {
+        switch ($length) {
+            case 'short':
+                return '30 to 70 words ';
+            case 'medium':
+                return '70 to 150 words ';
+            case 'long':
+                return 'over 150 words';
+            default:
+                return '';
+        }
+    }
 }

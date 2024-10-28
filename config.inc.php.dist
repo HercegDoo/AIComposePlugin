@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * Roundcube Plus AI plugin.
+ */
+
+// The AI service provider for the compose functionality.
+// Currently, the only available option is 'OpenAI', so this should be set accordingly.
+// Default: 'OpenAI'
+$config['aiComposeProvider'] = ;
+
+// -------- OpenAI configuration (https://openai.com/) --------
+// Set the following keys to configure the API request properly:
+// - **apiKey**: Enter your OpenAI API key here, which authenticates and allows access to the API.
+// - **model**: Specify the OpenAI model you wish to use, such as "gpt-4". Currently, the OpenAI model is the only one available for this purpose.
+$config['aiProviderOpenAIConfig'] = [
+    'apiKey' =>
+    'model' =>
+];
+
+// The default tone of the generated email text. The users will be able to modify this option in the settings.
+// Available options: "assertive", "casual", "enthusiastic", "funny", "informational", "professional", "urgent", "witty"
+// Each style is an array element, except the **default** style, which is set as a key-value pair and used when no specific style is requested
+$config['aiComposeStyles'] = [
+    'default' =>
+];
+
+// The default length of the generated email text.  The users will be able to modify this option in the settings.
+// Available options: "short", "medium", "long"
+// Each length is an array element, except the **default** length, which is set as a key-value pair and used when no specific length is requested
+$config['aiComposeLengths'] = [
+    'default' =>
+];
+
+// Default creativity.
+// The degree of creativity used by the language model to create the email. Higher creativity will generate more unpredictable and diverse
+// output. The users will be able to modify this option in the settings.
+// Available options: "low", "medium", "high"
+$config['aiComposeDefaultCreativity'] = '';
+
+// The default language of the generated email text. The users will be able to modify this option in the settings.
+// Available options: Bosnian, Croatian, English, German, Dutch.
+$config['aiComposeLanguages'] = [
+    'default' =>
+];
+
+// Set the default maximum number of tokens for AI responses with **aiDefaultMaxTokens**.
+// The recommended default value is 2000 tokens, which should provide sufficient content generation for most use cases.
+$config['aiDefaultMaxTokens'] = ;
+
+// Set the default timeout in seconds for AI responses using **aiDefaultTimeout**.
+// The recommended default is 60 seconds, ensuring responses are generated within a reasonable timeframe.
+$config['aiDefaultTimeout'] = ;
+
+// Define the maximum number of input characters allowed for AI processing using **aiDefaultInputChars**.
+// The suggested default is 500 characters to balance input length with efficient processing.
+$config['aiDefaultInputChars'] = ;
+
+// Set the maximum number of predefined instructions available for the AI in **aiMaxPredefinedInstructions**.
+// The recommended default value is 20 to ensure a manageable number of instructions without overloading the system.
+$config['aiMaxPredefinedInstructions'] = ;
