@@ -90,7 +90,7 @@ final class OpenAI extends AbstractProvider
                 'Content' . "\n\n" .
                 'Closing Greeting' . "\n" .
                 ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '') .
-                ($requestData->getSignaturePresent() ? 'CRUCIAL: Do not sign the email with any name, do not write anything after the last greeting, no names at the end of the email' : '');
+                ($requestData->getSignaturePresent() ? 'CRUCIAL: "Write an email without signing it or including any identifying information after the greeting, including no names or titles. Only include the message and greeting, but leave the signature and closing blank."' : '');
         }
 
         return $prompt;

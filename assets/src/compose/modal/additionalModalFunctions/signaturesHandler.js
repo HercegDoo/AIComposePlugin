@@ -60,7 +60,7 @@ function containsSubstring(formattedPreviousConversationText) {
     let formattedSignature;
     if (editorHTML.editorContainer) {
       const div = document.createElement("div");
-      div.innerHTML = rcmail.env.signatures[key]['html']; // Koristi samo signature bez indeksa
+      div.innerHTML = rcmail.env.signatures[key]['html'];
 
       formattedSignature =formatText(removeEmptyLinesAndSpaces(div.textContent));
     } else {
