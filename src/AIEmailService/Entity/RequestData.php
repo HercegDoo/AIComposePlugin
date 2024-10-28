@@ -218,7 +218,7 @@ class RequestData
             case 'medium':
                 return '70 to 150 words ';
             case 'long':
-                return '150 to 250 words';
+                return 'over 150 words';
             default:
                 return '';
         }
