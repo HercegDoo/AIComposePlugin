@@ -39,7 +39,7 @@ export function getFormattedMail(mail){
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = mail;
     mail = tempDiv.textContent.replace(/<br\s*\/?>/gi, "")
-      .replace(/\s+/g, " ")
+      .replace(/\s+/g, " ").replace(/\n/g, '').replace(/\s{2,}/g, '')
       .trim()
   }
   return mail;
