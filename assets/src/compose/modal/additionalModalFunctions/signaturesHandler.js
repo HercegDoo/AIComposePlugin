@@ -1,12 +1,10 @@
+import { formatText } from "../../../utils";
+
 let editorHTML = "";
 let formattedPreviousConversationText = "";
 
 export function signatureCheckedPreviousConversation(previousGeneratedEmail = "") {
-  let signaturesArray = [];
 
-  Object.keys(rcmail.env.signatures).forEach(key => {
-    signaturesArray.push(rcmail.env.signatures[key]['text']);
-  });
 
 
   if (editorHTML.editorContainer) {
@@ -14,26 +12,18 @@ export function signatureCheckedPreviousConversation(previousGeneratedEmail = ""
     const editorTextDiv = document.createElement("div");
     editorTextDiv.innerHTML = editorText;
     editorText = editorTextDiv.textContent;
-   previousGeneratedEmail =  previousGeneratedEmail.replace(/\n/g, '').replace(/\s{2,}/g, '');
 editorText = editorText.replace(previousGeneratedEmail, "");
-    formattedPreviousConversationText = removeEmptyLinesAndSpaces(editorText)
-      .replace(/\\n/g, "\n")
-      .replace(/\s+/g, " ")
-      .trim();
+    formattedPreviousConversationText = formatText(removeEmptyLinesAndSpaces(editorText));
   } else {
     const textareaContent = document.getElementById("composebody").value.replace(previousGeneratedEmail, "");
-    const textareaContentFormatted = textareaContent
-      .replace(/\\n/g, "\n")
-      .replace(/\s+/g, " ")
-      .trim();
+    const textareaContentFormatted = formatText(textareaContent);
     formattedPreviousConversationText = removeEmptyLinesAndSpaces(
       textareaContentFormatted
     );
   }
 
   const formattedSignaturePresent = containsSubstring(
-    formattedPreviousConversationText,
-    signaturesArray
+    formattedPreviousConversationText
   );
 
   if (formattedSignaturePresent) {
@@ -65,21 +55,16 @@ function removeEmptyLinesAndSpaces(text) {
     .join("\n");
 }
 
-function containsSubstring(formattedPreviousConversationText, signaturesArray) {
-  for (const [index, signature] of signaturesArray.entries()) {
+function containsSubstring(formattedPreviousConversationText) {
+  for (const key of Object.keys(rcmail.env.signatures)) {
     let formattedSignature;
     if (editorHTML.editorContainer) {
       const div = document.createElement("div");
-      div.innerHTML = rcmail.env.signatures[`${String(index + 1)}`]["html"];
-      formattedSignature = removeEmptyLinesAndSpaces(div.textContent)
-        .replace(/\\n/g, "\n")
-        .replace(/\s+/g, " ")
-        .trim();
+      div.innerHTML = rcmail.env.signatures[key]['html'];
+
+      formattedSignature =formatText(removeEmptyLinesAndSpaces(div.textContent));
     } else {
-      formattedSignature = removeEmptyLinesAndSpaces(signature)
-        .replace(/\\n/g, "\n")
-        .replace(/\s+/g, " ")
-        .trim();
+      formattedSignature = formatText(removeEmptyLinesAndSpaces(rcmail.env.signatures[key]['text']));
     }
     if (formattedPreviousConversationText.includes(formattedSignature)) {
       return formattedSignature;

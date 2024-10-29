@@ -2,6 +2,7 @@ import { fieldsValid } from "../fieldsValidation";
 import { getRequestDataFields } from "../requestDataHandler";
 import { getPreviousGeneratedInsertedEmail, insertEmail } from "../insertEmailHandler";
 import { signatureCheckedPreviousConversation } from "../signaturesHandler";
+import { getFormattedMail } from "../../../../utils";
 
 export function sendPostRequest(
   previousGeneratedEmail = "",
@@ -17,7 +18,7 @@ export function sendPostRequest(
   let requestData = getRequestDataFields();
   requestData = {
     ...requestData,
-    previousGeneratedEmail: `${previousGeneratedEmail !== "" ? previousGeneratedEmail : getPreviousGeneratedInsertedEmail()}`,
+    previousGeneratedEmail: getFormattedMail( `${previousGeneratedEmail !== "" ? previousGeneratedEmail : getPreviousGeneratedInsertedEmail()}`),
     instructions: `${instructionsElementValue}`,
     fixText: `${fixText}`,
   };
