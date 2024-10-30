@@ -57,7 +57,6 @@ export function sendPostRequest(
         true
       )
       .done(function (data) {
-
       if(data.status !== 'success'){
         insertEmailButton.setAttribute('hidden', 'hidden');
         textarea.value = "";

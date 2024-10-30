@@ -36,18 +36,17 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
     {
         header('Content-Type: application/json');
         try {
+            $status = 'success';
             $this->preparePostData();
             $email = AIEmail::generate($this->aiRequestData);
             $respond = $email->getBody();
 
-            if($this->hasErrors()){
-                echo json_encode([
-                    'status' => 'failed',
-                ]);
+            if ($this->hasErrors()) {
+                $status = 'error';
             }
 
             echo json_encode([
-                'status' => 'success',
+                'status' => $status,
                 'respond' => $respond,
             ]);
         } catch (\Throwable $e) {
@@ -158,10 +157,7 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
 
     private function instructionsValidation(?string $instructions): void
     {
-        if (!empty($instructions) && $this->hasNoLetters($instructions)) {
-            $this->setError($this->translation('ai_validation_error_invalid_input_instructions'));
-        }
-        if (!empty($instructions) && \strlen($instructions) < 2) {
+        if (empty($instructions)) {
             $this->setError($this->translation('ai_validation_error_not_enough_characters_instruction'));
         }
     }
