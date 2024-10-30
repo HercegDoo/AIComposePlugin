@@ -40,6 +40,12 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
             $email = AIEmail::generate($this->aiRequestData);
             $respond = $email->getBody();
 
+            if($this->hasErrors()){
+                echo json_encode([
+                    'status' => 'failed',
+                ]);
+            }
+
             echo json_encode([
                 'status' => 'success',
                 'respond' => $respond,

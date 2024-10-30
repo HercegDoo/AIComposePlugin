@@ -34,9 +34,6 @@ export function sendPostRequest(
     rcmail.lock_frame(document.body);
     if(aiComposeModal){
       generateEmailButton.setAttribute("disabled", "disabled");
-      if (!insertEmailButton.hasAttribute("hidden")) {
-        insertEmailButton.setAttribute("disabled", "disabled");
-      }
     }
     rcmail
       .http_post(
@@ -61,7 +58,10 @@ export function sendPostRequest(
       )
       .done(function (data) {
         //Ako se generisanje maila desava u modalu
-        if(aiComposeModal){
+        if(aiComposeModal && data.status === "success"){
+          if (!insertEmailButton.hasAttribute("hidden")) {
+            insertEmailButton.setAttribute("disabled", "disabled");
+          }
           textarea.value =
             data && data["respond"] !== undefined ? data["respond"] : "";
           generateEmailSpan.style.display = "none";
