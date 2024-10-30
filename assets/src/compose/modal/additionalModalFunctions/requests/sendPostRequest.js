@@ -57,8 +57,13 @@ export function sendPostRequest(
         true
       )
       .done(function (data) {
+
+      if(data.status !== 'success'){
+        insertEmailButton.setAttribute('hidden', 'hidden');
+        textarea.value = "";
+      }
         //Ako se generisanje maila desava u modalu
-        if(aiComposeModal && data.status === "success"){
+        else if(aiComposeModal && data.status === "success"){
           if (!insertEmailButton.hasAttribute("hidden")) {
             insertEmailButton.setAttribute("disabled", "disabled");
           }
