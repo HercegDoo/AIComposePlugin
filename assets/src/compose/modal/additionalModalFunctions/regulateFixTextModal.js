@@ -1,6 +1,7 @@
 import { getFormattedPreviousGeneratedEmail, getSelectedText } from "./selectedTextHandler";
 import { sendPostRequest } from "./requests/sendPostRequest";
 import { closeModal } from "../../../utils";
+import { fixTextFieldsValid } from "./fieldsValidation";
 
 
 export function regulateFixTextModal() {
@@ -34,11 +35,13 @@ export function regulateFixTextModal() {
 
 
   generateAgain.addEventListener("click", () => {
-    sendPostRequest(
-      previousGeneratedEmailTextarea.value,
-      fixInstructionsTextArea.value,
-      getSelectedText()
-    );
-    closeModal(undefined, undefined,  fixTextContent );
+    if(fixTextFieldsValid()){
+      sendPostRequest(
+        previousGeneratedEmailTextarea.value,
+        fixInstructionsTextArea.value,
+        getSelectedText()
+      );
+      closeModal(undefined, undefined,  fixTextContent );
+    }
   });
 }

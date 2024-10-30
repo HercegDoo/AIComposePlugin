@@ -13,7 +13,7 @@ export function createFixTextSection() {
   <div  class="fix-select-section" id="fix-text-instructions"> 
   <label for="selected-text">${translation("ai_fix_instructions")}</label>
   <span class="xinfo right"><div>${translation("ai_fix_text_input_instructions")}</div></span>
-  <textarea class="form-control" name="fix-instructions" id="fix-instructions" cols="30" rows="10" ></textarea>
+  <textarea class="form-control" maxlength="500" name="fix-instructions" data-parsley-required="true" id="fix-instructions" cols="30" rows="10" ></textarea>
 </div>
 <div id="aic-fix-text-button-div">
 <button id="fix-text-generate-again" class ="btn btn-primary">${translation("ai_generate_again")}</button>

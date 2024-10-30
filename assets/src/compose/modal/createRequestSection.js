@@ -27,7 +27,7 @@ export function createRequestSection() {
       <label for="aic-instructions">${translation("ai_label_instructions")}</label>
       <span class="xinfo right"><div>${translation("ai_tip_instructions")}</div></span>
   </div>
-  <textarea id="aic-instructions" class="form-control" data-parsley-required="true" placeholder="${ translation("ai_instructions_placeholder")}"></textarea>`;
+  <textarea id="aic-instructions" maxlength="500" class="form-control" data-parsley-required="true" placeholder="${ translation("ai_instructions_placeholder")}"></textarea>`;
 
   aicRequest.appendChild(instructionsDiv);
 
