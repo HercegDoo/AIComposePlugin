@@ -16,6 +16,7 @@ class SettingsTask extends AbstractTask
         $this->plugin->add_hook('settings_actions', [$this, 'addPredefinedInstructionsSection']);
         $this->plugin->register_action('plugin.basepredefinedinstructions', [$this, 'base_predefined_instructions']);
         $this->plugin->include_stylesheet('assets/src/settings/style.css');
+        $this->plugin->add_texts('src/localization/labels/', ['ai_predefined_section_title']);
     }
 
     /**
@@ -25,7 +26,7 @@ class SettingsTask extends AbstractTask
     {
         $rcmail = \rcmail::get_instance();
         $this->plugin->include_script('assets/dist/settings.bundle.js');
-
+        $this->loadTranslations();
         $rcmail->output->set_pagetitle($rcmail->gettext('AIComposePlugin.ai_predefined_section_title'));
         $rcmail->output->add_handlers(['instructionslist' => [$this, 'instructions_list']]);
         $rcmail->output->send('AIComposePlugin.basepredefinedinstructions');
@@ -124,6 +125,7 @@ class SettingsTask extends AbstractTask
     public function preferencesList(array $args): array
     {
         $this->plugin->include_stylesheet('assets/src/settings/style.css');
+        $this->loadTranslations();
         /** @var array<string, array<string, mixed>> $blocks */
         $blocks = $args['blocks'] ?? [];
 

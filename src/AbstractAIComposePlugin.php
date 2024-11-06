@@ -18,8 +18,6 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
         AbstractAction::$plugin = $this;
 
         if (\is_string($task)) {
-            $this->loadTranslations();
-
             $task = ucfirst($task);
             $taskClass = "HercegDoo\\AIComposePlugin\\Tasks\\{$task}Task";
 
@@ -29,11 +27,5 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
                 $taskHandler->init();
             }
         }
-    }
-
-    private function loadTranslations(): void
-    {
-        $this->add_texts('src/localization/messages/');
-        $this->add_texts('src/localization/labels/', true);
     }
 }

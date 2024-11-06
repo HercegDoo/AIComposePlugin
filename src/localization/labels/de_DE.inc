@@ -43,7 +43,7 @@ $labels['ai_error_sender_name'] = 'Bitte geben Sie den Absendernamen ein!';
 $labels['ai_error_recipient_name'] = 'Empfängername leer (Optional)';
 $labels['ai_error_instructions'] = 'Geben Sie Anweisungen ein!';
 
-$labels['ai_general_settings'] = "Allgemeine Einstellungen";
+$labels['ai_general_settings'] = 'Allgemeine Einstellungen';
 
 $labels['ai_predefined_submit'] = 'Speichern';
 $labels['ai_predefined_create'] = 'Erstellen';
