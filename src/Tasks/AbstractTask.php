@@ -24,6 +24,12 @@ abstract class AbstractTask
 
     abstract public function init(): void;
 
+    protected function loadTranslations(): void
+    {
+        $this->plugin->add_texts('src/localization/messages/');
+        $this->plugin->add_texts('src/localization/labels/', true);
+    }
+
     private function initSettings(): void
     {
         $rcmail = \rcmail::get_instance();

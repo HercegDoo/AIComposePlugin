@@ -41,6 +41,10 @@ class MailTask extends AbstractTask
             'styles' => array_values(Settings::getStyles()),
             'defaultStyle' => Settings::getDefaultStyle(),
         ];
-        $rcmail->output->set_env('aiPluginOptions', $settings);
+
+        if ($rcmail->action === 'compose') {
+            $this->loadTranslations();
+            $rcmail->output->set_env('aiPluginOptions', $settings);
+        }
     }
 }
