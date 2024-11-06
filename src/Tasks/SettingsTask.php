@@ -24,7 +24,6 @@ class SettingsTask extends AbstractTask
     public function base_predefined_instructions(array $args = []): void
     {
         $rcmail = \rcmail::get_instance();
-
         $this->plugin->include_script('assets/dist/settings.bundle.js');
 
         $rcmail->output->set_pagetitle($rcmail->gettext('AIComposePlugin.ai_predefined_section_title'));
@@ -130,22 +129,22 @@ class SettingsTask extends AbstractTask
 
         if (isset($args['section']) && $args['section'] == 'aic') {
             $blocks['general'] = [
-                'name' => 'General Settings',
+                'name' => $this->translation('ai_general_settings'),
                 'options' => [
                     [
-                        'title' => 'Style',
+                        'title' => $this->translation('ai_label_style'),
                         'content' => $this->getDropdownHtml(Settings::getStyles(), 'style', Settings::getDefaultStyle()),
                     ],
                     [
-                        'title' => 'Creativity',
+                        'title' => $this->translation('ai_label_creativity'),
                         'content' => $this->getDropdownHtml(Settings::getCreativities(), 'creativity', Settings::getCreativity()),
                     ],
                     [
-                        'title' => 'Length',
+                        'title' => $this->translation('ai_label_length'),
                         'content' => $this->getDropdownHtml(Settings::getLengths(), 'length', Settings::getDefaultLength()),
                     ],
                     [
-                        'title' => 'Language',
+                        'title' => $this->translation('ai_label_language'),
                         'content' => $this->getDropdownHtml(Settings::getLanguages(), 'language', Settings::getDefaultLanguage()),
                     ],
                 ],

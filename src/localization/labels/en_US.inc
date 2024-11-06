@@ -59,6 +59,8 @@ $labels['ai_help_use_example'] = '(Use this)';
 
 $labels['ai_compose_settings'] = 'AICompose Settings';
 
+$labels['ai_general_settings'] = "General Settings";
+
 $labels['ai_predefined_submit'] = 'Save';
 $labels['ai_predefined_create'] = 'Create';
 $labels['ai_predefined_delete'] = 'Delete';

@@ -51,6 +51,8 @@ $labels['ai_generate_again'] = 'Opnieuw genereren';
 $labels['ai_stop_generating'] = 'Stop met genereren';
 $labels['ai_error_help_button'] = 'Help';
 
+$labels['ai_general_settings'] = "Algemene instellingen";
+
 $labels['ai_predefined_submit'] = 'Opslaan';
 $labels['ai_predefined_create'] = 'Aanmaken';
 $labels['ai_predefined_delete'] = 'Verwijderen';
