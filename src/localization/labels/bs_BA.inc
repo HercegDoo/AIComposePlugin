@@ -61,6 +61,7 @@ $labels['ai_fix_selected_text_title'] = 'Ispravi Odabrani Tekst';
 $labels['ai_selected_text'] = 'Odabrani Tekst';
 $labels['ai_fix_instructions'] = 'Instrukcija za Ispravljanje';
 $labels['ai_fix_text_input_instructions'] = 'U ovom polju unesite detaljna objašnjenja ili instrukcije o izmjenama koje želite da napravite na odabranom tekstu.';
+$labels['ai_general_settings'] = "Opća podešavanja";
 
 $labels['ai_predefined_submit'] = 'Spremi';
 $labels['ai_predefined_create'] = 'Kreiraj';
