@@ -45,6 +45,7 @@ class MailTask extends AbstractTask
         if ($rcmail->action === 'compose') {
             $this->loadTranslations();
             $rcmail->output->set_env('aiPluginOptions', $settings);
+            $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
         }
     }
 }

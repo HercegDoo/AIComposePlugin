@@ -51,7 +51,7 @@ $labels['ai_generate_email'] = 'Generiraj e-mail';
 $labels['ai_generate_again'] = 'Generiraj ponovo';
 $labels['ai_stop_generating'] = 'Zaustavi Generiranje';
 $labels['ai_error_help_button'] = 'Pomoć';
-$labels['ai_general_settings'] = "Opće postavke";
+$labels['ai_general_settings'] = 'Opće postavke';
 
 $labels['ai_predefined_submit'] = 'Spremi';
 $labels['ai_predefined_create'] = 'Kreiraj';

@@ -92,8 +92,6 @@ abstract class AbstractTask
         /** @var array<string> $config */
         $config = $rcmail->config->get('aiProvider' . $provider . 'Config', []);
         Settings::setProviderConfig($config);
-
-        $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
     }
 
     private function autoRegisterActions(): void
