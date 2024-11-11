@@ -24,6 +24,12 @@ abstract class AbstractTask
 
     abstract public function init(): void;
 
+    protected function loadTranslations(): void
+    {
+        $this->plugin->add_texts('src/localization/messages/');
+        $this->plugin->add_texts('src/localization/labels/', true);
+    }
+
     private function initSettings(): void
     {
         $rcmail = \rcmail::get_instance();
@@ -86,8 +92,6 @@ abstract class AbstractTask
         /** @var array<string> $config */
         $config = $rcmail->config->get('aiProvider' . $provider . 'Config', []);
         Settings::setProviderConfig($config);
-
-        $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
     }
 
     private function autoRegisterActions(): void
