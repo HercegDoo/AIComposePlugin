@@ -126,7 +126,6 @@ class SettingsTask extends AbstractTask
      */
     public function preferencesList(array $args): array
     {
-        $this->plugin->include_stylesheet('assets/src/settings/style.css');
         /** @var array<string, array<string, mixed>> $blocks */
         $blocks = $args['blocks'] ?? [];
 
