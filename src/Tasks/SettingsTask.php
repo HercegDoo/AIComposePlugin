@@ -208,8 +208,5 @@ class SettingsTask extends AbstractTask
         return \in_array($selectedValue, $values, true);
     }
 
-    private function translation(string $key): string
-    {
-        return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
-    }
+
 }
