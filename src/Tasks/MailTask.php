@@ -149,11 +149,61 @@ class MailTask extends AbstractTask
             $pattern = '/(<div\s+id="compose-attachments".*?>)/';
 
             if (str_contains($args['content'], 'id="compose-attachments"')) {
-                $args['content'] = preg_replace($pattern, $new_content . '$1', $args['content']);
+                $args['content'] = preg_replace($pattern, $this->addSelectFieldsNew() . '$1', $args['content']);
             }
         }
 
+        $rcmail = \rcmail::get_instance();
+        $opcije = $rcmail->output->get_env('aiPluginOptions');
+        error_log(" Env Opcije: " . print_r($opcije, true));
+
         return $args;
+    }
+
+
+    public function addSelectFieldsNew(){
+        $rcmail = \rcmail::get_instance();
+        $aiPluginOptions = $rcmail->output->get_env('aiPluginOptions');
+
+     $languages = $aiPluginOptions['languages'];
+     $creativities = $aiPluginOptions['creativities'];
+     $lengths  = $aiPluginOptions['lengths'];
+        $styles = $aiPluginOptions['styles'];
+
+        $fields = [
+
+            'language' => $languages,
+            'creativity' => $creativities,
+            'length' => $lengths,
+            'style' => $styles
+
+        ];
+
+        $new_content = '<div id="select-div">
+        <div>
+        <h4>' . $this->translation('ai_dialog_title') . '</h4>
+        </div>';
+
+        foreach($fields as  $key => $values){
+            $new_content .= '<div class="single-select">
+        <div >
+            <label for="'.$key.'">
+                <span class="regular-size">' . $this->translation('ai_label_'.$key) . '</span>
+            </label>
+            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_'.$key) . '</div></span>
+        </div>
+        <select id="aic-'.$key.'" class="form-control pretty-select custom-select">
+        ';
+
+
+            foreach($values as $value){
+                $new_content .= '<option value="' . $value . '">' . $value . '</option>';
+            }
+
+            $new_content .= '</select></div>';
+        }
+
+return $new_content;
     }
 
     public function startup(): void
