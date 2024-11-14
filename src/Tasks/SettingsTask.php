@@ -207,6 +207,4 @@ class SettingsTask extends AbstractTask
     {
         return \in_array($selectedValue, $values, true);
     }
-
-
 }

@@ -30,6 +30,11 @@ abstract class AbstractTask
         $this->plugin->add_texts('src/localization/labels/', true);
     }
 
+    protected function translation(string $key): string
+    {
+        return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
+    }
+
     private function initSettings(): void
     {
         $rcmail = \rcmail::get_instance();
@@ -123,9 +128,5 @@ abstract class AbstractTask
                 }
             }
         }
-    }
-    protected function translation(string $key): string
-    {
-        return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
     }
 }

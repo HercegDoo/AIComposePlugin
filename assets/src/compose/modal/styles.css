@@ -4,6 +4,7 @@
 }
 .xinfo.right div {
   right: auto;
+
 }
 .xinfo.top div {
   top: auto;
@@ -11,6 +12,7 @@
 }
 .xinfo:hover div {
   display: block;
+  z-index: 99;
 }
 .xinfo::before {
   font-family: Icons;
@@ -19,7 +21,9 @@
   text-decoration: inherit;
   text-align: center;
   content: "\f05a";
+  z-index:3;
 }
+
 
 .xinfo div {
   font-family: Roboto, sans-serif;
@@ -450,6 +454,35 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     .propbox {
     flex: 1 1 33.33%;
   }
+}
+
+#instruction-example{
+  border: 1px solid #7c949c;
+}
+
+.form-buttons{
+  height:38.75px;
+}
+
+#select-div{
+  display:flex;
+  flex-direction: column;
+  gap:10px;
+  align-items: start;
+  padding: 15px;
+  border-bottom: 1px solid #7c949c;
+}
+
+#select-div select{
+  width: 90%;
+}
+
+.single-select{
+  width:100%;
+}
+
+.small-index:before{
+  z-index: 99;
 }
 
 @media (max-width: 500px) {

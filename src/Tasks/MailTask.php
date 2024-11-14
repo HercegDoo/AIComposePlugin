@@ -12,10 +12,9 @@ class MailTask extends AbstractTask
     {
         $this->plugin->add_hook('startup', [$this, 'startup']);
         $this->plugin->add_hook('render_page', [$this, 'load_resources']);
-        $this->plugin->add_hook('render_page', array($this, 'add_instruction_field'));
-        $this->plugin->add_hook('render_page', array($this, 'add_form_buttons'));
-
-
+        $this->plugin->add_hook('render_page', [$this, 'add_instruction_field']);
+        $this->plugin->add_hook('render_page', [$this, 'add_form_buttons']);
+        $this->plugin->add_hook('render_page', [$this, 'add_select_fields']);
     }
 
     /**
@@ -32,10 +31,15 @@ class MailTask extends AbstractTask
         return $args;
     }
 
+    /**
+     * @param array<string, mixed> $args
+     *
+     * @return array<string, mixed>
+     */
     public function add_instruction_field(array $args): array
     {
         $new_content = '<div id="aic-instructions-div" class="form-group row">
-					<label for="_to" class="col-2 col-form-label">' . $this->translation('ai_label_instructions') .'</label>
+					<label for="_to" class="col-2 col-form-label">' . $this->translation('ai_label_instructions') . '</label>
 					<div class="col-10">
 						<div class="input-group">
 							<textarea name="aic-instructions" spellcheck="false" id="aic-instructions-textarea" tabindex="-1" data-recipient-input="true" style="position: absolute; opacity: 0; left: -5000px; width: 10px;" autocomplete="off" aria-autocomplete="list" aria-expanded="false" role="combobox"></textarea>
@@ -49,54 +53,111 @@ class MailTask extends AbstractTask
 					</div>
 				</div>';
 
-        if (strpos($args['content'], $new_content) === false) {
+        if (isset($args['content']) && \is_string($args['content']) && !str_contains($args['content'], $new_content)) {
             $pattern = '/(<div\s+id="composebodycontainer".*?>)/';
 
-
-            if (strpos($args['content'], 'id="composebodycontainer"') !== false) {
+            if (str_contains($args['content'], 'id="composebodycontainer"')) {
                 $args['content'] = preg_replace($pattern, $new_content . '$1', $args['content']);
             }
-
         }
+
         return $args;
     }
 
+    /**
+     * @param array<string, mixed> $args
+     *
+     * @return array<string, mixed>
+     */
     public function add_form_buttons(array $args): array
     {
-        $new_buttons = '<button type="button" class="btn btn-primary" id="button1">Dugme 1</button>
-                    <button type="button" class="btn btn-secondary" id="button2">Dugme 2</button>';
+        $new_buttons = '<button type="button"  id="generate-email-button" class="btn btn-primary form-buttons">
+      <span id="generate-email-span" >' . $this->translation('ai_generate_email') . '</span>
+      <span id="generate-again-span" style="display: none;">' . $this->translation('ai_generate_again') . '</span>
+  </button>
+  <button type="button" class="btn btn-default form-buttons" id="instruction-example" >' . $this->translation('ai_button_show_instructions') . '</button>';
 
+        if (isset($args['content']) && \is_string($args['content']) && !str_contains($args['content'], $new_buttons) && str_contains($args['content'], 'class="formbuttons"')) {
+            $args['content'] = preg_replace_callback(
+                '/(<div\s+class="formbuttons".*?>)(.*?)(<\/div>)/s',
+                static function ($matches) use ($new_buttons) {
+                    // Pronađi postojeća dugmad unutar formbuttons div-a
+                    preg_match_all('/<button.*?>.*?<\/button>/', $matches[2], $buttons);
 
-        if (strpos($args['content'], $new_buttons) === false) {
+                    // Dodaj nova dugmad između postojećih ili ako nema dugmadi, dodaj ih na početak
+                    $middle_buttons = $buttons[0]
+                        ? $buttons[0][0] . $new_buttons . implode('', \array_slice($buttons[0], 1))
+                        : $new_buttons;
 
-            // Provera da li 'formbuttons' div već postoji u sadržaju
-            if (strpos($args['content'], 'class="formbuttons"') !== false) {
+                    return $matches[1] . $middle_buttons . $matches[3];
+                },
+                $args['content']
+            );
+        }
 
-                // Regularni izraz koji traži sve dugmadi unutar formbuttons div-a
-                $args['content'] = preg_replace_callback('/(<div\s+class="formbuttons".*?>)(.*?)(<\/div>)/s', function ($matches) use ($new_buttons) {
+        return $args;
+    }
 
-                    // Svi dugmadi unutar formbuttons div-a
-                    preg_match_all('/<button.*?>(.*?)<\/button>/', $matches[2], $buttons);
+    /**
+     * @param array<string, mixed> $args
+     *
+     * @return array<string, mixed>
+     */
+    public function add_select_fields(array $args): array
+    {
+        $new_content = '<div id="select-div">
+        <div>
+        <h4>' . $this->translation('ai_dialog_title') . '</h4>
+        </div>
 
-                    // Ako imamo najmanje dva dugmadi, umetnemo nova između
-                    if (count($buttons[0]) > 0) {
-                        // Prvo dugme, srednji deo (postojeća dugmadi), i poslednje dugme
-                        $middle_buttons = implode('', array_slice($buttons[0], 0, 1)) . $new_buttons . implode('', array_slice($buttons[0], 1));
-                        return $matches[1] . $middle_buttons . $matches[3];
-                    }
+<div class="single-select">
+        <div >
+            <label for="creativity">
+                <span class="regular-size">' . $this->translation('ai_label_style') . '</span>
+            </label>
+            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_style') . '</div></span>
+        </div>
+    <select id="aic-creativity" class="form-control pretty-select custom-select"><option value="low" selected="selected">Low</option><option value="medium">Medium</option><option value="high">High</option></select></div>
+<div class="single-select">
+        <div >
+            <label for="creativity">
+                <span class="regular-size">' . $this->translation('ai_label_length') . '</span>
+            </label>
+            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_length') . '</div></span>
+        </div>
+    <select id="aic-creativity" class="form-control pretty-select custom-select"><option value="low" selected="selected">Low</option><option value="medium">Medium</option><option value="high">High</option></select></div>
+<div class="single-select">
+        <div >
+            <label for="creativity">
+                <span class="regular-size">' . $this->translation('ai_label_creativity') . '</span>
+            </label>
+            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_creativity') . '</div></span>
+        </div>
+    <select id="aic-creativity" class="form-control pretty-select custom-select"><option value="low" selected="selected">Low</option><option value="medium">Medium</option><option value="high">High</option></select></div>
+<div class="single-select">
+        <div >
+            <label for="creativity">
+                <span class="regular-size">' . $this->translation('ai_label_language') . '</span>
+            </label>
+            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_language') . '</div></span>
+        </div>
+    <select id="aic-creativity" class="form-control pretty-select custom-select"><option value="low" selected="selected">Low</option><option value="medium">Medium</option><option value="high">High</option></select></div>
+</div>
+';
 
-                    // Ako nema dugmadi, samo dodajemo nova
-                    return $matches[1] . $new_buttons . $matches[3];
-                }, $args['content']);
+        if (isset($args['content']) && \is_string($args['content']) && !str_contains($args['content'], $new_content)) {
+            $pattern = '/(<div\s+id="compose-attachments".*?>)/';
+
+            if (str_contains($args['content'], 'id="compose-attachments"')) {
+                $args['content'] = preg_replace($pattern, $new_content . '$1', $args['content']);
             }
         }
+
         return $args;
     }
 
     public function startup(): void
     {
-
-
         $rcmail = \rcmail::get_instance();
         $settings = [
             'languages' => array_values(Settings::getLanguages()),
