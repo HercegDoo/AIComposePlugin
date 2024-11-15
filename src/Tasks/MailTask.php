@@ -105,78 +105,40 @@ class MailTask extends AbstractTask
      */
     public function add_select_fields(array $args): array
     {
-        $new_content = '<div id="select-div">
-        <div>
-        <h4>' . $this->translation('ai_dialog_title') . '</h4>
-        </div>
+        $generatedSelectFields = $this->create_select_fields();
 
-<div class="single-select">
-        <div >
-            <label for="creativity">
-                <span class="regular-size">' . $this->translation('ai_label_style') . '</span>
-            </label>
-            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_style') . '</div></span>
-        </div>
-    <select id="aic-creativity" class="form-control pretty-select custom-select"><option value="low" selected="selected">Low</option><option value="medium">Medium</option><option value="high">High</option></select></div>
-<div class="single-select">
-        <div >
-            <label for="creativity">
-                <span class="regular-size">' . $this->translation('ai_label_length') . '</span>
-            </label>
-            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_length') . '</div></span>
-        </div>
-    <select id="aic-creativity" class="form-control pretty-select custom-select"><option value="low" selected="selected">Low</option><option value="medium">Medium</option><option value="high">High</option></select></div>
-<div class="single-select">
-        <div >
-            <label for="creativity">
-                <span class="regular-size">' . $this->translation('ai_label_creativity') . '</span>
-            </label>
-            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_creativity') . '</div></span>
-        </div>
-    <select id="aic-creativity" class="form-control pretty-select custom-select"><option value="low" selected="selected">Low</option><option value="medium">Medium</option><option value="high">High</option></select></div>
-<div class="single-select">
-        <div >
-            <label for="creativity">
-                <span class="regular-size">' . $this->translation('ai_label_language') . '</span>
-            </label>
-            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_language') . '</div></span>
-        </div>
-    <select id="aic-creativity" class="form-control pretty-select custom-select"><option value="low" selected="selected">Low</option><option value="medium">Medium</option><option value="high">High</option></select></div>
-</div>
-';
-
-        if (isset($args['content']) && \is_string($args['content']) && !str_contains($args['content'], $new_content)) {
+        if (isset($args['content']) && \is_string($args['content']) && !str_contains($args['content'], $generatedSelectFields)) {
             $pattern = '/(<div\s+id="compose-attachments".*?>)/';
 
             if (str_contains($args['content'], 'id="compose-attachments"')) {
-                $args['content'] = preg_replace($pattern, $this->addSelectFieldsNew() . '$1', $args['content']);
+                $args['content'] = preg_replace($pattern, $generatedSelectFields . '$1', $args['content']);
             }
         }
-
-        $rcmail = \rcmail::get_instance();
-        $opcije = $rcmail->output->get_env('aiPluginOptions');
-        error_log(" Env Opcije: " . print_r($opcije, true));
 
         return $args;
     }
 
-
-    public function addSelectFieldsNew(){
+    public function create_select_fields(): string
+    {
         $rcmail = \rcmail::get_instance();
         $aiPluginOptions = $rcmail->output->get_env('aiPluginOptions');
+        $languages = [];
+        $creativities = [];
+        $lengths = [];
+        $styles = [];
 
-     $languages = $aiPluginOptions['languages'];
-     $creativities = $aiPluginOptions['creativities'];
-     $lengths  = $aiPluginOptions['lengths'];
-        $styles = $aiPluginOptions['styles'];
+        if (\is_array($aiPluginOptions)) {
+            $languages = $aiPluginOptions['languages'];
+            $creativities = $aiPluginOptions['creativities'];
+            $lengths = $aiPluginOptions['lengths'];
+            $styles = $aiPluginOptions['styles'];
+        }
 
         $fields = [
-
             'language' => $languages,
             'creativity' => $creativities,
             'length' => $lengths,
-            'style' => $styles
-
+            'style' => $styles,
         ];
 
         $new_content = '<div id="select-div">
@@ -184,26 +146,30 @@ class MailTask extends AbstractTask
         <h4>' . $this->translation('ai_dialog_title') . '</h4>
         </div>';
 
-        foreach($fields as  $key => $values){
+        foreach ($fields as $key => $values) {
             $new_content .= '<div class="single-select">
         <div >
-            <label for="'.$key.'">
-                <span class="regular-size">' . $this->translation('ai_label_'.$key) . '</span>
+            <label for="' . $key . '">
+                <span class="regular-size">' . $this->translation('ai_label_' . $key) . '</span>
             </label>
-            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_'.$key) . '</div></span>
+            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_' . $key) . '</div></span>
         </div>
-        <select id="aic-'.$key.'" class="form-control pretty-select custom-select">
+        <select id="aic-' . $key . '" class="form-control pretty-select custom-select">
         ';
 
-
-            foreach($values as $value){
-                $new_content .= '<option value="' . $value . '">' . $value . '</option>';
+            foreach ($values as $value) {
+                $checkValue = '';
+                if (\is_array($aiPluginOptions)) {
+                    $checkValue = $aiPluginOptions['default' . ucfirst($key)];
+                }
+                $new_content .= '<option value="' . $value . '" ' . $this->isSelected($value, $checkValue) . '">' . ucfirst($value) . '</option>';
             }
-
             $new_content .= '</select></div>';
         }
 
-return $new_content;
+        $new_content .= '</div>';
+
+        return $new_content;
     }
 
     public function startup(): void
@@ -225,5 +191,10 @@ return $new_content;
             $rcmail->output->set_env('aiPluginOptions', $settings);
             $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
         }
+    }
+
+    private function isSelected(string $value, string $defaultValue): string
+    {
+        return $value === $defaultValue ? 'selected' : '';
     }
 }
