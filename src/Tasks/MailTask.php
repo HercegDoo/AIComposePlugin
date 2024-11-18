@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use HercegDoo\AIComposePlugin\Utilities\ContentInjecter;
+use HercegDoo\AIComposePlugin\Utilities\TemplateObjectFiller;
 
 class MailTask extends AbstractTask
 {
@@ -15,7 +17,20 @@ class MailTask extends AbstractTask
         $this->plugin->add_hook('render_page', [$this, 'add_instruction_field']);
         $this->plugin->add_hook('render_page', [$this, 'add_form_buttons']);
         $this->plugin->add_hook('render_page', [$this, 'add_select_fields']);
+        $this->plugin->add_hook('render_page', [$this, 'test']);
+        $this->plugin->add_hook('preferences_save', [$this, 'preferencesSave']);
+        \rcmail::get_instance()->output->add_handlers([
+            'aiStyleSelect' => [$this, 'style_select_create'],
+            'aiLengthSelect' => [$this, 'length_select_create'],
+                'aiCreativitySelect' => [$this, 'creativity_select_create'],
+                'ailanguageSelect' => [$this, 'language_select_create']]
+        );
+        
+
     }
+
+
+
 
     /**
      * @param array<string, mixed> $args
@@ -38,30 +53,22 @@ class MailTask extends AbstractTask
      */
     public function add_instruction_field(array $args): array
     {
-        $new_content = '<div id="aic-instructions-div" class="form-group row">
-					<label for="_to" class="col-2 col-form-label">' . $this->translation('ai_label_instructions') . '</label>
-					<div class="col-10">
-						<div class="input-group">
-							<textarea name="aic-instructions" spellcheck="false" id="aic-instructions-textarea" tabindex="-1" data-recipient-input="true" style="position: absolute; opacity: 0; left: -5000px; width: 10px;" autocomplete="off" aria-autocomplete="list" aria-expanded="false" role="combobox"></textarea>
-							<span class="input-group-append">
-								<a href="#"  class="input-group-text add icon" title="Placeholder" tabindex="1"><span class="inner">Placeholder</span></a>
-							</span>
-							<span class="input-group-append">
-								<a href="#" data-popup="headers-menu" class="input-group-text icon add active" title="PLACEHOLDER" tabindex="1" aria-haspopup="true" aria-expanded="false" aria-owns="headers-menu" data-original-title="PLACEHOLDER"><span class="inner">PLACEHOLDER</span></a>
-							</span>
-						</div>
-					</div>
-				</div>';
 
-        if (isset($args['content']) && \is_string($args['content']) && !str_contains($args['content'], $new_content)) {
-            $pattern = '/(<div\s+id="composebodycontainer".*?>)/';
+        $this->loadTranslations();
 
-            if (str_contains($args['content'], 'id="composebodycontainer"')) {
-                $args['content'] = preg_replace($pattern, $new_content . '$1', $args['content']);
-            }
+        $aiComposeInstructionField = "";
+        $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/aicomposeinstructionfield.html';
+        if (file_exists($htmlFilePath)) {
+            $aiComposeInstructionField = file_get_contents($htmlFilePath);
         }
 
-        return $args;
+       $test = \rcmail::get_instance()->output->just_parse($aiComposeInstructionField);
+
+        $contentInjector = new ContentInjecter();
+
+
+        $newContent=  $contentInjector->insertContentAboveElement($args, $test, 'composebodycontainer');
+        return $newContent;
     }
 
     /**
@@ -71,31 +78,17 @@ class MailTask extends AbstractTask
      */
     public function add_form_buttons(array $args): array
     {
-        $new_buttons = '<button type="button"  id="generate-email-button" class="btn btn-primary form-buttons">
-      <span id="generate-email-span" >' . $this->translation('ai_generate_email') . '</span>
-      <span id="generate-again-span" style="display: none;">' . $this->translation('ai_generate_again') . '</span>
-  </button>
-  <button type="button" class="btn btn-default form-buttons" id="instruction-example" >' . $this->translation('ai_button_show_instructions') . '</button>';
-
-        if (isset($args['content']) && \is_string($args['content']) && !str_contains($args['content'], $new_buttons) && str_contains($args['content'], 'class="formbuttons"')) {
-            $args['content'] = preg_replace_callback(
-                '/(<div\s+class="formbuttons".*?>)(.*?)(<\/div>)/s',
-                static function ($matches) use ($new_buttons) {
-                    // Pronađi postojeća dugmad unutar formbuttons div-a
-                    preg_match_all('/<button.*?>.*?<\/button>/', $matches[2], $buttons);
-
-                    // Dodaj nova dugmad između postojećih ili ako nema dugmadi, dodaj ih na početak
-                    $middle_buttons = $buttons[0]
-                        ? $buttons[0][0] . $new_buttons . implode('', \array_slice($buttons[0], 1))
-                        : $new_buttons;
-
-                    return $matches[1] . $middle_buttons . $matches[3];
-                },
-                $args['content']
-            );
+        $aiComposeButtons = "";
+        $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/buttons.html';
+        if (file_exists($htmlFilePath)) {
+        $aiComposeButtons = file_get_contents($htmlFilePath);
         }
 
-        return $args;
+        $test = \rcmail::get_instance()->output->just_parse($aiComposeButtons);
+
+
+        $contentInjector = new ContentInjecter();
+        return $contentInjector->add_buttons($test, 'formbuttons', $args);
     }
 
     /**
@@ -105,72 +98,51 @@ class MailTask extends AbstractTask
      */
     public function add_select_fields(array $args): array
     {
-        $generatedSelectFields = $this->create_select_fields();
+        $contentInjector = new ContentInjecter();
 
-        if (isset($args['content']) && \is_string($args['content']) && !str_contains($args['content'], $generatedSelectFields)) {
-            $pattern = '/(<div\s+id="compose-attachments".*?>)/';
-
-            if (str_contains($args['content'], 'id="compose-attachments"')) {
-                $args['content'] = preg_replace($pattern, $generatedSelectFields . '$1', $args['content']);
-            }
+        $aiSelectFields = "";
+        $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/aiselectfields.html';
+        if (file_exists($htmlFilePath)) {
+            $aiSelectFields = file_get_contents($htmlFilePath);
         }
+        $test = \rcmail::get_instance()->output->just_parse( $aiSelectFields);
 
-        return $args;
+        return $contentInjector->insertContentAboveElement($args, $test , 'compose-attachments');
     }
 
-    public function create_select_fields(): string
+    public function style_select_create($attrib){
+        $objectFiller =  new TemplateObjectFiller();
+        return $objectFiller->createSelectField($attrib, "styles", 'style_select');
+    }
+
+    public function length_select_create($attrib){
+        $objectFiller =  new TemplateObjectFiller();
+        return $objectFiller->createSelectField($attrib, "lengths", 'length_select');
+    }
+
+    public function creativity_select_create($attrib){
+        $objectFiller =  new TemplateObjectFiller();
+        return $objectFiller->createSelectField($attrib, "creativities", 'creativity_select');
+    }
+
+    public function language_select_create($attrib){
+        $objectFiller =  new TemplateObjectFiller();
+        return $objectFiller->createSelectField($attrib, "languages", 'language_select');
+    }
+
+
+
+
+
+    public function compose_button_handler($attrib)
     {
-        $rcmail = \rcmail::get_instance();
-        $aiPluginOptions = $rcmail->output->get_env('aiPluginOptions');
-        $languages = [];
-        $creativities = [];
-        $lengths = [];
-        $styles = [];
-
-        if (\is_array($aiPluginOptions)) {
-            $languages = $aiPluginOptions['languages'];
-            $creativities = $aiPluginOptions['creativities'];
-            $lengths = $aiPluginOptions['lengths'];
-            $styles = $aiPluginOptions['styles'];
-        }
-
-        $fields = [
-            'language' => $languages,
-            'creativity' => $creativities,
-            'length' => $lengths,
-            'style' => $styles,
-        ];
-
-        $new_content = '<div id="select-div">
-        <div>
-        <h4>' . $this->translation('ai_dialog_title') . '</h4>
-        </div>';
-
-        foreach ($fields as $key => $values) {
-            $new_content .= '<div class="single-select">
-        <div >
-            <label for="' . $key . '">
-                <span class="regular-size">' . $this->translation('ai_label_' . $key) . '</span>
-            </label>
-            <span class="xinfo right small-index"><div>' . $this->translation('ai_tip_' . $key) . '</div></span>
-        </div>
-        <select id="aic-' . $key . '" class="form-control pretty-select custom-select">
-        ';
-
-            foreach ($values as $value) {
-                $checkValue = '';
-                if (\is_array($aiPluginOptions)) {
-                    $checkValue = $aiPluginOptions['default' . ucfirst($key)];
-                }
-                $new_content .= '<option value="' . $value . '" ' . $this->isSelected($value, $checkValue) . '">' . ucfirst($value) . '</option>';
-            }
-            $new_content .= '</select></div>';
-        }
-
-        $new_content .= '</div>';
-
-        return $new_content;
+     $objectFiller = new TemplateObjectFiller();
+     return $objectFiller->createSelectField($attrib, "languages", 'language_select');
     }
+
+
+
+
 
     public function startup(): void
     {
