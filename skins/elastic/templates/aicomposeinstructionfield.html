@@ -1,0 +1,15 @@
+
+<div id="compose_to" class="form-group row">
+  <label for="_to" class="col-2 col-form-label"><roundcube:label name="AIComposePlugin.ai_label_instructions" /></label>
+  <div class="col-10">
+    <div class="input-group" id="custom-input-group">
+      <roundcube:object name="aicinstruction" part="to" class=" form-control" id="aic-instruction" form="form" tabindex="1" aria-required="true" data-recipient-input="true" />
+      <span class="input-group-append">
+								<a href="#add-contact" onclick="UI.show_popup_dialog()" id="aic-example-instructions" class="input-group-text icon" title="<roundcube:label name="AIComposePlugin.ai_button_show_instructions" />" tabindex="1"><span class="inner"><roundcube:label name="AIComposePlugin.ai_button_show_instructions" /></span></a>
+							</span>
+      <span class="input-group-append">
+								<a href="#add-header" data-popup="predefined-instructions" id="aic-popup" class="input-group-text icon" title="<roundcube:label name="AIComposePlugin.ai_predefined_section_title" />" tabindex="1"><span class="inner"><roundcube:label name="AIComposePlugin.ai_predefined_section_title" /></span></a>
+							</span>
+    </div>
+  </div>
+</div>

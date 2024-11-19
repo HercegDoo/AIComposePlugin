@@ -498,6 +498,22 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   padding-top:5px;
 }
 
+#aic-instruction{
+  width: 90%;
+}
+
+#aic-popup::before{
+  content: "\f0e0";
+}
+
+#aic-example-instructions::before{
+  content: "\f05a";
+}
+
+#custom-input-group{
+  flex-wrap: nowrap;
+}
+
 @media (max-width: 500px) {
   .properties {
     flex-direction: column;

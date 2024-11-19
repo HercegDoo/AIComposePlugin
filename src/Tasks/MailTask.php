@@ -24,7 +24,9 @@ class MailTask extends AbstractTask
                 'aistyleselect' => [$this, 'style_select_create'],
                 'ailengthselect' => [$this, 'length_select_create'],
                 'aicreativityselect' => [$this, 'creativity_select_create'],
-                'ailanguageselect' => [$this, 'language_select_create']]
+                'ailanguageselect' => [$this, 'language_select_create'],
+                'aicinstruction' => [$this, 'create_instruction_field'],
+                 'aicinstructiondropdown' => [$this, 'create_instruction_dropdown']]
         );
     }
 
@@ -133,6 +135,31 @@ class MailTask extends AbstractTask
         return $objectFiller->createSelectField($attrib, 'languages', 'language_select');
     }
 
+    public function create_instruction_field($attrib){
+        $objectFiller = new TemplateObjectFiller();
+        return $objectFiller->createInstructionField($attrib);
+    }
+
+    public function test($args){
+        $aiComposeInstructionField = '';
+        $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/popup.html';
+        if (file_exists($htmlFilePath)) {
+            $aiComposeInstructionField = file_get_contents($htmlFilePath);
+        }
+
+        $test = \rcmail::get_instance()->output->just_parse($aiComposeInstructionField);
+
+        $contentInjector = new ContentInjecter();
+        return $contentInjector->insertContentAboveElement($args, $test,"headers-menu");
+    }
+
+    public function create_instruction_dropdown($args){
+        $templateFiller = new TemplateObjectFiller();
+        return $templateFiller->fillPredefinedInstructions();
+
+
+    }
+
     public function startup(): void
     {
         $rcmail = \rcmail::get_instance();
@@ -151,6 +178,7 @@ class MailTask extends AbstractTask
             $this->loadTranslations();
             $rcmail->output->set_env('aiPluginOptions', $settings);
             $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
+            error_log("Predefinisane instrukcije: " . print_r($rcmail->user->get_prefs('predefinedInstructions'), true));
         }
     }
 
