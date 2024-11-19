@@ -464,6 +464,45 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   }
 }
 
+.xdialog-contents{
+  overflow-y: scroll;
+}
+
+#aic-compose-help-modal{
+  width: 70%;
+  height:85%;
+  margin: auto;
+}
+
+.help-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+#aic-back-button{
+padding: 7px 15px;
+}
+
+#help-title{
+margin: 0 auto;
+}
+
+.help-content p{
+  padding-top: 20px;
+  font-size: 1.2rem;
+}
+
+.help-content ul li {
+  margin-bottom: 7px;
+  font-size: 1.1rem;
+}
+
+.help-content ul li:last-child {
+  margin-bottom: 0;
+}
+
 #instruction-example{
   border: 1px solid #7c949c;
 }

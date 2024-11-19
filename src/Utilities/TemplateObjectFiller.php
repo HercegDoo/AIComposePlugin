@@ -4,50 +4,62 @@ namespace HercegDoo\AIComposePlugin\Utilities;
 
 class TemplateObjectFiller
 {
-    public function createSelectField($attrib, $options_key, $name): string
+    public function createSelectField(string $options_key, string $name): string
     {
         $defaultValue = 'default' . ucfirst($options_key);
         $defaultValue = substr($defaultValue, 0, -1);
 
-        $options = \rcmail::get_instance()->output->get_env('aiPluginOptions')[$options_key];
-        $defaultOption = \rcmail::get_instance()->output->get_env('aiPluginOptions')[$options_key === 'creativities' ? 'defaultCreativity' : $defaultValue];
+        $options = [];
+        $defaultOption = '';
+
+        $aiPluginOptionsArray = \rcmail::get_instance()->output->get_env('aiPluginOptions');
+        if (\is_array($aiPluginOptionsArray) && isset($aiPluginOptionsArray[$options_key])) {
+            $options = $aiPluginOptionsArray[$options_key];
+            $defaultOption = $aiPluginOptionsArray[$options_key === 'creativities' ? 'defaultCreativity' : $defaultValue];
+        }
 
         $attrib = ['name' => $name];
 
         $selector = new \html_select($attrib);
 
-        foreach ($options as $option) {
-            $capitalizedValue = ucfirst($option);
+        foreach ((array) $options as $option) {
+            $capitalizedValue = \is_string($option) ? ucfirst($option) : $option;
             $selector->add($capitalizedValue, $option);
         }
 
         $sel = $defaultOption;
 
-        return $selector->show($sel);
+        return \is_string($sel) ? $selector->show($sel) : '';
     }
 
-    public function createInstructionField($attrib){
+    public function createInstructionField(): string
+    {
         $attrisb = [
-            'name'  => 'aicinstruction',
-            'id'    => 'aic-instruction',
-            'rows'  => 1,
-            'cols'  => 50,
-            'class' => 'form-control'
+            'name' => 'aicinstruction',
+            'id' => 'aic-instruction',
+            'rows' => 1,
+            'cols' => 50,
+            'class' => 'form-control',
         ];
         $textarea = new \html_textarea($attrisb);
+
         return $textarea->show('');
     }
 
-    public function fillPredefinedInstructions(){
+    public function fillPredefinedInstructions(): string
+    {
         $html = new \html();
-        $liTagsContainer = "";
+        $liTagsContainer = '';
         $predefinedInstructions = \rcmail::get_instance()->output->get_env('aiPredefinedInstructions');
-        foreach($predefinedInstructions as $predefinedInstruction) {
-          $spanTag = $html::span([], $predefinedInstruction['title']);
-          $aTag = $html::tag('a', ['role' => 'button', 'class' => 'recipient active', 'tabindex' => -1], $spanTag);
-          $liTag = $html::tag('li', ['class' => 'menuitem'], $aTag);
-          $liTagsContainer .= $liTag;
+        foreach ((array) $predefinedInstructions as $predefinedInstruction) {
+            if (\is_array($predefinedInstruction)) {
+                $spanTag = $html::span([], \is_string($predefinedInstruction['title']) ? $predefinedInstruction['title'] : 'Error');
+                $aTag = $html::tag('a', ['role' => 'button', 'class' => 'recipient active', 'tabindex' => -1], $spanTag);
+                $liTag = $html::tag('li', ['class' => 'menuitem'], $aTag);
+                $liTagsContainer .= $liTag;
+            }
         }
+
         return $liTagsContainer;
     }
 }

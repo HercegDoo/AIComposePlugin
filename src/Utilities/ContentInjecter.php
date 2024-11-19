@@ -4,21 +4,6 @@ namespace HercegDoo\AIComposePlugin\Utilities;
 
 class ContentInjecter
 {
-    private $aiPluginOptions;
-
-    private $selectFields;
-
-    public function __construct()
-    {
-        $this->aiPluginOptions = (array) \rcmail::get_instance()->output->get_env('aiPluginOptions');
-        $this->selectFields = [
-            'language' => $this->aiPluginOptions['languages'],
-            'creativity' => $this->aiPluginOptions['creativities'],
-            'length' => $this->aiPluginOptions['lengths'],
-            'style' => $this->aiPluginOptions['styles'],
-        ];
-    }
-
     /**
      * @param array<string, mixed> $baseHTML
      *
@@ -36,7 +21,6 @@ class ContentInjecter
 
         return $baseHTML;
     }
-
 
     /**
      * @param array<string, mixed> $baseHTML
@@ -66,10 +50,8 @@ class ContentInjecter
         return $baseHTML;
     }
 
-
     protected function translation(string $key): string
     {
         return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
     }
-
 }

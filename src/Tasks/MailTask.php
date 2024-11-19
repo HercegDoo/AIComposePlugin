@@ -17,7 +17,8 @@ class MailTask extends AbstractTask
         $this->plugin->add_hook('render_page', [$this, 'add_instruction_field']);
         $this->plugin->add_hook('render_page', [$this, 'add_form_buttons']);
         $this->plugin->add_hook('render_page', [$this, 'add_select_fields']);
-        $this->plugin->add_hook('render_page', [$this, 'test']);
+        $this->plugin->add_hook('render_page', [$this, 'add_help_examples']);
+        $this->plugin->add_hook('render_page', [$this, 'create_predefined_instructions_template']);
         $this->plugin->add_hook('preferences_save', [$this, 'preferencesSave']);
         \rcmail::get_instance()->output->add_handlers(
             [
@@ -26,7 +27,7 @@ class MailTask extends AbstractTask
                 'aicreativityselect' => [$this, 'creativity_select_create'],
                 'ailanguageselect' => [$this, 'language_select_create'],
                 'aicinstruction' => [$this, 'create_instruction_field'],
-                 'aicinstructiondropdown' => [$this, 'create_instruction_dropdown']]
+                'aicinstructiondropdown' => [$this, 'create_instruction_dropdown']]
         );
     }
 
@@ -63,9 +64,7 @@ class MailTask extends AbstractTask
 
         $contentInjector = new ContentInjecter();
 
-        $newContent = $contentInjector->insertContentAboveElement($args, $test, 'composebodycontainer');
-
-        return $newContent;
+        return $contentInjector->insertContentAboveElement($args, $test, 'composebodycontainer');
     }
 
     /**
@@ -85,7 +84,7 @@ class MailTask extends AbstractTask
 
         $contentInjector = new ContentInjecter();
 
-        return $contentInjector->insertContentAboveElement( $args, $test, 'formbuttons',);
+        return $contentInjector->insertContentAboveElement($args, $test, 'formbuttons');
     }
 
     /**
@@ -107,57 +106,85 @@ class MailTask extends AbstractTask
         return $contentInjector->insertContentAboveElement($args, $test, 'compose-attachments');
     }
 
-    public function style_select_create($attrib)
+    /**
+     * @param array<string, mixed> $args
+     *
+     * @return array<string, mixed>
+     */
+    public function add_help_examples(array $args): array
+    {
+        $contentInjector = new ContentInjecter();
+
+        $helpExamplesModal = '';
+        $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/instructionexamples.html';
+        if (file_exists($htmlFilePath)) {
+            $helpExamplesModal = file_get_contents($htmlFilePath);
+        }
+        $parsedHelpExamplesModal = \rcmail::get_instance()->output->just_parse($helpExamplesModal);
+
+        return $contentInjector->insertContentAboveElement($args, $parsedHelpExamplesModal, 'layout-content');
+    }
+
+    public function style_select_create(): string
     {
         $objectFiller = new TemplateObjectFiller();
 
-        return $objectFiller->createSelectField($attrib, 'styles', 'style_select');
+        return $objectFiller->createSelectField('styles', 'style_select');
     }
 
-    public function length_select_create($attrib)
+    public function length_select_create(): string
     {
         $objectFiller = new TemplateObjectFiller();
 
-        return $objectFiller->createSelectField($attrib, 'lengths', 'length_select');
+        return $objectFiller->createSelectField('lengths', 'length_select');
     }
 
-    public function creativity_select_create($attrib)
+    public function creativity_select_create(): string
     {
         $objectFiller = new TemplateObjectFiller();
 
-        return $objectFiller->createSelectField($attrib, 'creativities', 'creativity_select');
+        return $objectFiller->createSelectField('creativities', 'creativity_select');
     }
 
-    public function language_select_create($attrib)
+    public function language_select_create(): string
     {
         $objectFiller = new TemplateObjectFiller();
 
-        return $objectFiller->createSelectField($attrib, 'languages', 'language_select');
+        return $objectFiller->createSelectField('languages', 'language_select');
     }
 
-    public function create_instruction_field($attrib){
+    public function create_instruction_field(): string
+    {
         $objectFiller = new TemplateObjectFiller();
-        return $objectFiller->createInstructionField($attrib);
+
+        return $objectFiller->createInstructionField();
     }
 
-    public function test($args){
-        $aiComposeInstructionField = '';
+    /**
+     * @param array<string, mixed> $args
+     *
+     * @return array<string, mixed>
+     */
+    public function create_predefined_instructions_template(array $args): array
+    {
+        $predefinedInstructionsTemplate = '';
         $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/popup.html';
         if (file_exists($htmlFilePath)) {
-            $aiComposeInstructionField = file_get_contents($htmlFilePath);
+            $predefinedInstructionsTemplate = file_get_contents($htmlFilePath);
         }
 
-        $test = \rcmail::get_instance()->output->just_parse($aiComposeInstructionField);
+        $parsedPredefinedInstructionsTemplate = \rcmail::get_instance()->output->just_parse($predefinedInstructionsTemplate);
 
         $contentInjector = new ContentInjecter();
-        return $contentInjector->insertContentAboveElement($args, $test,"headers-menu");
+
+        return $contentInjector->insertContentAboveElement($args, $parsedPredefinedInstructionsTemplate, 'headers-menu');
     }
 
-    public function create_instruction_dropdown($args){
+    public function create_instruction_dropdown(): string
+    {
         $templateFiller = new TemplateObjectFiller();
+
         return $templateFiller->fillPredefinedInstructions();
-
-
     }
 
     public function startup(): void
@@ -178,8 +205,6 @@ class MailTask extends AbstractTask
             $this->loadTranslations();
             $rcmail->output->set_env('aiPluginOptions', $settings);
             $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
-            error_log("Predefinisane instrukcije: " . print_r($rcmail->user->get_prefs('predefinedInstructions'), true));
         }
     }
-
 }
