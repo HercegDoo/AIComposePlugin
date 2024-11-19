@@ -446,6 +446,14 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   height: 100%;
 }
 
+.select-fields{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 10px;
+  justify-content: center;
+}
+
 @media (min-width: 500px) and (max-width: 1068px) {
   #aic-compose-dialog
     #aic-compose-dialog-box
@@ -464,11 +472,11 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   height:38.75px;
 }
 
-#select-div{
+.select-div{
   display:flex;
   flex-direction: column;
-  gap:10px;
-  align-items: start;
+  gap:12px;
+  align-items: center;
   padding: 15px;
   border-bottom: 1px solid #7c949c;
 }
@@ -478,11 +486,16 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
 }
 
 .single-select{
-  width:100%;
+  width:95%;
 }
 
 .small-index:before{
   z-index: 99;
+}
+
+#header-div{
+  text-align: center;
+  padding-top:5px;
 }
 
 @media (max-width: 500px) {

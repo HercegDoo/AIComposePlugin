@@ -19,18 +19,14 @@ class MailTask extends AbstractTask
         $this->plugin->add_hook('render_page', [$this, 'add_select_fields']);
         $this->plugin->add_hook('render_page', [$this, 'test']);
         $this->plugin->add_hook('preferences_save', [$this, 'preferencesSave']);
-        \rcmail::get_instance()->output->add_handlers([
-            'aiStyleSelect' => [$this, 'style_select_create'],
-            'aiLengthSelect' => [$this, 'length_select_create'],
-                'aiCreativitySelect' => [$this, 'creativity_select_create'],
-                'ailanguageSelect' => [$this, 'language_select_create']]
+        \rcmail::get_instance()->output->add_handlers(
+            [
+                'aistyleselect' => [$this, 'style_select_create'],
+                'ailengthselect' => [$this, 'length_select_create'],
+                'aicreativityselect' => [$this, 'creativity_select_create'],
+                'ailanguageselect' => [$this, 'language_select_create']]
         );
-        
-
     }
-
-
-
 
     /**
      * @param array<string, mixed> $args
@@ -53,21 +49,20 @@ class MailTask extends AbstractTask
      */
     public function add_instruction_field(array $args): array
     {
-
         $this->loadTranslations();
 
-        $aiComposeInstructionField = "";
+        $aiComposeInstructionField = '';
         $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/aicomposeinstructionfield.html';
         if (file_exists($htmlFilePath)) {
             $aiComposeInstructionField = file_get_contents($htmlFilePath);
         }
 
-       $test = \rcmail::get_instance()->output->just_parse($aiComposeInstructionField);
+        $test = \rcmail::get_instance()->output->just_parse($aiComposeInstructionField);
 
         $contentInjector = new ContentInjecter();
 
+        $newContent = $contentInjector->insertContentAboveElement($args, $test, 'composebodycontainer');
 
-        $newContent=  $contentInjector->insertContentAboveElement($args, $test, 'composebodycontainer');
         return $newContent;
     }
 
@@ -78,17 +73,17 @@ class MailTask extends AbstractTask
      */
     public function add_form_buttons(array $args): array
     {
-        $aiComposeButtons = "";
+        $aiComposeButtons = '';
         $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/buttons.html';
         if (file_exists($htmlFilePath)) {
-        $aiComposeButtons = file_get_contents($htmlFilePath);
+            $aiComposeButtons = file_get_contents($htmlFilePath);
         }
 
         $test = \rcmail::get_instance()->output->just_parse($aiComposeButtons);
 
-
         $contentInjector = new ContentInjecter();
-        return $contentInjector->add_buttons($test, 'formbuttons', $args);
+
+        return $contentInjector->insertContentAboveElement( $args, $test, 'formbuttons',);
     }
 
     /**
@@ -100,49 +95,43 @@ class MailTask extends AbstractTask
     {
         $contentInjector = new ContentInjecter();
 
-        $aiSelectFields = "";
+        $aiSelectFields = '';
         $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/aiselectfields.html';
         if (file_exists($htmlFilePath)) {
             $aiSelectFields = file_get_contents($htmlFilePath);
         }
-        $test = \rcmail::get_instance()->output->just_parse( $aiSelectFields);
+        $test = \rcmail::get_instance()->output->just_parse($aiSelectFields);
 
-        return $contentInjector->insertContentAboveElement($args, $test , 'compose-attachments');
+        return $contentInjector->insertContentAboveElement($args, $test, 'compose-attachments');
     }
 
-    public function style_select_create($attrib){
-        $objectFiller =  new TemplateObjectFiller();
-        return $objectFiller->createSelectField($attrib, "styles", 'style_select');
-    }
-
-    public function length_select_create($attrib){
-        $objectFiller =  new TemplateObjectFiller();
-        return $objectFiller->createSelectField($attrib, "lengths", 'length_select');
-    }
-
-    public function creativity_select_create($attrib){
-        $objectFiller =  new TemplateObjectFiller();
-        return $objectFiller->createSelectField($attrib, "creativities", 'creativity_select');
-    }
-
-    public function language_select_create($attrib){
-        $objectFiller =  new TemplateObjectFiller();
-        return $objectFiller->createSelectField($attrib, "languages", 'language_select');
-    }
-
-
-
-
-
-    public function compose_button_handler($attrib)
+    public function style_select_create($attrib)
     {
-     $objectFiller = new TemplateObjectFiller();
-     return $objectFiller->createSelectField($attrib, "languages", 'language_select');
+        $objectFiller = new TemplateObjectFiller();
+
+        return $objectFiller->createSelectField($attrib, 'styles', 'style_select');
     }
 
+    public function length_select_create($attrib)
+    {
+        $objectFiller = new TemplateObjectFiller();
 
+        return $objectFiller->createSelectField($attrib, 'lengths', 'length_select');
+    }
 
+    public function creativity_select_create($attrib)
+    {
+        $objectFiller = new TemplateObjectFiller();
 
+        return $objectFiller->createSelectField($attrib, 'creativities', 'creativity_select');
+    }
+
+    public function language_select_create($attrib)
+    {
+        $objectFiller = new TemplateObjectFiller();
+
+        return $objectFiller->createSelectField($attrib, 'languages', 'language_select');
+    }
 
     public function startup(): void
     {
@@ -165,8 +154,4 @@ class MailTask extends AbstractTask
         }
     }
 
-    private function isSelected(string $value, string $defaultValue): string
-    {
-        return $value === $defaultValue ? 'selected' : '';
-    }
 }

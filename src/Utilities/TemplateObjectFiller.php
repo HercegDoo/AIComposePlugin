@@ -4,35 +4,27 @@ namespace HercegDoo\AIComposePlugin\Utilities;
 
 class TemplateObjectFiller
 {
-
-    public function createSelectField($attrib, $options_key,  $name){
-
-        $defaultValue = "default".ucfirst($options_key);
+    public function createSelectField($attrib, $options_key, $name): string
+    {
+        $defaultValue = 'default' . ucfirst($options_key);
         $defaultValue = substr($defaultValue, 0, -1);
 
         $options = \rcmail::get_instance()->output->get_env('aiPluginOptions')[$options_key];
-        $defaultOption = \rcmail::get_instance()->output->get_env('aiPluginOptions')[$defaultValue];
+        $defaultOption = \rcmail::get_instance()->output->get_env('aiPluginOptions')[$options_key === 'creativities' ? 'defaultCreativity' : $defaultValue];
 
-        // Kreiranje atributa za select element
+        $capitalizedOptions = array_map('ucfirst', array_values($options));
+
         $attrib = ['name' => $name];
 
-        // Kreiramo instancu select elementa koristeći \html_select klasu
         $selector = new \html_select($attrib);
 
-        // Dodajemo opcije u select polje: ključevi su prikazani korisnicima, a vrednosti su one koje se šalju
-        $selector->add(array_values($options), array_keys($options));
-
-        // Ako postoji postovana vrednost, koristićemo je, inače postavljamo podrazumevanu vrednost
-        if (isset($_POST[$name])) {
-            $sel = $_POST[$name];
-        } else {
-            $sel = $defaultOption; // Podrazumevana vrednost
+        foreach ($options as $key => $value) {
+            $capitalizedValue = ucfirst($value);
+            $selector->add($capitalizedValue, $value);
         }
 
-        // Generisanje HTML izlaza za select polje
-        // Prikazujemo select sa trenutno selektovanom vrednošću
+        $sel = $defaultOption;
 
         return $selector->show($sel);
     }
-
 }
