@@ -4,6 +4,21 @@ namespace HercegDoo\AIComposePlugin\Utilities;
 
 class TemplateObjectFiller
 {
+    private static ?TemplateObjectFiller $instance = null;
+
+    private function __construct()
+    {
+    }
+
+    public static function getTemplateObjectFiller(): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
     public function createSelectField(string $options_key, string $name): string
     {
         $defaultValue = 'default' . ucfirst($options_key);

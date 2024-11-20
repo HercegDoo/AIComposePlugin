@@ -553,6 +553,10 @@ margin: 0 auto;
   flex-wrap: nowrap;
 }
 
+.formbutton{
+  padding: 7px 6px;
+}
+
 @media (max-width: 500px) {
   .properties {
     flex-direction: column;

@@ -5,13 +5,19 @@ declare(strict_types=1);
 namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
-use HercegDoo\AIComposePlugin\Utilities\ContentInjecter;
+use HercegDoo\AIComposePlugin\Utilities\ContentInjector;
 use HercegDoo\AIComposePlugin\Utilities\TemplateObjectFiller;
 
 class MailTask extends AbstractTask
 {
+    private ContentInjector $contentInjector;
+    private TemplateObjectFiller $templateObjectFiller;
+
     public function init(): void
     {
+        $this->contentInjector = ContentInjector::getContentInjector();
+        $this->templateObjectFiller = TemplateObjectFiller::getTemplateObjectFiller();
+
         $this->plugin->add_hook('startup', [$this, 'startup']);
         $this->plugin->add_hook('render_page', [$this, 'load_resources']);
         $this->plugin->add_hook('render_page', [$this, 'add_instruction_field']);
@@ -62,9 +68,7 @@ class MailTask extends AbstractTask
 
         $test = \rcmail::get_instance()->output->just_parse($aiComposeInstructionField);
 
-        $contentInjector = new ContentInjecter();
-
-        return $contentInjector->insertContentAboveElement($args, $test, 'composebodycontainer');
+        return $this->contentInjector->insertContentAboveElement($args, $test, 'composebodycontainer');
     }
 
     /**
@@ -80,11 +84,14 @@ class MailTask extends AbstractTask
             $aiComposeButtons = file_get_contents($htmlFilePath);
         }
 
-        $test = \rcmail::get_instance()->output->just_parse($aiComposeButtons);
+        $parsedAiComposeButtons = \rcmail::get_instance()->output->just_parse($aiComposeButtons);
+        $buttonId = $this->contentInjector->findId($parsedAiComposeButtons)[0];
 
-        $contentInjector = new ContentInjecter();
+        if (isset($args['content']) && preg_match('/id=["\']' . $buttonId . '["\']/', \is_string($args['content']) ? $args['content'] : '')) {
+            return $args;
+        }
 
-        return $contentInjector->insertContentAboveElement($args, $test, 'formbuttons');
+        return $this->contentInjector->add_buttons($parsedAiComposeButtons, 'formbuttons', $args);
     }
 
     /**
@@ -94,8 +101,6 @@ class MailTask extends AbstractTask
      */
     public function add_select_fields(array $args): array
     {
-        $contentInjector = new ContentInjecter();
-
         $aiSelectFields = '';
         $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/aiselectfields.html';
         if (file_exists($htmlFilePath)) {
@@ -103,7 +108,7 @@ class MailTask extends AbstractTask
         }
         $test = \rcmail::get_instance()->output->just_parse($aiSelectFields);
 
-        return $contentInjector->insertContentAboveElement($args, $test, 'compose-attachments');
+        return $this->contentInjector->insertContentAboveElement($args, $test, 'compose-attachments');
     }
 
     /**
@@ -113,8 +118,6 @@ class MailTask extends AbstractTask
      */
     public function add_help_examples(array $args): array
     {
-        $contentInjector = new ContentInjecter();
-
         $helpExamplesModal = '';
         $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/instructionexamples.html';
         if (file_exists($htmlFilePath)) {
@@ -122,42 +125,32 @@ class MailTask extends AbstractTask
         }
         $parsedHelpExamplesModal = \rcmail::get_instance()->output->just_parse($helpExamplesModal);
 
-        return $contentInjector->insertContentAboveElement($args, $parsedHelpExamplesModal, 'layout-content');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHelpExamplesModal, 'layout-content');
     }
 
     public function style_select_create(): string
     {
-        $objectFiller = new TemplateObjectFiller();
-
-        return $objectFiller->createSelectField('styles', 'style_select');
+        return $this->templateObjectFiller->createSelectField('styles', 'style_select');
     }
 
     public function length_select_create(): string
     {
-        $objectFiller = new TemplateObjectFiller();
-
-        return $objectFiller->createSelectField('lengths', 'length_select');
+        return $this->templateObjectFiller->createSelectField('lengths', 'length_select');
     }
 
     public function creativity_select_create(): string
     {
-        $objectFiller = new TemplateObjectFiller();
-
-        return $objectFiller->createSelectField('creativities', 'creativity_select');
+        return $this->templateObjectFiller->createSelectField('creativities', 'creativity_select');
     }
 
     public function language_select_create(): string
     {
-        $objectFiller = new TemplateObjectFiller();
-
-        return $objectFiller->createSelectField('languages', 'language_select');
+        return $this->templateObjectFiller->createSelectField('languages', 'language_select');
     }
 
     public function create_instruction_field(): string
     {
-        $objectFiller = new TemplateObjectFiller();
-
-        return $objectFiller->createInstructionField();
+        return $this->templateObjectFiller->createInstructionField();
     }
 
     /**
@@ -175,16 +168,12 @@ class MailTask extends AbstractTask
 
         $parsedPredefinedInstructionsTemplate = \rcmail::get_instance()->output->just_parse($predefinedInstructionsTemplate);
 
-        $contentInjector = new ContentInjecter();
-
-        return $contentInjector->insertContentAboveElement($args, $parsedPredefinedInstructionsTemplate, 'headers-menu');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedPredefinedInstructionsTemplate, 'headers-menu');
     }
 
     public function create_instruction_dropdown(): string
     {
-        $templateFiller = new TemplateObjectFiller();
-
-        return $templateFiller->fillPredefinedInstructions();
+        return $this->templateObjectFiller->fillPredefinedInstructions();
     }
 
     public function startup(): void

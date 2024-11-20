@@ -1,12 +1,12 @@
-<div class="xdialog-mask" hidden id="aic-compose-help-modal-mask">aic-compose-dialog-box-test
+<div class="xdialog-mask" hidden id="aic-compose-help-modal-mask">
 <div class="xdialog-box full-screen"  id="aic-compose-help-modal" >
   <div class="xdialog-title">
     <roundcube:label name="AIComposePlugin.ai_dialog_title" />
-    <button onclick="return rcmail.command('closehelpexamples','',this,event)" class="xdialog-close btn btn-secondary">×</button></div>
+    <roundcube:button command="closehelpexamples"  class="xdialog-close btn btn-secondary"/>x</div>
   <div class="xdialog-contents">
   <div id="aic-compose-help">
     <div class="help-header">
-  <button type="button" onclick="return rcmail.command('closehelpexamples','',this,event)" id="aic-back-button" class="btn btn-primary" id="help-back-btn"><roundcube:label name="AIComposePlugin.ai_help_button_back" /></button>
+  <roundcube:button type="button" command="closehelpexamples"  class="btn btn-primary" label="AIComposePlugin.ai_help_button_back" id="aic-back-button"/>
   <h3 id="help-title"><roundcube:label name="AIComposePlugin.ai_help_title" /></h3>
 
 </div>

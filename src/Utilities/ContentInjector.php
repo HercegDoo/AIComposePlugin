@@ -2,8 +2,23 @@
 
 namespace HercegDoo\AIComposePlugin\Utilities;
 
-class ContentInjecter
+class ContentInjector
 {
+    private static ?ContentInjector $instance = null;
+
+    private function __construct()
+    {
+    }
+
+    public static function getContentInjector(): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
     /**
      * @param array<string, mixed> $baseHTML
      *
@@ -48,6 +63,16 @@ class ContentInjecter
         }
 
         return $baseHTML;
+    }
+
+    /**
+     * @return array<int,string>>
+     */
+    public function findId(string $html): array
+    {
+        preg_match_all('/id=["\']([^"\']+)["\']/', $html, $matches);
+
+        return $matches[1];
     }
 
     protected function translation(string $key): string

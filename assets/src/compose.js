@@ -8,10 +8,12 @@ import {
   getSenderInfo,
   processSenderData,
 } from "./compose/modal/additionalModalFunctions/senderDataHandler";
-import { loadCommands } from "./compose/commands";
+import HelpCommands from "./compose/commands/helpExamplesCommands";
+import ButtonsAvailability from "./compose/commands/setButtonsAvailability";
 document.addEventListener("DOMContentLoaded", function () {
   createButtonInToolbarMenu();
-loadCommands();
+new HelpCommands();
+new ButtonsAvailability();
 
 
   document
