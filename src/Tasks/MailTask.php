@@ -25,7 +25,7 @@ class MailTask extends AbstractTask
         $this->plugin->add_hook('render_page', [$this, 'add_select_fields']);
         $this->plugin->add_hook('render_page', [$this, 'add_help_examples']);
         $this->plugin->add_hook('render_page', [$this, 'create_predefined_instructions_template']);
-        $this->plugin->add_hook('render_page', [$this, 'add_fix_text_modal']);
+        $this->plugin->add_hook('render_page', [$this, 'add_tooltip']);
         $this->plugin->add_hook('preferences_save', [$this, 'preferencesSave']);
         \rcmail::get_instance()->output->add_handlers(
             [
@@ -64,6 +64,15 @@ class MailTask extends AbstractTask
         $parsedHtmlContent = $this->contentInjector->getParsedHtml('ai_compose_instruction_field');
 
         return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'composebodycontainer');
+    }
+
+    public function add_tooltip(array $args): array
+    {
+        $this->loadTranslations();
+
+        $parsedHtmlContent = $this->contentInjector->getParsedHtml('fix_text_tooltip');
+
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'editor-selector');
     }
 
     /**
