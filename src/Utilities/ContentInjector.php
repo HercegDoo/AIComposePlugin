@@ -75,6 +75,18 @@ class ContentInjector
         return $matches[1];
     }
 
+    public function getParsedHtml(string $fileName): string
+    {
+        $htmlFile = '';
+        $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/' . $fileName . '.html';
+        error_log('Ime Putanje : ' . print_r($htmlFilePath, true));
+        if (file_exists($htmlFilePath)) {
+            $htmlFile = file_get_contents($htmlFilePath);
+        }
+
+        return \rcmail::get_instance()->output->just_parse($htmlFile);
+    }
+
     protected function translation(string $key): string
     {
         return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");

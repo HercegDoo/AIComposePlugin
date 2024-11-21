@@ -25,6 +25,7 @@ class MailTask extends AbstractTask
         $this->plugin->add_hook('render_page', [$this, 'add_select_fields']);
         $this->plugin->add_hook('render_page', [$this, 'add_help_examples']);
         $this->plugin->add_hook('render_page', [$this, 'create_predefined_instructions_template']);
+        $this->plugin->add_hook('render_page', [$this, 'add_fix_text_modal']);
         $this->plugin->add_hook('preferences_save', [$this, 'preferencesSave']);
         \rcmail::get_instance()->output->add_handlers(
             [
@@ -60,15 +61,9 @@ class MailTask extends AbstractTask
     {
         $this->loadTranslations();
 
-        $aiComposeInstructionField = '';
-        $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/aicomposeinstructionfield.html';
-        if (file_exists($htmlFilePath)) {
-            $aiComposeInstructionField = file_get_contents($htmlFilePath);
-        }
+        $parsedHtmlContent = $this->contentInjector->getParsedHtml('aicomposeinstructionfield');
 
-        $test = \rcmail::get_instance()->output->just_parse($aiComposeInstructionField);
-
-        return $this->contentInjector->insertContentAboveElement($args, $test, 'composebodycontainer');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'composebodycontainer');
     }
 
     /**
@@ -78,20 +73,14 @@ class MailTask extends AbstractTask
      */
     public function add_form_buttons(array $args): array
     {
-        $aiComposeButtons = '';
-        $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/buttons.html';
-        if (file_exists($htmlFilePath)) {
-            $aiComposeButtons = file_get_contents($htmlFilePath);
-        }
-
-        $parsedAiComposeButtons = \rcmail::get_instance()->output->just_parse($aiComposeButtons);
-        $buttonId = $this->contentInjector->findId($parsedAiComposeButtons)[0];
+        $parsedHtmlContent = $this->contentInjector->getParsedHtml('buttons');
+        $buttonId = $this->contentInjector->findId($parsedHtmlContent)[0];
 
         if (isset($args['content']) && preg_match('/id=["\']' . $buttonId . '["\']/', \is_string($args['content']) ? $args['content'] : '')) {
             return $args;
         }
 
-        return $this->contentInjector->add_buttons($parsedAiComposeButtons, 'formbuttons', $args);
+        return $this->contentInjector->add_buttons($parsedHtmlContent, 'formbuttons', $args);
     }
 
     /**
@@ -101,14 +90,9 @@ class MailTask extends AbstractTask
      */
     public function add_select_fields(array $args): array
     {
-        $aiSelectFields = '';
-        $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/aiselectfields.html';
-        if (file_exists($htmlFilePath)) {
-            $aiSelectFields = file_get_contents($htmlFilePath);
-        }
-        $test = \rcmail::get_instance()->output->just_parse($aiSelectFields);
+        $parsedHtmlContent = $this->contentInjector->getParsedHtml('aiselectfields');
 
-        return $this->contentInjector->insertContentAboveElement($args, $test, 'compose-attachments');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'compose-attachments');
     }
 
     /**
@@ -118,14 +102,21 @@ class MailTask extends AbstractTask
      */
     public function add_help_examples(array $args): array
     {
-        $helpExamplesModal = '';
-        $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/instructionexamples.html';
-        if (file_exists($htmlFilePath)) {
-            $helpExamplesModal = file_get_contents($htmlFilePath);
-        }
-        $parsedHelpExamplesModal = \rcmail::get_instance()->output->just_parse($helpExamplesModal);
+        $parsedHtmlContent = $this->contentInjector->getParsedHtml('instructionexamples');
 
-        return $this->contentInjector->insertContentAboveElement($args, $parsedHelpExamplesModal, 'layout-content');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'layout-content');
+    }
+
+    /**
+     * @param array<string, mixed> $args
+     *
+     * @return array<string, mixed>
+     */
+    public function add_fix_text_modal(array $args): array
+    {
+        $parsedHtmlContent = $this->contentInjector->getParsedHtml('fix_text_modal');
+
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'layout-content');
     }
 
     public function style_select_create(): string
@@ -160,15 +151,9 @@ class MailTask extends AbstractTask
      */
     public function create_predefined_instructions_template(array $args): array
     {
-        $predefinedInstructionsTemplate = '';
-        $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/popup.html';
-        if (file_exists($htmlFilePath)) {
-            $predefinedInstructionsTemplate = file_get_contents($htmlFilePath);
-        }
+        $parsedHtmlContent = $this->contentInjector->getParsedHtml('popup');
 
-        $parsedPredefinedInstructionsTemplate = \rcmail::get_instance()->output->just_parse($predefinedInstructionsTemplate);
-
-        return $this->contentInjector->insertContentAboveElement($args, $parsedPredefinedInstructionsTemplate, 'headers-menu');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'headers-menu');
     }
 
     public function create_instruction_dropdown(): string

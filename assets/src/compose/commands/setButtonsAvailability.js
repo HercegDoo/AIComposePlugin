@@ -32,12 +32,10 @@ this.#toggleFixTextButton();
       }
     });
 
-    this.textarea.addEventListener("mouseup", this.#checkSelection);
-    this.textarea.addEventListener("keyup", this.#checkSelection);
-    this.textarea.addEventListener("input", this.#checkSelection);
+    this.textarea.addEventListener("mouseup", ()=>{this.#checkSelection()});
 
     document.addEventListener("click", (e) => {
-      if (!this.textarea.contains(e.target) && !this.fixSelectedTextButton.contains(e.target)) {
+      if (!this.textarea.contains(e.target) ) {
 
        this.fixSelectedTextButton.setAttribute('disabled', 'disabled');
       }

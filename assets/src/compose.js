@@ -10,10 +10,12 @@ import {
 } from "./compose/modal/additionalModalFunctions/senderDataHandler";
 import HelpCommands from "./compose/commands/helpExamplesCommands";
 import ButtonsAvailability from "./compose/commands/setButtonsAvailability";
+import Test from "./compose/commands/fixTextButtonCommands";
 document.addEventListener("DOMContentLoaded", function () {
   createButtonInToolbarMenu();
 new HelpCommands();
 new ButtonsAvailability();
+new Test();
 
 
   document
