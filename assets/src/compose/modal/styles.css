@@ -387,18 +387,19 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   background: transparent !important;
 }
 
-#focused-selected-text {
+#focused-selected-text , #focused-selected-text-test{
   color: #e5b700;
   font-size: 1.1rem;
 }
 
-#fix-text-wrapper {
+#fix-text-wrapper, #fix-text-wrapper-test {
   height: 90%;
 }
 
 .fix-select-section {
   overflow-y: auto;
   padding: 1rem;
+  text-align:left;
 }
 
 .fix-text-header {
@@ -406,8 +407,12 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   padding: 1rem;
 }
 
-#fix-text-instructions {
+#fix-text-instructions, #fix-text-instructions-test {
   overflow-y: visible;
+}
+
+#fix-text-instructions span{
+  padding-bottom:6px;
 }
 
 .fix-text-header button {
@@ -422,27 +427,27 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   text-align: center;
 }
 
-#fix-instructions {
+#fix-instructions, #fix-instructions-test {
   height: 40px;
 }
 
-#aic-fix-text-button-div {
+#aic-fix-text-button-div, #aic-fix-text-button-div-test {
   display: flex;
   justify-content: center;
   padding: 10px 0;
 }
 
-#fix-text-selected {
+#fix-text-selected, #fix-text-selected-test {
   height: 73%;
 }
 
-#selected-text {
+#selected-text, #selected-text-test {
   height: 92%;
   white-space: pre-wrap;
   overflow-y: scroll;
 }
 
-#aic-fix-text-section {
+#aic-fix-text-section, #aic-fix-text-section-test {
   height: 100%;
 }
 
@@ -481,7 +486,7 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   width: 100%;
 }
 
-#aic-back-button{
+.aic-back-button{
 padding: 7px 15px;
 }
 

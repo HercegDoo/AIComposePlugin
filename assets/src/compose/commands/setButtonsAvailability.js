@@ -1,12 +1,22 @@
 
 export default class ButtonsAvailability {
 
+  static instance = null;
+
   constructor() {
-   this.instructionTextArea =  document.getElementById('aic-instruction');
+    if (ButtonsAvailability.instance) {
+      return ButtonsAvailability.instance;
+    }
+
+    this.instructionTextArea = document.getElementById("aic-instruction");
     this.fixSelectedTextButton = document.getElementById("aic-fix-text-button");
-    this.textarea =  document.getElementById('composebody');
+    this.textarea = document.getElementById("composebody");
     this.selectedText = "";
+    this.beforeText = "";
+    this.afterText = "";
     this.#callCommands();
+
+    ButtonsAvailability.instance = this;
   }
 
  #callCommands() {
@@ -47,11 +57,33 @@ this.#toggleFixTextButton();
     const start = this.textarea.selectionStart,
       end = this.textarea.selectionEnd;
 
-    const isTextSelected = start !== end;  // Proveravamo da li je tekst selektovan
+    const isTextSelected = start !== end;
     this.selectedText = isTextSelected ? this.textarea.value.substring(start, end) : "";
 
     this.fixSelectedTextButton.toggleAttribute("disabled", !isTextSelected);
+
+    if(isTextSelected){
+      rcmail.enable_command('openfixtextmodal', true);
+        this.beforeText = this.textarea.value.substring(0, start);
+         this.afterText = this.textarea.value.substring(end);
+
+    }
   }
+
+ getFormattedPreviousGeneratedEmail() {
+    return (
+      this.beforeText +
+      '<strong id="focused-selected-text-test">' +
+      this.selectedText +
+      "</strong>" +
+      this.afterText
+    );
+  }
+
+getSelectedText() {
+    return this.selectedText;
+  }
+
 
 
 }

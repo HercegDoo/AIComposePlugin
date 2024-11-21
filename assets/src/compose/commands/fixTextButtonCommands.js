@@ -1,7 +1,11 @@
+import ButtonsAvailability from "./setButtonsAvailability";
 
-export default class Test {
+export default class FixTextModalButtonCommands {
+
 
   constructor() {
+    this.selectedTextTextarea = null;
+    this.fixInstructionsTextArea = null;
     this.#registerCommands();
   }
 
@@ -9,7 +13,7 @@ export default class Test {
     rcube_webmail.prototype.openfixtextmodal = this.#openfixtextmodal;
     rcube_webmail.prototype.closefixtextmodal= this.#closefixtextmodal;
 
-    rcmail.enable_command('openfixtextmodal', true);
+
     rcmail.register_command('openfixtextmodal', rcube_webmail.prototype.openfixtextmodal);
 
     rcmail.enable_command('closefixtextmodal', true);
@@ -17,7 +21,12 @@ export default class Test {
   }
 
   #openfixtextmodal() {
+    const buttonsAvailability  = new ButtonsAvailability();
     document.getElementById('aic-fix-text-modal-mask').removeAttribute( 'hidden');
+    this.selectedTextTextarea = document.getElementById("selected-text-test");
+    this.fixInstructionsTextArea = document.getElementById("fix-instructions-test");
+    this.selectedTextTextarea.innerHTML =  buttonsAvailability.getFormattedPreviousGeneratedEmail();
+    this.fixInstructionsTextArea.value = "";
   }
 
   #closefixtextmodal() {

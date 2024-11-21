@@ -3,36 +3,27 @@
     <div class="xdialog-title">
       <roundcube:label name="AIComposePlugin.ai_dialog_title" />
       <roundcube:button command="closefixtextmodal"  class="xdialog-close btn btn-secondary"/>x</div>
-    <div id="aic-fix-text-section">
-      <div class="fix-text-header"> <button type="button" class="btn btn-primary" id="fix-text-back-btn">Back</button>
-        <h3>Fix Selected Text</h3>
+    <div id="aic-fix-text-section-test">
+      <div class="fix-text-header">
+        <roundcube:button command="closefixtextmodal"  class="btn btn-primary" label="AIComposePlugin.ai_help_button_back" class="aic-back-button"/>
+        <h3>  <roundcube:label name="AIComposePlugin.ai_button_fix_selected_text" /></h3>
       </div>
 
-      <div id="fix-text-wrapper">
-        <div class="fix-select-section" id="fix-text-instructions">
-          <label for="selected-text">Correction Instructions</label>
-          <span class="xinfo right"><div>In this field, enter detailed explanations or instructions about the changes you want to make to the selected text.</div></span>
-          <textarea class="form-control" maxlength="500" name="fix-instructions" data-parsley-required="true" id="fix-instructions" cols="30" rows="10"></textarea>
+      <div id="fix-text-wrapper-test">
+        <div class="fix-select-section" id="fix-text-instructions-test">
+          <roundcube:label style="padding-bottom:5px" name="AIComposePlugin.ai_fix_instructions" />
+          <span class="xinfo right"><div><roundcube:label name="AIComposePlugin.ai_fix_text_input_instructions" /></div></span>
+          <textarea class="form-control" maxlength="500" name="fix-instructions" data-parsley-required="true" id="fix-instructions-test" cols="30" rows="10"></textarea>
         </div>
-        <div id="aic-fix-text-button-div">
-          <button id="fix-text-generate-again" class="btn btn-primary">Generate Again</button>
+        <div id="aic-fix-text-button-div-test">
+          <roundcube:button command="closefixtextmodal"  label="AIComposePlugin.ai_generate_again" class="xdialog-close btn btn-primary"/>
         </div>
-        <div class="fix-select-section" id="fix-text-selected">
+        <div class="fix-select-section" id="fix-text-selected-test">
           <label for="selected-text">Selected Text</label>
-          <div class="form-control" id="selected-text" contenteditable="false">Beste lezer,
+          <div class="form-control" id="selected-text-test" contenteditable="false">
 
-            Wat een genoegen om met u te communiceren! Ik wil graag uw aandacht vestigen op een belangrijke boodschap: 'Hajmo pit kahvu'. Deze uitdrukking staat symbool voor het belang van een moment van ontspanning en genot te midden van onze drukke levens.
-            <strong id="focused-selected-text">
-              In onze huidige maatschappij, waar werk en verantwoordelijkheden vaak de boventoon voeren, is </strong>het essentieel om af en toe een pauze te nemen. Een kopje koffie biedt niet alleen een moment van rust, maar kan ook een gelegenheid zijn om te reflecteren en nieuwe energie op te doen.
 
-            Ik nodig u van harte uit om dit idee te omarmen en voor uzelf te zorgen door even te pauzeren en te genieten van een heerlijke kop koffie. Vergeet niet dat het belangrijk is om balans te vinden tussen werk en ontspanning.
-
-            Ik hoop dat u deze boodschap ter harte neemt en een moment voor uzelf zult nemen. Bedankt voor uw aandacht en vergeet niet te genieten van de kleine dingen in het leven.
-
-            Met vriendelijke groet,
-
-            Postmaster</div>
-
+          </div>
 
         </div></div></div>
         </div></div>
