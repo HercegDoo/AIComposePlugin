@@ -392,7 +392,7 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   font-size: 1.1rem;
 }
 
-#fix-text-wrapper, #fix-text-wrapper-test {
+#fix-text-wrapper {
   height: 90%;
 }
 
@@ -407,7 +407,7 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   padding: 1rem;
 }
 
-#fix-text-instructions, #fix-text-instructions-test {
+#fix-text-instructions {
   overflow-y: visible;
 }
 
@@ -427,27 +427,27 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   text-align: center;
 }
 
-#fix-instructions, #fix-instructions-test {
+#fix-instructions{
   height: 40px;
 }
 
-#aic-fix-text-button-div, #aic-fix-text-button-div-test {
+#aic-fix-text-button-div{
   display: flex;
   justify-content: center;
   padding: 10px 0;
 }
 
-#fix-text-selected, #fix-text-selected-test {
+#fix-text-selected{
   height: 73%;
 }
 
-#selected-text, #selected-text-test {
+#selected-text {
   height: 92%;
   white-space: pre-wrap;
   overflow-y: scroll;
 }
 
-#aic-fix-text-section, #aic-fix-text-section-test {
+#aic-fix-text-section{
   height: 100%;
 }
 
@@ -514,6 +514,16 @@ margin: 0 auto;
 
 .form-buttons{
   height:38.75px;
+}
+
+#overlayDiv {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 10px;
+  z-index: 10; /* Ensure it is above the textarea */
+  display: none; /* Initially hidden */
+  pointer-events: none; /* Prevent the div from interfering with the textarea's selection */
 }
 
 .select-div{

@@ -10,10 +10,10 @@ export default class HelpCommands {
     rcube_webmail.prototype.closehelpexamples = this.#closehelpexamples;
 
     rcmail.enable_command('openhelpexamples', true);
-    rcmail.register_command('openhelpexamples', rcube_webmail.prototype.openhelpexamples);
+    rcmail.register_command('openhelpexamples');
 
     rcmail.enable_command('closehelpexamples', true);
-    rcmail.register_command('closehelpexamples', rcube_webmail.prototype.closehelpexamples);
+    rcmail.register_command('closehelpexamples');
   }
 
   #openhelpexamples() {

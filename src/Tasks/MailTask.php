@@ -61,7 +61,7 @@ class MailTask extends AbstractTask
     {
         $this->loadTranslations();
 
-        $parsedHtmlContent = $this->contentInjector->getParsedHtml('aicomposeinstructionfield');
+        $parsedHtmlContent = $this->contentInjector->getParsedHtml('ai_compose_instruction_field');
 
         return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'composebodycontainer');
     }
@@ -90,7 +90,7 @@ class MailTask extends AbstractTask
      */
     public function add_select_fields(array $args): array
     {
-        $parsedHtmlContent = $this->contentInjector->getParsedHtml('aiselectfields');
+        $parsedHtmlContent = $this->contentInjector->getParsedHtml('ai_select_fields');
 
         return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'compose-attachments');
     }
@@ -102,19 +102,7 @@ class MailTask extends AbstractTask
      */
     public function add_help_examples(array $args): array
     {
-        $parsedHtmlContent = $this->contentInjector->getParsedHtml('instructionexamples');
-
-        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'layout-content');
-    }
-
-    /**
-     * @param array<string, mixed> $args
-     *
-     * @return array<string, mixed>
-     */
-    public function add_fix_text_modal(array $args): array
-    {
-        $parsedHtmlContent = $this->contentInjector->getParsedHtml('fix_text_modal');
+        $parsedHtmlContent = $this->contentInjector->getParsedHtml('instruction_examples');
 
         return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'layout-content');
     }

@@ -14,10 +14,10 @@ export default class FixTextModalButtonCommands {
     rcube_webmail.prototype.closefixtextmodal= this.#closefixtextmodal;
 
 
-    rcmail.register_command('openfixtextmodal', rcube_webmail.prototype.openfixtextmodal);
+    rcmail.register_command('openfixtextmodal');
 
     rcmail.enable_command('closefixtextmodal', true);
-    rcmail.register_command('closefixtextmodal', rcube_webmail.prototype.closefixtextmodal);
+    rcmail.register_command('closefixtextmodal');
   }
 
   #openfixtextmodal() {

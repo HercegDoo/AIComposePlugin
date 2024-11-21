@@ -9,11 +9,9 @@ export default class ButtonsAvailability {
     }
 
     this.instructionTextArea = document.getElementById("aic-instruction");
-    this.fixSelectedTextButton = document.getElementById("aic-fix-text-button");
     this.textarea = document.getElementById("composebody");
     this.selectedText = "";
-    this.beforeText = "";
-    this.afterText = "";
+    this.editorHTML = null;
     this.#callCommands();
 
     ButtonsAvailability.instance = this;
@@ -42,48 +40,53 @@ this.#toggleFixTextButton();
       }
     });
 
-    this.textarea.addEventListener("mouseup", ()=>{this.#checkSelection()});
+    this.textarea.addEventListener("mouseup", ()=>{console.log(3); });
 
     document.addEventListener("click", (e) => {
       if (!this.textarea.contains(e.target) ) {
-
        this.fixSelectedTextButton.setAttribute('disabled', 'disabled');
       }
+    });
+
+    rcmail.addEventListener("editor-load", (e) => {
+      this.editorHTML = e?.ref?.editor;
+      if(tinymce.activeEditor){this.#callHtmlEditorEventListeners()}
     });
   }
 
   #checkSelection() {
+      const start = this.textarea.selectionStart,
+        end = this.textarea.selectionEnd;
 
-    const start = this.textarea.selectionStart,
-      end = this.textarea.selectionEnd;
+      const isTextSelected = start !== end;
+      this.selectedText = isTextSelected ? this.textarea.value.substring(start, end) : "";
 
-    const isTextSelected = start !== end;
-    this.selectedText = isTextSelected ? this.textarea.value.substring(start, end) : "";
-
-    this.fixSelectedTextButton.toggleAttribute("disabled", !isTextSelected);
-
-    if(isTextSelected){
-      rcmail.enable_command('openfixtextmodal', true);
-        this.beforeText = this.textarea.value.substring(0, start);
-         this.afterText = this.textarea.value.substring(end);
-
-    }
   }
 
- getFormattedPreviousGeneratedEmail() {
-    return (
-      this.beforeText +
-      '<strong id="focused-selected-text-test">' +
-      this.selectedText +
-      "</strong>" +
-      this.afterText
-    );
+  #checkEditorHTMLSelection(){
+    this.selectedText = this.editorHTML.selection.getContent({ format: 'text' });
+
   }
+
 
 getSelectedText() {
     return this.selectedText;
   }
 
+getActiveEditor(){
+    return !!(this.editorHTML && tinymce.activeEditor);
+}
+
+  #callHtmlEditorEventListeners(){
+    this.editorHTML.on('selectionchange', () => {
+     this.#checkEditorHTMLSelection();
+    });
+
+    this.editorHTML.on('mouseup', () => {
+      this.#checkEditorHTMLSelection();
+    });
+
+  }
 
 
 }

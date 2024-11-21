@@ -31,7 +31,7 @@ class SettingsTask extends AbstractTask
 
         $rcmail->output->set_pagetitle($rcmail->gettext('AIComposePlugin.ai_predefined_section_title'));
         $rcmail->output->add_handlers(['instructionslist' => [$this, 'instructions_list']]);
-        $rcmail->output->send('AIComposePlugin.basepredefinedinstructions');
+        $rcmail->output->send('AIComposePlugin.base_predefined_instructions');
     }
 
     /**
