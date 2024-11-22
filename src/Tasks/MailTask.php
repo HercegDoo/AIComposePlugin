@@ -72,7 +72,7 @@ class MailTask extends AbstractTask
 
         $parsedHtmlContent = $this->contentInjector->getParsedHtml('fix_text_tootltip');
 
-        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'composebodycontainer');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'headers-menu');
     }
 
     /**

@@ -7,17 +7,8 @@ export default class ButtonsAvailability {
     if (ButtonsAvailability.instance) {
       return ButtonsAvailability.instance;
     }
-    this.popup = document.createElement('div');
-    this.popup.id = 'popup649';
-    this.popup.style.position = 'absolute';
-    this.popup.style.backgroundColor = 'red';
-    this.popup.style.border = '1px solid #ccc';
-    this.popup.style.padding = '8px';
-    this.popup.style.borderRadius = '4px';
-    this.popup.style.boxShadow = '0px 2px 5px rgba(0,0,0,0.2)';
-   this.popup.innerText = 'Ovo je popup ispod kursora!';
-    document.body.appendChild(this.popup);
-    this.tooltip = document.getElementById('Kanta');
+    this.popup = document.getElementById('fix-text-tooltip');
+
     this.instructionTextArea = document.getElementById("aic-instruction");
     this.textarea = document.getElementById("composebody");
     this.selectedText = "";

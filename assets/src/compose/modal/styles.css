@@ -447,6 +447,17 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   overflow-y: scroll;
 }
 
+#fix-text-tooltip{
+    position: absolute;
+    background-color: #21292c;
+    border: 1px solid rgb(204, 204, 204);
+    padding: 8px; border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px;
+    left: 168px;
+    top: 363px;
+    display: none;
+}
+
 #aic-fix-text-section{
   height: 100%;
 }
