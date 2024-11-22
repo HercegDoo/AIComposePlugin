@@ -70,9 +70,9 @@ class MailTask extends AbstractTask
     {
         $this->loadTranslations();
 
-        $parsedHtmlContent = $this->contentInjector->getParsedHtml('fix_text_tooltip');
+        $parsedHtmlContent = $this->contentInjector->getParsedHtml('fix_text_tootltip');
 
-        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'editor-selector');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'composebodycontainer');
     }
 
     /**

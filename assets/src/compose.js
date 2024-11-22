@@ -17,7 +17,8 @@ new HelpCommands();
 new ButtonsAvailability();
 new FixTextModalButtonCommands();
 
-
+  const inputRect = document.getElementById('composebody').getBoundingClientRect();
+  console.log(`inputRectBottom: ${inputRect.bottom}`);
   document
     .getElementById("aicp-prompt-open-button")
     .addEventListener("click", (e) => {
