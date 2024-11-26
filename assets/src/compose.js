@@ -9,13 +9,13 @@ import {
   processSenderData,
 } from "./compose/modal/additionalModalFunctions/senderDataHandler";
 import HelpCommands from "./compose/commands/helpExamplesCommands";
-import ButtonsAvailability from "./compose/commands/setButtonsAvailability";
 import FixTextModalButtonCommands from "./compose/commands/fixTextButtonCommands";
-import DummyCommands from "./compose/commands/dummyCommand";
+import ToolTipAvailability from "./compose/commands/setToolTipAvailability";
+
 document.addEventListener("DOMContentLoaded", function () {
   createButtonInToolbarMenu();
 new HelpCommands();
-new ButtonsAvailability();
+new ToolTipAvailability();
 new FixTextModalButtonCommands();
 
   const inputRect = document.getElementById('composebody').getBoundingClientRect();

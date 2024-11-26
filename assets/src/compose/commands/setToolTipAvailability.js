@@ -1,5 +1,5 @@
 
-export default class ButtonsAvailability {
+export default class ToolTipAvailability {
 
   static instance = null;
 
@@ -20,7 +20,7 @@ export default class ButtonsAvailability {
 
  #callCommands() {
 this.#toggleGenerateButton();
-this.#toggleFixTextButton();
+this.#toggleFixTextToolTip();
   }
 
  #toggleGenerateButton() {
@@ -34,30 +34,16 @@ this.#toggleFixTextButton();
    });
   }
 
-  #toggleFixTextButton() {
-    document.addEventListener("selectionchange", () => {
-      if (document.activeElement === this.textarea) {
-        console.log("pozvanb selectionchange");
-        // this.#checkSelection()
-      }
-    });
+  #toggleFixTextToolTip() {
 
     this.textarea.addEventListener("mouseup", ()=>{
-console.log("Pozvan mouseup")
       this.#checkSelection() });
 
     document.addEventListener("click", (e) => {
       if (!this.textarea.contains(e.target) ) {
-       this.fixSelectedTextButton.setAttribute('disabled', 'disabled');
-        document.getElementById('popup649').style.display = 'none';
+       this.popup.style.display='none';
       }
     });
-
-    this.textarea.addEventListener('click', ()=>{
-
-    })
-
-
 
     rcmail.addEventListener("editor-load", (e) => {
       this.editorHTML = e?.ref?.editor;
@@ -76,15 +62,12 @@ console.log("Pozvan mouseup")
         // Funkcija koja ažurira poziciju
         const updatePosition = () => {
           const updatedValues = this.#getCursorXY(this.textarea, end);
-          console.log(updatedValues);
           this.popup.style.left = `${updatedValues.x}px`;
           this.popup.style.top = `${updatedValues.y}px`;
         };
 
-        // Dodajemo event listener za resize da ažuriramo poziciju popup-a
         window.addEventListener('resize', updatePosition);
 
-        // Prva pozicija kada je tekst selektovan
         updatePosition();
         this.popup.style.top = `${y + 100}px`;
 
@@ -140,7 +123,6 @@ console.log("Pozvan mouseup")
 
     // Return the coordinates relative to the input element
     const inputRect = input.getBoundingClientRect();
-    console.log(`inputRectBottom: ${inputRect.bottom}`);
     const negValue = inputRect.bottom - 670;
     return {
       x: spanX ,  // Calculate the x position relative to the input element

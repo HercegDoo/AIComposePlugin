@@ -1,4 +1,4 @@
-import ButtonsAvailability from "./setButtonsAvailability";
+import ButtonsAvailability from "./setToolTipAvailability";
 
 export default class FixTextModalButtonCommands {
 
