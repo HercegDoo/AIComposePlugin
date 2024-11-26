@@ -2,14 +2,15 @@
 
 namespace HercegDoo\AIComposePlugin\Utilities;
 
-class TemplateObjectFiller
+class TemplateObjectFiller extends AbstractUtility
 {
     private static ?TemplateObjectFiller $instance = null;
-    private $html;
+    private \html $html;
     private function __construct()
     {
         $this->html = new \html();
     }
+
 
     public static function getTemplateObjectFiller(): self
     {
@@ -82,8 +83,6 @@ class TemplateObjectFiller
         return $this->html::tag('a', ["id"=>$id, "class"=>"input-group-text icon", 'href'=>'#', "title"=>$this->translation($localization)], '<roundcube:button command="openhelpexamples">');
     }
 
-    protected function translation(string $key): string
-    {
-        return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
-    }
+
+
 }

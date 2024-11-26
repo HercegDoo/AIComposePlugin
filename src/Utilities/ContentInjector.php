@@ -2,7 +2,7 @@
 
 namespace HercegDoo\AIComposePlugin\Utilities;
 
-class ContentInjector
+class ContentInjector extends AbstractUtility
 {
     private static ?ContentInjector $instance = null;
 
@@ -87,8 +87,4 @@ class ContentInjector
         return \rcmail::get_instance()->output->just_parse($htmlFile);
     }
 
-    protected function translation(string $key): string
-    {
-        return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
-    }
 }
