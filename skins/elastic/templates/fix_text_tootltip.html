@@ -1,8 +1,15 @@
 <div id="fix-text-tooltip">
 
-  <label>
-    <input type="text">
-  </label>
-  <button>klikni</button>
+  <div>
+<h5>Fix Text Instructions</h5>
+  </div>
+  <div id="input-button-pair">
+    <div class="input-group" id="custom-input-group">
+      <roundcube:object name="aicinstruction" part="to" class=" form-control" id="aic-instruction" form="form" tabindex="1" aria-required="true" data-recipient-input="true" />
+      <span class="input-group-append">
+								<a href="#" onclick="return rcmail.command('openhelpexamples','',this,event)" id="fix-text-send" class="input-group-text icon" title="<roundcube:label name="AIComposePlugin.ai_button_show_instructions" />" tabindex="1"><span class="inner"><roundcube:label name="AIComposePlugin.ai_button_show_instructions" /></span></a>
+							</span>
+    </div>
+  </div>
 
 </div>

@@ -88,7 +88,7 @@ console.log("Pozvan mouseup")
         updatePosition();
         this.popup.style.top = `${y + 100}px`;
 
-       this.popup.style.display = "block";
+       this.popup.style.display = "flex";
       } else {
        this.popup.style.display = "none";
       }

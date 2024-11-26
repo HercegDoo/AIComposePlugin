@@ -456,7 +456,12 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
     left: 168px;
     top: 363px;
     display: none;
+  align-items: center;
+  flex-direction: column;
+  width: 20vw;
 }
+
+
 
 #aic-fix-text-section{
   height: 100%;
@@ -573,6 +578,10 @@ margin: 0 auto;
 
 #aic-example-instructions::before{
   content: "\f05a";
+}
+
+#fix-text-send::before{
+  content: "\f1d8";
 }
 
 #custom-input-group{
