@@ -11,15 +11,16 @@ import {
 import HelpCommands from "./compose/commands/helpExamplesCommands";
 import FixTextModalButtonCommands from "./compose/commands/fixTextButtonCommands";
 import ToolTipAvailability from "./compose/commands/setToolTipAvailability";
+import GenerateMail from "./compose/commands/sendPostRequest";
 
 document.addEventListener("DOMContentLoaded", function () {
   createButtonInToolbarMenu();
 new HelpCommands();
 new ToolTipAvailability();
 new FixTextModalButtonCommands();
+new GenerateMail();
 
   const inputRect = document.getElementById('composebody').getBoundingClientRect();
-  console.log(`inputRectBottom: ${inputRect.bottom}`);
   document
     .getElementById("aicp-prompt-open-button")
     .addEventListener("click", (e) => {

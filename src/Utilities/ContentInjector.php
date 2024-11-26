@@ -86,5 +86,4 @@ class ContentInjector extends AbstractUtility
 
         return \rcmail::get_instance()->output->just_parse($htmlFile);
     }
-
 }

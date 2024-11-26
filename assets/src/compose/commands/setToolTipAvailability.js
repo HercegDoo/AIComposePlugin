@@ -73,7 +73,6 @@ if(!this.isHTMLEditor()){
   this.popup.style.top = `${updatedValues.y}px`;
 }
 else{
-  console.log("aktivan html editor");
 this.popup.style.left = `${clientX}px`;
 this.popup.style.top = `${clientY}px`;
 }
@@ -202,7 +201,6 @@ this.popup.style.top = `${clientY}px`;
     // Return the coordinates relative to the input element
     const inputRect = document.querySelector('#composebody_ifr').getBoundingClientRect();
     const negValue = inputRect.bottom - 670;
-    console.log(spanX, spanY);
     return {
       x: spanX ,  // Calculate the x position relative to the input element
       y: spanY - inputRect.bottom + negValue  // Calculate the y position relative to the input element
@@ -239,14 +237,9 @@ isHTMLEditor(){
 }
 
   #callHtmlEditorEventListeners(){
-    //
-    // this.editorHTML.on('selectionchange', () => {
-    //   console.log("onselectionchange");
-    //   this.#checkSelection();
-    // });
+
 
     this.editorHTML.on('mouseup', (event) => {
-      console.log("onmouseup");
       this.#checkSelection(event.clientX, event.clientY);
     });
 

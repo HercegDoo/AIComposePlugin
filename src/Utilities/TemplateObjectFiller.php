@@ -6,11 +6,11 @@ class TemplateObjectFiller extends AbstractUtility
 {
     private static ?TemplateObjectFiller $instance = null;
     private \html $html;
+
     private function __construct()
     {
         $this->html = new \html();
     }
-
 
     public static function getTemplateObjectFiller(): self
     {
@@ -35,7 +35,7 @@ class TemplateObjectFiller extends AbstractUtility
             $defaultOption = $aiPluginOptionsArray[$options_key === 'creativities' ? 'defaultCreativity' : $defaultValue];
         }
 
-        $attrib = ['name' => $name];
+        $attrib = ['id' => 'aic_' . $name];
 
         $selector = new \html_select($attrib);
 
@@ -79,10 +79,8 @@ class TemplateObjectFiller extends AbstractUtility
         return $liTagsContainer;
     }
 
-    public function fillButton(string $id,  string $localization): string{
-        return $this->html::tag('a', ["id"=>$id, "class"=>"input-group-text icon", 'href'=>'#', "title"=>$this->translation($localization)], '<roundcube:button command="openhelpexamples">');
+    public function fillButton(string $id, string $localization): string
+    {
+        return $this->html::tag('a', ['id' => $id, 'class' => 'input-group-text icon', 'href' => '#', 'title' => $this->translation($localization)], '<roundcube:button command="openhelpexamples">');
     }
-
-
-
 }
