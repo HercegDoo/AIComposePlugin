@@ -449,7 +449,7 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
 
 #fix-text-tooltip{
     position: absolute;
-    background-color: #21292c;
+    background-color: #f1f3f4;
     border: 1px solid rgb(204, 204, 204);
     padding: 8px; border-radius: 4px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px;
@@ -459,6 +459,10 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   align-items: center;
   flex-direction: column;
   width: 20vw;
+}
+
+html.dark-mode #fix-text-tooltip{
+  background-color: #21292c;
 }
 
 
