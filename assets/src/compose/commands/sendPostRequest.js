@@ -1,7 +1,8 @@
 
 import { getRequestDataFields } from "../modal/additionalModalFunctions/requestDataHandler";
-import { insertEmail } from "../modal/additionalModalFunctions/insertEmailHandler";
+import { getPreviousGeneratedInsertedEmail, insertEmail } from "../modal/additionalModalFunctions/insertEmailHandler";
 import { signatureCheckedPreviousConversation } from "../modal/additionalModalFunctions/signaturesHandler";
+import { getFormattedMail } from "../../utils";
 
 export default class GenerateMail {
 
@@ -21,6 +22,7 @@ export default class GenerateMail {
   #generatemail() {
     const requestData = getRequestDataFields();
     const previousConversationObject = signatureCheckedPreviousConversation(requestData.previousGeneratedEmail);
+    requestData.previousGeneratedEmail= getFormattedMail( `${getPreviousGeneratedInsertedEmail()}`);
     requestData.previousConversation = previousConversationObject.previousConversation;
     requestData.signaturePresent = previousConversationObject.signaturePresent;
     rcmail.lock_frame(document.body);
