@@ -11,6 +11,7 @@ import {
 import HelpCommands from "./compose/commands/helpExamplesCommands";
 import ButtonsAvailability from "./compose/commands/setButtonsAvailability";
 import FixTextModalButtonCommands from "./compose/commands/fixTextButtonCommands";
+import DummyCommands from "./compose/commands/dummyCommand";
 document.addEventListener("DOMContentLoaded", function () {
   createButtonInToolbarMenu();
 new HelpCommands();

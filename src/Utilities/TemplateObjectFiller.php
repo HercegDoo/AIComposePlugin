@@ -5,9 +5,10 @@ namespace HercegDoo\AIComposePlugin\Utilities;
 class TemplateObjectFiller
 {
     private static ?TemplateObjectFiller $instance = null;
-
+    private $html;
     private function __construct()
     {
+        $this->html = new \html();
     }
 
     public static function getTemplateObjectFiller(): self
@@ -63,18 +64,26 @@ class TemplateObjectFiller
 
     public function fillPredefinedInstructions(): string
     {
-        $html = new \html();
         $liTagsContainer = '';
         $predefinedInstructions = \rcmail::get_instance()->output->get_env('aiPredefinedInstructions');
         foreach ((array) $predefinedInstructions as $predefinedInstruction) {
             if (\is_array($predefinedInstruction)) {
-                $spanTag = $html::span([], \is_string($predefinedInstruction['title']) ? $predefinedInstruction['title'] : 'Error');
-                $aTag = $html::tag('a', ['role' => 'button', 'class' => 'recipient active', 'tabindex' => -1], $spanTag);
-                $liTag = $html::tag('li', ['class' => 'menuitem'], $aTag);
+                $spanTag = $this->html::span([], \is_string($predefinedInstruction['title']) ? $predefinedInstruction['title'] : 'Error');
+                $aTag = $this->html::tag('a', ['role' => 'button', 'class' => 'recipient active', 'tabindex' => -1], $spanTag);
+                $liTag = $this->html::tag('li', ['class' => 'menuitem'], $aTag);
                 $liTagsContainer .= $liTag;
             }
         }
 
         return $liTagsContainer;
+    }
+
+    public function fillButton(string $id,  string $localization): string{
+        return $this->html::tag('a', ["id"=>$id, "class"=>"input-group-text icon", 'href'=>'#', "title"=>$this->translation($localization)], '<roundcube:button command="openhelpexamples">');
+    }
+
+    protected function translation(string $key): string
+    {
+        return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
     }
 }

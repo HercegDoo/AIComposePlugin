@@ -34,7 +34,9 @@ class MailTask extends AbstractTask
                 'aicreativityselect' => [$this, 'creativity_select_create'],
                 'ailanguageselect' => [$this, 'language_select_create'],
                 'aicinstruction' => [$this, 'create_instruction_field'],
-                'aicinstructiondropdown' => [$this, 'create_instruction_dropdown']]
+                'aicinstructiondropdown' => [$this, 'create_instruction_dropdown'],
+                'sendfix' => [$this, 'create_send_button'],
+                'showinstructionsbutton' =>[$this, 'create_show_instructions_button']]
         );
     }
 
@@ -156,6 +158,14 @@ class MailTask extends AbstractTask
     public function create_instruction_dropdown(): string
     {
         return $this->templateObjectFiller->fillPredefinedInstructions();
+    }
+
+    public function create_send_button():string{
+        return $this->templateObjectFiller->fillButton("fix-text-send", "ai_generate_again");
+    }
+
+    public function create_show_instructions_button():string{
+        return $this->templateObjectFiller->fillButton("aic-example-instructions", "ai_button_show_instructions");
     }
 
     public function startup(): void

@@ -1,8 +1,10 @@
+import { translation } from "../../utils";
 
 export default class HelpCommands {
 
   constructor() {
     this.#registerCommands();
+    document.getElementById('aic-example-instructions').title = translation('ai_help_title');
   }
 
   #registerCommands() {
