@@ -4,8 +4,8 @@ export default class ToolTipAvailability {
   static instance = null;
 
   constructor() {
-    if (ButtonsAvailability.instance) {
-      return ButtonsAvailability.instance;
+    if (ToolTipAvailability.instance) {
+      return ToolTipAvailability.instance;
     }
     this.popup = document.getElementById('fix-text-tooltip');
 
@@ -15,7 +15,7 @@ export default class ToolTipAvailability {
     this.editorHTML = null;
     this.#callCommands();
 
-    ButtonsAvailability.instance = this;
+    ToolTipAvailability.instance = this;
   }
 
  #callCommands() {
