@@ -40,7 +40,7 @@ this.#toggleFixTextToolTip();
       this.#checkSelection() });
 
     document.addEventListener("click", (e) => {
-      if (!this.textarea.contains(e.target) ) {
+      if (!this.textarea.contains(e.target) && !this.popup.contains(e.target) ) {
        this.popup.style.display='none';
       }
     });
