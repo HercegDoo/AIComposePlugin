@@ -51,19 +51,33 @@ this.#toggleFixTextToolTip();
     });
   }
 
-  #checkSelection() {
-      const start = this.textarea.selectionStart,
+  #checkSelection(clientX, clientY) {
+    let start, end;
+    if(!this.isHTMLEditor()){
+       start = this.textarea.selectionStart;
         end = this.textarea.selectionEnd;
+    }
 
-      const isTextSelected = start !== end;
-      this.selectedText = isTextSelected ? this.textarea.value.substring(start, end) : "";
-      if(isTextSelected) {
+
+     const textareaSelectedText = this.#isTextSelected() ? this.textarea.value.substring(start, end) : "";
+    this.selectedText = this.isHTMLEditor() ? (this.#isTextSelected() ? this.#setEditorHTMLSelection() : "") : textareaSelectedText;
+      if(this.#isTextSelected()) {
         const { x, y } = this.#getCursorXY(this.textarea, end);
         // Funkcija koja ažurira poziciju
         const updatePosition = () => {
-          const updatedValues = this.#getCursorXY(this.textarea, end);
-          this.popup.style.left = `${updatedValues.x}px`;
-          this.popup.style.top = `${updatedValues.y}px`;
+          let updatedValues;
+if(!this.isHTMLEditor()){
+        updatedValues = this.#getCursorXY(this.textarea, end);
+        this.popup.style.position = "none";
+  this.popup.style.left = `${updatedValues.x}px`;
+  this.popup.style.top = `${updatedValues.y}px`;
+}
+else{
+  console.log("aktivan html editor");
+this.popup.style.left = `${clientX}px`;
+this.popup.style.top = `${clientY}px`;
+}
+
         };
 
         window.addEventListener('resize', updatePosition);
@@ -86,14 +100,22 @@ this.#toggleFixTextToolTip();
   #getCursorXY(input, selectionPoint) {
     // create a dummy element that will be a clone of our input
     const div = document.createElement('div');
-
-    // get the computed style of the input and clone it onto the dummy element
-    const copyStyle = getComputedStyle(input);
+    let copyStyle;
+    if(!this.isHTMLEditor()){
+    copyStyle = getComputedStyle(input);
+    }
+    else{
+      const element = this.editorHTML.selection.getNode();
+        copyStyle = window.getComputedStyle(element);
+    }
     for (const prop of copyStyle) {
       div.style[prop] = copyStyle[prop];
     }
 
     // Replace whitespaces if it's a single-line input
+    if(!this.isHTMLEditor()){
+
+    }
     const swap = '.';
     const inputValue = input.tagName === 'INPUT' ? input.value.replace(/ /g, swap) : input.value;
 
@@ -122,7 +144,7 @@ this.#toggleFixTextToolTip();
     document.body.removeChild(div);
 
     // Return the coordinates relative to the input element
-    const inputRect = input.getBoundingClientRect();
+    const inputRect =input.getBoundingClientRect();
     const negValue = inputRect.bottom - 670;
     return {
       x: spanX ,  // Calculate the x position relative to the input element
@@ -130,27 +152,102 @@ this.#toggleFixTextToolTip();
     };
   }
 
-  #checkEditorHTMLSelection(){
+  #getEditorHTMLCursorXY(input, selectionPoint) {
+
+    // create a dummy element that will be a clone of our input
+    const div = document.createElement('div');
+    let copyStyle;
+
+      const element = this.editorHTML.selection.getNode();
+      copyStyle = window.getComputedStyle(element);
+
+    for (const prop of copyStyle) {
+      div.style[prop] = copyStyle[prop];
+    }
+
+
+    const editor = tinymce.activeEditor;
+    const swap = '.';
+
+// Dobijanje teksta iz TinyMCE editor-a (obični tekst bez HTML-a)
+    let editorContent = editor.getBody().innerText;
+
+// Zamenite sve razmake sa tačkom
+    editorContent = editorContent.replace(/ /g, swap);
+
+// Sada možete vratiti izmenjeni tekst u editor
+ div.textContent = editorContent;
+
+
+    // Handle styles based on input type
+    if (input.tagName === 'TEXTAREA') div.style.height = 'auto';
+    if (input.tagName === 'INPUT') div.style.width = 'auto';
+
+    // Create a marker element to obtain the caret position
+    const span = document.createElement('span');
+    span.textContent =  editorContent.substr(selectionPoint) || '.';
+
+    // Append the span marker to the div
+    div.appendChild(span);
+
+    // Append the dummy element to the body
+    document.body.appendChild(div);
+
+    // Get the position of the span element
+    const { offsetLeft: spanX, offsetTop: spanY } = span;
+
+    // Remove the dummy element from the document
+    document.body.removeChild(div);
+
+    // Return the coordinates relative to the input element
+    const inputRect = document.querySelector('#composebody_ifr').getBoundingClientRect();
+    const negValue = inputRect.bottom - 670;
+    console.log(spanX, spanY);
+    return {
+      x: spanX ,  // Calculate the x position relative to the input element
+      y: spanY - inputRect.bottom + negValue  // Calculate the y position relative to the input element
+    };
+
+  }
+
+
+
+  #setEditorHTMLSelection(){
     this.selectedText = this.editorHTML.selection.getContent({ format: 'text' });
 
   }
+
+
 
 
 getSelectedText() {
     return this.selectedText;
   }
 
-getActiveEditor(){
+isHTMLEditor(){
     return !!(this.editorHTML && tinymce.activeEditor);
 }
 
-  #callHtmlEditorEventListeners(){
-    this.editorHTML.on('selectionchange', () => {
-     this.#checkEditorHTMLSelection();
-    });
+#isTextSelected(){
+    if(!this.isHTMLEditor()){
+      return this.textarea.selectionStart !== this.textarea.selectionEnd;
+    }
+    else {
+      return this.editorHTML.selection.getContent({ format: 'text' }) !== "";
+    }
+    
+}
 
-    this.editorHTML.on('mouseup', () => {
-      this.#checkEditorHTMLSelection();
+  #callHtmlEditorEventListeners(){
+    //
+    // this.editorHTML.on('selectionchange', () => {
+    //   console.log("onselectionchange");
+    //   this.#checkSelection();
+    // });
+
+    this.editorHTML.on('mouseup', (event) => {
+      console.log("onmouseup");
+      this.#checkSelection(event.clientX, event.clientY);
     });
 
   }
