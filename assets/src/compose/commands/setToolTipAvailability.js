@@ -24,12 +24,16 @@ this.#toggleFixTextToolTip();
   }
 
  #toggleGenerateButton() {
+   if(this.instructionTextArea.value === ""){
+     document.getElementById('aic-generate-email-button').setAttribute('disabled', 'disabled');
+   }
    this.instructionTextArea.addEventListener('input', ()=>{
      if(this.instructionTextArea.value === ""){
        document.getElementById('aic-generate-email-button').setAttribute('disabled', 'disabled');
      }
      else{
        document.getElementById('aic-generate-email-button').removeAttribute('disabled');
+       rcmail.enable_command('generatemail', true);
      }
    });
   }

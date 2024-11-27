@@ -3,18 +3,18 @@ import { getRequestDataFields } from "../modal/additionalModalFunctions/requestD
 import { getPreviousGeneratedInsertedEmail, insertEmail } from "../modal/additionalModalFunctions/insertEmailHandler";
 import { signatureCheckedPreviousConversation } from "../modal/additionalModalFunctions/signaturesHandler";
 import { getFormattedMail } from "../../utils";
+import { display_messages, errorPresent, validateFields } from "../validateFields";
 
 export default class GenerateMail {
 
   constructor() {
-    this.predefinedInstructions = null;
+    this.predefinedInstructions = document.querySelector('#predefined-instructions-dropdown');
     this.#registerCommands();
   }
 
   #registerCommands() {
     rcube_webmail.prototype.generatemail = this.#generatemail;
 
-    rcmail.enable_command('generatemail', true);
     rcmail.register_command('generatemail');
 
     this.#connectPredefinedInstructionsWithCommand();
@@ -22,7 +22,7 @@ export default class GenerateMail {
 
   }
 
-  #generatemail(passedInstruction = "") {
+  #generatemail(passedInstruction = "", fixText = "") {
     const requestData = getRequestDataFields();
     //Prethodni razgovor sa izvrsenom provjerom potpisa 
     const previousConversationObject = signatureCheckedPreviousConversation(requestData.previousGeneratedEmail);
@@ -30,8 +30,18 @@ export default class GenerateMail {
     requestData.previousConversation = previousConversationObject.previousConversation;
     requestData.signaturePresent = previousConversationObject.signaturePresent;
     requestData.instructions = passedInstruction === "" ? requestData.instructions : passedInstruction;
+    requestData.fixText  = fixText;
+
+    const errorsArray = validateFields();
+    if(errorsArray.length !== 0){
+      display_messages(errorsArray);
+    }
+
+    if(errorPresent(errorsArray)){
+     return;
+    }
+
     rcmail.lock_frame(document.body);
-    console.log(requestData);
     rcmail
       .http_post(
         "plugin.AIComposePlugin_GenereteEmailAction",
@@ -66,13 +76,13 @@ export default class GenerateMail {
 
 
   #connectPredefinedInstructionsWithCommand(){
-    this.predefinedInstructions = document.querySelector('#predefined-instructions-dropdown');
     const predefinedInstructionsChildrenArray = Array.from(this.predefinedInstructions.children);
     predefinedInstructionsChildrenArray.forEach((predefinedInstruction)=>{
       if(!predefinedInstruction.hasAttribute('role')){
         const targeteredInstruction =rcmail.env.aiPredefinedInstructions.find(originalPredefinedInstruction => originalPredefinedInstruction.id === predefinedInstruction.id.replace('dropdown-', ""));
-      console.log(targeteredInstruction);
-        predefinedInstruction.onclick  = function(){ return rcmail.command('generatemail', targeteredInstruction.message);}
+        predefinedInstruction.onclick  = function(){ rcmail.enable_command('generatemail', true);
+          return rcmail.command('generatemail', targeteredInstruction.message);
+         }
       }
     })
   }
@@ -81,6 +91,7 @@ export default class GenerateMail {
     const helpATags = document.getElementsByClassName('help-a');
     Array.from(helpATags).forEach((helpATag)=>{
       helpATag.onclick  = function(){ document.getElementById('aic-compose-help-modal-mask').setAttribute('hidden', 'hidden');
+        rcmail.enable_command('generatemail', true);
         return rcmail.command('generatemail', helpATag.previousElementSibling.textContent);}
 
     })
