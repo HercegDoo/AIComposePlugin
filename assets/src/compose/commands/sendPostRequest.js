@@ -18,6 +18,7 @@ export default class GenerateMail {
     rcmail.register_command('generatemail');
 
     this.#connectPredefinedInstructionsWithCommand();
+    this.#connectHelpExamplesWithCommand();
 
   }
 
@@ -56,7 +57,7 @@ export default class GenerateMail {
         insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
         const instructionTextArea = document.getElementById('aic-instruction');
         //Ako nema nista u instrukciji, ubaci datu instrukciju(za slucaj koristenja predefinisane instrukcije)
-        instructionTextArea.textContent = instructionTextArea.textContent === "" ? passedInstruction : instructionTextArea.textContent;
+        instructionTextArea.textContent = requestData.instructions;
       })
       .always(function() {
         rcmail.unlock_frame();
@@ -73,6 +74,15 @@ export default class GenerateMail {
       console.log(targeteredInstruction);
         predefinedInstruction.onclick  = function(){ return rcmail.command('generatemail', targeteredInstruction.message);}
       }
+    })
+  }
+
+  #connectHelpExamplesWithCommand(){
+    const helpATags = document.getElementsByClassName('help-a');
+    Array.from(helpATags).forEach((helpATag)=>{
+      helpATag.onclick  = function(){ document.getElementById('aic-compose-help-modal-mask').setAttribute('hidden', 'hidden');
+        return rcmail.command('generatemail', helpATag.previousElementSibling.textContent);}
+
     })
   }
 
