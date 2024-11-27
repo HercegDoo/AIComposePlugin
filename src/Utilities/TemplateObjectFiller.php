@@ -67,15 +67,16 @@ class TemplateObjectFiller extends AbstractUtility
     {
         $liTagsContainer = '';
         $predefinedInstructions = \rcmail::get_instance()->output->get_env('aiPredefinedInstructions');
+
         foreach ((array) $predefinedInstructions as $predefinedInstruction) {
             if (\is_array($predefinedInstruction)) {
                 $spanTag = $this->html::span([], \is_string($predefinedInstruction['title']) ? $predefinedInstruction['title'] : 'Error');
                 $aTag = $this->html::tag('a', ['role' => 'button', 'class' => 'recipient active', 'tabindex' => -1], $spanTag);
-                $liTag = $this->html::tag('li', ['class' => 'menuitem'], $aTag);
+                $liTag = $this->html::tag('li', ['class' => 'menuitem', 'id'=>'dropdown-'.$predefinedInstruction['id'].''], $aTag);
                 $liTagsContainer .= $liTag;
             }
         }
-
+        error_log("Kontejner na kraju : " . print_r($liTagsContainer, true));
         return $liTagsContainer;
     }
 
