@@ -1,3 +1,4 @@
+import ToolTipAvailability from "./setToolTipAvailability";
 
 
 export default class FixTextCommands {
@@ -9,7 +10,7 @@ export default class FixTextCommands {
   }
 
   #registerCommands() {
-    rcube_webmail.prototype.prepareFixTextRequest = this.#prepareFixTextRequest;
+    rcube_webmail.prototype.prepareFixTextRequest = this.#prepareFixTextRequest.bind(this);
     rcmail.register_command('prepareFixTextRequest');
     this.#setEventListeners();
   }
@@ -25,12 +26,19 @@ export default class FixTextCommands {
   }
 
   #prepareFixTextRequest() {
-   console.log("Fix text komanda");
+
+    if(this.fixTextTextarea.value !== ""){
+      const fixText = new ToolTipAvailability().getSelectedText();
+      const additionalData = {
+        passedInstruction : this.fixTextTextarea.value,
+        fixText: fixText
+      }
+      return rcmail.command('generatemail', additionalData);
+    }
   }
 
   #setEventListeners(){
     this.fixTextTextarea.addEventListener('input', ()=>{
-      console.log('Input okinut');
       this.#toggleSendButtonAvailability();
     })
   }
