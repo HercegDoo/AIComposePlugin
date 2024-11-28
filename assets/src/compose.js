@@ -9,7 +9,6 @@ import {
   processSenderData,
 } from "./compose/modal/additionalModalFunctions/senderDataHandler";
 import HelpCommands from "./compose/commands/helpExamplesCommands";
-import FixTextModalButtonCommands from "./compose/commands/fixTextButtonCommands";
 import ToolTipAvailability from "./compose/commands/setToolTipAvailability";
 import GenerateMail from "./compose/commands/sendPostRequest";
 import FixTextCommands from "./compose/commands/fixTextCommands";
@@ -18,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
   createButtonInToolbarMenu();
 new HelpCommands();
 new ToolTipAvailability();
-new FixTextModalButtonCommands();
 new GenerateMail();
 new FixTextCommands();
 

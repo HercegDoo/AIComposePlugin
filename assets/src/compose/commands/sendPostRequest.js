@@ -105,12 +105,5 @@ export default class GenerateMail {
 
     })
   }
-
-  #connectFixTextWithCommand(){
-    const fixTextSendButton = document.getElementById('fix-text-send');
-
-    fixTextSendButton.style.cursor = "default";
-  }
-
 }
 

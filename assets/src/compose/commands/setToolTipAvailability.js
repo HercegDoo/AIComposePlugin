@@ -62,7 +62,7 @@ this.#toggleFixTextToolTip();
         end = this.textarea.selectionEnd;
     }
 
-
+    document.getElementById('fix-text-aic-instruction').value = "";
      const textareaSelectedText = this.#isTextSelected() ? this.textarea.value.substring(start, end) : "";
     this.selectedText = this.isHTMLEditor() ? (this.#isTextSelected() ? this.#setEditorHTMLSelection() : "") : textareaSelectedText;
       if(this.#isTextSelected()) {

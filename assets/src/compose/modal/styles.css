@@ -552,7 +552,7 @@ margin: 0 auto;
   gap:12px;
   align-items: center;
   padding: 15px;
-  border-bottom: 1px solid #7c949c;
+
 }
 
 #select-div select{
@@ -570,6 +570,7 @@ margin: 0 auto;
 #header-div{
   text-align: center;
   padding-top:5px;
+  border-top:1px solid #7c949c;
 }
 
 #aic-instruction{
