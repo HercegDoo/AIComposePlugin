@@ -22,15 +22,16 @@ export default class GenerateMail {
 
   }
 
-  #generatemail(passedInstruction = "", fixText = "") {
+  #generatemail(additionalData = null) {
     const requestData = getRequestDataFields();
     //Prethodni razgovor sa izvrsenom provjerom potpisa 
     const previousConversationObject = signatureCheckedPreviousConversation(requestData.previousGeneratedEmail);
     requestData.previousGeneratedEmail= getFormattedMail( `${getPreviousGeneratedInsertedEmail()}`);
     requestData.previousConversation = previousConversationObject.previousConversation;
     requestData.signaturePresent = previousConversationObject.signaturePresent;
-    requestData.instructions = passedInstruction === "" ? requestData.instructions : passedInstruction;
-    requestData.fixText  = fixText;
+    requestData.instructions = additionalData ? (additionalData.passedInstruction === "" ? requestData.instructions : additionalData.passedInstruction) : requestData.instructions;
+    requestData.fixText  = additionalData ? additionalData.fixText : "";
+
 
     const errorsArray = validateFields();
     if(errorsArray.length !== 0){
@@ -81,7 +82,11 @@ export default class GenerateMail {
       if(!predefinedInstruction.hasAttribute('role')){
         const targeteredInstruction =rcmail.env.aiPredefinedInstructions.find(originalPredefinedInstruction => originalPredefinedInstruction.id === predefinedInstruction.id.replace('dropdown-', ""));
         predefinedInstruction.onclick  = function(){ rcmail.enable_command('generatemail', true);
-          return rcmail.command('generatemail', targeteredInstruction.message);
+          const additionalData = {
+            passedInstruction : targeteredInstruction.message,
+            fixText: ""
+          }
+          return rcmail.command('generatemail', additionalData);
          }
       }
     })
@@ -92,9 +97,19 @@ export default class GenerateMail {
     Array.from(helpATags).forEach((helpATag)=>{
       helpATag.onclick  = function(){ document.getElementById('aic-compose-help-modal-mask').setAttribute('hidden', 'hidden');
         rcmail.enable_command('generatemail', true);
-        return rcmail.command('generatemail', helpATag.previousElementSibling.textContent);}
+        const additionalData = {
+          passedInstruction : helpATag.previousElementSibling.textContent,
+          fixText: ""
+        }
+        return rcmail.command('generatemail', additionalData);}
 
     })
+  }
+
+  #connectFixTextWithCommand(){
+    const fixTextSendButton = document.getElementById('fix-text-send');
+
+    fixTextSendButton.style.cursor = "default";
   }
 
 }

@@ -35,8 +35,8 @@ class MailTask extends AbstractTask
                 'ailanguageselect' => [$this, 'language_select_create'],
                 'aicinstruction' => [$this, 'create_instruction_field'],
                 'aicinstructiondropdown' => [$this, 'create_instruction_dropdown'],
-                'sendfix' => [$this, 'create_send_button'],
-                'showinstructionsbutton' => [$this, 'create_show_instructions_button']]
+                'showinstructionsbutton' => [$this, 'create_show_instructions_button'],
+                'aicfixinstruction' => [$this, 'create_fix_text_instruction']]
         );
     }
 
@@ -140,7 +140,12 @@ class MailTask extends AbstractTask
 
     public function create_instruction_field(): string
     {
-        return $this->templateObjectFiller->createInstructionField();
+        return $this->templateObjectFiller->createInstructionField('aicinstruction', 'aic-instruction');
+    }
+
+    public function create_fix_text_instruction(): string
+    {
+        return $this->templateObjectFiller->createInstructionField("aicfixinstruction", 'fix-text-aic-instruction');
     }
 
     /**
@@ -160,10 +165,6 @@ class MailTask extends AbstractTask
         return $this->templateObjectFiller->fillPredefinedInstructions();
     }
 
-    public function create_send_button(): string
-    {
-        return $this->templateObjectFiller->fillButton('fix-text-send', 'ai_generate_again');
-    }
 
     public function create_show_instructions_button(): string
     {
