@@ -65,7 +65,7 @@ class MailTask extends AbstractTask
 
         $parsedHtmlContent = $this->contentInjector->getParsedHtml('ai_compose_instruction_field');
 
-        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'composebodycontainer');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, '#composebodycontainer');
     }
 
     public function add_tooltip(array $args): array
@@ -74,7 +74,7 @@ class MailTask extends AbstractTask
 
         $parsedHtmlContent = $this->contentInjector->getParsedHtml('fix_text_tootltip');
 
-        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'headers-menu');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, '#headers-menu');
     }
 
     /**
@@ -98,12 +98,15 @@ class MailTask extends AbstractTask
      * @param array<string, mixed> $args
      *
      * @return array<string, mixed>
+     * @throws DOMException
      */
     public function add_select_fields(array $args): array
     {
         $parsedHtmlContent = $this->contentInjector->getParsedHtml('ai_select_fields');
 
-        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'compose-attachments');
+
+
+        return $this->contentInjector->insertContentAfterElement($args, $parsedHtmlContent, '#compose-options');
     }
 
     /**
@@ -115,7 +118,7 @@ class MailTask extends AbstractTask
     {
         $parsedHtmlContent = $this->contentInjector->getParsedHtml('instruction_examples');
 
-        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'layout-content');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, '#layout-content');
     }
 
     public function style_select_create(): string
@@ -157,7 +160,7 @@ class MailTask extends AbstractTask
     {
         $parsedHtmlContent = $this->contentInjector->getParsedHtml('popup');
 
-        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, 'headers-menu');
+        return $this->contentInjector->insertContentAboveElement($args, $parsedHtmlContent, '#headers-menu');
     }
 
     public function create_instruction_dropdown(): string

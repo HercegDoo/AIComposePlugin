@@ -2,13 +2,13 @@
 
 namespace HercegDoo\AIComposePlugin\Utilities;
 
-class ContentInjector extends AbstractUtility
+use DOMDocument;
+use Rct567\DomQuery\DomQuery;
+
+final class ContentInjector extends AbstractUtility
 {
     private static ?ContentInjector $instance = null;
-
-    private function __construct()
-    {
-    }
+    private  static array $doneContent = [];
 
     public static function getContentInjector(): self
     {
@@ -24,18 +24,65 @@ class ContentInjector extends AbstractUtility
      *
      * @return array<string, mixed>
      */
-    public function insertContentAboveElement(array $baseHTML, string $contentToInsert, string $elementId): array
+    public function insertContentAboveElement(array $baseHTML, string $contentToInsert, string $selector): array
     {
-        if (isset($baseHTML['content']) && \is_string($baseHTML['content']) && !str_contains($baseHTML['content'], $contentToInsert)) {
-            $pattern = '/(<div\s+id="' . $elementId . '".*?>)/';
+        return $this->insertContent( $baseHTML,  $contentToInsert,  $selector, 'before');
+    }
 
-            if (str_contains($baseHTML['content'], 'id="' . $elementId . '"')) {
-                $baseHTML['content'] = preg_replace($pattern, $contentToInsert . '$1', $baseHTML['content']);
-            }
+
+
+    public function insertContentAfterElement(array $baseHTML, string $contentToInsert, string $selector): array
+    {
+        return $this->insertContent( $baseHTML,  $contentToInsert,  $selector, 'after');
+    }
+
+
+    private function insertContent(array $baseHTML, string $insertContent, string $selector, string $position): array
+    {
+        $hash = md5($insertContent);
+        if (in_array($hash, self::$doneContent)) {
+            return $baseHTML;
         }
+
+        $html = $baseHTML['content'] ?? '';
+
+        if($html === null || $html ==="") {
+            return $baseHTML;
+        }
+
+        $dom = new DomQuery($html);
+
+        $targetElement = $dom->find($selector);
+
+        if($targetElement->count() === 0) {
+            error_log('AICompose plugin: error cant find selector in templete: ' . $selector);
+
+            return $baseHTML;
+        }
+
+        $position = $position === 'after' ? 'after' : 'before';
+
+        $targetElement->{$position}($insertContent);
+
+        $baseHTML['content'] = $dom->getOuterHtml();
+
+        self::$doneContent[] = $hash;
 
         return $baseHTML;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * @param array<string, mixed> $baseHTML
