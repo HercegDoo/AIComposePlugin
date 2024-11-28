@@ -40,8 +40,8 @@ this.#toggleFixTextToolTip();
 
   #toggleFixTextToolTip() {
 
-    this.textarea.addEventListener("mouseup", ()=>{
-      this.#checkSelection() });
+    this.textarea.addEventListener("mouseup", (event)=>{
+      this.#checkSelection(event.clientX, event.clientY) });
 
     document.addEventListener("click", (e) => {
       if (!this.textarea.contains(e.target) && !this.popup.contains(e.target) ) {
@@ -57,42 +57,27 @@ this.#toggleFixTextToolTip();
 
   #checkSelection(clientX, clientY) {
     let start, end;
-    if(!this.isHTMLEditor()){
-       start = this.textarea.selectionStart;
-        end = this.textarea.selectionEnd;
+    if (!this.isHTMLEditor()) {
+      start = this.textarea.selectionStart;
+      end = this.textarea.selectionEnd;
     }
 
     document.getElementById('fix-text-aic-instruction').value = "";
-     const textareaSelectedText = this.#isTextSelected() ? this.textarea.value.substring(start, end) : "";
+    const textareaSelectedText = this.#isTextSelected() ? this.textarea.value.substring(start, end) : "";
     this.selectedText = this.isHTMLEditor() ? (this.#isTextSelected() ? this.#setEditorHTMLSelection() : "") : textareaSelectedText;
-      if(this.#isTextSelected()) {
-        const { x, y } = this.#getCursorXY(this.textarea, end);
-        // Funkcija koja ažurira poziciju
-        const updatePosition = () => {
-          let updatedValues;
-if(!this.isHTMLEditor()){
-        updatedValues = this.#getCursorXY(this.textarea, end);
-        this.popup.style.position = "none";
-  this.popup.style.left = `${updatedValues.x}px`;
-  this.popup.style.top = `${updatedValues.y}px`;
-}
-else{
-this.popup.style.left = `${clientX}px`;
-this.popup.style.top = `${clientY}px`;
-}
+    if (this.#isTextSelected()) {
+      const { x, y } = this.#getCursorXY(this.textarea, end);
+      // Funkcija koja ažurira poziciju
 
-        };
 
-        window.addEventListener('resize', updatePosition);
+      this.popup.style.left = `${clientX}px`;
+      this.popup.style.top = `${clientY}px`;
 
-        updatePosition();
-        this.popup.style.top = `${y + 100}px`;
-
-       this.popup.style.display = "flex";
-      } else {
-       this.popup.style.display = "none";
-      }
-      }
+      this.popup.style.display = "flex";
+    } else {
+      this.popup.style.display = "none";
+    }
+  }
 
   /**
    * returns x, y coordinates for absolute positioning of a span within a given text input
