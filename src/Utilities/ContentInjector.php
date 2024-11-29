@@ -2,7 +2,7 @@
 
 namespace HercegDoo\AIComposePlugin\Utilities;
 
-use DOMDocument;
+
 use Rct567\DomQuery\DomQuery;
 
 final class ContentInjector extends AbstractUtility
@@ -39,6 +39,7 @@ final class ContentInjector extends AbstractUtility
 
     private function insertContent(array $baseHTML, string $insertContent, string $selector, string $position): array
     {
+        $baseHTML['content'] = "<!DOCTYPE html>" . $baseHTML['content'];
         $hash = md5($insertContent);
         if (in_array($hash, self::$doneContent)) {
             return $baseHTML;
