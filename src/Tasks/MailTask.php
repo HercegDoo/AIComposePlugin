@@ -61,13 +61,16 @@ class MailTask extends AbstractTask
      */
     public function add_instruction_field(array $args): array
     {
-
         return $this->contentInjector->insertContentAboveElement($args, 'ai_compose_instruction_field', '#composebodycontainer');
     }
 
+    /**
+     * @param array<string, mixed> $args
+     *
+     * @return array<string, mixed>
+     */
     public function add_tooltip(array $args): array
     {
-
         return $this->contentInjector->insertContentAboveElement($args, 'fix_text_tootltip', '#headers-menu');
     }
 
@@ -90,7 +93,6 @@ class MailTask extends AbstractTask
 
     /**
      * @param array<string, mixed> $args
-     *
      *
      * @return array<string, mixed>
      */
@@ -174,7 +176,7 @@ class MailTask extends AbstractTask
             'defaultStyle' => Settings::getDefaultStyle(),
         ];
 
-        if ($rcmail->action === 'compose' || strpos($rcmail->action , $actionPrefix) === 0) {
+        if ($rcmail->action === 'compose' || str_starts_with($rcmail->action, $actionPrefix)) {
             $this->loadTranslations();
             $rcmail->output->set_env('aiPluginOptions', $settings);
             $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);

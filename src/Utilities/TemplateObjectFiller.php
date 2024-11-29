@@ -49,7 +49,7 @@ class TemplateObjectFiller extends AbstractUtility
         return \is_string($sel) ? $selector->show($sel) : '';
     }
 
-    public function createInstructionField($name, $id): string
+    public function createInstructionField(string $name, string $id): string
     {
         $attrisb = [
             'name' => $name,

@@ -30,11 +30,15 @@ parameters:
 			count: 2
 			path: src/Actions/Settings/SaveInstruction.php
 
-
 		-
 			message: "#^Cannot access property \\$task on rcube_plugin_api\\|null\\.$#"
 			count: 1
 			path: src/Tasks/AbstractTask.php
+
+		-
+			message: "#^Call to an undefined method rcube_output\\:\\:add_handlers\\(\\)\\.$#"
+			count: 1
+			path: src/Tasks/MailTask.php
 
 		-
 			message: "#^Call to an undefined method rcube_output\\:\\:add_gui_object\\(\\)\\.$#"
@@ -55,3 +59,8 @@ parameters:
 			message: "#^Method rcube_output\\:\\:send\\(\\) invoked with 1 parameter, 0 required\\.$#"
 			count: 1
 			path: src/Tasks/SettingsTask.php
+
+		-
+			message: "#^Call to an undefined method rcube_output\\:\\:just_parse\\(\\)\\.$#"
+			count: 1
+			path: src/Utilities/ContentInjector.php

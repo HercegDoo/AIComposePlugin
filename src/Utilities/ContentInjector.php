@@ -7,6 +7,10 @@ use Rct567\DomQuery\DomQuery;
 final class ContentInjector extends AbstractUtility
 {
     private static ?ContentInjector $instance = null;
+
+    /**
+     * @var string[]
+     */
     private static array $doneContent = [];
 
     public static function getContentInjector(): self
@@ -28,6 +32,11 @@ final class ContentInjector extends AbstractUtility
         return $this->insertContent($baseHTML, $contentToInsert, $selector, 'before');
     }
 
+    /**
+     * @param array<string, mixed> $baseHTML
+     *
+     * @return array<string, mixed>
+     */
     public function insertContentAfterElement(array $baseHTML, string $contentToInsert, string $selector): array
     {
         return $this->insertContent($baseHTML, $contentToInsert, $selector, 'after');
@@ -83,6 +92,11 @@ final class ContentInjector extends AbstractUtility
         return \rcmail::get_instance()->output->just_parse($htmlFile);
     }
 
+    /**
+     * @param array<string, mixed> $baseHTML
+     *
+     * @return array<string, mixed>
+     */
     private function insertContent(array $baseHTML, string $insertContent, string $selector, string $position): array
     {
         $baseHTML['content'] = '<!DOCTYPE html>' . $baseHTML['content'];
@@ -94,11 +108,7 @@ final class ContentInjector extends AbstractUtility
 
         $parsedHtmlContent = $this->getParsedHtml($insertContent);
 
-        $html = $baseHTML['content'] ?? '';
-
-        if ($html === null || $html === '') {
-            return $baseHTML;
-        }
+        $html = $baseHTML['content'];
 
         $dom = new DomQuery($html);
 
