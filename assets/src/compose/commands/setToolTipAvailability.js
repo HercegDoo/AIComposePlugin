@@ -41,8 +41,10 @@ this.#toggleFixTextToolTip();
   #toggleFixTextToolTip() {
 
     this.textarea.addEventListener("mouseup", (event)=>{
-      const rectBasic = document.getElementById('composebody').getBoundingClientRect();
-      console.log(`Koordinate obicne Textarea: top: ${rectBasic.top}, bottom: ${rectBasic.bottom}, left: ${rectBasic.left}, right: ${rectBasic.right} `);
+      this.#checkSelection(event.clientX, event.clientY) });
+
+    this.textarea.addEventListener("contextmenu", (event)=>{
+      console.log("selection change okinut")
       this.#checkSelection(event.clientX, event.clientY) });
 
     document.addEventListener("click", (e) => {
@@ -115,7 +117,7 @@ isHTMLEditor(){
       const tooltipHeight = parseFloat(document.getElementById('fix-text-tooltip').clientHeight * 0.7);
       this.popup.style.display = "none";
 
-        const selection = tinymce.activeEditor.selection;
+
         if (range) {
           const rect = range.getBoundingClientRect();
           this.#checkSelection(editorLeft + rect.left + window.scrollX, editorTop + rect.top + window.scrollY + tooltipHeight);

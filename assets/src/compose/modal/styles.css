@@ -24,6 +24,12 @@
   z-index:3;
 }
 
+#aic-generate-email-button-clone:before{
+  content: "\f544";
+}
+
+
+
 
 .xinfo div {
   font-family: Roboto, sans-serif;
@@ -609,9 +615,46 @@ background-color: #374549;
   padding: 7px 6px;
 }
 
+#aic-instruction-label{
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) and (min-width: 700px){
+  #fix-text-tooltip{
+    width: 27vw!important;
+  }
+
+}
+
+
+
+@media (max-width: 700px) and (min-width: 600px){
+  #fix-text-tooltip{
+    width: 33vw!important;
+  }
+
+}
+
+
+@media (max-width: 600px) and (min-width: 500px){
+  #fix-text-tooltip{
+    width: 40vw!important;
+  }
+
+}
+
 @media (max-width: 500px) {
   .properties {
     flex-direction: column;
+  }
+
+  #fix-text-tooltip{
+    width: 55vw!important;
+  }
+
+  #aic-compose-help > div.help-content > p{
+    text-align: center;
   }
 
   #aic-compose-dialog #aic-compose-dialog-box #aic-result textarea {
