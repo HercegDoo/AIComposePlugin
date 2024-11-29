@@ -53,7 +53,7 @@ class TemplateObjectFiller extends AbstractUtility
     {
         $attrisb = [
             'name' => $name,
-            'id' =>  $id,
+            'id' => $id,
             'rows' => 1,
             'cols' => 50,
             'class' => 'form-control',
@@ -72,11 +72,12 @@ class TemplateObjectFiller extends AbstractUtility
             if (\is_array($predefinedInstruction)) {
                 $spanTag = $this->html::span([], \is_string($predefinedInstruction['title']) ? $predefinedInstruction['title'] : 'Error');
                 $aTag = $this->html::tag('a', ['role' => 'button', 'class' => 'recipient active', 'tabindex' => -1], $spanTag);
-                $liTag = $this->html::tag('li', ['class' => 'menuitem', 'id'=>'dropdown-'.$predefinedInstruction['id'].''], $aTag);
+                $liTag = $this->html::tag('li', ['class' => 'menuitem', 'id' => 'dropdown-' . $predefinedInstruction['id'] . ''], $aTag);
                 $liTagsContainer .= $liTag;
             }
         }
-        error_log("Kontejner na kraju : " . print_r($liTagsContainer, true));
+        error_log('Kontejner na kraju : ' . print_r($liTagsContainer, true));
+
         return $liTagsContainer;
     }
 

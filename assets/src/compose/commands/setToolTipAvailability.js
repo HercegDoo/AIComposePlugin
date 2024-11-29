@@ -116,8 +116,6 @@ isHTMLEditor(){
       this.popup.style.display = "none";
 
         const selection = tinymce.activeEditor.selection;
-        const range = selection.getRng();
-
         if (range) {
           const rect = range.getBoundingClientRect();
           this.#checkSelection(editorLeft + rect.left + window.scrollX, editorTop + rect.top + window.scrollY + tooltipHeight);

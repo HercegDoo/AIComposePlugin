@@ -2,13 +2,12 @@
 
 namespace HercegDoo\AIComposePlugin\Utilities;
 
-
 use Rct567\DomQuery\DomQuery;
 
 final class ContentInjector extends AbstractUtility
 {
     private static ?ContentInjector $instance = null;
-    private  static array $doneContent = [];
+    private static array $doneContent = [];
 
     public static function getContentInjector(): self
     {
@@ -26,64 +25,13 @@ final class ContentInjector extends AbstractUtility
      */
     public function insertContentAboveElement(array $baseHTML, string $contentToInsert, string $selector): array
     {
-        return $this->insertContent( $baseHTML,  $contentToInsert,  $selector, 'before');
+        return $this->insertContent($baseHTML, $contentToInsert, $selector, 'before');
     }
-
-
 
     public function insertContentAfterElement(array $baseHTML, string $contentToInsert, string $selector): array
     {
-        return $this->insertContent( $baseHTML,  $contentToInsert,  $selector, 'after');
+        return $this->insertContent($baseHTML, $contentToInsert, $selector, 'after');
     }
-
-
-    private function insertContent(array $baseHTML, string $insertContent, string $selector, string $position): array
-    {
-        $baseHTML['content'] = "<!DOCTYPE html>" . $baseHTML['content'];
-        $hash = md5($insertContent);
-        if (in_array($hash, self::$doneContent)) {
-            return $baseHTML;
-        }
-
-        $html = $baseHTML['content'] ?? '';
-
-        if($html === null || $html ==="") {
-            return $baseHTML;
-        }
-
-        $dom = new DomQuery($html);
-
-        $targetElement = $dom->find($selector);
-
-        if($targetElement->count() === 0) {
-            error_log('AICompose plugin: error cant find selector in templete: ' . $selector);
-
-            return $baseHTML;
-        }
-
-        $position = $position === 'after' ? 'after' : 'before';
-
-        $targetElement->{$position}($insertContent);
-
-        $baseHTML['content'] = $dom->getOuterHtml();
-
-        self::$doneContent[] = $hash;
-
-        return $baseHTML;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * @param array<string, mixed> $baseHTML
@@ -133,5 +81,43 @@ final class ContentInjector extends AbstractUtility
         }
 
         return \rcmail::get_instance()->output->just_parse($htmlFile);
+    }
+
+    private function insertContent(array $baseHTML, string $insertContent, string $selector, string $position): array
+    {
+        $baseHTML['content'] = '<!DOCTYPE html>' . $baseHTML['content'];
+
+        $hash = md5($insertContent);
+        if (\in_array($hash, self::$doneContent)) {
+            return $baseHTML;
+        }
+
+        $parsedHtmlContent = $this->getParsedHtml($insertContent);
+
+        $html = $baseHTML['content'] ?? '';
+
+        if ($html === null || $html === '') {
+            return $baseHTML;
+        }
+
+        $dom = new DomQuery($html);
+
+        $targetElement = $dom->find($selector);
+
+        if ($targetElement->count() === 0) {
+            error_log('AICompose plugin: error cant find selector in templete: ' . $selector);
+
+            return $baseHTML;
+        }
+
+        $position = $position === 'after' ? 'after' : 'before';
+
+        $targetElement->{$position}($parsedHtmlContent);
+
+        $baseHTML['content'] = $dom->getOuterHtml();
+
+        self::$doneContent[] = $hash;
+
+        return $baseHTML;
     }
 }
