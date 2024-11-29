@@ -1,5 +1,4 @@
 import { createComposeModal } from "./modal";
-import { addDropdownToAIButton } from "./modal/addDropdownToAIButton";
 import { translation } from "../utils";
 
 export const createButtonInToolbarMenu = function () {

@@ -1,4 +1,4 @@
-import { createElementWithId, translation } from "../../utils";
+
 
 export function createHelpSection() {
   const helpDiv = createElementWithId('div', "aic-compose-help" );
