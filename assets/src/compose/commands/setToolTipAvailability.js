@@ -108,24 +108,32 @@ isHTMLEditor(){
   #callHtmlEditorEventListeners(){
 
     this.editorHTML.on('click keyup',  ()=> {
-
-      const aboveElement = document.querySelector('#compose-content > form > div.form-group.row');
-      const aboveElementClientRect = aboveElement.getBoundingClientRect();
-      const editorTop = aboveElementClientRect.top + aboveElement.clientHeight + parseFloat(window.getComputedStyle(aboveElement).marginBottom);
-      const editorLeft = aboveElementClientRect.left;
-      this.popup.style.display = 'flex';
-      const tooltipHeight = parseFloat(document.getElementById('fix-text-tooltip').clientHeight * 0.7);
-      this.popup.style.display = "none";
-
-
-        if (range) {
-          const rect = range.getBoundingClientRect();
-          this.#checkSelection(editorLeft + rect.left + window.scrollX, editorTop + rect.top + window.scrollY + tooltipHeight);
-        }
+this.#regulateHTMLEditorShow();
       });
 
+    this.editorHTML.on('contextmenu',  ()=> {
+      this.#regulateHTMLEditorShow();
+    });
 
 
+  }
+
+  #regulateHTMLEditorShow(){
+
+    const aboveElement = document.querySelector('#compose-content > form > div.form-group.row');
+    const aboveElementClientRect = aboveElement.getBoundingClientRect();
+    const editorTop = aboveElementClientRect.top + aboveElement.clientHeight + parseFloat(window.getComputedStyle(aboveElement).marginBottom);
+    const editorLeft = aboveElementClientRect.left;
+    this.popup.style.display = 'flex';
+    const tooltipHeight = parseFloat(document.getElementById('fix-text-tooltip').clientHeight * 0.7);
+    this.popup.style.display = "none";
+
+    const selection = tinymce.activeEditor.selection;
+    const range = selection.getRng();
+    if (range) {
+      const rect = range.getBoundingClientRect();
+      this.#checkSelection(editorLeft + rect.left + window.scrollX, editorTop + rect.top + window.scrollY + tooltipHeight);
+    }
   }
 
 
