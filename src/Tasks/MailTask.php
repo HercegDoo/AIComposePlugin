@@ -19,13 +19,13 @@ class MailTask extends AbstractTask
         $this->templateObjectFiller = TemplateObjectFiller::getTemplateObjectFiller();
 
         $this->plugin->add_hook('startup', [$this, 'startup']);
-        $this->plugin->add_hook('render_page', [$this, 'load_resources']);
-        $this->plugin->add_hook('render_page', [$this, 'add_instruction_field']);
-        $this->plugin->add_hook('render_page', [$this, 'add_form_buttons']);
-        $this->plugin->add_hook('render_page', [$this, 'add_select_fields']);
-        $this->plugin->add_hook('render_page', [$this, 'add_help_examples']);
-        $this->plugin->add_hook('render_page', [$this, 'create_predefined_instructions_template']);
-        $this->plugin->add_hook('render_page', [$this, 'add_tooltip']);
+        $this->plugin->add_hook('render_page', [$this, 'loadResources']);
+        $this->plugin->add_hook('render_page', [$this, 'addInstructionField']);
+        $this->plugin->add_hook('render_page', [$this, 'addFormButtons']);
+        $this->plugin->add_hook('render_page', [$this, 'addSelectFields']);
+        $this->plugin->add_hook('render_page', [$this, 'addHelpExamples']);
+        $this->plugin->add_hook('render_page', [$this, 'createPredefinedInstructionsTemplate']);
+        $this->plugin->add_hook('render_page', [$this, 'addTooltip']);
         $this->plugin->add_hook('preferences_save', [$this, 'preferencesSave']);
         \rcmail::get_instance()->output->add_handlers(
             [
@@ -45,7 +45,7 @@ class MailTask extends AbstractTask
      *
      * @return array<string, mixed>
      */
-    public function load_resources(array $args): array
+    public function loadResources(array $args): array
     {
         if (isset($args['template']) && $args['template'] == 'compose') {
             $this->plugin->include_script('assets/dist/compose.bundle.js');
@@ -59,7 +59,7 @@ class MailTask extends AbstractTask
      *
      * @return array<string, mixed>
      */
-    public function add_instruction_field(array $args): array
+    public function addInstructionField(array $args): array
     {
         return $this->contentInjector->insertContentAboveElement($args, 'ai_compose_instruction_field', '#composebodycontainer');
     }
@@ -69,7 +69,7 @@ class MailTask extends AbstractTask
      *
      * @return array<string, mixed>
      */
-    public function add_tooltip(array $args): array
+    public function addTooltip(array $args): array
     {
         return $this->contentInjector->insertContentAboveElement($args, 'fix_text_tootltip', '#headers-menu');
     }
@@ -79,7 +79,7 @@ class MailTask extends AbstractTask
      *
      * @return array<string, mixed>
      */
-    public function add_form_buttons(array $args): array
+    public function addFormButtons(array $args): array
     {
         $parsedHtmlContent = $this->contentInjector->getParsedHtml('buttons');
         $buttonId = $this->contentInjector->findId($parsedHtmlContent)[0];
@@ -96,7 +96,7 @@ class MailTask extends AbstractTask
      *
      * @return array<string, mixed>
      */
-    public function add_select_fields(array $args): array
+    public function addSelectFields(array $args): array
     {
         return $this->contentInjector->insertContentAfterElement($args, 'ai_select_fields', '#compose-options');
     }
@@ -106,7 +106,7 @@ class MailTask extends AbstractTask
      *
      * @return array<string, mixed>
      */
-    public function add_help_examples(array $args): array
+    public function addHelpExamples(array $args): array
     {
         return $this->contentInjector->insertContentAboveElement($args, 'instruction_examples', '#layout-content');
     }
@@ -146,7 +146,7 @@ class MailTask extends AbstractTask
      *
      * @return array<string, mixed>
      */
-    public function create_predefined_instructions_template(array $args): array
+    public function createPredefinedInstructionsTemplate(array $args): array
     {
         return $this->contentInjector->insertContentAboveElement($args, 'popup', '#headers-menu');
     }

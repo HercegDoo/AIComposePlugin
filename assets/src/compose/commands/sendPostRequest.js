@@ -68,7 +68,12 @@ export default class GenerateMail {
         insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
         const instructionTextArea = document.getElementById('aic-instruction');
         //Ako nema nista u instrukciji, ubaci datu instrukciju(za slucaj koristenja predefinisane instrukcije)
-        instructionTextArea.value = requestData.instructions;
+        if(additionalData === null){
+          instructionTextArea.value = requestData.instructions;
+        }
+        else{
+        instructionTextArea.value =  additionalData.fixText === ""?   requestData.instructions :  instructionTextArea.value;
+        }
       })
       .always(function() {
         rcmail.unlock_frame();
