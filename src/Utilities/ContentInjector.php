@@ -43,8 +43,6 @@ final class ContentInjector
         return $this->insertContent($baseHTML, $contentToInsert, $selector, 'after');
     }
 
-
-
     /**
      * @return array<int,string>>
      */
@@ -97,7 +95,7 @@ final class ContentInjector
 
         $targetElement->{$position}($parsedHtmlContent);
 
-        $baseHTML['content'] = '<!DOCTYPE html>' . PHP_EOL . $dom->getOuterHtml();
+        $baseHTML['content'] = '<!DOCTYPE html>' . \PHP_EOL . $dom->getOuterHtml();
 
         self::$doneContent[] = $hash;
 
