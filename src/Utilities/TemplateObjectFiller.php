@@ -2,8 +2,9 @@
 
 namespace HercegDoo\AIComposePlugin\Utilities;
 
-class TemplateObjectFiller extends AbstractUtility
+class TemplateObjectFiller
 {
+    use ContentTrait;
     private static ?TemplateObjectFiller $instance = null;
     private \html $html;
 

@@ -4,9 +4,10 @@ namespace HercegDoo\AIComposePlugin\Utilities;
 
 use Rct567\DomQuery\DomQuery;
 
-final class ContentInjector extends AbstractUtility
+final class ContentInjector
 {
     private static ?ContentInjector $instance = null;
+    use ContentTrait;
 
     /**
      * @var string[]
