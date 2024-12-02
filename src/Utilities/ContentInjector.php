@@ -6,8 +6,8 @@ use Rct567\DomQuery\DomQuery;
 
 final class ContentInjector
 {
-    private static ?ContentInjector $instance = null;
     use ContentTrait;
+    private static ?ContentInjector $instance = null;
 
     /**
      * @var string[]
