@@ -88,7 +88,7 @@ class MailTask extends AbstractTask
             return $args;
         }
 
-        return $this->contentInjector->add_buttons($parsedHtmlContent, 'formbuttons', $args);
+        return $this->contentInjector->insertContentAfterElement($args, 'buttons', '.formbuttons .btn.btn-primary.send');
     }
 
     /**
