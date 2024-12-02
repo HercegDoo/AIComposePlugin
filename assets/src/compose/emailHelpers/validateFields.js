@@ -1,6 +1,6 @@
-import { getSenderInfo, processSenderData } from "./modal/additionalModalFunctions/senderDataHandler";
-import { translation } from "../utils";
-import { getRecipientInfo } from "./modal/additionalModalFunctions/recipientDataHandler";
+import { getSenderInfo, processSenderData } from "./senderDataHandler";
+import { translation } from "../../utils";
+import { getRecipientInfo } from "./recipientDataHandler";
 
 export function validateFields(){
   const errorArray = [];

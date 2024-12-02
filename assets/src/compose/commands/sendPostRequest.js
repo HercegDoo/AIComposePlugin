@@ -1,9 +1,9 @@
 
-import { getRequestDataFields } from "../modal/additionalModalFunctions/requestDataHandler";
-import { getPreviousGeneratedInsertedEmail, insertEmail } from "../modal/additionalModalFunctions/insertEmailHandler";
-import { signatureCheckedPreviousConversation } from "../modal/additionalModalFunctions/signaturesHandler";
+import { getRequestDataFields } from "../emailHelpers/requestDataHandler";
+import { getPreviousGeneratedInsertedEmail, insertEmail } from "../emailHelpers/insertEmailHandler";
+import { signatureCheckedPreviousConversation } from "../emailHelpers/signaturesHandler";
 import { getFormattedMail } from "../../utils";
-import { display_messages, errorPresent, validateFields } from "../validateFields";
+import { display_messages, errorPresent, validateFields } from "../emailHelpers/validateFields";
 
 export default class GenerateMail {
 
@@ -68,7 +68,7 @@ export default class GenerateMail {
         insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
         const instructionTextArea = document.getElementById('aic-instruction');
         //Ako nema nista u instrukciji, ubaci datu instrukciju(za slucaj koristenja predefinisane instrukcije)
-        instructionTextArea.textContent = requestData.instructions;
+        instructionTextArea.value = requestData.instructions;
       })
       .always(function() {
         rcmail.unlock_frame();

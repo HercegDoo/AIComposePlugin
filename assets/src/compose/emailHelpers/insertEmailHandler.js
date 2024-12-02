@@ -1,4 +1,3 @@
-import { setFilled } from "./predefinedInstructions/regulatePredefinedInstructionsModal";
 
 let editorHTML;
 let previousGeneratedEmail = "";
