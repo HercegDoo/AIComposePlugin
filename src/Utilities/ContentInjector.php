@@ -3,6 +3,7 @@
 namespace HercegDoo\AIComposePlugin\Utilities;
 
 use Rct567\DomQuery\DomQuery;
+use function PHPUnit\Framework\isEmpty;
 
 final class ContentInjector
 {
@@ -80,6 +81,17 @@ final class ContentInjector
 
         $html = $baseHTML['content'];
 
+        $lines = explode(PHP_EOL , is_string($html) ? $html : "" , 20);
+
+        $firstLine = "";
+
+        foreach($lines as $line){
+            if(!empty($line)){
+                $firstLine = $line . \PHP_EOL;
+                break;
+            }
+        }
+
         $dom = new DomQuery($html);
 
         $targetElement = $dom->find($selector);
@@ -94,7 +106,7 @@ final class ContentInjector
 
         $targetElement->{$position}($parsedHtmlContent);
 
-        $baseHTML['content'] = '<!DOCTYPE html>' . \PHP_EOL . $dom->getOuterHtml();
+        $baseHTML['content'] = $firstLine . $dom->getOuterHtml();
 
         self::$doneContent[] = $hash;
 
