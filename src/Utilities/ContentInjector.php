@@ -43,16 +43,6 @@ final class ContentInjector
         return $this->insertContent($baseHTML, $contentToInsert, $selector, 'after');
     }
 
-    /**
-     * @return array<int,string>>
-     */
-    public function findId(string $html): array
-    {
-        preg_match_all('/id=["\']([^"\']+)["\']/', $html, $matches);
-
-        return $matches[1];
-    }
-
     public function getParsedHtml(string $fileName): string
     {
         $htmlFile = '';
@@ -85,7 +75,7 @@ final class ContentInjector
         $firstLine = '';
 
         foreach ($lines as $line) {
-            if (!empty($line)) {
+            if (!empty($line) && str_starts_with($line, '<!DOCTYPE')) {
                 $firstLine = $line . \PHP_EOL;
                 break;
             }

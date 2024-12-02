@@ -81,13 +81,6 @@ class MailTask extends AbstractTask
      */
     public function addFormButtons(array $args): array
     {
-        $parsedHtmlContent = $this->contentInjector->getParsedHtml('buttons');
-        $buttonId = $this->contentInjector->findId($parsedHtmlContent)[0];
-
-        if (isset($args['content']) && preg_match('/id=["\']' . $buttonId . '["\']/', \is_string($args['content']) ? $args['content'] : '')) {
-            return $args;
-        }
-
         return $this->contentInjector->insertContentAfterElement($args, 'buttons', '.formbuttons .btn.btn-primary.send');
     }
 
