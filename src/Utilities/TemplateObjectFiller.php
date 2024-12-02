@@ -4,7 +4,7 @@ namespace HercegDoo\AIComposePlugin\Utilities;
 
 class TemplateObjectFiller
 {
-    use ContentTrait;
+    use TranslationTrait;
     private static ?TemplateObjectFiller $instance = null;
     private \html $html;
 

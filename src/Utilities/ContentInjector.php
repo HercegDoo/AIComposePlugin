@@ -6,7 +6,7 @@ use Rct567\DomQuery\DomQuery;
 
 final class ContentInjector
 {
-    use ContentTrait;
+    use TranslationTrait;
     private static ?ContentInjector $instance = null;
 
     /**

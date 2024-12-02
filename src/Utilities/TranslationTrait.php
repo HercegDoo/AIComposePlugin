@@ -2,7 +2,7 @@
 
 namespace HercegDoo\AIComposePlugin\Utilities;
 
-trait ContentTrait
+trait TranslationTrait
 {
     protected function translation(string $key): string
     {

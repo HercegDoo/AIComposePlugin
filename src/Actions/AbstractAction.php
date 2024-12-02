@@ -2,8 +2,11 @@
 
 namespace HercegDoo\AIComposePlugin\Actions;
 
+use HercegDoo\AIComposePlugin\Utilities\TranslationTrait;
+
 abstract class AbstractAction
 {
+    use TranslationTrait;
     public static \rcube_plugin $plugin;
     protected \rcmail $rcmail;
 
@@ -84,8 +87,4 @@ abstract class AbstractAction
         return $this;
     }
 
-    protected function translation(string $key): string
-    {
-        return $this->rcmail->gettext("AIComposePlugin.{$key}");
-    }
 }

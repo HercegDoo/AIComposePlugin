@@ -6,9 +6,11 @@ namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use HercegDoo\AIComposePlugin\Utilities\TranslationTrait;
 
 abstract class AbstractTask
 {
+    use TranslationTrait;
     protected \rcube_plugin $plugin;
     protected ?\rcube_plugin_api $api = null;
 
@@ -28,11 +30,6 @@ abstract class AbstractTask
     {
         $this->plugin->add_texts('src/localization/messages/');
         $this->plugin->add_texts('src/localization/labels/', true);
-    }
-
-    protected function translation(string $key): string
-    {
-        return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
     }
 
     private function initSettings(): void
