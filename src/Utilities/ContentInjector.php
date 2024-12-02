@@ -3,7 +3,6 @@
 namespace HercegDoo\AIComposePlugin\Utilities;
 
 use Rct567\DomQuery\DomQuery;
-use function PHPUnit\Framework\isEmpty;
 
 final class ContentInjector
 {
@@ -81,12 +80,12 @@ final class ContentInjector
 
         $html = $baseHTML['content'];
 
-        $lines = explode(PHP_EOL , is_string($html) ? $html : "" , 20);
+        $lines = explode(\PHP_EOL, \is_string($html) ? $html : '', 20);
 
-        $firstLine = "";
+        $firstLine = '';
 
-        foreach($lines as $line){
-            if(!empty($line)){
+        foreach ($lines as $line) {
+            if (!empty($line)) {
                 $firstLine = $line . \PHP_EOL;
                 break;
             }
