@@ -44,7 +44,6 @@ this.#toggleFixTextToolTip();
       this.#checkSelection(event.clientX, event.clientY) });
 
     this.textarea.addEventListener("contextmenu", (event)=>{
-      console.log("selection change okinut")
       this.#checkSelection(event.clientX, event.clientY) });
 
     document.addEventListener("click", (e) => {

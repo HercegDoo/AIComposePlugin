@@ -57,7 +57,6 @@ final class ContentInjector
     {
         $htmlFile = '';
         $htmlFilePath = __DIR__ . '/../../skins/elastic/templates/' . $fileName . '.html';
-        error_log('Ime Putanje : ' . print_r($htmlFilePath, true));
         if (file_exists($htmlFilePath)) {
             $htmlFile = file_get_contents($htmlFilePath);
         }

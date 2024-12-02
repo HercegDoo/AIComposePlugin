@@ -77,7 +77,6 @@ class TemplateObjectFiller
                 $liTagsContainer .= $liTag;
             }
         }
-        error_log('Kontejner na kraju : ' . print_r($liTagsContainer, true));
 
         return $liTagsContainer;
     }
