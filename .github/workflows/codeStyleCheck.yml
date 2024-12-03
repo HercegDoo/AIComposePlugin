@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - main
-      - develop-v1.0.1
+      - 'develop*'
 
 jobs:
   php-cs-fixer:
