@@ -70,16 +70,7 @@ final class ContentInjector
 
         $html = $baseHTML['content'];
 
-        $lines = explode(\PHP_EOL, \is_string($html) ? $html : '', 20);
-
         $firstLine = '';
-
-        foreach ($lines as $line) {
-            if (!empty($line) && str_starts_with($line, '<!DOCTYPE')) {
-                $firstLine = $line . \PHP_EOL;
-                break;
-            }
-        }
 
         $dom = new DomQuery($html);
 
@@ -95,10 +86,28 @@ final class ContentInjector
 
         $targetElement->{$position}($parsedHtmlContent);
 
-        $baseHTML['content'] = $firstLine . $dom->getOuterHtml();
+        if (!empty($doctype = $this->validateDoctype(\is_string($html) ? $html : '')) && empty($this->validateDoctype($dom->getOuterHtml()))) {
+            $firstLine = $doctype . \PHP_EOL;
+        }
 
+        $baseHTML['content'] = $firstLine . $dom->getOuterHtml();
         self::$doneContent[] = $hash;
 
         return $baseHTML;
+    }
+
+    private function validateDoctype(string $html, int $limit = 20): string
+    {
+        $lines = explode(\PHP_EOL, $html, $limit);
+        $firstLine = '';
+
+        foreach ($lines as $line) {
+            if (!empty($line) && preg_match('/<![dD][oO][cC][tT][yY][pP][eE][^>]*>/', $line, $matches)) {
+                $firstLine = $matches[0];
+                break;
+            }
+        }
+
+        return $firstLine;
     }
 }
