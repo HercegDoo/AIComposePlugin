@@ -4,6 +4,7 @@ $labels = [];
 
 $labels['ai_dialog_button_title'] = 'Sastavite poruku pomoću AI';
 $labels['ai_dialog_title'] = 'Sastavite poruku pomoću AI';
+$labels['ai_options_title'] = 'AI Mail Opcije';
 
 $labels['ai_label_to'] = 'Ime primatelja';
 $labels['ai_label_from'] = 'Ime pošiljatelja';

@@ -4,6 +4,7 @@ $labels = [];
 
 $labels['ai_dialog_button_title'] = 'Compose message using AI';
 $labels['ai_dialog_title'] = 'Compose message using AI';
+$labels['ai_options_title'] = 'AI Mail Options';
 
 $labels['ai_label_to'] = 'Recipient name';
 $labels['ai_label_from'] = 'Sender name';

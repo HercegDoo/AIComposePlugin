@@ -61,6 +61,6 @@ class AddInstruction extends AbstractAction
     {
         self::$instructionId = \rcube_utils::get_input_string('_id', \rcube_utils::INPUT_GET);
         $this->rcmail->output->add_handler('responseform', [$this, 'response_form']);
-        $this->rcmail->output->send('AIComposePlugin.instructionedit');
+        $this->rcmail->output->send('AIComposePlugin.instruction_edit');
     }
 }

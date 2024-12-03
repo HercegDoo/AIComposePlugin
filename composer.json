@@ -3,6 +3,7 @@
   "description": "A plugin for AI generated emails.",
   "type": "roundcube-plugin",
   "license": "MIT",
+  "version": "1.0.1",
   "authors": [
     {
       "name": "Herceg Doo",
@@ -21,7 +22,7 @@
     "php": ">=7.4",
     "ext-curl": "*",
     "php-curl-class/php-curl-class": "^9.19",
-    "ext-json": "*"
+    "rct567/dom-query": "^1.1"
   },
   "repositories": [
     {

@@ -1,4 +1,4 @@
-import { capitalize } from "../../../utils";
+import { capitalize } from "../../utils";
 
 export function getRecipientInfo() {
   const aiComposeModal = document.getElementById("aic-compose-dialog"),

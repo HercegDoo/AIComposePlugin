@@ -1,4 +1,4 @@
-import { formatText } from "../../../utils";
+import { formatText } from "../../utils";
 
 let editorHTML = "";
 let formattedPreviousConversationText = "";
