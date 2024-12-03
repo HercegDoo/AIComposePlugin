@@ -33,6 +33,7 @@ export default class FixTextCommands {
         passedInstruction : this.fixTextTextarea.value,
         fixText: fixText
       }
+      document.getElementById('fix-text-tooltip').style.display="none";
       return rcmail.command('generatemail', additionalData);
     }
   }
