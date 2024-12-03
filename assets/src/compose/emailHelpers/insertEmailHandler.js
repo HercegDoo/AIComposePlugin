@@ -1,6 +1,8 @@
 
 let editorHTML;
 let previousGeneratedEmail = "";
+let popupVisible = false;
+let counter = 0;
 export function insertEmail(generatedEmail) {
 
    regulateInsertion(generatedEmail);
@@ -21,6 +23,10 @@ function regulateInsertion(emailToInsert) {
     targetTextArea.value = `${emailToInsert}\n\n${targetTextArea.value}`;
     previousGeneratedEmail = emailToInsert;
   }
+  if(counter === 0){
+    popupVisible = true;
+    ++counter;
+  }
 }
 
 
@@ -32,3 +38,6 @@ rcmail.addEventListener("editor-load", (e) => {
   return previousGeneratedEmail;
 }
 
+export function popupCanBeVisible(){
+   return popupVisible;
+}

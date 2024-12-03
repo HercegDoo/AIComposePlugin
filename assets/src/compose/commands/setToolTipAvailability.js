@@ -1,3 +1,4 @@
+import {  popupCanBeVisible } from "../emailHelpers/insertEmailHandler";
 
 export default class ToolTipAvailability {
 
@@ -71,7 +72,10 @@ this.#toggleFixTextToolTip();
     if (this.#isTextSelected()) {
       this.popup.style.left = `${coordsX}px`;
       this.popup.style.top = `${coordsY}px`;
+     if(popupCanBeVisible()){
       this.popup.style.display = "flex";
+     }
+
     } else {
       this.popup.style.display = "none";
     }
