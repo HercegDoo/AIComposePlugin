@@ -4,6 +4,7 @@ $labels = [];
 
 $labels['ai_dialog_button_title'] = 'Stel een bericht samen met AI';
 $labels['ai_dialog_title'] = 'Stel een bericht samen met AI';
+$labels['ai_options_title'] = 'AI Mail Opties';
 
 $labels['ai_label_to'] = 'Naam ontvanger';
 $labels['ai_label_from'] = 'Naam afzender';

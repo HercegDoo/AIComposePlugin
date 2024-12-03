@@ -1,4 +1,4 @@
-import { capitalize } from "../../../utils";
+import { capitalize } from "../../utils";
 
 export function getSenderInfo() {
   const iconLink = document.querySelector("a.iconlink.input-group-text");

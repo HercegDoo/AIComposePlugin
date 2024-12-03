@@ -6,9 +6,11 @@ namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use HercegDoo\AIComposePlugin\Utilities\TranslationTrait;
 
 abstract class AbstractTask
 {
+    use TranslationTrait;
     protected \rcube_plugin $plugin;
     protected ?\rcube_plugin_api $api = null;
 

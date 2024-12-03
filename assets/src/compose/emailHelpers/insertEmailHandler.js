@@ -1,22 +1,9 @@
-import { setFilled } from "./predefinedInstructions/regulatePredefinedInstructionsModal";
 
 let editorHTML;
 let previousGeneratedEmail = "";
 export function insertEmail(generatedEmail) {
-  const insertEmailButton = document.getElementById("insert-email-button"),
-   modalTextArea = document.getElementById("aic-email"),
-   aiComposeModal = document.getElementById("aic-compose-dialog");
 
-  if(aiComposeModal){
-    insertEmailButton.addEventListener("click", () => {
-      setFilled(false);
-      document.body.removeChild(aiComposeModal);
-     regulateInsertion(modalTextArea.value);
-    });
-  }
-  else{
    regulateInsertion(generatedEmail);
-  }
 
 }
 

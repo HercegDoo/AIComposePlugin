@@ -1,0 +1,379 @@
+.xinfo {
+  display: inline-block;
+  position: relative;
+}
+.xinfo.right div {
+  right: auto;
+
+}
+.xinfo.top div {
+  top: auto;
+  bottom: 20px;
+}
+.xinfo:hover div {
+  display: block;
+  z-index: 99;
+}
+.xinfo::before {
+  font-family: Icons;
+  font-style: normal;
+  font-weight: 900;
+  text-decoration: inherit;
+  text-align: center;
+  content: "\f05a";
+  z-index:3;
+}
+
+#aic-generate-email-button-clone:before{
+  content: "\f544";
+}
+
+.xinfo div {
+  font-family: Roboto, sans-serif;
+  font-size: 1.1rem;
+  position: absolute;
+  display: none;
+  right: 0;
+  text-align: left;
+  min-width: 200px;
+  max-width: 300px;
+  font-weight: normal;
+  top: 20px;
+  padding: 8px;
+  border-radius: 5px;
+  white-space: normal;
+  background-color: #fff;
+  border: 1px solid #d4dbde;
+  box-shadow: 3px 3px 5px #dcdedf;
+}
+html.dark-mode .xinfo div {
+  background-color: #161b1d;
+  border-color: #4d6066;
+  box-shadow: none;
+}
+
+.dark-mode .xdialog-mask {
+  background: rgba(0, 0, 0, 0.7);
+}
+.xdialog-mask {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+.xdialog-mask .xdialog-box {
+  display: flex;
+  flex-direction: column;
+  margin: 20% auto 0 auto;
+  max-width: 460px;
+  max-height: 90%;
+  box-sizing: border-box;
+  text-align: center;
+  border: 1px solid;
+  border-color: #ddd;
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+}
+html.dark-mode .xdialog-mask .xdialog-box {
+  border-color: #4d6066;
+}
+html.dark-mode .xdialog-mask .xdialog-box {
+  background-color: #21292c;
+}
+.xdialog-mask .xdialog-box.full-screen {
+  position: fixed;
+  max-width: None;
+  margin: 0;
+  max-height: none;
+  top: 5%;
+  left: 5%;
+  right: 5%;
+  bottom: 5%;
+}
+
+.xdialog-mask .xdialog-box .xdialog-title {
+  flex: 0 0 auto;
+  position: relative;
+  padding: 1rem;
+  text-align: left;
+  font-size: 1.25rem;
+  font-weight: bold;
+  border-bottom: 1px solid;
+  border-color: #ddd;
+  backdrop-filter: blur(10px);
+}
+html.dark-mode .xdialog-mask .xdialog-box .xdialog-title {
+  border-color: #4d6066;
+}
+.xdialog-mask .xdialog-box .xdialog-title .xdialog-close {
+  position: absolute;
+  right: 1rem;
+  border: none !important;
+  font-size: 2rem;
+  padding: 0;
+  margin: 0;
+  background: transparent !important;
+}
+.xdialog-mask .xdialog-box .xdialog-contents {
+  flex: 1 1 auto;
+  padding: 1rem;
+  text-align: left;
+}
+
+
+
+body.xlarry:not(.xskin) #button-apps:before,
+body.xlarry:not(.xskin) #sections-table tr > td.section:before,
+body.xlarry:not(.xskin) #settings-tabs a.x2fa:before,
+body.xlarry:not(.xskin) #settings-tabs a.xcpanel-settings:before,
+body.xlarry:not(.xskin) .listing.iconized li > a:before {
+  display: none !important;
+}
+
+.formcontent input.button,
+.formcontent input[type="checkbox"] {
+  width: auto;
+}
+.listing.iconized li a:before,
+.listing.iconized tr td:before {
+  margin-right: 0.5rem;
+}
+
+#aic-compose-dialog #aic-compose-dialog-box > .xdialog-contents {
+  overflow-y: auto;
+  display: flex;
+  flex-flow: column;
+  position: relative;
+  padding: 0;
+}
+#aic-compose-dialog #aic-compose-dialog-box > .xdialog-contents .btn-default {
+  border-color: #ddd;
+}
+html.dark-mode
+  #aic-compose-dialog
+  #aic-compose-dialog-box
+  > .xdialog-contents
+  .btn-default {
+  border-color: #4d6066;
+}
+#aic-compose-dialog #aic-compose-dialog-box > .xdialog-contents .xspinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 3em;
+  margin: -1.5em 0 -1.5em 0;
+  color: #777;
+}
+
+
+#aic-compose-dialog #aic-compose-dialog-box #aic-compose-help .help-content li {
+  margin-bottom: 0.5rem;
+}
+
+
+
+.xdialog-mask .xdialog-box .xdialog-title .xdialog-close {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-52%);
+  border: none !important;
+  font-size: 2rem;
+  padding: 0;
+  margin: 0;
+  color: #26262e;
+}
+
+html.dark-mode .xdialog-mask .xdialog-box .xdialog-title .xdialog-close {
+  color: #c5d1d3;
+}
+
+
+body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
+  line-height: 1.3rem;
+  background: transparent !important;
+}
+
+
+#fix-text-tooltip{
+    position: absolute;
+    background-color: #f1f3f4;
+    border: 1px solid rgb(204, 204, 204);
+    padding: 8px; border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 5px;
+    left: 168px;
+    top: 363px;
+    display: none;
+  align-items: center;
+  flex-direction: column;
+  width: 20vw;
+  z-index: 999;
+}
+
+html.dark-mode #fix-text-tooltip{
+  background-color: #21292c;
+}
+
+
+
+#aic-fix-text-section{
+  height: 100%;
+}
+
+
+.xdialog-contents{
+  overflow-y: scroll;
+}
+
+#aic-compose-help-modal{
+  width: 70%;
+  height:85%;
+  margin: auto;
+}
+
+.help-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.aic-back-button{
+padding: 7px 15px;
+}
+
+#help-title{
+margin: 0 auto;
+}
+
+.help-content p{
+  padding-top: 20px;
+  font-size: 1.2rem;
+}
+
+.help-content ul li {
+  margin-bottom: 7px;
+  font-size: 1.1rem;
+}
+
+.help-content ul li:last-child {
+  margin-bottom: 0;
+}
+
+
+.select-div{
+  display:flex;
+  flex-direction: column;
+  gap:12px;
+  align-items: center;
+  padding: 15px;
+
+}
+
+.single-select{
+  width:95%;
+}
+
+
+#header-div{
+  text-align: center;
+  padding-top:5px;
+  border-top:1px solid #7c949c;
+}
+
+#aic-instruction{
+  width: 90%;
+}
+
+#aic-popup::before{
+  content: "\f0e0";
+}
+
+#aic-popup:focus{
+  outline:none;
+  box-shadow: none;
+  border-color:#7c949c;
+}
+
+#aic-example-instructions::before{
+  content: "\f05a";
+}
+
+
+#aic-example-instructions:hover{
+background-color: #374549;
+}
+
+#fix-text-send::before{
+  content: "\f1d8";
+}
+
+#custom-input-group{
+  flex-wrap: nowrap;
+}
+
+.formbutton{
+  padding: 7px 6px;
+}
+
+#aic-instruction-label{
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@media (max-width: 900px) and (min-width: 700px){
+  #fix-text-tooltip{
+    width: 27vw!important;
+  }
+
+}
+
+
+
+@media (max-width: 700px) and (min-width: 600px){
+  #fix-text-tooltip{
+    width: 33vw!important;
+  }
+
+}
+
+
+@media (max-width: 600px) and (min-width: 500px){
+  #fix-text-tooltip{
+    width: 40vw!important;
+  }
+
+}
+
+@media (max-width: 500px) {
+  #fix-text-tooltip{
+    width: 55vw!important;
+  }
+
+  #aic-compose-help > div.help-content > p{
+    text-align: center;
+  }
+}
+
+@media (max-width: 1068px) and (min-width: 350px) {
+  .xinfo {
+    display: none;
+  }
+}
+
+@media (max-width: 350px) {
+  .xinfo {
+    display: none;
+  }
+  .xdialog-mask .xdialog-box.full-screen {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+/*# sourceMappingURL=styles.css.map */
