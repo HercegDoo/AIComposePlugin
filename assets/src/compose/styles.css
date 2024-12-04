@@ -285,14 +285,14 @@ margin: 0 auto;
   flex: 0 0 50%;
   max-width: 50%;
 }
-
+s
 .select-option{
   flex: 0 0 50%;
   max-width: 50%;
 }
 
-.menu a:before{
-  content: "\f249" !important;
+.menuitem a.recipient:before{
+  content: "\f4ad" !important;
 }
 #header-div{
   text-align: center;
@@ -306,7 +306,7 @@ margin: 0 auto;
 }
 
 #aic-popup::before{
-  content: "\f249";
+  content: "\f4ad";
 }
 
 #aic-popup:focus{
