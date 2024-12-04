@@ -321,9 +321,6 @@ margin: 0 auto;
 background-color: #374549;
 }
 
-#fix-text-send::before{
-  content: "\f1d8";
-}
 
 #custom-input-group{
   flex-wrap: nowrap;
