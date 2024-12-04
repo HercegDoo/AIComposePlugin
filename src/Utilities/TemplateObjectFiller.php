@@ -33,6 +33,7 @@ class TemplateObjectFiller
         $aiPluginOptionsArray = \rcmail::get_instance()->output->get_env('aiPluginOptions');
         if (\is_array($aiPluginOptionsArray) && isset($aiPluginOptionsArray[$options_key])) {
             $options = $aiPluginOptionsArray[$options_key];
+            error_log('Opcije x: ' . print_r($aiPluginOptionsArray[$options_key], true));
             $defaultOption = $aiPluginOptionsArray[$options_key === 'creativities' ? 'defaultCreativity' : $defaultValue];
         }
 
@@ -41,7 +42,11 @@ class TemplateObjectFiller
         $selector = new \html_select($attrib);
 
         foreach ((array) $options as $option) {
-            $capitalizedValue = \is_string($option) ? ucfirst($option) : $option;
+            $key = substr($options_key, 0, -1);
+            $option = $key === 'language' ? lcfirst($option) : $option;
+            $key = $key === 'creativitie' ? substr($key, 0, -2) . 'y' : $key;
+            $localizedValue = \is_string($option) ? $this->translation('ai_' . $key . '_' . $option) : '';
+            $capitalizedValue = ucfirst($localizedValue);
             $selector->add($capitalizedValue, $option);
         }
 
