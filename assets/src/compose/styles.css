@@ -335,7 +335,7 @@ background-color: #374549;
 
 #aic-instruction-label{
   text-overflow: ellipsis;
-  overflow: hidden;
+  overflow: visible;
 }
 
 @media (max-width: 900px) and (min-width: 700px){
@@ -376,6 +376,10 @@ background-color: #374549;
   .xinfo {
     display: none;
   }
+
+  #aic-instruction-label{
+    overflow: hidden;
+  }
 }
 
 @media (max-width: 350px) {
@@ -387,6 +391,9 @@ background-color: #374549;
     left: 0;
     right: 0;
     bottom: 0;
+  }
+  #aic-instruction-label{
+    overflow: hidden;
   }
 }
 /*# sourceMappingURL=styles.css.map */
