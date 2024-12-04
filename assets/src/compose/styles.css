@@ -291,7 +291,9 @@ margin: 0 auto;
   max-width: 50%;
 }
 
-
+.menu a:before{
+  content: "\f249" !important;
+}
 #header-div{
   text-align: center;
   padding:5px 5px 12px;
@@ -304,7 +306,7 @@ margin: 0 auto;
 }
 
 #aic-popup::before{
-  content: "\f0e0";
+  content: "\f249";
 }
 
 #aic-popup:focus{

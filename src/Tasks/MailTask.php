@@ -73,7 +73,6 @@ class MailTask extends AbstractTask
         return $this->contentInjector->insertContentAboveElement($args, 'fix_text_tootltip', '#headers-menu');
     }
 
-
     /**
      * @param array<string, mixed> $args
      *
