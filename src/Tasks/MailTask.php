@@ -15,7 +15,7 @@ class MailTask extends AbstractTask
 
     public function init(): void
     {
-        if ($this->isPluginVisible()) {
+        if (!$this->isPluginVisible()) { return;}
             $this->contentInjector = ContentInjector::getContentInjector();
             $this->templateObjectFiller = TemplateObjectFiller::getTemplateObjectFiller();
 
@@ -39,7 +39,6 @@ class MailTask extends AbstractTask
                     'showinstructionsbutton' => [$this, 'create_show_instructions_button'],
                     'aicfixinstruction' => [$this, 'create_fix_text_instruction']]
             );
-        }
     }
 
     /**
