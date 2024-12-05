@@ -134,6 +134,10 @@ class SettingsTask extends AbstractTask
                 'name' => $this->translation('ai_general_settings'),
                 'options' => [
                     [
+                        'title' => $this->translation('ai_compose_hide_show'),
+                        'content' => $this->getDropdownShow(),
+                    ],
+                    [
                         'title' => $this->translation('ai_label_style'),
                         'content' => $this->getDropdownHtml(Settings::getStyles(), 'style', Settings::getDefaultStyle()),
                     ],
@@ -194,6 +198,27 @@ class SettingsTask extends AbstractTask
         foreach ($options as $option) {
             $dropdown .= '<option ' . ($option === $default ? 'selected' : '') . ' value="' . ($option) . '">' . ($this->translation('ai_' . $name . '_' . strtolower($option))) . '</option>';
         }
+        $dropdown .= '</select>';
+
+        return $dropdown;
+    }
+
+    private function getDropdownShow(): string
+    {
+        $options = [
+            'show' => $this->translation('ai_compose_show'),
+            'hide' => $this->translation('ai_compose_hide'),
+        ];
+
+        $defaultValue = \rcmail::get_instance()->user->get_prefs()['aicDefaults']['pluginVisibility'] ?? 'show';
+
+        $dropdown = '<select name="data[aic][pluginVisibility]">';
+
+        foreach ($options as $value => $label) {
+            $selected = ($defaultValue === $value) ? 'selected' : '';
+            $dropdown .= \sprintf('<option value="%s" %s>%s</option>', $value, $selected, $label);
+        }
+
         $dropdown .= '</select>';
 
         return $dropdown;
