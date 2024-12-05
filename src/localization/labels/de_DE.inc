@@ -104,7 +104,7 @@ $labels['ai_tip_style'] = 'Der gewünschte Schreibstil für die neue E-Mail.';
 $labels['ai_tip_length'] = 'Die gewünschte Länge der neuen E-Mail.';
 $labels['ai_tip_language'] = 'Die Sprache, in der die neue E-Mail geschrieben werden soll. Geben Sie "Keine Änderung" an, um in der Sprache zu schreiben, in der die Anweisungen gegeben wurden.';
 $labels['ai_tip_creativity'] = 'Höhere Kreativität erzeugt unvorhersehbarere und abwechslungsreichere E-Mails; niedrigere Kreativität erzeugt faktischere und präzisere E-Mails.';
-$labels['ai_tip_instructions'] = 'Anweisungen, was in die neue E-Mail aufgenommen werden soll. Klicken Sie auf die Schaltfläche "Beispielanweisungen", um einige Beispiele zu sehen.';
+$labels['ai_tip_instructions'] = 'Anweisungen, was in die neue E-Mail aufgenommen werden soll. Klicken Sie auf die Schaltfläche "Hilfe & Beispiele", um einige Beispiele zu sehen.';
 
 $labels['ai_help_info'] = 'Erzählen Sie der KI von der E-Mail, die Sie schreiben möchten. Geben Sie Details wie Namen, Daten, Orte, Gründe usw. an. Sie können auch nach kreativen Ideen oder Erklärungen fragen. Sobald die E-Mail generiert ist, können Sie sie anpassen und in die KI-Seite einfügen. Hier sind einige Beispielanweisungen zum Starten';
 

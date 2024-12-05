@@ -56,12 +56,17 @@ class TemplateObjectFiller
 
     public function createInstructionField(string $name, string $id): string
     {
+        $heightStyle = ($id === 'aic-instruction' && isset($_COOKIE['textareaxHeight']))
+            ? 'height:' . $_COOKIE['textareaxHeight'] . 'px;'
+            : '';
+
         $attrisb = [
             'name' => $name,
             'id' => $id,
             'rows' => 1,
             'cols' => 50,
             'class' => 'form-control',
+            'style' => $heightStyle,
         ];
         $textarea = new \html_textarea($attrisb);
 

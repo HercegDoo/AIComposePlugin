@@ -21,7 +21,6 @@ class MailTask extends AbstractTask
         $this->plugin->add_hook('startup', [$this, 'startup']);
         $this->plugin->add_hook('render_page', [$this, 'loadResources']);
         $this->plugin->add_hook('render_page', [$this, 'addInstructionField']);
-        $this->plugin->add_hook('render_page', [$this, 'addFormButtons']);
         $this->plugin->add_hook('render_page', [$this, 'addSelectFields']);
         $this->plugin->add_hook('render_page', [$this, 'addHelpExamples']);
         $this->plugin->add_hook('render_page', [$this, 'createPredefinedInstructionsTemplate']);
@@ -72,16 +71,6 @@ class MailTask extends AbstractTask
     public function addTooltip(array $args): array
     {
         return $this->contentInjector->insertContentAboveElement($args, 'fix_text_tootltip', '#headers-menu');
-    }
-
-    /**
-     * @param array<string, mixed> $args
-     *
-     * @return array<string, mixed>
-     */
-    public function addFormButtons(array $args): array
-    {
-        return $this->contentInjector->insertContentAfterElement($args, 'buttons', '.formbuttons .btn.btn-primary.send');
     }
 
     /**

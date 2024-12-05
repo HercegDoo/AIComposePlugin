@@ -270,27 +270,47 @@ margin: 0 auto;
   flex-direction: column;
   gap:12px;
   align-items: center;
-  padding: 15px;
-
 }
 
 .single-select{
   width:95%;
+  display : flex;
 }
 
+.select-label{
+  padding: 5px 5px 5px 0;
+  hyphens: auto;
 
+  margin-bottom: 0;
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.select-option{
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.menu a#switch-task-predefined-instructions::before{
+ content: "\f013";
+}
+
+.menuitem a.recipient:before{
+  content: "\f4ad" !important;
+}
 #header-div{
   text-align: center;
-  padding-top:5px;
+  padding:5px 5px 12px;
   border-top:1px solid #7c949c;
 }
 
 #aic-instruction{
   width: 90%;
+  box-sizing: border-box;
 }
 
 #aic-popup::before{
-  content: "\f0e0";
+  content: "\f4ad";
 }
 
 #aic-popup:focus{
@@ -308,9 +328,6 @@ margin: 0 auto;
 background-color: #374549;
 }
 
-#fix-text-send::before{
-  content: "\f1d8";
-}
 
 #custom-input-group{
   flex-wrap: nowrap;
@@ -322,7 +339,7 @@ background-color: #374549;
 
 #aic-instruction-label{
   text-overflow: ellipsis;
-  overflow: hidden;
+  overflow: visible;
 }
 
 @media (max-width: 900px) and (min-width: 700px){
@@ -363,6 +380,10 @@ background-color: #374549;
   .xinfo {
     display: none;
   }
+
+  #aic-instruction-label{
+    overflow: hidden;
+  }
 }
 
 @media (max-width: 350px) {
@@ -374,6 +395,9 @@ background-color: #374549;
     left: 0;
     right: 0;
     bottom: 0;
+  }
+  #aic-instruction-label{
+    overflow: hidden;
   }
 }
 /*# sourceMappingURL=styles.css.map */

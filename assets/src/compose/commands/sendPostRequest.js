@@ -2,7 +2,7 @@
 import { getRequestDataFields } from "../emailHelpers/requestDataHandler";
 import { getPreviousGeneratedInsertedEmail, insertEmail } from "../emailHelpers/insertEmailHandler";
 import { signatureCheckedPreviousConversation } from "../emailHelpers/signaturesHandler";
-import { getFormattedMail } from "../../utils";
+import { getFormattedMail, translation } from "../../utils";
 import { display_messages, errorPresent, validateFields } from "../emailHelpers/validateFields";
 
 export default class GenerateMail {
@@ -19,6 +19,7 @@ export default class GenerateMail {
 
     this.#connectPredefinedInstructionsWithCommand();
     this.#connectHelpExamplesWithCommand();
+    document.getElementById('aic-generate-email-button').title = translation('ai_generate_email');
 
   }
 
