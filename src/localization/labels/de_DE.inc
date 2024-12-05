@@ -77,6 +77,9 @@ $labels['ai_stop_generating'] = 'Generierung stoppen';
 $labels['ai_error_help_button'] = 'Hilfe';
 
 $labels['ai_compose_settings'] = 'AICompose Einstellungen';
+$labels['ai_compose_hide_show'] = 'Aus-/Einblenden des AICompose-Plugins';
+$labels['ai_compose_hide'] = 'Verbergen';
+$labels['ai_compose_show'] = 'Anzeigen';
 
 $labels['ai_button_show_instructions'] = 'Beispielanweisungen';
 $labels['ai_help_button_back'] = 'Zurück';

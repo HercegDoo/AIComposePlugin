@@ -85,6 +85,9 @@ $labels['ai_help_title'] = 'Pomoć & Primjeri';
 $labels['ai_help_use_example'] = '(Koristi ovo)';
 
 $labels['ai_compose_settings'] = 'AICompose Postavke';
+$labels['ai_compose_hide_show'] = 'Sakrij/Prikaži AICompose Plugin';
+$labels['ai_compose_hide'] = 'Sakrij';
+$labels['ai_compose_show'] = 'Prikaži';
 
 $labels['ai_fix_selected_text_title'] = 'Ispravi Odabrani Tekst';
 $labels['ai_selected_text'] = 'Odabrani Tekst';

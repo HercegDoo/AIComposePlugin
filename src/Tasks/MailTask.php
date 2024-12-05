@@ -15,29 +15,31 @@ class MailTask extends AbstractTask
 
     public function init(): void
     {
-        $this->contentInjector = ContentInjector::getContentInjector();
-        $this->templateObjectFiller = TemplateObjectFiller::getTemplateObjectFiller();
+        if ($this->isPluginVisible()) {
+            $this->contentInjector = ContentInjector::getContentInjector();
+            $this->templateObjectFiller = TemplateObjectFiller::getTemplateObjectFiller();
 
-        $this->plugin->add_hook('startup', [$this, 'startup']);
-        $this->plugin->add_hook('render_page', [$this, 'loadResources']);
-        $this->plugin->add_hook('render_page', [$this, 'addInstructionField']);
-        $this->plugin->add_hook('render_page', [$this, 'addFormButtons']);
-        $this->plugin->add_hook('render_page', [$this, 'addSelectFields']);
-        $this->plugin->add_hook('render_page', [$this, 'addHelpExamples']);
-        $this->plugin->add_hook('render_page', [$this, 'createPredefinedInstructionsTemplate']);
-        $this->plugin->add_hook('render_page', [$this, 'addTooltip']);
-        $this->plugin->add_hook('preferences_save', [$this, 'preferencesSave']);
-        \rcmail::get_instance()->output->add_handlers(
-            [
-                'aistyleselect' => [$this, 'style_select_create'],
-                'ailengthselect' => [$this, 'length_select_create'],
-                'aicreativityselect' => [$this, 'creativity_select_create'],
-                'ailanguageselect' => [$this, 'language_select_create'],
-                'aicinstruction' => [$this, 'create_instruction_field'],
-                'aicinstructiondropdown' => [$this, 'create_instruction_dropdown'],
-                'showinstructionsbutton' => [$this, 'create_show_instructions_button'],
-                'aicfixinstruction' => [$this, 'create_fix_text_instruction']]
-        );
+            $this->plugin->add_hook('startup', [$this, 'startup']);
+            $this->plugin->add_hook('render_page', [$this, 'loadResources']);
+            $this->plugin->add_hook('render_page', [$this, 'addInstructionField']);
+            $this->plugin->add_hook('render_page', [$this, 'addFormButtons']);
+            $this->plugin->add_hook('render_page', [$this, 'addSelectFields']);
+            $this->plugin->add_hook('render_page', [$this, 'addHelpExamples']);
+            $this->plugin->add_hook('render_page', [$this, 'createPredefinedInstructionsTemplate']);
+            $this->plugin->add_hook('render_page', [$this, 'addTooltip']);
+            $this->plugin->add_hook('preferences_save', [$this, 'preferencesSave']);
+            \rcmail::get_instance()->output->add_handlers(
+                [
+                    'aistyleselect' => [$this, 'style_select_create'],
+                    'ailengthselect' => [$this, 'length_select_create'],
+                    'aicreativityselect' => [$this, 'creativity_select_create'],
+                    'ailanguageselect' => [$this, 'language_select_create'],
+                    'aicinstruction' => [$this, 'create_instruction_field'],
+                    'aicinstructiondropdown' => [$this, 'create_instruction_dropdown'],
+                    'showinstructionsbutton' => [$this, 'create_show_instructions_button'],
+                    'aicfixinstruction' => [$this, 'create_fix_text_instruction']]
+            );
+        }
     }
 
     /**
@@ -174,5 +176,12 @@ class MailTask extends AbstractTask
             $rcmail->output->set_env('aiPluginOptions', $settings);
             $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
         }
+    }
+
+    private function isPluginVisible(): bool
+    {
+        $pluginVisibility = \rcmail::get_instance()->user->get_prefs()['aicDefaults']['pluginVisibility'] ?? 'show';
+
+        return $pluginVisibility === 'show';
     }
 }
