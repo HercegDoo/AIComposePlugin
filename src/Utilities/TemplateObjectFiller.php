@@ -33,7 +33,6 @@ class TemplateObjectFiller
         $aiPluginOptionsArray = \rcmail::get_instance()->output->get_env('aiPluginOptions');
         if (\is_array($aiPluginOptionsArray) && isset($aiPluginOptionsArray[$options_key])) {
             $options = $aiPluginOptionsArray[$options_key];
-            error_log('Opcije x: ' . print_r($aiPluginOptionsArray[$options_key], true));
             $defaultOption = $aiPluginOptionsArray[$options_key === 'creativities' ? 'defaultCreativity' : $defaultValue];
         }
 
