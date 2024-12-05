@@ -41,7 +41,11 @@ class TemplateObjectFiller
         $selector = new \html_select($attrib);
 
         foreach ((array) $options as $option) {
-            $capitalizedValue = \is_string($option) ? ucfirst($option) : $option;
+            $key = substr($options_key, 0, -1);
+            $option = $key === 'language' ? lcfirst($option) : $option;
+            $key = $key === 'creativitie' ? substr($key, 0, -2) . 'y' : $key;
+            $localizedValue = \is_string($option) ? $this->translation('ai_' . $key . '_' . $option) : '';
+            $capitalizedValue = ucfirst($localizedValue);
             $selector->add($capitalizedValue, $option);
         }
 
