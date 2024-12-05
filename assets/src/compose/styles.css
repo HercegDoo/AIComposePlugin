@@ -291,6 +291,10 @@ margin: 0 auto;
   max-width: 50%;
 }
 
+.menu a#switch-task-predefined-instructions::before{
+ content: "\f013";
+}
+
 .menuitem a.recipient:before{
   content: "\f4ad" !important;
 }
