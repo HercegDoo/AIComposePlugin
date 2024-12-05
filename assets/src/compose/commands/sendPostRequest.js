@@ -43,6 +43,8 @@ export default class GenerateMail {
      return;
     }
 
+    console.log(requestData);
+
     rcmail.lock_frame(document.body);
     rcmail
       .http_post(

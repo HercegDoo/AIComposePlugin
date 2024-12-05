@@ -1,6 +1,6 @@
 import { getSenderInfo, processSenderData } from "./senderDataHandler";
 import { translation } from "../../utils";
-import { getRecipientInfo } from "./recipientDataHandler";
+import { getRecipientData, getRecipientInfo } from "./recipientDataHandler";
 
 export function validateFields(){
   const errorArray = [];
@@ -11,7 +11,7 @@ export function validateFields(){
       type: 'error'
     })
   }
-    const recipientName = getRecipientInfo().recipientName;
+    const recipientName = getRecipientData(getRecipientInfo(), "name");
     if(recipientName === ""){
       errorArray.push({
         text: translation('ai_error_recipient_name'),

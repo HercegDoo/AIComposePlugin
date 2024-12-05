@@ -88,7 +88,7 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
         $this->selectValidation($this->length, $lengths, 'length');
         $this->selectValidation($this->creativity, $creativities, 'creativity');
         $this->selectValidation($this->language, $languages, 'language');
-        $this->emailValidation($this->recipientEmail, 'recipient');
+        $this->emailValidation($this->recipientEmail, 'recipient', true);
         $this->emailValidation($this->senderEmail, 'sender');
         $this->subjectValidation($this->subject);
         $this->instructionsValidation($this->instructions);
@@ -141,8 +141,19 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
         }
     }
 
-    private function emailValidation(?string $email, string $emailParticipant): void
+    private function emailValidation(?string $email, string $emailParticipant, bool $isRecipientEmail = false): void
     {
+        if($isRecipientEmail){
+
+            $recipientEmailsArray = explode(",", $email);
+            error_log("Recipient mailovi: " . print_r($recipientEmailsArray, true));
+             foreach($recipientEmailsArray as &$recipientEmail){
+                 trim($recipientEmail);
+             }
+
+        }
+
+
         if (!empty($email) && !\rcube_utils::check_email($email)) {
             $this->setError($this->translation('ai_validation_error_invalid_' . $emailParticipant . '_email_address'));
         }
