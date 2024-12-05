@@ -2,7 +2,7 @@
 let editorHTML;
 let previousGeneratedEmail = "";
 let popupVisible = false;
-let counter = 0;
+let mailGenerated = false;
 export function insertEmail(generatedEmail) {
 
    regulateInsertion(generatedEmail);
@@ -23,9 +23,9 @@ function regulateInsertion(emailToInsert) {
     targetTextArea.value = `${emailToInsert}\n\n${targetTextArea.value}`;
     previousGeneratedEmail = emailToInsert;
   }
-  if(counter === 0){
+  if(!mailGenerated){
     popupVisible = true;
-    ++counter;
+    mailGenerated = true;
   }
 }
 
