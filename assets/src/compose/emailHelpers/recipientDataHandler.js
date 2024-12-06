@@ -1,9 +1,6 @@
 import { capitalize } from "../../utils";
 
 export function getRecipientInfo() {
-    const recipientNameElement = document.querySelector("li.recipient span.name"),
-    recipientEmailElement = document.querySelector("li.recipient span.email");
-
   const inputElement = document.querySelector(
     "ul.form-control.recipient-input.ac-input.rounded-left.ui-sortable li.input input"
   );
@@ -16,16 +13,16 @@ const recipientsArray = [];
 
   recipients.forEach((recipient)=>{
 
-    let recipientNameElement1 = recipient.querySelector('span.name');
-    let recipientEmailElement1 = recipient.querySelector('span.email')
+    let recipientNameElement = recipient.querySelector('span.name');
+    let recipientEmailElement = recipient.querySelector('span.email')
 
-    let recipientName = recipientNameElement1
-      ? recipientNameElement1.textContent.trim()
+    let recipientName = recipientNameElement
+      ? recipientNameElement.textContent.trim()
       : "";
 
 
     let recipientEmail = recipientEmailElement1
-      ?recipientEmailElement1.textContent.match(/<([^>]+)>/)?.[1]?.trim() || ""
+      ?recipientEmailElement.textContent.match(/<([^>]+)>/)?.[1]?.trim() || ""
       : "";
 
   const emailRecipient = {
@@ -33,25 +30,8 @@ const recipientsArray = [];
     email: recipientEmail
   }
 
-  if(emailRecipient.name !== "" || emailRecipient.email !== ""){
-    recipientsArray.push(emailRecipient);
-  }
+  appendRecipient(emailRecipient.name, emailRecipient.email, recipientsArray);
   })
-
-  if(inputElement.value !== ""){
-    recipientsArray.push(inputElement.value);
-  }
-
-
-
-
-  // let recipientName = recipientNameElement
-  //   ? recipientNameElement.textContent.trim()
-  //   : inputElement.value;
-  //
-  // let recipientEmail = recipientEmailElement
-  //   ? recipientEmailElement.textContent.match(/<([^>]+)>/)?.[1]?.trim() || ""
-  //   : "";
 
   let additionalRecipientName = "";
   let additionalRecipientEmail = "";
@@ -73,10 +53,7 @@ const recipientsArray = [];
       .join(" ");
   }
 
-  recipientsArray.push({
-    name : additionalRecipientName,
-    email : additionalRecipientEmail
-  });
+  appendRecipient(additionalRecipientName, additionalRecipientEmail, recipientsArray);
 
   return recipientsArray;
 }
@@ -84,10 +61,11 @@ const recipientsArray = [];
 export function getRecipientData(recipientData, key = "name"){
   key = (key !== "name" && key !== "email") ? "name" : key;
 
-
   return recipientData.map(recipient => recipient[key]).join(", ");
-
-
 }
 
+
+function appendRecipient(name, email, array){
+  (name || email) && array.push({name, email});
+}
 
