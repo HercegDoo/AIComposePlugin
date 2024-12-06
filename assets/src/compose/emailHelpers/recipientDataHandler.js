@@ -21,7 +21,7 @@ const recipientsArray = [];
       : "";
 
 
-    let recipientEmail = recipientEmailElement1
+    let recipientEmail = recipientEmailElement
       ?recipientEmailElement.textContent.match(/<([^>]+)>/)?.[1]?.trim() || ""
       : "";
 
