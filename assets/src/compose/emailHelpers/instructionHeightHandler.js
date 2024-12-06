@@ -1,6 +1,5 @@
 export function handleInstructionHeight(){
   const textarea = document.getElementById('aic-instruction');
-
   let timeoutId;
   const cookieExpirationDate = new Date();
   cookieExpirationDate.setFullYear(cookieExpirationDate.getFullYear() + 1);
@@ -13,7 +12,7 @@ export function handleInstructionHeight(){
     }
 
     timeoutId = setTimeout(()=>{
-    document.cookie = `textareaxHeight=${textarea.getBoundingClientRect().height }; expires=${formattedCookieExpirationDate}; path=/`;
+      document.cookie = `textareaHeight=${textarea.getBoundingClientRect().height }; expires=${formattedCookieExpirationDate}; path=/`;
     }, 200);
 
   });
