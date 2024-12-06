@@ -212,8 +212,7 @@ CRUCIAL: "Write an email without signing it or including any identifying informa
 
         $result = $privateMethodInvoker($requestData);
 
-        self::assertSame(' Write an identical email as this dummyprevgenemail, in the same language, but change only this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.'
-            , $result);
+        self::assertSame(' Write an identical email as this dummyprevgenemail, in the same language, but change only this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.', $result);
     }
 
     public function testPromptFixCustom()
@@ -228,8 +227,7 @@ CRUCIAL: "Write an email without signing it or including any identifying informa
 
         $result = $privateMethodInvoker($requestData);
 
-        self::assertSame(' Write an identical email as this dummyprevgenemail, in the same language, but change only this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.'
-            , $result);
+        self::assertSame(' Write an identical email as this dummyprevgenemail, in the same language, but change only this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.', $result);
     }
 
     public function testSendRequestSetters()
