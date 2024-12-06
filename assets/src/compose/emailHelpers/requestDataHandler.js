@@ -12,8 +12,6 @@ export function getRequestDataFields() {
     instructions = document.getElementById('aic-instruction'),
     recipientNames =  getRecipientData( getRecipientInfo(), "name"),
     recipientEmails =  getRecipientData( getRecipientInfo(), "email");
-  console.log(recipientNames);
-  console.log(recipientEmails);
 
   return {
     style: `${styleElement?.value || rcmail.env.aiPluginOptions.defaultStyle}`,
