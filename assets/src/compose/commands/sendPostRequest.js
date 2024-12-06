@@ -26,8 +26,8 @@ export default class GenerateMail {
   #generatemail(additionalData = null) {
     const requestData = getRequestDataFields();
     //Prethodni razgovor sa izvrsenom provjerom potpisa 
-    const previousConversationObject = signatureCheckedPreviousConversation(requestData.previousGeneratedEmail);
     requestData.previousGeneratedEmail= getFormattedMail( `${getPreviousGeneratedInsertedEmail()}`);
+    const previousConversationObject = signatureCheckedPreviousConversation(requestData.previousGeneratedEmail);
     requestData.previousConversation = previousConversationObject.previousConversation;
     requestData.signaturePresent = previousConversationObject.signaturePresent;
     requestData.instructions = additionalData ? (additionalData.passedInstruction === "" ? requestData.instructions : additionalData.passedInstruction) : requestData.instructions;
@@ -42,6 +42,8 @@ export default class GenerateMail {
     if(errorPresent(errorsArray)){
      return;
     }
+
+    console.log(requestData);
 
     rcmail.lock_frame(document.body);
     rcmail
