@@ -83,7 +83,7 @@ class MailTask extends AbstractTask
      */
     public function addSelectFields(array $args): array
     {
-        return $this->contentInjector->insertContentAboveElement($args, 'ai_select_fields', 'compose-attachments');
+        return $this->contentInjector->insertContentAboveElement($args, 'ai_select_fields', 'compose-options');
     }
 
     /**

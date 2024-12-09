@@ -22,26 +22,7 @@ final class ContentInjector
 
         return self::$instance;
     }
-//
-//    /**
-//     * @param array<string, mixed> $baseHTML
-//     *
-//     * @return array<string, mixed>
-//     */
-//    public function insertContentAboveElement(array $baseHTML, string $contentToInsert, string $selector): array
-//    {
-//        return $this->insertContent($baseHTML, $contentToInsert, $selector, 'before');
-//    }
-//
-//    /**
-//     * @param array<string, mixed> $baseHTML
-//     *
-//     * @return array<string, mixed>
-//     */
-//    public function insertContentAfterElement(array $baseHTML, string $contentToInsert, string $selector): array
-//    {
-//        return $this->insertContent($baseHTML, $contentToInsert, $selector, 'after');
-//    }
+
 
     public function getParsedHtml(string $fileName): string
     {
@@ -59,8 +40,11 @@ final class ContentInjector
      *
      * @return array<string, mixed>
      */
-    public function insertContentAboveElement(array $baseHTML, string $contentToInsertSelector, string $elementId): array
+    public function insertContentAboveElement(array $baseHTML, string $contentToInsertSelector, string $elementId, string $selectorType = 'id'): array
     {
+
+        $selectorType = $selectorType === 'class' ? 'class' : 'id';
+
         $contentToInsert = $this->getParsedHtml($contentToInsertSelector);
 
         $hash = md5($contentToInsert);
@@ -69,13 +53,15 @@ final class ContentInjector
         }
 
         if (isset($baseHTML['content']) && \is_string($baseHTML['content']) && !str_contains($baseHTML['content'], $contentToInsert)) {
-            $pattern = '/(<div\s+id="' . $elementId . '".*?>)/';
+            $pattern = '/(<div\s+'.$selectorType.'="' . $elementId . '".*?>)/';
 
-            if (str_contains($baseHTML['content'], 'id="' . $elementId . '"')) {
+            if (str_contains($baseHTML['content'], ''.$selectorType.'="' . $elementId . '"')) {
                 $baseHTML['content'] = preg_replace($pattern, $contentToInsert . '$1', $baseHTML['content']);
             }
         }
         self::$doneContent[] = $hash;
         return $baseHTML;
     }
+
+
 }
