@@ -22,26 +22,26 @@ final class ContentInjector
 
         return self::$instance;
     }
-
-    /**
-     * @param array<string, mixed> $baseHTML
-     *
-     * @return array<string, mixed>
-     */
-    public function insertContentAboveElement(array $baseHTML, string $contentToInsert, string $selector): array
-    {
-        return $this->insertContent($baseHTML, $contentToInsert, $selector, 'before');
-    }
-
-    /**
-     * @param array<string, mixed> $baseHTML
-     *
-     * @return array<string, mixed>
-     */
-    public function insertContentAfterElement(array $baseHTML, string $contentToInsert, string $selector): array
-    {
-        return $this->insertContent($baseHTML, $contentToInsert, $selector, 'after');
-    }
+//
+//    /**
+//     * @param array<string, mixed> $baseHTML
+//     *
+//     * @return array<string, mixed>
+//     */
+//    public function insertContentAboveElement(array $baseHTML, string $contentToInsert, string $selector): array
+//    {
+//        return $this->insertContent($baseHTML, $contentToInsert, $selector, 'before');
+//    }
+//
+//    /**
+//     * @param array<string, mixed> $baseHTML
+//     *
+//     * @return array<string, mixed>
+//     */
+//    public function insertContentAfterElement(array $baseHTML, string $contentToInsert, string $selector): array
+//    {
+//        return $this->insertContent($baseHTML, $contentToInsert, $selector, 'after');
+//    }
 
     public function getParsedHtml(string $fileName): string
     {
@@ -59,55 +59,23 @@ final class ContentInjector
      *
      * @return array<string, mixed>
      */
-    private function insertContent(array $baseHTML, string $insertContent, string $selector, string $position): array
+    public function insertContentAboveElement(array $baseHTML, string $contentToInsertSelector, string $elementId): array
     {
-        $hash = md5($insertContent);
+        $contentToInsert = $this->getParsedHtml($contentToInsertSelector);
+
+        $hash = md5($contentToInsert);
         if (\in_array($hash, self::$doneContent)) {
             return $baseHTML;
         }
 
-        $parsedHtmlContent = $this->getParsedHtml($insertContent);
+        if (isset($baseHTML['content']) && \is_string($baseHTML['content']) && !str_contains($baseHTML['content'], $contentToInsert)) {
+            $pattern = '/(<div\s+id="' . $elementId . '".*?>)/';
 
-        $html = $baseHTML['content'];
-
-        $firstLine = '';
-
-        $dom = new DomQuery($html);
-
-        $targetElement = $dom->find($selector);
-
-        if ($targetElement->count() === 0) {
-            error_log('AICompose plugin: error cant find selector in templete: ' . $selector);
-
-            return $baseHTML;
-        }
-
-        $position = $position === 'after' ? 'after' : 'before';
-
-        $targetElement->{$position}($parsedHtmlContent);
-
-        if (!empty($doctype = $this->validateDoctype(\is_string($html) ? $html : '')) && empty($this->validateDoctype($dom->getOuterHtml()))) {
-            $firstLine = $doctype . \PHP_EOL;
-        }
-
-        $baseHTML['content'] = $firstLine . $dom->getOuterHtml();
-        self::$doneContent[] = $hash;
-
-        return $baseHTML;
-    }
-
-    private function validateDoctype(string $html, int $limit = 20): string
-    {
-        $lines = explode(\PHP_EOL, $html, $limit);
-        $firstLine = '';
-
-        foreach ($lines as $line) {
-            if (!empty($line) && preg_match('/<![dD][oO][cC][tT][yY][pP][eE][^>]*>/', $line, $matches)) {
-                $firstLine = $matches[0];
-                break;
+            if (str_contains($baseHTML['content'], 'id="' . $elementId . '"')) {
+                $baseHTML['content'] = preg_replace($pattern, $contentToInsert . '$1', $baseHTML['content']);
             }
         }
-
-        return $firstLine;
+        self::$doneContent[] = $hash;
+        return $baseHTML;
     }
 }
