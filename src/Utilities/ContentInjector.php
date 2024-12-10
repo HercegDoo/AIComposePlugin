@@ -33,21 +33,6 @@ final class ContentInjector
         return \rcmail::get_instance()->output->just_parse($htmlFile);
     }
 
-    private function replaceText(string $original, string $search, string $replace, string $mode = 'replace') : string
-    {
-        switch (strtolower($mode)) {
-            case 'prepend':
-                return str_replace($search, $replace . $search, $original);
-
-            case 'append':
-                return str_replace($search, $search . $replace, $original);
-
-            case 'replace':
-            default:
-                return str_replace($search, $replace, $original);
-        }
-    }
-
     /**
      * @param array<string, mixed> $baseHTML
      *
@@ -95,5 +80,20 @@ final class ContentInjector
         }
 
         return $baseHTML;
+    }
+
+    private function replaceText(string $original, string $search, string $replace, string $mode = 'replace'): string
+    {
+        switch (strtolower($mode)) {
+            case 'prepend':
+                return str_replace($search, $replace . $search, $original);
+
+            case 'append':
+                return str_replace($search, $search . $replace, $original);
+
+            case 'replace':
+            default:
+                return str_replace($search, $replace, $original);
+        }
     }
 }
