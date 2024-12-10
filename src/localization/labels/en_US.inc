@@ -59,6 +59,10 @@ $labels['ai_help_title'] = 'Help & Examples';
 $labels['ai_help_use_example'] = '(Use this)';
 
 $labels['ai_compose_settings'] = 'AICompose Settings';
+$labels['ai_compose_hide_show'] = 'Hide/Show AICompose Plugin';
+$labels['ai_compose_hide'] = 'Hide';
+$labels['ai_compose_show'] = 'Show';
+
 $labels['ai_general_settings'] = 'General Settings';
 
 $labels['ai_predefined_submit'] = 'Save';

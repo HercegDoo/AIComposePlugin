@@ -12,7 +12,7 @@ export function handleInstructionHeight(){
     }
 
     timeoutId = setTimeout(()=>{
-      document.cookie = `textareaHeight=${textarea.getBoundingClientRect().height }; expires=${formattedCookieExpirationDate}; path=/`;
+    document.cookie = `textareaHeight=${textarea.getBoundingClientRect().height }; expires=${formattedCookieExpirationDate}; path=/`;
     }, 200);
 
   });
