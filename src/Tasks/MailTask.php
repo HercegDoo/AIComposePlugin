@@ -15,6 +15,9 @@ class MailTask extends AbstractTask
 
     public function init(): void
     {
+        if (!$this->isPluginVisible()) {
+            return;
+        }
         $this->contentInjector = ContentInjector::getContentInjector();
         $this->templateObjectFiller = TemplateObjectFiller::getTemplateObjectFiller();
 
@@ -163,5 +166,12 @@ class MailTask extends AbstractTask
             $rcmail->output->set_env('aiPluginOptions', $settings);
             $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
         }
+    }
+
+    private function isPluginVisible(): bool
+    {
+        $pluginVisibility = \rcmail::get_instance()->user->get_prefs()['aicDefaults']['pluginVisibility'] ?? 'show';
+
+        return $pluginVisibility === 'show';
     }
 }
