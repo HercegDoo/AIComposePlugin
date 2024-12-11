@@ -45,7 +45,6 @@ export function expandInstructionHeightBasedOnInput(){
     hiddenDiv.textContent = value.substring(0, cursorPosition);
 
     const totalLines = Math.floor(textarea.scrollHeight / textareaLineHeight);
-    console.log(textareaShouldExpand(textareaLineHeight,textareaHeight))
     if(totalLines === 2 && textareaShouldExpand(textareaLineHeight,textareaHeight)){
       textarea.style.height = textareaHeight + textareaLineHeight  + `px`;
       textarea.style.overflow = "auto";
