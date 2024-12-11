@@ -69,7 +69,7 @@ final class OpenAI extends AbstractProvider
     private function prompt(RequestData $requestData): string
     {
         if ($requestData->getFixText()) {
-            $prompt = " Write the same email as this {$requestData->getPreviousGeneratedEmail()}, in the same language, but change this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." .
+            $prompt = " Write an identical email as this {$requestData->getPreviousGeneratedEmail()}, in the same language, but change only this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." .
                 ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '');
         } else {
             $prompt = "Create a {$requestData->getStyle()} email with the following specifications:" .

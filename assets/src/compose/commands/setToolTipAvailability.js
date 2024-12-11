@@ -84,7 +84,7 @@ this.#toggleFixTextToolTip();
 
 
   #setEditorHTMLSelection(){
-    this.selectedText = this.editorHTML.selection.getContent({ format: 'text' });
+   return this.editorHTML.selection.getContent({ format: 'text' });
 
   }
 

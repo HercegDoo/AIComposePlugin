@@ -23,7 +23,6 @@ export function getRequestDataFields() {
     senderEmail: `${senderInfo.senderEmail}`,
     instructions: `${instructions.value}`,
     previousConversation: "",
-    signaturePresent: "present",
     fixText: "",
     previousGeneratedEmailText: "",
   };

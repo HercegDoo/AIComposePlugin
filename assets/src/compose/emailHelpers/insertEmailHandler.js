@@ -20,7 +20,7 @@ function regulateInsertion(emailToInsert) {
     previousGeneratedEmail = `<p>${formattedContent.replace(/<br>/g, '<br />')}</p>`;
   } else {
     targetTextArea.value = targetTextArea.value.replace(previousGeneratedEmail, "");
-    targetTextArea.value = `${emailToInsert}\n\n${targetTextArea.value}`;
+    targetTextArea.value = `${emailToInsert}${targetTextArea.value}`;
     previousGeneratedEmail = emailToInsert;
   }
   if(!mailGenerated){

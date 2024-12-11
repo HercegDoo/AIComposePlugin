@@ -211,7 +211,7 @@ body.xlarry #aic-compose-dialog #aic-compose-dialog-box .xdialog-close {
   align-items: center;
   flex-direction: column;
   width: 20vw;
-  z-index: 999;
+  z-index: 99;
 }
 
 html.dark-mode #fix-text-tooltip{
