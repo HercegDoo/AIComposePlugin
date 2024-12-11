@@ -69,3 +69,7 @@ function appendRecipient(name, email, array){
   (name || email) && array.push({name, email});
 }
 
+function areMultipleRecipients(recipients){
+  return recipients.length > 1;
+}
+

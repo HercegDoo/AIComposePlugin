@@ -23,6 +23,8 @@ class RequestData
 
     private bool $signaturePresent;
 
+    private bool $multipleRecipients;
+
     private ?string $subject = null;
 
     private function __construct(string $recipientName, string $senderName, string $instruction, ?string $style, ?string $length, ?string $creativity, ?string $language)
@@ -140,9 +142,20 @@ class RequestData
         return $this;
     }
 
+    public function setMultipleRecipients(bool $multipleRecipients) : self
+    {
+        $this->multipleRecipients = $multipleRecipients;
+        return $this;
+    }
+
     public function getSignaturePresent(): bool
     {
         return $this->signaturePresent;
+    }
+
+    public function getMultipleRecipients(): bool
+    {
+        return $this->multipleRecipients;
     }
 
     public function getRecipientName(): string
