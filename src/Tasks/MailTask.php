@@ -63,7 +63,7 @@ class MailTask extends AbstractTask
      */
     public function addInstructionField(array $args): array
     {
-        return $this->contentInjector->insertContentAboveElement($args, 'ai_compose_instruction_field', '#composebodycontainer');
+        return $this->contentInjector->insertContent($args, 'composebodycontainer', 'ai_compose_instruction_field', 'prepend');
     }
 
     /**
@@ -73,7 +73,7 @@ class MailTask extends AbstractTask
      */
     public function addTooltip(array $args): array
     {
-        return $this->contentInjector->insertContentAboveElement($args, 'fix_text_tootltip', '#headers-menu');
+        return $this->contentInjector->insertContent($args, 'headers-menu', 'fix_text_tootltip', 'prepend');
     }
 
     /**
@@ -83,7 +83,7 @@ class MailTask extends AbstractTask
      */
     public function addSelectFields(array $args): array
     {
-        return $this->contentInjector->insertContentAfterElement($args, 'ai_select_fields', '#compose-options');
+        return $this->contentInjector->insertContent($args, 'compose-options', 'ai_select_fields');
     }
 
     /**
@@ -93,7 +93,7 @@ class MailTask extends AbstractTask
      */
     public function addHelpExamples(array $args): array
     {
-        return $this->contentInjector->insertContentAboveElement($args, 'instruction_examples', '#layout-content');
+        return $this->contentInjector->insertContent($args, 'layout-content', 'instruction_examples', 'prepend');
     }
 
     public function style_select_create(): string
@@ -133,7 +133,7 @@ class MailTask extends AbstractTask
      */
     public function createPredefinedInstructionsTemplate(array $args): array
     {
-        return $this->contentInjector->insertContentAboveElement($args, 'popup', '#headers-menu');
+        return $this->contentInjector->insertContent($args, 'headers-menu', 'popup', 'prepend');
     }
 
     public function create_instruction_dropdown(): string
