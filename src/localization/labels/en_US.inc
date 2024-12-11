@@ -59,6 +59,10 @@ $labels['ai_help_title'] = 'Help & Examples';
 $labels['ai_help_use_example'] = '(Use this)';
 
 $labels['ai_compose_settings'] = 'AICompose Settings';
+$labels['ai_compose_hide_show'] = 'Hide/Show AICompose Plugin';
+$labels['ai_compose_hide'] = 'Hide';
+$labels['ai_compose_show'] = 'Show';
+
 $labels['ai_general_settings'] = 'General Settings';
 
 $labels['ai_predefined_submit'] = 'Save';
@@ -105,7 +109,7 @@ $labels['ai_tip_style'] = 'The desired writing style for the new email.';
 $labels['ai_tip_length'] = 'The desired length of the new email.';
 $labels['ai_tip_language'] = 'The language in which the new email should be written. Specify "No change" to write in the language in which the instructions are given.';
 $labels['ai_tip_creativity'] = 'Higher creativity will generate more unpredictable and diverse emails; lower creativity will generate emails that are more factual and precise.';
-$labels['ai_tip_instructions'] = 'Instructions on what to include in the new email. Click the Instruction Examples button to see some examples.';
+$labels['ai_tip_instructions'] = 'Instructions on what to include in the new email. Click the Help & Examples button to see some examples.';
 
 $labels['ai_help_info'] = 'Tell the AI about the email you want to write. Include details such as names, dates, locations, reasons, etc. You can also ask for creative ideas or explanations. Once the email is generated, you will be able to adjust it and insert it into the AI page. Here are some example instructions to get started:';
 

@@ -2,7 +2,7 @@
 import { getRequestDataFields } from "../emailHelpers/requestDataHandler";
 import { getPreviousGeneratedInsertedEmail, insertEmail } from "../emailHelpers/insertEmailHandler";
 import { signatureCheckedPreviousConversation } from "../emailHelpers/signaturesHandler";
-import { getFormattedMail } from "../../utils";
+import { getFormattedMail, translation } from "../../utils";
 import { display_messages, errorPresent, validateFields } from "../emailHelpers/validateFields";
 
 export default class GenerateMail {
@@ -19,14 +19,15 @@ export default class GenerateMail {
 
     this.#connectPredefinedInstructionsWithCommand();
     this.#connectHelpExamplesWithCommand();
+    document.getElementById('aic-generate-email-button').title = translation('ai_generate_email');
 
   }
 
   #generatemail(additionalData = null) {
     const requestData = getRequestDataFields();
     //Prethodni razgovor sa izvrsenom provjerom potpisa 
-    const previousConversationObject = signatureCheckedPreviousConversation(requestData.previousGeneratedEmail);
     requestData.previousGeneratedEmail= getFormattedMail( `${getPreviousGeneratedInsertedEmail()}`);
+    const previousConversationObject = signatureCheckedPreviousConversation(requestData.previousGeneratedEmail);
     requestData.previousConversation = previousConversationObject.previousConversation;
     requestData.signaturePresent = previousConversationObject.signaturePresent;
     requestData.instructions = additionalData ? (additionalData.passedInstruction === "" ? requestData.instructions : additionalData.passedInstruction) : requestData.instructions;

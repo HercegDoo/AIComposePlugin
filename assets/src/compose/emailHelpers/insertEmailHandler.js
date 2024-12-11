@@ -1,6 +1,8 @@
 
 let editorHTML;
 let previousGeneratedEmail = "";
+let popupVisible = false;
+let mailGenerated = false;
 export function insertEmail(generatedEmail) {
 
    regulateInsertion(generatedEmail);
@@ -18,8 +20,12 @@ function regulateInsertion(emailToInsert) {
     previousGeneratedEmail = `<p>${formattedContent.replace(/<br>/g, '<br />')}</p>`;
   } else {
     targetTextArea.value = targetTextArea.value.replace(previousGeneratedEmail, "");
-    targetTextArea.value = `${emailToInsert}\n\n${targetTextArea.value}`;
+    targetTextArea.value = `${emailToInsert}${targetTextArea.value}`;
     previousGeneratedEmail = emailToInsert;
+  }
+  if(!mailGenerated){
+    popupVisible = true;
+    mailGenerated = true;
   }
 }
 
@@ -32,3 +38,6 @@ rcmail.addEventListener("editor-load", (e) => {
   return previousGeneratedEmail;
 }
 
+export function popupCanBeVisible(){
+   return popupVisible;
+}

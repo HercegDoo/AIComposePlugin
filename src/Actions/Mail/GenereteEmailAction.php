@@ -82,13 +82,13 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
         $this->previousGeneratedEmailText = Request::postString('previousGeneratedEmailText');
         $this->signaturePresent = Request::postString('signaturePresent');
 
-        $this->nameValidation($this->senderName, 'sender_name');
-        $this->nameValidation($this->recipientName, 'recipient_name');
+        $this->nameValidation($this->senderName);
+        $this->nameValidation($this->recipientName, true);
         $this->selectValidation($this->style, $styles, 'style');
         $this->selectValidation($this->length, $lengths, 'length');
         $this->selectValidation($this->creativity, $creativities, 'creativity');
         $this->selectValidation($this->language, $languages, 'language');
-        $this->emailValidation($this->recipientEmail, 'recipient');
+        $this->emailValidation($this->recipientEmail, 'recipient', true);
         $this->emailValidation($this->senderEmail, 'sender');
         $this->subjectValidation($this->subject);
         $this->instructionsValidation($this->instructions);
@@ -111,22 +111,29 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
         return !preg_match('/[a-zA-Z]/', $string);
     }
 
-    private function nameValidation(?string $name, string $field): void
+    private function nameValidation(?string $name, bool $isRecipientName = false, bool $hasEntered = false): void
     {
-        if (empty($name) && $field === 'recipient_name') {
+        if ($isRecipientName && !$hasEntered) {
+            $recipientNamesArray = array_filter(array_map('trim', explode(',', (string) $name)));
+            foreach ($recipientNamesArray as $recipientName) {
+                $this->nameValidation($recipientName, true, true);
+            }
+        }
+
+        if (empty($name) && $isRecipientName) {
             $this->recipientName = '';
         }
 
-        if (empty($name) && $field !== 'recipient_name') {
+        if (empty($name) && $isRecipientName) {
             $this->setError($this->translation('ai_validation_error_sender_name_mandatory'));
         }
 
         if ($this->hasNoLetters((string) $name) && \strlen((string) $name) > 1) {
-            $this->setError($this->translation('ai_validation_error_invalid_' . $field . '_text'));
+            $this->setError($this->translation('ai_validation_error_invalid_' . ($isRecipientName ? 'recipient' : 'sender') . '_name_text'));
         }
 
         if (!empty($name) && \strlen($name) < 3) {
-            $this->setError($this->translation('ai_validation_error_not_enough_characters_' . $field));
+            $this->setError($this->translation('ai_validation_error_not_enough_characters_' . ($isRecipientName ? 'recipient' : 'sender') . '_name'));
         }
     }
 
@@ -141,10 +148,22 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
         }
     }
 
-    private function emailValidation(?string $email, string $emailParticipant): void
+    private function emailValidation(?string $email, string $emailParticipant, bool $isRecipientEmail = false): void
     {
-        if (!empty($email) && !\rcube_utils::check_email($email)) {
-            $this->setError($this->translation('ai_validation_error_invalid_' . $emailParticipant . '_email_address'));
+        $validateEmail = function (string $email) use ($emailParticipant): void {
+            if (!\rcube_utils::check_email($email)) {
+                $this->setError($this->translation('ai_validation_error_invalid_' . $emailParticipant . '_email_address'));
+            }
+        };
+
+        if ($isRecipientEmail) {
+            $recipientEmailsArray = array_filter(array_map('trim', explode(',', (string) $email)));
+
+            foreach ($recipientEmailsArray as $recipientEmail) {
+                $validateEmail($recipientEmail);
+            }
+        } elseif (!empty($email)) {
+            $validateEmail($email);
         }
     }
 

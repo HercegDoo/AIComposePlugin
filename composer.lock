@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa7d18d566fcd004f79af73ba804d992",
+    "content-hash": "8bbbd2b3396a9802e78852c37fbb3b02",
     "packages": [
         {
             "name": "php-curl-class/php-curl-class",
@@ -85,63 +85,6 @@
                 "source": "https://github.com/php-curl-class/php-curl-class/tree/9.19.2"
             },
             "time": "2024-04-09T18:03:13+00:00"
-        },
-        {
-            "name": "rct567/dom-query",
-            "version": "v1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Rct567/DomQuery.git",
-                "reference": "15b663353cd791097d9f679b3b8bc0471a01d72d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Rct567/DomQuery/zipball/15b663353cd791097d9f679b3b8bc0471a01d72d",
-                "reference": "15b663353cd791097d9f679b3b8bc0471a01d72d",
-                "shasum": ""
-            },
-            "require": {
-                "ext-dom": "*",
-                "ext-json": "*",
-                "ext-xml": "*",
-                "php": "^7.2.0||^8.0.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^1.10",
-                "phpunit/php-code-coverage": "^7.0||^9.0",
-                "phpunit/phpunit": "^8.5||^9.3",
-                "squizlabs/php_codesniffer": "^3.7"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Rct567\\": "src/Rct567"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rct567",
-                    "email": "rct999@gmail.com"
-                }
-            ],
-            "description": "DomQuery is a PHP library that allows easy 'jQuery like' DOM traversing and manipulation",
-            "keywords": [
-                "css",
-                "dom",
-                "html",
-                "jquery",
-                "selector",
-                "xml"
-            ],
-            "support": {
-                "issues": "https://github.com/Rct567/DomQuery/issues",
-                "source": "https://github.com/Rct567/DomQuery/tree/v1.1"
-            },
-            "time": "2024-01-18T20:32:27+00:00"
         }
     ],
     "packages-dev": [
@@ -4802,10 +4745,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.4",
-        "ext-curl": "*",
-        "ext-json": "*",
-        "ext-dom": "*",
-        "ext-libxml": "*"
+        "ext-curl": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.2.0"

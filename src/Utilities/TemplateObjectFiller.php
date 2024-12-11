@@ -41,7 +41,11 @@ class TemplateObjectFiller
         $selector = new \html_select($attrib);
 
         foreach ((array) $options as $option) {
-            $capitalizedValue = \is_string($option) ? ucfirst($option) : $option;
+            $key = substr($options_key, 0, -1);
+            $option = $key === 'language' ? lcfirst($option) : $option;
+            $key = $key === 'creativitie' ? substr($key, 0, -2) . 'y' : $key;
+            $localizedValue = \is_string($option) ? $this->translation('ai_' . $key . '_' . $option) : '';
+            $capitalizedValue = ucfirst($localizedValue);
             $selector->add($capitalizedValue, $option);
         }
 
@@ -52,12 +56,17 @@ class TemplateObjectFiller
 
     public function createInstructionField(string $name, string $id): string
     {
+        $heightStyle = ($id === 'aic-instruction' && isset($_COOKIE['textareaHeight']))
+            ? 'height:' . $_COOKIE['textareaHeight'] . 'px;'
+            : '';
+
         $attrisb = [
             'name' => $name,
             'id' => $id,
             'rows' => 1,
             'cols' => 50,
             'class' => 'form-control',
+            'style' => $heightStyle,
         ];
         $textarea = new \html_textarea($attrisb);
 

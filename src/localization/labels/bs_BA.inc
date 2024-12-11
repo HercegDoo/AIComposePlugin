@@ -96,6 +96,9 @@ $labels['setting_ai_language'] = 'Jezik';
 $labels['setting_ai_creativity'] = 'Kreativnost';
 
 $labels['ai_compose_settings'] = 'AICompose Postavke';
+$labels['ai_compose_hide_show'] = 'Sakrij/Prikaži AICompose Plugin';
+$labels['ai_compose_hide'] = 'Sakrij';
+$labels['ai_compose_show'] = 'Prikaži';
 
 $labels['ai_tip_to'] = 'Ime primaoca nove e-pošte. Možete navesti više od jednog imena ili koristiti nizove poput "svi", "tim" itd.';
 $labels['ai_tip_from'] = 'Novi email će biti potpisan ovim imenom.';
@@ -103,7 +106,7 @@ $labels['ai_tip_style'] = 'Željeni stil pisanja za novu e-poštu.';
 $labels['ai_tip_length'] = 'Željena dužina nove e-pošte.';
 $labels['ai_tip_language'] = 'Jezik na kojem bi trebao biti napisan novi email. Navedite "Bez promjene" da pišete na jeziku na kojem su date upute.';
 $labels['ai_tip_creativity'] = 'Veća kreativnost će generirati nepredvidljivije i raznolikije e-poruke; niža kreativnost će generisati e-poruke koje su više činjenične i tačnije.';
-$labels['ai_tip_instructions'] = 'Upute o tome šta uključiti u novu e-poštu. Kliknite na dugme Primjeri Instrukcija da vidite neke primjere.';
+$labels['ai_tip_instructions'] = 'Upute o tome šta uključiti u novu e-poštu. Kliknite na dugme Pomoć & Primjeri da vidite neke primjere.';
 
 $labels['ai_help_info'] = 'Recite AI o e-poruci koju želite da napišete. Uključite pojedinosti, kao što su imena, datumi, lokacije, razlozi, itd. Također možete tražiti kreativne ideje ili objašnjenja. Nakon što se e-mail generira, moći ćete ga podesiti i umetnuti u AI stranicu. Evo nekoliko primjera uputa za početak';
 

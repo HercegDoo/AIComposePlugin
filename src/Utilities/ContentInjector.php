@@ -2,11 +2,10 @@
 
 namespace HercegDoo\AIComposePlugin\Utilities;
 
-use Rct567\DomQuery\DomQuery;
-
 final class ContentInjector
 {
     use TranslationTrait;
+
     private static ?ContentInjector $instance = null;
 
     /**
@@ -21,26 +20,6 @@ final class ContentInjector
         }
 
         return self::$instance;
-    }
-
-    /**
-     * @param array<string, mixed> $baseHTML
-     *
-     * @return array<string, mixed>
-     */
-    public function insertContentAboveElement(array $baseHTML, string $contentToInsert, string $selector): array
-    {
-        return $this->insertContent($baseHTML, $contentToInsert, $selector, 'before');
-    }
-
-    /**
-     * @param array<string, mixed> $baseHTML
-     *
-     * @return array<string, mixed>
-     */
-    public function insertContentAfterElement(array $baseHTML, string $contentToInsert, string $selector): array
-    {
-        return $this->insertContent($baseHTML, $contentToInsert, $selector, 'after');
     }
 
     public function getParsedHtml(string $fileName): string
@@ -59,55 +38,62 @@ final class ContentInjector
      *
      * @return array<string, mixed>
      */
-    private function insertContent(array $baseHTML, string $insertContent, string $selector, string $position): array
+    public function insertContent(array $baseHTML, string $id, string $contentKey, string $position = 'append'): array
     {
-        $hash = md5($insertContent);
-        if (\in_array($hash, self::$doneContent)) {
-            return $baseHTML;
+        if (isset($baseHTML['content']) && \is_string($baseHTML['content'])) {
+            $hash = md5($contentKey);
+            if (\in_array($hash, self::$doneContent)) {
+                return $baseHTML;
+            }
+
+            $targetElement = '';
+            $pattern = '/<div\b[^>]*\bid\s*=\s*["\']' . preg_quote($id, '/') . '["\'][^>]*>/i';
+            if (preg_match($pattern, $baseHTML['content'], $matches, \PREG_OFFSET_CAPTURE)) {
+                $startPos = $matches[0][1];
+                $matchedLength = \strlen($matches[0][0]);
+                $currentPos = (int) $startPos + (int) $matchedLength;
+
+                $openDivs = 1;
+                $patternDiv = '/<\/?div\b[^>]*>/i';
+
+                while ($openDivs > 0 && preg_match($patternDiv, $baseHTML['content'], $match, \PREG_OFFSET_CAPTURE, $currentPos)) {
+                    $tag = strtolower($match[0][0]);
+                    if (str_starts_with($tag, '</div')) {
+                        --$openDivs;
+                    } else {
+                        ++$openDivs;
+                    }
+                    $currentPos = (int) $match[0][1] + \strlen($match[0][0]);
+                }
+
+                if ($openDivs == 0) {
+                    $targetElement = substr($baseHTML['content'], $startPos, $currentPos - $startPos);
+                } else {
+                    return $baseHTML;
+                }
+            } else {
+                return $baseHTML;
+            }
+
+            $baseHTML['content'] = $this->replaceText($baseHTML['content'], $targetElement, $this->getParsedHtml($contentKey), $position);
+            self::$doneContent[] = $hash;
         }
-
-        $parsedHtmlContent = $this->getParsedHtml($insertContent);
-
-        $html = $baseHTML['content'];
-
-        $firstLine = '';
-
-        $dom = new DomQuery($html);
-
-        $targetElement = $dom->find($selector);
-
-        if ($targetElement->count() === 0) {
-            error_log('AICompose plugin: error cant find selector in templete: ' . $selector);
-
-            return $baseHTML;
-        }
-
-        $position = $position === 'after' ? 'after' : 'before';
-
-        $targetElement->{$position}($parsedHtmlContent);
-
-        if (!empty($doctype = $this->validateDoctype(\is_string($html) ? $html : '')) && empty($this->validateDoctype($dom->getOuterHtml()))) {
-            $firstLine = $doctype . \PHP_EOL;
-        }
-
-        $baseHTML['content'] = $firstLine . $dom->getOuterHtml();
-        self::$doneContent[] = $hash;
 
         return $baseHTML;
     }
 
-    private function validateDoctype(string $html, int $limit = 20): string
+    private function replaceText(string $original, string $search, string $replace, string $mode = 'replace'): string
     {
-        $lines = explode(\PHP_EOL, $html, $limit);
-        $firstLine = '';
+        switch (strtolower($mode)) {
+            case 'prepend':
+                return str_replace($search, $replace . $search, $original);
 
-        foreach ($lines as $line) {
-            if (!empty($line) && preg_match('/<![dD][oO][cC][tT][yY][pP][eE][^>]*>/', $line, $matches)) {
-                $firstLine = $matches[0];
-                break;
-            }
+            case 'append':
+                return str_replace($search, $search . $replace, $original);
+
+            case 'replace':
+            default:
+                return str_replace($search, $replace, $original);
         }
-
-        return $firstLine;
     }
 }

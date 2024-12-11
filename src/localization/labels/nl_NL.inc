@@ -88,6 +88,9 @@ $labels['ai_selected_text'] = 'Geselecteerde Tekst';
 $labels['ai_fix_instructions'] = 'Instructies voor Correctie';
 
 $labels['ai_compose_settings'] = 'AICompose Instellingen';
+$labels['ai_compose_hide_show'] = 'AICompose-plugin verbergen/weergeven';
+$labels['ai_compose_hide'] = 'Verbergen';
+$labels['ai_compose_show'] = 'Tonen';
 
 $labels['ai_generate_again'] = 'Genereer opnieuw';
 $labels['ai_fix_text_input_instructions'] = 'Voer in dit veld gedetailleerde uitleg of instructies in over de wijzigingen die u wilt aanbrengen in de geselecteerde tekst.';
@@ -105,7 +108,7 @@ $labels['ai_tip_style'] = 'Gewenste schrijfstijl voor de nieuwe e-mail.';
 $labels['ai_tip_length'] = 'Gewenste lengte van de nieuwe e-mail.';
 $labels['ai_tip_language'] = 'De taal waarin de nieuwe e-mail moet worden geschreven. Geef "Geen wijziging" op als u in de taal wilt schrijven waarin de instructies zijn gegeven.';
 $labels['ai_tip_creativity'] = 'Hogere creativiteit zal onvoorspelbaardere en gevarieerdere e-mails genereren; lagere creativiteit zal e-mails genereren die feitelijker en preciezer zijn.';
-$labels['ai_tip_instructions'] = 'Instructies over wat in de nieuwe e-mail moet worden opgenomen. Klik op de knop Voorbeelden van Instructies om enkele voorbeelden te bekijken.';
+$labels['ai_tip_instructions'] = 'Instructies over wat in de nieuwe e-mail moet worden opgenomen. Klik op de knop Hulp & Voorbeelden om enkele voorbeelden te bekijken.';
 
 $labels['ai_help_info'] = 'Vertel AI over de e-mail die je wilt schrijven. Vermeld details zoals namen, data, locaties, redenen, enzovoort. U kunt ook vragen om creatieve ideeën of uitleg. Nadat de e-mail is gegenereerd, kunt u deze aanpassen en invoegen op de AI-pagina. Hier zijn enkele voorbeelden van instructies om te beginnen';
 
