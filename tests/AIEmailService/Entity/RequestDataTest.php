@@ -126,7 +126,7 @@ final class RequestDataTest extends TestCase
     {
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setMultipleRecipients(false);
-        self::assertSame(false, $requestData->getMultipleRecipients());
+        self::assertFalse($requestData->getMultipleRecipients());
         self::assertInstanceOf(RequestData::class, $returnedValue);
     }
 
@@ -134,7 +134,7 @@ final class RequestDataTest extends TestCase
     {
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstruction');
         $returnedValue = $requestData->setSignaturePresent(false);
-        self::assertSame(false, $requestData->getSignaturePresent());
+        self::assertFalse($requestData->getSignaturePresent());
         self::assertInstanceOf(RequestData::class, $returnedValue);
     }
 

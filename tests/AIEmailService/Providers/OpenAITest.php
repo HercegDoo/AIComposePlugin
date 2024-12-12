@@ -24,6 +24,7 @@ BypassFinals::enable();
 final class OpenAITest extends TestCase
 {
     protected RequestData $requestData;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -86,10 +87,6 @@ final class OpenAITest extends TestCase
 
         $openAI = new OpenAI($mockCurl);
 
-
-
-
-
         Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
 
         try {
@@ -113,9 +110,6 @@ final class OpenAITest extends TestCase
 
         $openAI = new OpenAI($mockCurl);
 
-
-
-
         $settingsMock = $this->createMock(Settings::class);
 
         $openAI->setError('dummyError');
@@ -131,8 +125,6 @@ final class OpenAITest extends TestCase
         $this->requestData->setInstruction('afdsafsd');
         $this->requestData->setMultipleRecipients(false);
         $this->requestData->setSignaturePresent(false);
-
-
 
         $curlMock = $this->createMock(Curl::class);
         $mockResponse = new \stdClass();
@@ -167,9 +159,6 @@ final class OpenAITest extends TestCase
 
         Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
 
-
-
-
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('No email content found');
 
@@ -180,8 +169,6 @@ final class OpenAITest extends TestCase
     {
         $OpenAI = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAI, 'prompt');
-
-
 
         $result = $privateMethodInvoker($this->requestData);
 
@@ -198,7 +185,6 @@ Closing Greeting
     {
         $OpenAI = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAI, 'prompt');
-
 
         $this->requestData->setMultipleRecipients(true);
         $result = $privateMethodInvoker($this->requestData);
@@ -250,17 +236,13 @@ Closing Greeting
 CRUCIAL: "Write an email without signing it or including any identifying information after the greeting, including no names or titles. Only include the message and greeting, but leave the signature and closing blank."', $result);
     }
 
-
-
     public function testPromptFixDefault()
     {
         $OpenAi = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAi, 'prompt');
 
-
         $this->requestData->setFixText('dummyprevgenemail', 'fixThisExample');
         $this->requestData->setPreviousConversation('prevConvo');
-
 
         $result = $privateMethodInvoker($this->requestData);
 
@@ -278,8 +260,6 @@ CRUCIAL: "Write an email without signing it or including any identifying informa
         $this->requestData->setPreviousConversation('prevConvo');
         $this->requestData->setMultipleRecipients(false);
 
-
-
         $result = $privateMethodInvoker($this->requestData);
 
         self::assertSame(' Write an identical email as this dummyprevgenemail, in the same language, but change only this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.', $result);
@@ -287,7 +267,6 @@ CRUCIAL: "Write an email without signing it or including any identifying informa
 
     public function testSendRequestSetters()
     {
-
         $this->requestData->setSignaturePresent(true);
 
         $curlMock = $this->getMockBuilder(Curl::class)
@@ -326,10 +305,6 @@ CRUCIAL: "Write an email without signing it or including any identifying informa
 
     public function testSendRequestPostMethod()
     {
-
-
-
-
         $curlMock = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['post'])
             ->getMock()
@@ -369,7 +344,6 @@ Closing Greeting
 
     public function testSendRequestUnathorized()
     {
-
         $this->requestData->setSignaturePresent(true);
         $this->requestData->setMultipleRecipients(true);
         $OpenAi = new OpenAI();
@@ -383,7 +357,6 @@ Closing Greeting
 
     public function testSendRequestNotFound()
     {
-
         $this->requestData->setSignaturePresent(true);
 
         $OpenAi = new OpenAI();
@@ -395,7 +368,6 @@ Closing Greeting
 
     public function testSendRequestBadRequest()
     {
-
         $this->requestData->setSignaturePresent(true);
 
         $OpenAi = new OpenAI();
@@ -411,7 +383,6 @@ Closing Greeting
 
     public function testSendRequestThrowable()
     {
-
         $this->requestData->setSignaturePresent(true);
 
         $mockCurl = $this->getMockBuilder(Curl::class)
