@@ -82,7 +82,6 @@ final class OpenAI extends AbstractProvider
                 " *Length: {$requestData->getLength()}." .
                 $adressMultiplePeople .
                 " Compose a well-structured email based on this instruction: {$requestData->getInstruction()}. The instruction should be rewritten in the tone and format of a {$requestData->getStyle()} email to a reader. " .
-                'Ensure that the generated email does not contain the exact same text as the instruction.' .
                 " If the instruction contains pronouns (like 'he', 'she', 'they', etc.), assume they refer to the recipient unless specified otherwise." .
                 " The number of words should be {$requestData->getLengthWords($requestData->getLength())}. " .
                 'Do not write the subject if provided, it is only there for your context. ' .
