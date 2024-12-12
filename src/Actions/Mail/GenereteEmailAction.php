@@ -84,7 +84,6 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
         $this->previousGeneratedEmailText = Request::postString('previousGeneratedEmailText');
         $this->signaturePresent = Request::postString('signaturePresent');
         $this->multipleRecipients = Request::postString('multipleRecipients');
-
         $this->nameValidation($this->senderName);
         $this->nameValidation($this->recipientName, true);
         $this->selectValidation($this->style, $styles, 'style');

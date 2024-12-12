@@ -142,9 +142,10 @@ class RequestData
         return $this;
     }
 
-    public function setMultipleRecipients(bool $multipleRecipients) : self
+    public function setMultipleRecipients(bool $multipleRecipients): self
     {
         $this->multipleRecipients = $multipleRecipients;
+
         return $this;
     }
 

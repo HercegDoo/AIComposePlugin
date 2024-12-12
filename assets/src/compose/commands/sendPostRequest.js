@@ -64,6 +64,7 @@ export default class GenerateMail {
           recipientEmail: `${requestData.recipientEmail}`,
           senderEmail: `${requestData.senderEmail}`,
           subject: `${requestData.subject}`,
+          multipleRecipients: `${requestData.multipleRecipients}`
         },
         true
       )
