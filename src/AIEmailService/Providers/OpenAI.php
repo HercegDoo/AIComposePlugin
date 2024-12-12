@@ -87,7 +87,6 @@ final class OpenAI extends AbstractProvider
                 " The number of words should be {$requestData->getLengthWords($requestData->getLength())}. " .
                 'Do not write the subject if provided, it is only there for your context. ' .
                 'Only greet the recipient, never the sender. ' .
-                'IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. ' .
                 'The format should be as follows:' . "\n" .
                 'Greeting' . "\n\n" .
                 'Content' . "\n\n" .
