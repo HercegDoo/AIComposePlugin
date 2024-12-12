@@ -23,6 +23,7 @@ BypassFinals::enable();
  */
 final class OpenAITest extends TestCase
 {
+    protected RequestData $requestData;
     protected function setUp(): void
     {
         parent::setUp();
@@ -35,6 +36,10 @@ final class OpenAITest extends TestCase
 
         Settings::setDefaultMaxTokens(2000);
         Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'model-test']);
+
+        $this->requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
+        $this->requestData->setSignaturePresent(false);
+        $this->requestData->setMultipleRecipients(false);
     }
 
     public function testSetError()
@@ -81,14 +86,14 @@ final class OpenAITest extends TestCase
 
         $openAI = new OpenAI($mockCurl);
 
-        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
-        $requestData->setSignaturePresent(false);
-        $requestData->setMultipleRecipients(false);
+
+
+
 
         Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
 
         try {
-            $openAI->generateEmail($requestData);
+            $openAI->generateEmail($this->requestData);
         } catch (ProviderException $exception) {
             self::assertSame('test-api-key', ReflectionHelper::getPrivateProperty($openAI, 'apiKey'));
             self::assertSame('test-model', ReflectionHelper::getPrivateProperty($openAI, 'model'));
@@ -108,24 +113,26 @@ final class OpenAITest extends TestCase
 
         $openAI = new OpenAI($mockCurl);
 
-        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
-        $requestData->setSignaturePresent(false);
-        $requestData->setMultipleRecipients(false);
+
+
+
         $settingsMock = $this->createMock(Settings::class);
 
         $openAI->setError('dummyError');
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('dummyError');
-        $openAI->generateEmail($requestData, $settingsMock);
+        $openAI->generateEmail($this->requestData, $settingsMock);
     }
 
     public function testGenerateEmailReturnType()
     {
-        $requestData = RequestData::make('Meho', 'Muhi', 'jabuka', 'casual', 'medium', 'low', 'Bosnian');
-        $requestData->setInstruction('afdsafsd');
-        $requestData->setSignaturePresent(false);
-        $requestData->setMultipleRecipients(false);
+        $this->requestData = RequestData::make('Meho', 'Muhi', 'jabuka', 'casual', 'medium', 'low', 'Bosnian');
+        $this->requestData->setInstruction('afdsafsd');
+        $this->requestData->setMultipleRecipients(false);
+        $this->requestData->setSignaturePresent(false);
+
+
 
         $curlMock = $this->createMock(Curl::class);
         $mockResponse = new \stdClass();
@@ -144,7 +151,7 @@ final class OpenAITest extends TestCase
         $curlMock->method('post')->willReturn($mockResponse);
         $OpenAI = new OpenAI($curlMock);
 
-        $return = $OpenAI->generateEmail($requestData);
+        $return = $OpenAI->generateEmail($this->requestData);
 
         self::assertInstanceOf(Respond::class, $return);
     }
@@ -159,14 +166,14 @@ final class OpenAITest extends TestCase
         $openAI = new OpenAI($mockCurl);
 
         Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'test-model']);
-        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
-        $requestData->setSignaturePresent(false);
-        $requestData->setMultipleRecipients(false);
+
+
+
 
         $this->expectException(ProviderException::class);
         $this->expectExceptionMessage('No email content found');
 
-        $openAI->generateEmail($requestData);
+        $openAI->generateEmail($this->requestData);
     }
 
     public function testPromptNoFixDefault()
@@ -174,12 +181,11 @@ final class OpenAITest extends TestCase
         $OpenAI = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAI, 'prompt');
 
-        $requestData = RequestData::make('Meho', 'Muhamed', 'TestInstrukcija');
-        $requestData->setSignaturePresent(false);
-        $requestData->setMultipleRecipients(false);
-        $result = $privateMethodInvoker($requestData);
 
-        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhamed *Language: Bosnian *Length: medium. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader. Ensure that the generated email does not contain the exact same text as the instruction. If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. The format should be as follows:
+
+        $result = $privateMethodInvoker($this->requestData);
+
+        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader. Ensure that the generated email does not contain the exact same text as the instruction. If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. The format should be as follows:
 Greeting
 
 Content
@@ -188,15 +194,52 @@ Closing Greeting
 ', $result);
     }
 
+    public function testPromptMultipleRecipients()
+    {
+        $OpenAI = new OpenAI();
+        $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAI, 'prompt');
+
+
+        $this->requestData->setMultipleRecipients(true);
+        $result = $privateMethodInvoker($this->requestData);
+
+        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Address the recipient in plural form. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader. Ensure that the generated email does not contain the exact same text as the instruction. If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. The format should be as follows:
+Greeting
+
+Content
+
+Closing Greeting
+', $result);
+    }
+
+    public function testPromptMultipleRecipientsAndSignaturePresent()
+    {
+        $OpenAI = new OpenAI();
+        $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAI, 'prompt');
+
+        $this->requestData->setSignaturePresent(true);
+        $this->requestData->setMultipleRecipients(true);
+        $result = $privateMethodInvoker($this->requestData);
+
+        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Address the recipient in plural form. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader. Ensure that the generated email does not contain the exact same text as the instruction. If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. The format should be as follows:
+Greeting
+
+Content
+
+Closing Greeting
+CRUCIAL: "Write an email without signing it or including any identifying information after the greeting, including no names or titles. Only include the message and greeting, but leave the signature and closing blank."', $result);
+    }
+
     public function testPromptNoFixCustom()
     {
         $OpenAi = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAi, 'prompt');
 
-        $requestData = RequestData::make('Ime1', 'Ime2', 'Sastavi Mail', 'professional', 'long', 'low', 'Spanish');
-        $requestData->setSignaturePresent(true);
-        $requestData->setMultipleRecipients(false);
-        $result = $privateMethodInvoker($requestData);
+        $this->requestData = RequestData::make('Ime1', 'Ime2', 'Sastavi Mail', 'professional', 'long', 'low', 'Spanish');
+        $this->requestData->setSignaturePresent(true);
+        $this->requestData->setMultipleRecipients(false);
+
+        $result = $privateMethodInvoker($this->requestData);
 
         self::assertSame('Create a professional email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Spanish *Length: long. Compose a well-structured email based on this instruction: Sastavi Mail. The instruction should be rewritten in the tone and format of a professional email to a reader. Ensure that the generated email does not contain the exact same text as the instruction. If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be over 150 words. Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. The format should be as follows:
 Greeting
@@ -207,19 +250,21 @@ Closing Greeting
 CRUCIAL: "Write an email without signing it or including any identifying information after the greeting, including no names or titles. Only include the message and greeting, but leave the signature and closing blank."', $result);
     }
 
+
+
     public function testPromptFixDefault()
     {
         $OpenAi = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAi, 'prompt');
 
-        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-        $requestData->setFixText('dummyprevgenemail', 'fixThisExample');
-        $requestData->setPreviousConversation('prevConvo');
-        $requestData->setMultipleRecipients(false);
 
-        $result = $privateMethodInvoker($requestData);
+        $this->requestData->setFixText('dummyprevgenemail', 'fixThisExample');
+        $this->requestData->setPreviousConversation('prevConvo');
 
-        self::assertSame(' Write an identical email as this dummyprevgenemail, in the same language, but change only this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.', $result);
+
+        $result = $privateMethodInvoker($this->requestData);
+
+        self::assertSame(' Write an identical email as this dummyprevgenemail, in the same language, but change only this text snippet from that same email: fixThisExample based on this instruction TestInstrukcija. Previous conversation: prevConvo.', $result);
     }
 
     public function testPromptFixCustom()
@@ -227,22 +272,24 @@ CRUCIAL: "Write an email without signing it or including any identifying informa
         $OpenAi = new OpenAI();
         $privateMethodInvoker = ReflectionHelper::getPrivateMethodInvoker($OpenAi, 'prompt');
 
-        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail', 'professional', 'long', 'low', 'Spanish');
-        $requestData->setSubject('');
-        $requestData->setFixText('dummyprevgenemail', 'fixThisExample');
-        $requestData->setPreviousConversation('prevConvo');
-        $requestData->setMultipleRecipients(false);
+        $this->requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail', 'professional', 'long', 'low', 'Spanish');
+        $this->requestData->setSubject('');
+        $this->requestData->setFixText('dummyprevgenemail', 'fixThisExample');
+        $this->requestData->setPreviousConversation('prevConvo');
+        $this->requestData->setMultipleRecipients(false);
 
-        $result = $privateMethodInvoker($requestData);
+
+
+        $result = $privateMethodInvoker($this->requestData);
 
         self::assertSame(' Write an identical email as this dummyprevgenemail, in the same language, but change only this text snippet from that same email: fixThisExample based on this instruction SastaviMail. Previous conversation: prevConvo.', $result);
     }
 
     public function testSendRequestSetters()
     {
-        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-        $requestData->setSignaturePresent(true);
-        $requestData->setMultipleRecipients(false);
+
+        $this->requestData->setSignaturePresent(true);
+
         $curlMock = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['setHeader', 'setOpts'])
             ->getMock()
@@ -272,16 +319,16 @@ CRUCIAL: "Write an email without signing it or including any identifying informa
         ;
 
         try {
-            $OpenAi->generateEmail($requestData);
+            $OpenAi->generateEmail($this->requestData);
         } catch (ProviderException $e) {
         }
     }
 
     public function testSendRequestPostMethod()
     {
-        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-        $requestData->setMultipleRecipients(false);
-        $requestData->setSignaturePresent(false);
+
+
+
 
         $curlMock = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['post'])
@@ -298,7 +345,7 @@ CRUCIAL: "Write an email without signing it or including any identifying informa
                     'model' => 'model-test',
                     'messages' => [
                         ['role' => 'system', 'content' => 'You are a helpful personal assistant.'],
-                        ['role' => 'user', 'content' => 'Create a casual email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Bosnian *Length: medium. Compose a well-structured email based on this instruction: SastaviMail. The instruction should be rewritten in the tone and format of a casual email to a reader. Ensure that the generated email does not contain the exact same text as the instruction. If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. The format should be as follows:
+                        ['role' => 'user', 'content' => 'Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader. Ensure that the generated email does not contain the exact same text as the instruction. If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. The format should be as follows:
 Greeting
 
 Content
@@ -315,42 +362,42 @@ Closing Greeting
         ;
 
         try {
-            $OpenAi->generateEmail($requestData);
+            $OpenAi->generateEmail($this->requestData);
         } catch (ProviderException $e) {
         }
     }
 
     public function testSendRequestUnathorized()
     {
-        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-        $requestData->setSignaturePresent(true);
-        $requestData->setMultipleRecipients(true);
+
+        $this->requestData->setSignaturePresent(true);
+        $this->requestData->setMultipleRecipients(true);
         $OpenAi = new OpenAI();
 
         $this->expectException(ProviderException::class);
         $regex = '/HTTP\/(1\.1|2)\s401\s?(Unauthorized)?/';
         $this->expectExceptionMessageMatches($regex);
 
-        $OpenAi->generateEmail($requestData);
+        $OpenAi->generateEmail($this->requestData);
     }
 
     public function testSendRequestNotFound()
     {
-        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-        $requestData->setSignaturePresent(true);
-        $requestData->setMultipleRecipients(false);
+
+        $this->requestData->setSignaturePresent(true);
+
         $OpenAi = new OpenAI();
 
         $this->expectException(ProviderException::class);
 
-        $OpenAi->generateEmail($requestData);
+        $OpenAi->generateEmail($this->requestData);
     }
 
     public function testSendRequestBadRequest()
     {
-        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-        $requestData->setSignaturePresent(true);
-        $requestData->setMultipleRecipients(false);
+
+        $this->requestData->setSignaturePresent(true);
+
         $OpenAi = new OpenAI();
 
         ReflectionHelper::setPrivateProperty($OpenAi, 'creativityMap', [Settings::getCreativities()[0] => -55,
@@ -359,14 +406,14 @@ Closing Greeting
 
         $this->expectException(ProviderException::class);
 
-        $OpenAi->generateEmail($requestData);
+        $OpenAi->generateEmail($this->requestData);
     }
 
     public function testSendRequestThrowable()
     {
-        $requestData = RequestData::make('Ime1', 'Ime2', 'SastaviMail');
-        $requestData->setSignaturePresent(true);
-        $requestData->setMultipleRecipients(false);
+
+        $this->requestData->setSignaturePresent(true);
+
         $mockCurl = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['post'])
             ->getMock()
@@ -382,6 +429,6 @@ Closing Greeting
         $this->expectException(\Throwable::class);
         $this->expectExceptionMessage('DivisionByZeroError');
 
-        $openAI->generateEmail($requestData);
+        $openAI->generateEmail($this->requestData);
     }
 }
