@@ -43,6 +43,8 @@ export default class GenerateMail {
      return;
     }
 
+
+
     rcmail.lock_frame(document.body);
     rcmail
       .http_post(
@@ -62,6 +64,7 @@ export default class GenerateMail {
           recipientEmail: `${requestData.recipientEmail}`,
           senderEmail: `${requestData.senderEmail}`,
           subject: `${requestData.subject}`,
+          multipleRecipients: `${requestData.multipleRecipients}`
         },
         true
       )

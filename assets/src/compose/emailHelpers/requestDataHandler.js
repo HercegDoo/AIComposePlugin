@@ -27,5 +27,6 @@ export function getRequestDataFields() {
     previousConversation: "",
     fixText: "",
     previousGeneratedEmailText: "",
+    multipleRecipients: getRecipientInfo().length > 1 ? "yes" : ""
   };
 }

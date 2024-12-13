@@ -342,6 +342,32 @@ background-color: #374549;
   overflow: visible;
 }
 
+
+@media  (min-width: 2100px) {
+  #fix-text-tooltip {
+    width: 17vw !important;
+  }
+}
+
+@media (max-width: 2100px) and (min-width: 1800px) {
+  #fix-text-tooltip {
+    width: 19vw !important;
+  }
+}
+@media (max-width: 1800px) and (min-width: 1500px){
+  #fix-text-tooltip{
+    width: 21vw!important;
+  }
+
+}
+
+@media (max-width: 1500px) and (min-width: 1200px){
+  #fix-text-tooltip{
+    width: 23vw!important;
+  }
+
+}
+
 @media (max-width: 900px) and (min-width: 700px){
   #fix-text-tooltip{
     width: 27vw!important;
