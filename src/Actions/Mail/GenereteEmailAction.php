@@ -127,7 +127,7 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
             $this->recipientName = '';
         }
 
-        if (empty($name) && $isRecipientName) {
+        if (empty($name) && !$isRecipientName) {
             $this->setError($this->translation('ai_validation_error_sender_name_mandatory'));
         }
 
