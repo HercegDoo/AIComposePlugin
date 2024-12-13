@@ -68,6 +68,8 @@ final class OpenAI extends AbstractProvider
 
     private function prompt(RequestData $requestData): string
     {
+        $adressMultiplePeople = $requestData->getMultipleRecipients() ? ' Address the recipient in plural form.' : '';
+
         if ($requestData->getFixText()) {
             $prompt = " Write an identical email as this {$requestData->getPreviousGeneratedEmail()}, in the same language, but change only this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." .
                 ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '');
@@ -77,14 +79,13 @@ final class OpenAI extends AbstractProvider
                 ($requestData->getRecipientName() !== '' ? " *Recipient: {$requestData->getRecipientName()}" : '') .
                 " *Sender: {$requestData->getSenderName()}" .
                 " *Language: {$requestData->getLanguage()}" .
-                " *Length: {$requestData->getLength()}" .
+                " *Length: {$requestData->getLength()}." .
+                $adressMultiplePeople .
                 " Compose a well-structured email based on this instruction: {$requestData->getInstruction()}. The instruction should be rewritten in the tone and format of a {$requestData->getStyle()} email to a reader. " .
-                'Ensure that the generated email does not contain the exact same text as the instruction.' .
                 " If the instruction contains pronouns (like 'he', 'she', 'they', etc.), assume they refer to the recipient unless specified otherwise." .
                 " The number of words should be {$requestData->getLengthWords($requestData->getLength())}. " .
                 'Do not write the subject if provided, it is only there for your context. ' .
                 'Only greet the recipient, never the sender. ' .
-                'IMPORTANT: Format the email as a standard email, ensuring it is well-structured and visually appealing, regardless of the number of words provided. ' .
                 'The format should be as follows:' . "\n" .
                 'Greeting' . "\n\n" .
                 'Content' . "\n\n" .
