@@ -49,9 +49,9 @@ class TemplateObjectFiller
             $selector->add($capitalizedValue, $option);
         }
 
-        $sel = $defaultOption;
+        $sel = lcfirst($defaultOption);
 
-        return \is_string($sel) ? $selector->show($sel) : '';
+        return $sel ? $selector->show($sel) : '';
     }
 
     public function createInstructionField(string $name, string $id): string
