@@ -104,7 +104,7 @@ $labels['ai_tip_to'] = 'Ime primaoca nove e-pošte. Možete navesti više od jed
 $labels['ai_tip_from'] = 'Novi email će biti potpisan ovim imenom.';
 $labels['ai_tip_style'] = 'Željeni stil pisanja za novu e-poštu.';
 $labels['ai_tip_length'] = 'Željena dužina nove e-pošte.';
-$labels['ai_tip_language'] = 'Jezik na kojem bi trebao biti napisan novi email. Navedite "Bez promjene" da pišete na jeziku na kojem su date upute.';
+$labels['ai_tip_language'] = 'Jezik na kojem bi trebao biti napisan novi email.';
 $labels['ai_tip_creativity'] = 'Veća kreativnost će generirati nepredvidljivije i raznolikije e-poruke; niža kreativnost će generisati e-poruke koje su više činjenične i tačnije.';
 $labels['ai_tip_instructions'] = 'Upute o tome šta uključiti u novu e-poštu. Kliknite na dugme Pomoć & Primjeri da vidite neke primjere.';
 

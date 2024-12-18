@@ -105,7 +105,7 @@ $labels['ai_tip_to'] = 'Name des Empfängers der neuen E-Mail. Sie können mehre
 $labels['ai_tip_from'] = 'Die neue E-Mail wird mit diesem Namen unterzeichnet.';
 $labels['ai_tip_style'] = 'Der gewünschte Schreibstil für die neue E-Mail.';
 $labels['ai_tip_length'] = 'Die gewünschte Länge der neuen E-Mail.';
-$labels['ai_tip_language'] = 'Die Sprache, in der die neue E-Mail geschrieben werden soll. Geben Sie "Keine Änderung" an, um in der Sprache zu schreiben, in der die Anweisungen gegeben wurden.';
+$labels['ai_tip_language'] = 'Die Sprache, in der die neue E-Mail geschrieben werden soll.';
 $labels['ai_tip_creativity'] = 'Höhere Kreativität erzeugt unvorhersehbarere und abwechslungsreichere E-Mails; niedrigere Kreativität erzeugt faktischere und präzisere E-Mails.';
 $labels['ai_tip_instructions'] = 'Anweisungen, was in die neue E-Mail aufgenommen werden soll. Klicken Sie auf die Schaltfläche "Hilfe & Beispiele", um einige Beispiele zu sehen.';
 
