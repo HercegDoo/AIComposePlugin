@@ -107,7 +107,7 @@ $labels['ai_tip_to'] = 'Recipient name for the new email. You can specify more t
 $labels['ai_tip_from'] = 'The new email will be signed with this name.';
 $labels['ai_tip_style'] = 'The desired writing style for the new email.';
 $labels['ai_tip_length'] = 'The desired length of the new email.';
-$labels['ai_tip_language'] = 'The language in which the new email should be written. Specify "No change" to write in the language in which the instructions are given.';
+$labels['ai_tip_language'] = 'The language in which the new email should be written.';
 $labels['ai_tip_creativity'] = 'Higher creativity will generate more unpredictable and diverse emails; lower creativity will generate emails that are more factual and precise.';
 $labels['ai_tip_instructions'] = 'Instructions on what to include in the new email. Click the Help & Examples button to see some examples.';
 
