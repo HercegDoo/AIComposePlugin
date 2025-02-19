@@ -61,3 +61,7 @@ npm run build
     - Provide the necessary details, and click **Generate**.
     - The AI will generate an email based on the provided input.
     - The generated email can be inserted into the Compose window, ready for further editing or immediate sending.
+  
+
+![image](https://github.com/user-attachments/assets/15a813ee-65a6-483d-906c-1abd1beb0bad)
+
