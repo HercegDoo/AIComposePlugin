@@ -50,8 +50,8 @@ final class OpenAI extends AbstractProvider
     {
         $providerConfig = Settings::getProviderConfig();
         $this->apiKey = $providerConfig['apiKey'];
-        $this->apiUrl = !empty($providerConfig['apiUrl']) 
-            ? $providerConfig['apiUrl'] 
+        $this->apiUrl = !empty($providerConfig['apiUrl'])
+            ? $providerConfig['apiUrl']
             : self::DEFAULT_API_URL;
         $this->model = $providerConfig['model'];
         $this->maxTokens = Settings::getDefaultMaxTokens();
