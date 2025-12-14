@@ -13,6 +13,7 @@ use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 final class OpenAI extends AbstractProvider
 {
     private string $apiKey;
+    private string $apiUrl;
     private Curl $curl;
     private float $creativity;
     private string $model;
@@ -46,6 +47,7 @@ final class OpenAI extends AbstractProvider
     public function generateEmail(RequestData $requestData): Respond
     {
         $this->apiKey = Settings::getProviderConfig()['apiKey'];
+        $this->apiUrl = Settings::getProviderConfig()['apiUrl'] ?? 'https://api.openai.com/v1/chat/completions';
         $this->model = Settings::getProviderConfig()['model'];
         $this->maxTokens = Settings::getDefaultMaxTokens();
 
@@ -112,7 +114,7 @@ final class OpenAI extends AbstractProvider
         ]);
 
         try {
-            $respond = $curl->post('https://api.openai.com/v1/chat/completions', [
+            $respond = $curl->post($this->apiUrl, [
                 'model' => $this->model,
                 'messages' => [
                     ['role' => 'system', 'content' => 'You are a helpful personal assistant.'],

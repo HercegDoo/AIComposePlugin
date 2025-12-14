@@ -13,9 +13,12 @@ $config['aiComposeProvider'] = ;
 // Set the following keys to configure the API request properly:
 // - **apiKey**: Enter your OpenAI API key here, which authenticates and allows access to the API.
 // - **model**: Specify the OpenAI model you wish to use, such as "gpt-4". Currently, the OpenAI model is the only one available for this purpose.
+// - **apiUrl** (optional): Specify a custom OpenAI API endpoint URL. If not set, defaults to 'https://api.openai.com/v1/chat/completions'.
+//   This is useful for using OpenAI-compatible services or proxies.
 $config['aiProviderOpenAIConfig'] = [
     'apiKey' =>
     'model' =>
+    // 'apiUrl' => 'https://api.openai.com/v1/chat/completions'  // Optional: uncomment to use a custom API endpoint
 ];
 
 // The default tone of the generated email text. The users will be able to modify this option in the settings.
