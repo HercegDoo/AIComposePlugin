@@ -6,8 +6,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
-    "watch": "webpack --watch"
+    "build": "npx webpack --mode development",
+    "build:prod": "npx webpack --mode production",
+    "watch": "npx webpack --watch --mode development"
   },
   "keywords": [],
   "author": "",

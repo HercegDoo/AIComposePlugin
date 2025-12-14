@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = {
-  mode: "production",
+  mode: "development",
   entry: {
     compose: "./assets/src/compose.js",
     settings: "./assets/src/settings.js",

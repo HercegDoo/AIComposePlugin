@@ -39,7 +39,7 @@ The AI Email Generator plugin for Roundcube enhances the email composing experie
 ```bash
 composer install --no-dev
 npm install --omit=dev
-npm run build
+npm run build:prod
 ```
 4. Fill in the settings in the config.inc.php.dist file according to the instructions provided within it. After completing the configuration, rename the file to config.inc.php.
  
