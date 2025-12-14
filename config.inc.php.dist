@@ -39,7 +39,12 @@ $config['aiComposeLengths'] = [
 $config['aiComposeDefaultCreativity'] = '';
 
 // The default language of the generated email text. The users will be able to modify this option in the settings.
-// Available options: Bosnian, Croatian, English, German, Dutch.
+// Available options: Bosnian, Croatian, English, German, Dutch, French, Spanish, Italian, Portuguese, Russian,
+// Chinese, Japanese, Korean, Arabic, Hindi, Turkish, Polish, Ukrainian, Czech, Romanian, Hungarian, Greek,
+// Swedish, Norwegian, Danish, Finnish, Slovak, Slovenian, Serbian, Bulgarian, Vietnamese, Thai, Indonesian,
+// Malay, Filipino, Hebrew, Persian, Bengali, Tamil, Telugu, Marathi, Urdu, Swahili, Afrikaans, Catalan,
+// Basque, Galician, Icelandic, Irish, Welsh, Scottish_Gaelic, Albanian, Macedonian, Latvian, Lithuanian,
+// Estonian, Maltese, Luxembourgish.
 $config['aiComposeLanguages'] = [
     'default' =>
 ];
