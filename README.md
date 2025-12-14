@@ -5,6 +5,8 @@
 
 The AI Email Generator plugin for Roundcube enhances the email composing experience by integrating AI-based email generation capabilities. With this plugin, users can generate professional and personalized emails with just a few clicks, saving time and effort.
 
+**Current Version:** v2.0.0
+
 ### Features
 
 1. **AI Email Generation:**
