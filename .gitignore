@@ -1,8 +1,6 @@
-/assets/dist/
 /test.php
 /.php_cs.cache
 /node_modules/
-/vendor/
 .idea
 /cache/
 config.inc.php

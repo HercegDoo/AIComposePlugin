@@ -34,7 +34,7 @@ The AI Email Generator plugin for Roundcube enhances the email composing experie
    ```php
    $config['plugins'] = array('AIComposePlugin', ...);
    
-3. You can install the required dependencies using Composer, npm, and run the development build. Navigate to the plugin directory and run the following commands:
+3. Dependencies and built frontend bundles are already included. If you want to rebuild them manually, navigate to the plugin directory and run:
 
 ```bash
 composer install --no-dev
@@ -64,4 +64,3 @@ npm run build
   
 
 ![image](https://github.com/user-attachments/assets/15a813ee-65a6-483d-906c-1abd1beb0bad)
-

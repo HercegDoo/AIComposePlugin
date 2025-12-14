@@ -1,0 +1,34 @@
+name: Release
+
+on:
+  schedule:
+    - cron: '0 18 * * 1-4'
+  workflow_dispatch:
+
+jobs:
+  release:
+    # Prevent this workflow from running elsewhere.
+    if: github.repository_owner == 'php-curl-class'
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install --requirement scripts/make_release_requirements.txt
+
+      - name: Set git details
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Make release
+        run: python scripts/make_release.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.PHP_CURL_CLASS_TOKEN }}

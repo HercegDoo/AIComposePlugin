@@ -1,0 +1,44 @@
+# Pre-commit git hooks.
+#
+# Usage:
+#   1. Run one of:
+#     $ pip install pre-commit
+#     $ brew install pre-commit
+#
+#   2. Install hooks
+#     $ pre-commit install
+#
+#   3. Optionally, enable automatic updates
+#     $ pre-commit autoupdate
+repos:
+- repo: https://github.com/psf/black
+  rev: 24.3.0
+  hooks:
+  - id: black
+    name: black
+    entry: black
+- repo: https://github.com/pycqa/flake8
+  rev: 7.0.0
+  hooks:
+  - id: flake8
+- repo: https://github.com/pycqa/isort
+  rev: 5.13.2
+  hooks:
+  - id: isort
+    name: isort
+    args: ["--force-single-line-imports", "--profile", "black"]
+- repo: local
+  hooks:
+  - id: composer-validate
+    name: composer-validate
+    language: script
+    entry: scripts/pre-commit.sh
+    files: 'composer\.json'
+    pass_filenames: true
+- repo: https://github.com/jazzband/pip-tools
+  rev: 7.4.1
+  hooks:
+  - id: pip-compile
+    name: pip-compile make_release_requirements.in
+    files: ^(.*/)?make_release_requirements\.(in|txt)$
+    entry: bash -c 'cd scripts/ && pip-compile --output-file="make_release_requirements.txt" "make_release_requirements.in"'

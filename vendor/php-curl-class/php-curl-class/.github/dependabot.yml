@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "cleanup-no-release-required"
+      - "dependencies"
+      - "github_actions"
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
