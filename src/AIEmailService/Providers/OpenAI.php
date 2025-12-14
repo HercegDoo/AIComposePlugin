@@ -47,7 +47,9 @@ final class OpenAI extends AbstractProvider
     public function generateEmail(RequestData $requestData): Respond
     {
         $this->apiKey = Settings::getProviderConfig()['apiKey'];
-        $this->apiUrl = Settings::getProviderConfig()['apiUrl'] ?? 'https://api.openai.com/v1/chat/completions';
+        $this->apiUrl = !empty(Settings::getProviderConfig()['apiUrl']) 
+            ? Settings::getProviderConfig()['apiUrl'] 
+            : 'https://api.openai.com/v1/chat/completions';
         $this->model = Settings::getProviderConfig()['model'];
         $this->maxTokens = Settings::getDefaultMaxTokens();
 
