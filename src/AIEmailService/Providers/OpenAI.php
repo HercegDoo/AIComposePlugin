@@ -12,6 +12,8 @@ use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 
 final class OpenAI extends AbstractProvider
 {
+    private const DEFAULT_API_URL = 'https://api.openai.com/v1/chat/completions';
+
     private string $apiKey;
     private string $apiUrl;
     private Curl $curl;
@@ -50,7 +52,7 @@ final class OpenAI extends AbstractProvider
         $this->apiKey = $providerConfig['apiKey'];
         $this->apiUrl = !empty($providerConfig['apiUrl']) 
             ? $providerConfig['apiUrl'] 
-            : 'https://api.openai.com/v1/chat/completions';
+            : self::DEFAULT_API_URL;
         $this->model = $providerConfig['model'];
         $this->maxTokens = Settings::getDefaultMaxTokens();
 
