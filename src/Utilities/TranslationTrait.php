@@ -6,6 +6,6 @@ trait TranslationTrait
 {
     protected function translation(string $key): string
     {
-        return \rcmail::get_instance()->gettext("AIComposePlugin.{$key}");
+        return \rcmail::get_instance()->gettext("ai_compose.{$key}");
     }
 }
