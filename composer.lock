@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a72a916d28d0a57333d7dcbf65ec8276",
+    "content-hash": "46487523904e12eb307af4e8f39a41c6",
     "packages": [
         {
             "name": "php-curl-class/php-curl-class",
@@ -2433,15 +2433,15 @@
         },
         {
             "name": "roundcube/roundcubemail",
-            "version": "1.6.5",
+            "version": "1.6.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/roundcube/roundcubemail",
-                "reference": "1.6.5"
+                "reference": "1.6.11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/roundcube/roundcubemail/archive/refs/tags/1.6.5.zip"
+                "url": "https://github.com/roundcube/roundcubemail/archive/refs/tags/1.6.11.zip"
             },
             "type": "library"
         },
@@ -4740,13 +4740,13 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.4",
         "ext-curl": "*"
     },
-    "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
 }
