@@ -148,6 +148,65 @@ final class OpenAITest extends TestCase
         self::assertInstanceOf(Respond::class, $return);
     }
 
+    public function testGenerateEmailParsesSubjectFromResponse()
+    {
+        $this->requestData = RequestData::make('Meho', 'Muhi', 'jabuka', 'casual', 'medium', 'low', 'Bosnian');
+        $this->requestData->setMultipleRecipients(false);
+        $this->requestData->setSignaturePresent(false);
+
+        $curlMock = $this->createMock(Curl::class);
+        $mockResponse = new \stdClass();
+        $mockResponse->choices = [
+            (object) [
+                'message' => (object) [
+                    'role' => 'assistant',
+                    'content' => "Subject: Meeting Reschedule Request\n\nDear John,\n\nThis is the email body.",
+                ],
+                'logprobs' => null,
+                'finish_reason' => 'stop',
+                'index' => 0,
+            ],
+        ];
+
+        $curlMock->method('post')->willReturn($mockResponse);
+        $OpenAI = new OpenAI($curlMock);
+
+        $return = $OpenAI->generateEmail($this->requestData);
+
+        self::assertSame('Meeting Reschedule Request', $return->getSubject());
+        self::assertSame("Dear John,\n\nThis is the email body.", $return->getBody());
+    }
+
+    public function testGenerateEmailNoSubjectInResponse()
+    {
+        $this->requestData = RequestData::make('Meho', 'Muhi', 'jabuka', 'casual', 'medium', 'low', 'Bosnian');
+        $this->requestData->setSubject('Existing Subject');
+        $this->requestData->setMultipleRecipients(false);
+        $this->requestData->setSignaturePresent(false);
+
+        $curlMock = $this->createMock(Curl::class);
+        $mockResponse = new \stdClass();
+        $mockResponse->choices = [
+            (object) [
+                'message' => (object) [
+                    'role' => 'assistant',
+                    'content' => "Dear John,\n\nThis is the email body.",
+                ],
+                'logprobs' => null,
+                'finish_reason' => 'stop',
+                'index' => 0,
+            ],
+        ];
+
+        $curlMock->method('post')->willReturn($mockResponse);
+        $OpenAI = new OpenAI($curlMock);
+
+        $return = $OpenAI->generateEmail($this->requestData);
+
+        self::assertNull($return->getSubject());
+        self::assertSame("Dear John,\n\nThis is the email body.", $return->getBody());
+    }
+
     public function testGenerateEmailProviderException()
     {
         $mockCurl = $this->getMockBuilder(Curl::class)
@@ -172,7 +231,9 @@ final class OpenAITest extends TestCase
 
         $result = $privateMethodInvoker($this->requestData);
 
-        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader.  If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. The format should be as follows:
+        self::assertSame('Create a casual email with the following specifications: Generate a suitable subject for this email. *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader.  If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Only greet the recipient, never the sender. The format should be as follows:
+Subject: [subject here]
+
 Greeting
 
 Content
@@ -189,7 +250,9 @@ Closing Greeting
         $this->requestData->setMultipleRecipients(true);
         $result = $privateMethodInvoker($this->requestData);
 
-        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Address the recipient in plural form. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader.  If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. The format should be as follows:
+        self::assertSame('Create a casual email with the following specifications: Generate a suitable subject for this email. *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Address the recipient in plural form. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader.  If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Only greet the recipient, never the sender. The format should be as follows:
+Subject: [subject here]
+
 Greeting
 
 Content
@@ -207,7 +270,9 @@ Closing Greeting
         $this->requestData->setMultipleRecipients(true);
         $result = $privateMethodInvoker($this->requestData);
 
-        self::assertSame('Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Address the recipient in plural form. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader.  If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. The format should be as follows:
+        self::assertSame('Create a casual email with the following specifications: Generate a suitable subject for this email. *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Address the recipient in plural form. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader.  If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Only greet the recipient, never the sender. The format should be as follows:
+Subject: [subject here]
+
 Greeting
 
 Content
@@ -227,7 +292,9 @@ CRUCIAL: "Write an email without signing it or including any identifying informa
 
         $result = $privateMethodInvoker($this->requestData);
 
-        self::assertSame('Create a professional email with the following specifications: Without a subject *Recipient: Ime1 *Sender: Ime2 *Language: Spanish *Length: long. Compose a well-structured email based on this instruction: Sastavi Mail. The instruction should be rewritten in the tone and format of a professional email to a reader.  If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be over 150 words. Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. The format should be as follows:
+        self::assertSame('Create a professional email with the following specifications: Generate a suitable subject for this email. *Recipient: Ime1 *Sender: Ime2 *Language: Spanish *Length: long. Compose a well-structured email based on this instruction: Sastavi Mail. The instruction should be rewritten in the tone and format of a professional email to a reader.  If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be over 150 words. Only greet the recipient, never the sender. The format should be as follows:
+Subject: [subject here]
+
 Greeting
 
 Content
@@ -320,7 +387,9 @@ CRUCIAL: "Write an email without signing it or including any identifying informa
                     'model' => 'model-test',
                     'messages' => [
                         ['role' => 'system', 'content' => 'You are a helpful personal assistant.'],
-                        ['role' => 'user', 'content' => 'Create a casual email with the following specifications: Without a subject *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader.  If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Do not write the subject if provided, it is only there for your context. Only greet the recipient, never the sender. The format should be as follows:
+                        ['role' => 'user', 'content' => 'Create a casual email with the following specifications: Generate a suitable subject for this email. *Recipient: Meho *Sender: Muhi *Language: Bosnian *Length: medium. Compose a well-structured email based on this instruction: TestInstrukcija. The instruction should be rewritten in the tone and format of a casual email to a reader.  If the instruction contains pronouns (like \'he\', \'she\', \'they\', etc.), assume they refer to the recipient unless specified otherwise. The number of words should be 70 to 150 words . Only greet the recipient, never the sender. The format should be as follows:
+Subject: [subject here]
+
 Greeting
 
 Content

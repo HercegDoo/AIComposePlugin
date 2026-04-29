@@ -70,6 +70,12 @@ export default class GenerateMail {
       )
       .done(function(data){
         insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
+        if (data && data["subject"]) {
+          const subjectField = document.getElementById("compose-subject");
+          if (subjectField && subjectField.value === "") {
+            subjectField.value = data["subject"];
+          }
+        }
         const instructionTextArea = document.getElementById('aic-instruction');
         //Ako nema nista u instrukciji, ubaci datu instrukciju(za slucaj koristenja predefinisane instrukcije)
         if(additionalData === null){

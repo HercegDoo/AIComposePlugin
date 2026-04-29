@@ -50,6 +50,7 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
             echo json_encode([
                 'status' => $status,
                 'respond' => $respond,
+                'subject' => $email->getSubject(),
             ]);
         } catch (\Throwable $e) {
             error_log('Error message: ' . $e->getMessage());
