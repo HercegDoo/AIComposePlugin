@@ -73,6 +73,9 @@
     "phpstan": "vendor/bin/phpstan analyse",
     "phpstan-gb": "vendor/bin/phpstan analyse --generate-baseline"
   },
+  "extra": {
+    "installer-name": "AIComposePlugin"
+  },
   "config": {
     "allow-plugins": {
       "roundcube/plugin-installer": true
