@@ -74,7 +74,7 @@
     "phpstan-gb": "vendor/bin/phpstan analyse --generate-baseline"
   },
   "extra": {
-    "installer-name": "AIComposePlugin"
+    "installer-name": "ai_compose"
   },
   "config": {
     "allow-plugins": {

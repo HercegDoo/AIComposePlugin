@@ -7,6 +7,6 @@ use HercegDoo\AIComposePlugin\AbstractAIComposePlugin;
 /**
  * @description Load plugin to roundcube
  */
-final class AIComposePlugin extends AbstractAIComposePlugin
+final class ai_compose extends AbstractAIComposePlugin
 {
 }

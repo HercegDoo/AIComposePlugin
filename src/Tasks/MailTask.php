@@ -148,7 +148,7 @@ class MailTask extends AbstractTask
 
     public function startup(): void
     {
-        $actionPrefix = 'plugin.AIComposePlugin_';
+        $actionPrefix = 'plugin.ai_compose_';
         $rcmail = \rcmail::get_instance();
         $settings = [
             'languages' => array_values(Settings::getLanguages()),

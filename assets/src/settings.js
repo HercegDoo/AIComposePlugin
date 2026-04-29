@@ -74,7 +74,7 @@ rcube_webmail.prototype.addinstructiontemplate = function(id = null)
   }
   else{  rcmail.enable_command('deleteinstruction', false)}
   if (win = rcmail.get_frame_window(rcmail.env.contentframe)) {
-    rcmail.location_href({_action: "plugin.AIComposePlugin_AddInstruction", _id:id, _framed: 1}, win, true);
+    rcmail.location_href({_action: "plugin.ai_compose_AddInstruction", _id:id, _framed: 1}, win, true);
     mobileDisplayInstructionsHandle(id);
   }
 };
@@ -132,7 +132,7 @@ const popup = rcmail.show_popup_dialog(content, title, buttons, options);
 
 
 function deleteInstructionPostRequest(id){
-  rcmail.http_post("plugin.AIComposePlugin_DeleteInstruction", {_id: `${id}`}, true).done(function(data){
+  rcmail.http_post("plugin.ai_compose_DeleteInstruction", {_id: `${id}`}, true).done(function(data){
     rcmail.show_contentframe(false);
     rcmail.enable_command('deleteinstruction', false);
   });
