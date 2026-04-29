@@ -6,6 +6,7 @@ namespace HercegDoo\AIComposePlugin\AIEmailService;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\DummyProvider;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\InterfaceProvider;
+use HercegDoo\AIComposePlugin\AIEmailService\Providers\Ollama;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
 
 final class Settings
@@ -99,6 +100,9 @@ final class Settings
         switch ($provider) {
             case 'OpenAI':
                 self::$provider = new OpenAI();
+                break;
+            case 'Ollama':
+                self::$provider = new Ollama();
                 break;
             case 'DummyProvider':
                 self::$provider = new DummyProvider();
