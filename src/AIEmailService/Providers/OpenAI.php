@@ -70,19 +70,28 @@ final class OpenAI extends AbstractProvider
             throw new ProviderException('No email content found');
         }
 
-        return new Respond($email);
+        $respondObj = new Respond($email);
+
+        if (preg_match('/^\s*Subject:\s*(.+)$/m', $email, $matches)) {
+            $respondObj->setSubject(trim($matches[1]));
+            $cleaned = preg_replace('/^\s*Subject:\s*.+[\r\n]*/m', '', $email, 1);
+            $respondObj->setBody(ltrim($cleaned ?? $email));
+        }
+
+        return $respondObj;
     }
 
     private function prompt(RequestData $requestData): string
     {
         $adressMultiplePeople = $requestData->getMultipleRecipients() ? ' Address the recipient in plural form.' : '';
+        $generateSubject = empty($requestData->getSubject());
 
         if ($requestData->getFixText()) {
             $prompt = " Write an identical email as this {$requestData->getPreviousGeneratedEmail()}, in the same language, but change only this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." .
                 ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '');
         } else {
             $prompt = "Create a {$requestData->getStyle()} email with the following specifications:" .
-                (!empty($requestData->getSubject()) ? " Subject: {$requestData->getSubject()}" : ' Without a subject') .
+                (!empty($requestData->getSubject()) ? " Subject: {$requestData->getSubject()}" : ' Generate a suitable subject for this email.') .
                 ($requestData->getRecipientName() !== '' ? " *Recipient: {$requestData->getRecipientName()}" : '') .
                 " *Sender: {$requestData->getSenderName()}" .
                 " *Language: {$requestData->getLanguage()}" .
@@ -91,9 +100,10 @@ final class OpenAI extends AbstractProvider
                 " Compose a well-structured email based on this instruction: {$requestData->getInstruction()}. The instruction should be rewritten in the tone and format of a {$requestData->getStyle()} email to a reader. " .
                 " If the instruction contains pronouns (like 'he', 'she', 'they', etc.), assume they refer to the recipient unless specified otherwise." .
                 " The number of words should be {$requestData->getLengthWords($requestData->getLength())}. " .
-                'Do not write the subject if provided, it is only there for your context. ' .
+                (!empty($requestData->getSubject()) ? 'Do not write the subject if provided, it is only there for your context. ' : '') .
                 'Only greet the recipient, never the sender. ' .
                 'The format should be as follows:' . "\n" .
+                ($generateSubject ? 'Subject: [subject here]' . "\n\n" : '') .
                 'Greeting' . "\n\n" .
                 'Content' . "\n\n" .
                 'Closing Greeting' . "\n" .
