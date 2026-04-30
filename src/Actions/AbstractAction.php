@@ -3,6 +3,7 @@
 namespace HercegDoo\AIComposePlugin\Actions;
 
 use HercegDoo\AIComposePlugin\Utilities\TranslationTrait;
+use HercegDoo\AIComposePlugin\Utilities\XSSProtection;
 
 abstract class AbstractAction
 {
@@ -40,14 +41,15 @@ abstract class AbstractAction
             $this->validate();
 
             if ($this->hasErrors()) {
-                foreach ($this->getErrors() as $error) {
-                    $this->rcmail->output->show_message($error, 'error');
-                }
-
-                // Prekini izvršavanje ako su podaci nevalidni
-                $this->rcmail->output->send('iframe');
-
-                return;
+                // Retornar erros como JSON sanitizado em vez de mostrar mensagens
+                header('Content-Type: application/json');
+                $errorMessages = XSSProtection::escapeArray($this->getErrors());
+                
+                echo json_encode([
+                    'status' => 'error',
+                    'respond' => implode(', ', $errorMessages)
+                ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+                exit;
             }
         }
 

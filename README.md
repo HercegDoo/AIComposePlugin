@@ -19,6 +19,7 @@ The AI Email Generator plugin for Roundcube enhances the email composing experie
    - Length: How long the generated email should be (short, medium, or long).
 
    - Creativity: Adjust the level of creativity in the email (low, medium, or high).
+    **Note**: When using specific chat models, such as gpt-5.2-chat-latest, you must adjust the creativity values in the file src/AIEmailService/Providers/OpenAI.php, within the creativityMap. This model only accepts creativity/temperature values greater than 1.
 
    - Language: Choose from Bosnian, Croatian, English, German, or Dutch.
    

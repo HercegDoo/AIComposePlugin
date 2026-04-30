@@ -184,3 +184,6 @@ $labels['ai_help_example_15'] = 'come up with 10 ideas on strategies for creatin
 $labels['ai_help_example_16'] = 'professional resignation email with a 1-month notice per contract, the company is called ACME';
 $labels['ai_help_example_17'] = 'persuasive email to ask for a promotion, hinting that I might resign if I don’t get it because there are other opportunities';
 $labels['ai_help_example_18'] = 'I’m glad we met at the conference yesterday, I enjoyed our conversation, let’s stay in touch';
+
+$labels['ai_validation_error_malicious_content_detected'] = 'Malicious content detected. Please revise your instructions and try again.';
+$labels['ai_rate_limit_exceeded'] = 'Rate limit exceeded. Please try again later.';

@@ -9,9 +9,10 @@ export function capitalize(str) {
 export function getFormattedMail(mail){
   if(containsHtmlCharacters(mail)){
     const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = mail;
+    // Sanitização para prevenir XSS
+    tempDiv.textContent = mail;
     mail = tempDiv.textContent.replace(/<br\s*\/?>/gi, "")
-      .replace(/\s+/g, " ").replace(/\n/g, '').replace(/\s{2,}/g, '')
+      .replace(/\s+/g, " ").replace(/\n/g, '').replace(/\s{2,}/g, ' ')
       .trim()
   }
   return mail;

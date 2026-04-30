@@ -2,6 +2,9 @@
 
 namespace HercegDoo\AIComposePlugin\Utilities;
 
+use HercegDoo\AIComposePlugin\Utilities\TranslationTrait;
+use HercegDoo\AIComposePlugin\Utilities\XSSProtection;
+
 class TemplateObjectFiller
 {
     use TranslationTrait;
@@ -56,9 +59,18 @@ class TemplateObjectFiller
 
     public function createInstructionField(string $name, string $id): string
     {
-        $heightStyle = ($id === 'aic-instruction' && isset($_COOKIE['textareaHeight']))
-            ? 'height:' . $_COOKIE['textareaHeight'] . 'px;'
-            : '';
+        $heightStyle = '';
+        if ($id === 'aic-instruction' && isset($_COOKIE['textareaHeight'])) {
+            $height = filter_var($_COOKIE['textareaHeight'], FILTER_VALIDATE_INT, [
+                'options' => [
+                    'min_range' => 40,
+                    'max_range' => 800,
+                ],
+            ]);
+            if ($height !== false) {
+                $heightStyle = 'height:' . $height . 'px;';
+            }
+        }
 
         $attrisb = [
             'name' => $name,
@@ -80,9 +92,13 @@ class TemplateObjectFiller
 
         foreach ((array) $predefinedInstructions as $predefinedInstruction) {
             if (\is_array($predefinedInstruction)) {
-                $spanTag = $this->html::span([], \is_string($predefinedInstruction['title']) ? $predefinedInstruction['title'] : 'Error');
+                // Sanitizar título para prevenir XSS
+                $title = XSSProtection::escape($predefinedInstruction['title'] ?? 'Error');
+                $id = XSSProtection::escapeAttribute($predefinedInstruction['id'] ?? '');
+                
+                $spanTag = $this->html::span([], $title);
                 $aTag = $this->html::tag('a', ['role' => 'button', 'class' => 'recipient active', 'tabindex' => -1], $spanTag);
-                $liTag = $this->html::tag('li', ['class' => 'menuitem', 'id' => 'dropdown-' . $predefinedInstruction['id'] . ''], $aTag);
+                $liTag = $this->html::tag('li', ['class' => 'menuitem', 'id' => 'dropdown-' . $id], $aTag);
                 $liTagsContainer .= $liTag;
             }
         }

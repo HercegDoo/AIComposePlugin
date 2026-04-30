@@ -3,12 +3,17 @@
 namespace HercegDoo\AIComposePlugin\Actions\Settings;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
+use HercegDoo\AIComposePlugin\Utilities\XSSProtection;
 
 class DeleteInstruction extends AbstractAction
 {
     protected function handler(): void
     {
         $idToRemove = \rcube_utils::get_input_string('_id', \rcube_utils::INPUT_POST);
+        
+        // Sanitizar ID para prevenir XSS
+        $idToRemove = XSSProtection::escape($idToRemove);
+        
         $predefinedInstructions = $this->rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
 
         if ($idToRemove) {

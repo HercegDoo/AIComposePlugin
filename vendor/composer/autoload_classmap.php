@@ -28,7 +28,7 @@ return array(
     'HercegDoo\\AIComposePlugin\\AIEmailService\\Settings' => $baseDir . '/src/AIEmailService/Settings.php',
     'HercegDoo\\AIComposePlugin\\AbstractAIComposePlugin' => $baseDir . '/src/AbstractAIComposePlugin.php',
     'HercegDoo\\AIComposePlugin\\Actions\\AbstractAction' => $baseDir . '/src/Actions/AbstractAction.php',
-    'HercegDoo\\AIComposePlugin\\Actions\\Mail\\GenereteEmailAction' => $baseDir . '/src/Actions/Mail/GenereteEmailAction.php',
+    'HercegDoo\\AIComposePlugin\\Actions\\Mail\\GenerateEmailAction' => $baseDir . '/src/Actions/Mail/GenerateEmailAction.php',
     'HercegDoo\\AIComposePlugin\\Actions\\Settings\\AddInstruction' => $baseDir . '/src/Actions/Settings/AddInstruction.php',
     'HercegDoo\\AIComposePlugin\\Actions\\Settings\\DeleteInstruction' => $baseDir . '/src/Actions/Settings/DeleteInstruction.php',
     'HercegDoo\\AIComposePlugin\\Actions\\Settings\\SaveInstruction' => $baseDir . '/src/Actions/Settings/SaveInstruction.php',
