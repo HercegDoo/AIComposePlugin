@@ -5,7 +5,7 @@
  */
 
 // The AI service provider for the compose functionality.
-// Currently, the only available option is 'OpenAI', so this should be set accordingly.
+// Available options: 'OpenAI', 'Ollama'
 // Default: 'OpenAI'
 $config['aiComposeProvider'] = ;
 
@@ -19,6 +19,21 @@ $config['aiProviderOpenAIConfig'] = [
     'apiKey' =>
     'model' =>
     // 'apiUrl' => 'https://api.openai.com/v1/chat/completions'  // Optional: uncomment to use a custom API endpoint
+];
+
+// -------- Ollama configuration (https://ollama.com/) --------
+// Ollama allows you to run AI models locally on your own infrastructure, keeping email data private
+// and avoiding any dependency on external cloud AI services.
+//
+// Set the following keys to configure the Ollama integration:
+// - **model**: Specify the local Ollama model to use (e.g. "llama3", "mistral", "deepseek-r1", "codellama").
+//   Make sure the model is pulled and available on your Ollama server before using it.
+// - **apiUrl** (optional): The URL of the Ollama OpenAI-compatible API endpoint.
+//   Defaults to 'http://localhost:11434/v1/chat/completions' if not set.
+//   Change this if your Ollama server runs on a different host or port.
+$config['aiProviderOllamaConfig'] = [
+    'model' =>
+    // 'apiUrl' => 'http://localhost:11434/v1/chat/completions'  // Optional: uncomment to use a custom Ollama endpoint
 ];
 
 // The default tone of the generated email text. The users will be able to modify this option in the settings.
