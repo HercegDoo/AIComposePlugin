@@ -5,7 +5,7 @@
  */
 
 // The AI service provider for the compose functionality.
-// Currently, the only available option is 'OpenAI', so this should be set accordingly.
+// Currently, the  available option are 'OpenAI' and 'Gemini', so this should be set accordingly.
 // Default: 'OpenAI'
 $config['aiComposeProvider'] = ;
 
@@ -19,6 +19,24 @@ $config['aiProviderOpenAIConfig'] = [
     'apiKey' =>
     'model' =>
     // 'apiUrl' => 'https://api.openai.com/v1/chat/completions'  // Optional: uncomment to use a custom API endpoint
+];
+
+
+// -------- Gemini configuration (https://Gemini.com/) --------
+// Set the following keys to configure the API request properly:
+// - **apiKey**: Enter your gemini API key here, which authenticates and allows
+access to the API.
+// - **model**: Specify the OpenAI model you wish to use, such as "gemini-2.5-flash". Curre
+ntly, the Gemini model is the only one available for this purpose.
+// - **apiUrl** (optional): Specify a custom Gemini API endpoint URL. If not set
+, defaults to 'https://generativelanguage.googleapis.com/v1beta/models/'.
+//   This is useful for using Gemini-compatible services or proxies.
+
+
+$config['aiProviderGeminiConfig'] = [
+    'apiKey' => 
+    'model' =>  
+    //'apiUrl' => 'https://generativelanguage.googleapis.com/v1beta/models/'  // Optional: uncomment to use a custom API endpoint
 ];
 
 // The default tone of the generated email text. The users will be able to modify this option in the settings.

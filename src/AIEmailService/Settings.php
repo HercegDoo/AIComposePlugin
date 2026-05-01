@@ -7,7 +7,7 @@ namespace HercegDoo\AIComposePlugin\AIEmailService;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\DummyProvider;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\InterfaceProvider;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
-
+use HercegDoo\AIComposePlugin\AIEmailService\Providers\Gemini;
 final class Settings
 {
     private static int $defaultTimeout;
@@ -102,6 +102,9 @@ final class Settings
                 break;
             case 'DummyProvider':
                 self::$provider = new DummyProvider();
+                break;
+            case 'Gemini':
+                self::$provider = new Gemini();
                 break;
 
             default:
