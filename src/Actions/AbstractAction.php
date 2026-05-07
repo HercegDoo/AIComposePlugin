@@ -31,7 +31,7 @@ abstract class AbstractAction
     {
         $fullClassName = static::class;
 
-        return 'plugin.AIComposePlugin_' . substr((string) strrchr($fullClassName, '\\'), 1);
+        return 'plugin.ai_compose_' . substr((string) strrchr($fullClassName, '\\'), 1);
     }
 
     public function requestHandler(): void

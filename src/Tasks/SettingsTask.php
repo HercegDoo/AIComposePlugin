@@ -29,9 +29,9 @@ class SettingsTask extends AbstractTask
         $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
         $this->plugin->include_script('assets/dist/settings.bundle.js');
 
-        $rcmail->output->set_pagetitle($rcmail->gettext('AIComposePlugin.ai_predefined_section_title'));
+        $rcmail->output->set_pagetitle($rcmail->gettext('ai_compose.ai_predefined_section_title'));
         $rcmail->output->add_handlers(['instructionslist' => [$this, 'instructions_list']]);
-        $rcmail->output->send('AIComposePlugin.base_predefined_instructions');
+        $rcmail->output->send('ai_compose.base_predefined_instructions');
     }
 
     /**
@@ -75,7 +75,7 @@ class SettingsTask extends AbstractTask
         $new_section = [
             'action' => 'plugin.basepredefinedinstructions',
             'type' => 'link',
-            'label' => 'AIComposePlugin.ai_predefined_section_title',
+            'label' => 'ai_compose.ai_predefined_section_title',
             'title' => 'predefinedinstructions',
             'id' => 'aicpredefinedinstructions',
         ];
@@ -86,7 +86,7 @@ class SettingsTask extends AbstractTask
 
         $already_exists = false;
         foreach ($args['actions'] as $action) {
-            if ($action['label'] === 'AIComposePlugin.ai_predefined_section_title') {
+            if ($action['label'] === 'ai_compose.ai_predefined_section_title') {
                 $already_exists = true;
                 break;
             }

@@ -27,7 +27,7 @@ class AddInstruction extends AbstractAction
             }
         }
 
-        [$form_start, $form_end] = \rcmail_action::get_form_tags($attrib, 'plugin.AIComposePlugin_SaveInstruction', self::$instructionId, ['name' => '_id', 'value' => self::$instructionId]);
+        [$form_start, $form_end] = \rcmail_action::get_form_tags($attrib, 'plugin.ai_compose_SaveInstruction', self::$instructionId, ['name' => '_id', 'value' => self::$instructionId]);
         unset($attrib['form'], $attrib['id']);
 
         $name_attr = [
@@ -61,6 +61,6 @@ class AddInstruction extends AbstractAction
     {
         self::$instructionId = \rcube_utils::get_input_string('_id', \rcube_utils::INPUT_GET);
         $this->rcmail->output->add_handler('responseform', [$this, 'response_form']);
-        $this->rcmail->output->send('AIComposePlugin.instruction_edit');
+        $this->rcmail->output->send('ai_compose.instruction_edit');
     }
 }
