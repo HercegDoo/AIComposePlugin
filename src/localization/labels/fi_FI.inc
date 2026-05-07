@@ -93,8 +93,8 @@ $labels['ai_language_estonian'] = 'Viro (Eesti)';
 $labels['ai_language_maltese'] = 'Malta (Malti)';
 $labels['ai_language_luxembourgish'] = 'Luxemburg (Lëtzebuergesch)';
 
-$labels['ai_error_sender_name'] = "Anna lähettäjän nimi!";
-$labels['ai_error_recipient_name'] = "Vastaanottajan nimi puuttuu (valinnainen)";
+$labels['ai_error_sender_name'] = 'Anna lähettäjän nimi!';
+$labels['ai_error_recipient_name'] = 'Vastaanottajan nimi puuttuu (valinnainen)';
 $labels['ai_error_instructions'] = 'Anna ohjeet!';
 
 $labels['ai_request_error'] = 'Palvelu ei ole käytettävissä. Yritä myöhemmin uudelleen.';

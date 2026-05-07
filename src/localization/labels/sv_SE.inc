@@ -93,8 +93,8 @@ $labels['ai_language_estonian'] = 'Estniska (Eesti)';
 $labels['ai_language_maltese'] = 'Maltesiska (Malti)';
 $labels['ai_language_luxembourgish'] = 'Luxemburgska (Lëtzebuergesch)';
 
-$labels['ai_error_sender_name'] = "Ange avsändarens namn!";
-$labels['ai_error_recipient_name'] = "Mottagarens namn saknas (valfritt)";
+$labels['ai_error_sender_name'] = 'Ange avsändarens namn!';
+$labels['ai_error_recipient_name'] = 'Mottagarens namn saknas (valfritt)';
 $labels['ai_error_instructions'] = 'Ange instruktioner!';
 
 $labels['ai_request_error'] = 'Tjänsten är inte tillgänglig. Försök igen senare.';
