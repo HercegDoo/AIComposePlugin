@@ -8,8 +8,11 @@ use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Request;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use HercegDoo\AIComposePlugin\Utilities\RateLimiter;
+use HercegDoo\AIComposePlugin\Utilities\XSSProtection;
+use HercegDoo\AIComposePlugin\Utilities\PromptInjectionProtection;
 
-final class GenereteEmailAction extends AbstractAction implements ValidateAction
+final class GenerateEmailAction extends AbstractAction implements ValidateAction
 {
     private ?string $senderName;
     private ?string $recipientName;
@@ -37,6 +40,31 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
     public function handler(): void
     {
         header('Content-Type: application/json');
+        
+        // Rate limiting para prevenir abuso
+        $identifier = RateLimiter::generateIdentifier();
+        $rateLimitResult = RateLimiter::isAllowed($identifier, 'ai_generation');
+        
+        if (!$rateLimitResult['allowed']) {
+            $headers = RateLimiter::getRateLimitHeaders($rateLimitResult);
+            foreach ($headers as $name => $value) {
+                header("{$name}: {$value}");
+            }
+            
+            echo json_encode([
+                'status' => 'error',
+                'respond' => XSSProtection::escapeJson($this->translation('ai_rate_limit_exceeded')),
+                'retry_after' => $rateLimitResult['retry_after']
+            ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+            return;
+        }
+        
+        // Adicionar cabeçalhos de rate limit
+        $headers = RateLimiter::getRateLimitHeaders($rateLimitResult);
+        foreach ($headers as $name => $value) {
+            header("{$name}: {$value}");
+        }
+        
         try {
             $status = 'success';
             $this->preparePostData();
@@ -49,16 +77,20 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
 
             echo json_encode([
                 'status' => $status,
-                'respond' => $respond,
-            ]);
+                'respond' => XSSProtection::escapeJson($respond),
+            ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
         } catch (\Throwable $e) {
             error_log('Error message: ' . $e->getMessage());
             error_log('Error code: ' . $e->getCode());
             error_log('Error file: ' . $e->getFile());
             error_log('Error line: ' . $e->getLine());
 
-            $this->rcmail->output->show_message($this->translation('ai_request_error'), 'error');
-            $this->rcmail->output->send();
+            // Retornar JSON de erro sanitizado
+            echo json_encode([
+                'status' => 'error',
+                'respond' => XSSProtection::escapeJson($this->translation('ai_request_error')),
+                'debug' => $this->rcmail->config->get('debug_level') ? XSSProtection::escapeJson($e->getMessage()) : null
+            ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
         }
     }
 
@@ -77,7 +109,7 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
         $this->language = Request::postString('language');
         $this->recipientEmail = Request::postString('recipientEmail');
         $this->subject = Request::postString('subject');
-        $this->instructions = Request::postString('instructions');
+        $this->instructions = Request::postInstruction('instructions');
         $this->senderEmail = Request::postString('senderEmail');
         $this->previousConversation = Request::postString('previousConversation');
         $this->fixText = Request::postString('fixText');
@@ -98,7 +130,10 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
 
     private function preparePostData(): void
     {
-        $this->aiRequestData = RequestData::make((string) $this->recipientName, (string) $this->senderName, (string) $this->instructions, $this->style, $this->length, $this->creativity, $this->language);
+        // Sanitizar instruções antes de criar o RequestData
+        $sanitizedInstructions = PromptInjectionProtection::escapeForPrompt((string) $this->instructions);
+        
+        $this->aiRequestData = RequestData::make((string) $this->recipientName, (string) $this->senderName, $sanitizedInstructions, $this->style, $this->length, $this->creativity, $this->language);
 
         $this->aiRequestData->setRecipientEmail($this->recipientEmail);
         $this->aiRequestData->setSenderEmail($this->senderEmail);
@@ -179,6 +214,8 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
 
     private function instructionsValidation(?string $instructions): void
     {
+        // Validação já feita no Request::postInstruction()
+        // Mantemos apenas verificação de campo vazio
         if (empty($instructions)) {
             $this->setError($this->translation('ai_validation_error_not_enough_characters_instruction'));
         }

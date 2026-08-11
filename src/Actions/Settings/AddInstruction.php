@@ -3,6 +3,7 @@
 namespace HercegDoo\AIComposePlugin\Actions\Settings;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
+use HercegDoo\AIComposePlugin\Utilities\XSSProtection;
 
 class AddInstruction extends AbstractAction
 {
@@ -20,8 +21,9 @@ class AddInstruction extends AbstractAction
         if (self::$instructionId) {
             foreach ($predefinedInstructions as $predefinedInstruction) {
                 if (str_contains(self::$instructionId, $predefinedInstruction['id'])) {
-                    $title = $predefinedInstruction['title'];
-                    $content = $predefinedInstruction['message'];
+                    // Sanitizar dados para prevenir XSS
+                    $title = XSSProtection::escape($predefinedInstruction['title'] ?? '');
+                    $content = XSSProtection::escape($predefinedInstruction['message'] ?? '');
                     break;
                 }
             }
@@ -43,12 +45,12 @@ class AddInstruction extends AbstractAction
             'spellcheck' => true,
         ];
 
-        $table = new \html_table(['cols' => 1]); // Postavi samo jedan kolonu
+        $table = new \html_table(['cols' => 1]);
 
-        $table->add(['style' => 'height: 21px;'], \html::label('ffname', \rcube::Q($this->translation('ai_predefined_title'))));
+        $table->add(['style' => 'height: 21px;'], \html::label('ffname', XSSProtection::escape($this->translation('ai_predefined_title'))));
         $table->add([], \rcube_output::get_edit_field('name', $title, $name_attr, 'text'));
 
-        $table->add(['style' => 'height: 21px; margin-top: 20px;'], \html::label('fftext', \rcube::Q($this->translation('ai_predefined_content'))));
+        $table->add(['style' => 'height: 21px; margin-top: 20px;'], \html::label('fftext', XSSProtection::escape($this->translation('ai_predefined_content'))));
         $table->add([], \rcube_output::get_edit_field('text', $content, $text_attr, 'textarea'));
 
         return "{$form_start}\n" . $table->show($attrib) . $form_end;

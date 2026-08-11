@@ -51,7 +51,7 @@ class ComposerStaticInit8bbbd2b3396a9802e78852c37fbb3b02
         'HercegDoo\\AIComposePlugin\\AIEmailService\\Settings' => __DIR__ . '/../..' . '/src/AIEmailService/Settings.php',
         'HercegDoo\\AIComposePlugin\\AbstractAIComposePlugin' => __DIR__ . '/../..' . '/src/AbstractAIComposePlugin.php',
         'HercegDoo\\AIComposePlugin\\Actions\\AbstractAction' => __DIR__ . '/../..' . '/src/Actions/AbstractAction.php',
-        'HercegDoo\\AIComposePlugin\\Actions\\Mail\\GenereteEmailAction' => __DIR__ . '/../..' . '/src/Actions/Mail/GenereteEmailAction.php',
+        'HercegDoo\\AIComposePlugin\\Actions\\Mail\\GenerateEmailAction' => __DIR__ . '/../..' . '/src/Actions/Mail/GenerateEmailAction.php',
         'HercegDoo\\AIComposePlugin\\Actions\\Settings\\AddInstruction' => __DIR__ . '/../..' . '/src/Actions/Settings/AddInstruction.php',
         'HercegDoo\\AIComposePlugin\\Actions\\Settings\\DeleteInstruction' => __DIR__ . '/../..' . '/src/Actions/Settings/DeleteInstruction.php',
         'HercegDoo\\AIComposePlugin\\Actions\\Settings\\SaveInstruction' => __DIR__ . '/../..' . '/src/Actions/Settings/SaveInstruction.php',

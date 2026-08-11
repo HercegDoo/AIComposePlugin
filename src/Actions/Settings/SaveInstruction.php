@@ -4,6 +4,9 @@ namespace HercegDoo\AIComposePlugin\Actions\Settings;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
 use HercegDoo\AIComposePlugin\Actions\ValidateAction;
+use HercegDoo\AIComposePlugin\Utilities\XSSProtection;
+use HercegDoo\AIComposePlugin\Utilities\PromptInjectionProtection;
+use HercegDoo\AIComposePlugin\Utilities\RateLimiter;
 
 class SaveInstruction extends AbstractAction implements ValidateAction
 {
@@ -12,6 +15,29 @@ class SaveInstruction extends AbstractAction implements ValidateAction
         $id = trim(\rcube_utils::get_input_string('_id', \rcube_utils::INPUT_POST));
         $name = trim(\rcube_utils::get_input_string('_name', \rcube_utils::INPUT_POST));
         $text = trim(\rcube_utils::get_input_string('_text', \rcube_utils::INPUT_POST));
+        
+        // VALIDAÇÃO OBRIGATÓRIA CONTRA PROMPT INJECTION
+        if ($name !== null) {
+            $nameValidation = PromptInjectionProtection::validateAndSanitize($name, true);
+            if (!$nameValidation['valid']) {
+                $this->setError($this->translation('ai_validation_error_malicious_content_detected'));
+                return;
+            }
+            $name = $nameValidation['sanitized'];
+        }
+        
+        if ($text !== null) {
+            $textValidation = PromptInjectionProtection::validateAndSanitize($text, true);
+            if (!$textValidation['valid']) {
+                $this->setError($this->translation('ai_validation_error_malicious_content_detected'));
+                return;
+            }
+            $text = $textValidation['sanitized'];
+        }
+        
+        // Sanitização XSS adicional
+        $name = XSSProtection::escape($name);
+        $text = XSSProtection::escape($text);
 
         if (empty($name) || empty($text)) {
             $this->rcmail->output->command('addinstructiontemplate', $id);
@@ -24,9 +50,28 @@ class SaveInstruction extends AbstractAction implements ValidateAction
      */
     protected function handler(array $args = []): void
     {
+        // Rate limiting para prevenir abuso
+        $identifier = RateLimiter::generateIdentifier();
+        $rateLimitResult = RateLimiter::isAllowed($identifier, 'instruction_save');
+        
+        if (!$rateLimitResult['allowed']) {
+            $this->rcmail->output->show_message(
+                $this->translation('ai_rate_limit_exceeded'), 
+                'error'
+            );
+            $this->rcmail->output->send('iframe');
+            return;
+        }
+        
         $name = trim(\rcube_utils::get_input_string('_name', \rcube_utils::INPUT_POST));
         $text = trim(\rcube_utils::get_input_string('_text', \rcube_utils::INPUT_POST));
         $id = trim(\rcube_utils::get_input_string('_id', \rcube_utils::INPUT_POST));
+        
+        // Sanitizar dados para prevenir XSS (já feito na validação)
+        $name = XSSProtection::escape($name);
+        $text = XSSProtection::escape($text);
+        $id = XSSProtection::escape($id);
+        
         $predefinedInstructionsLimit = $this->getInstructionsLimit();
         $predefinedInstructions = $this->rcmail->user->get_prefs()['predefinedInstructions'] ?? [];
 

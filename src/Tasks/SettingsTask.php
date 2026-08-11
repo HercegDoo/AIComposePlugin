@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use HercegDoo\AIComposePlugin\Tasks\AbstractTask;
+use HercegDoo\AIComposePlugin\Utilities\XSSProtection;
 
 class SettingsTask extends AbstractTask
 {
@@ -196,7 +198,10 @@ class SettingsTask extends AbstractTask
     {
         $dropdown = '<select name="data[aic][' . $name . ']">'; // Ispravno ime za formu
         foreach ($options as $option) {
-            $dropdown .= '<option ' . ($option === $default ? 'selected' : '') . ' value="' . ($option) . '">' . ($this->translation('ai_' . $name . '_' . strtolower($option))) . '</option>';
+            $selected = ($option === $default ? 'selected' : '');
+            $safeValue = XSSProtection::escapeAttribute((string) $option);
+            $safeLabel = XSSProtection::escape($this->translation('ai_' . $name . '_' . strtolower($option)));
+            $dropdown .= '<option ' . $selected . ' value="' . $safeValue . '">' . $safeLabel . '</option>';
         }
         $dropdown .= '</select>';
 
@@ -216,7 +221,10 @@ class SettingsTask extends AbstractTask
 
         foreach ($options as $value => $label) {
             $selected = ($defaultValue === $value) ? 'selected' : '';
-            $dropdown .= \sprintf('<option value="%s" %s>%s</option>', $value, $selected, $label);
+            // Sanitizar valor e label para prevenir XSS
+            $safeValue = XSSProtection::escapeAttribute($value);
+            $safeLabel = XSSProtection::escape($label);
+            $dropdown .= \sprintf('<option value="%s" %s>%s</option>', $safeValue, $selected, $safeLabel);
         }
 
         $dropdown .= '</select>';
