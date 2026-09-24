@@ -72,3 +72,11 @@ npm run build:prod
 Prompt wording lives in `src/AIEmailService/Prompt/EmailPromptBuilder.php`. It builds both the system instruction and the user instruction for new emails and selected-text revisions. Change wording there and update `tests/AIEmailService/Prompt/EmailPromptBuilderTest.php`.
 
 `AIEmail::generate()` builds an `EmailPrompt` before calling the configured provider. It also accepts a `PromptBuilderInterface` implementation as an optional second argument when a different prompt strategy is needed. A new provider implements `InterfaceProvider::generateEmail(RequestData $requestData, EmailPrompt $prompt)` and translates those instructions into its API's request format. Provider classes handle transport and responses; they do not need their own copy of the email prompt. Register a new provider in `Settings::setProvider()`, then configure `aiComposeProvider` and `aiProvider<ProviderName>Config`; task initialization loads that configuration by provider name.
+
+## OpenAI models
+
+Set `aiProviderOpenAIConfig['model']` in `config.inc.php` to an API model ID. Supported examples are `gpt-4.1`, `gpt-5`, `gpt-6-astra`, `gpt-6-sol`, and `gpt-6-luna`. The ChatGPT product names and plain `gpt-6` are not valid API model IDs. Your OpenAI API project must have access to the selected model.
+
+The OpenAI provider uses the Chat Completions API for all of these models. GPT-5 and GPT-6 requests send shared instructions in a `developer` message, use `max_completion_tokens`, and omit `temperature`, which those reasoning models may reject. For `gpt-5`, the provider requests `minimal` reasoning effort; for the three GPT-6 models, it requests `low`. The creativity setting controls temperature only for older models such as `gpt-4.1`; it has no effect with GPT-5 or GPT-6. A custom `apiUrl` must point to a Chat Completions-compatible endpoint.
+
+`aiDefaultMaxTokens` limits both visible output and reasoning tokens on GPT-5 and GPT-6. If generation stops before returning an email, increase this value. The provider reports this case when the API returns a `length` finish reason.

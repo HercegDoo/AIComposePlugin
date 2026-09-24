@@ -12,9 +12,10 @@ $config['aiComposeProvider'] = ;
 // -------- OpenAI configuration (https://openai.com/) --------
 // Set the following keys to configure the API request properly:
 // - **apiKey**: Enter your OpenAI API key here, which authenticates and allows access to the API.
-// - **model**: Specify the OpenAI model you wish to use, such as "gpt-4". Currently, the OpenAI model is the only one available for this purpose.
+// - **model**: Use an OpenAI API model ID, for example "gpt-4.1", "gpt-5", "gpt-6-astra", "gpt-6-sol", or "gpt-6-luna".
+//   "ChatGPT-5", "ChatGPT-6", and plain "gpt-6" are not API model IDs.
 // - **apiUrl** (optional): Specify a custom OpenAI API endpoint URL. If not set, defaults to 'https://api.openai.com/v1/chat/completions'.
-//   This is useful for using OpenAI-compatible services or proxies.
+//   This must be a Chat Completions-compatible endpoint, including when using GPT-5 or GPT-6.
 $config['aiProviderOpenAIConfig'] = [
     'apiKey' =>
     'model' =>
@@ -36,8 +37,8 @@ $config['aiComposeLengths'] = [
 ];
 
 // Default creativity.
-// The degree of creativity used by the language model to create the email. Higher creativity will generate more unpredictable and diverse
-// output. The users will be able to modify this option in the settings.
+// The degree of creativity used by older models such as GPT-4.1. Higher creativity will generate more unpredictable
+// output. GPT-5 and GPT-6 do not support this temperature setting. Users can modify the option in settings.
 // Available options: "low", "medium", "high"
 $config['aiComposeDefaultCreativity'] = '';
 
@@ -53,7 +54,8 @@ $config['aiComposeLanguages'] = [
 ];
 
 // Set the default maximum number of tokens for AI responses with **aiDefaultMaxTokens**.
-// The recommended default value is 2000 tokens, which should provide sufficient content generation for most use cases.
+// The recommended default value is 2000 tokens. For GPT-5 and GPT-6, this limit also includes hidden reasoning tokens;
+// increase it if a model reaches the limit before returning visible email text.
 $config['aiDefaultMaxTokens'] = ;
 
 // Set the default timeout in seconds for AI responses using **aiDefaultTimeout**.

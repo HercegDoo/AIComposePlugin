@@ -42,7 +42,7 @@ This document applies to the entire repository. Before making changes, inspect t
 1. `MailTask` loads `assets/dist/compose.bundle.js` through Roundcube hooks, sets `rcmail.env.aiPluginOptions` and `aiPredefinedInstructions`, and injects templates through `ContentInjector`.
 2. `assets/src/compose.js` initializes commands. `assets/src/compose/commands/sendPostRequest.js` collects data through `emailHelpers/`, sends an `rcmail.http_post` request, and inserts the response into the plain-text or TinyMCE editor.
 3. The Roundcube action is **`plugin.AIComposePlugin_GenereteEmailAction`**. The misspelling `Generete` is part of the existing public contract. Renaming the PHP class or file requires updating registration and JavaScript calls, as well as checking compatibility.
-4. `GenereteEmailAction::validate()` checks POST data on the server and then builds `RequestData`. `AIEmail::generate()` builds one `EmailPrompt` with `Prompt/EmailPromptBuilder` and passes it with `RequestData` to the selected provider. `OpenAI` maps the system and user instructions to chat messages and sends them to the chat completions endpoint or the configured `apiUrl`.
+4. `GenereteEmailAction::validate()` checks POST data on the server and then builds `RequestData`. `AIEmail::generate()` builds one `EmailPrompt` with `Prompt/EmailPromptBuilder` and passes it with `RequestData` to the selected provider. `OpenAI` maps the shared instructions to chat messages and sends them to the chat completions endpoint or the configured `apiUrl`. It uses a `developer` role, `max_completion_tokens`, and no `temperature` for GPT-5/6, and retains a `system` role, `max_tokens`, and `temperature` for older models. It requests `minimal` reasoning effort for base GPT-5 and `low` for GPT-6 Astra/Sol/Luna.
 5. A successful action response is JSON with `status` and `respond`. Preserve the shape expected by JavaScript, or update error handling on both sides if you change it. Requests can include previous conversation content, selected text, and signature information; treat these as private data.
 
 ### Preferences and saved instructions
@@ -60,7 +60,7 @@ This document applies to the entire repository. Before making changes, inspect t
 - Change shared system and user instructions in `src/AIEmailService/Prompt/EmailPromptBuilder.php`. Providers implement `InterfaceProvider::generateEmail(RequestData, EmailPrompt)` and adapt the supplied prompt to their API format; do not duplicate prompt wording inside providers. `PromptBuilderInterface` lets the service use a different builder without changing provider code.
 - PHP formatting follows `.php-cs-fixer.dist.php` (a PSR-12/Symfony combination with four-space indentation). PHPStan analyzes `src/` at `max` level with the existing `phpstan-baseline.neon`. Fix new findings in code unless there is a specific reason to update the baseline.
 - Validate new user input on the server. Frontend validation provides user feedback but does not replace server validation. Escape user text when building HTML, and keep field names aligned across `RequestData` and the JavaScript POST object.
-- In provider tests, mock cURL or use `DummyProvider`; do not send real API requests or require a real API key. `Settings` holds static state, so explicitly set values that each test depends on.
+- In provider tests, mock cURL or use `DummyProvider`; do not send real API requests or require a real API key. `Settings` holds static state, so explicitly set values that each test depends on. Define `PHPUNIT_RUNNING` in standalone tests that call `RequestData::make()` so settings do not initialize Roundcube.
 - Do not log API keys, prompts, previous conversations, email content, or full provider responses. When working on `OpenAI`, review transport security: the existing code disables cURL SSL verification and uses a fixed 60-second timeout. Do not extend that pattern.
 
 ### Frontend, templates, and translations
@@ -81,7 +81,7 @@ This document applies to the entire repository. Before making changes, inspect t
 
 ## Local development and checks
 
-Run commands from the repository root. Standalone PHP development requires Composer development dependencies; the currently tracked `vendor/` contains the runtime package but lacks `vendor/bin/phpunit`, `phpstan`, and `php-cs-fixer`.
+Run commands from the repository root. Standalone PHP development requires Composer development dependencies; install them if `vendor/bin/phpunit`, `phpstan`, or `php-cs-fixer` is missing.
 
 ```bash
 composer install
