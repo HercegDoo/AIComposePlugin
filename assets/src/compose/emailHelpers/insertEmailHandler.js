@@ -14,13 +14,17 @@ function regulateInsertion(emailToInsert) {
   let formattedContent = emailToInsert;
 
   if (editorHTML && tinymce.activeEditor) {
-    formattedContent = emailToInsert.replace(/\n/g, "<br>");
-    const content = tinymce?.activeEditor?.dom.decode(editorHTML.getContent()).replace(previousGeneratedEmail, "");
+    const escaped = document.createElement("div");
+    escaped.textContent = emailToInsert;
+    formattedContent = escaped.innerHTML.replace(/\n/g, "<br>");
+    const content = editorHTML.getContent().replace(previousGeneratedEmail, "");
     editorHTML.setContent(`${formattedContent}${content}`);
     previousGeneratedEmail = `<p>${formattedContent.replace(/<br>/g, '<br />')}</p>`;
   } else {
     targetTextArea.value = targetTextArea.value.replace(previousGeneratedEmail, "");
-    targetTextArea.value = `${emailToInsert}${targetTextArea.value}`;
+    const existingContent = targetTextArea.value;
+    const separator = existingContent && !existingContent.startsWith("\n") ? "\n\n" : "";
+    targetTextArea.value = `${emailToInsert}${separator}${existingContent}`;
     previousGeneratedEmail = emailToInsert;
   }
   if(!mailGenerated){

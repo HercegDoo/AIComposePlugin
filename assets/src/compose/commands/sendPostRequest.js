@@ -1,7 +1,10 @@
 
 import { getRequestDataFields } from "../emailHelpers/requestDataHandler";
 import { getPreviousGeneratedInsertedEmail, insertEmail } from "../emailHelpers/insertEmailHandler";
-import { signatureCheckedPreviousConversation } from "../emailHelpers/signaturesHandler";
+import {
+  signatureCheckedPreviousConversation,
+  stripGeneratedClosing,
+} from "../emailHelpers/signaturesHandler";
 import { getFormattedMail, translation } from "../../utils";
 import { display_messages, errorPresent, validateFields } from "../emailHelpers/validateFields";
 
@@ -69,7 +72,16 @@ export default class GenerateMail {
         true
       )
       .done(function(data){
-        insertEmail(data && data["respond"] !== undefined ? data["respond"] : "");
+        const response = data && data["respond"] !== undefined ? data["respond"] : "";
+        insertEmail(
+          requestData.signaturePresent
+            ? stripGeneratedClosing(
+                response,
+                requestData.senderName,
+                previousConversationObject.signatureText
+              )
+            : response
+        );
         const instructionTextArea = document.getElementById('aic-instruction');
         //Ako nema nista u instrukciji, ubaci datu instrukciju(za slucaj koristenja predefinisane instrukcije)
         if(additionalData === null){
@@ -115,4 +127,3 @@ export default class GenerateMail {
     })
   }
 }
-

@@ -22,7 +22,8 @@ final class EmailPromptBuilder implements PromptBuilderInterface
     private function buildRevisionInstruction(RequestData $requestData): string
     {
         return " Write an identical email as this {$requestData->getPreviousGeneratedEmail()}, in the same language, but change only this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." .
-            $this->previousConversationInstruction($requestData);
+            $this->previousConversationInstruction($requestData) .
+            $this->existingSignatureInstruction($requestData);
     }
 
     private function buildNewEmailInstruction(RequestData $requestData): string
@@ -44,9 +45,16 @@ final class EmailPromptBuilder implements PromptBuilderInterface
             'The format should be as follows:' . "\n" .
             'Greeting' . "\n\n" .
             'Content' . "\n\n" .
-            'Closing Greeting' . "\n" .
+            ($requestData->getSignaturePresent() ? '' : 'Closing Greeting' . "\n") .
             $this->previousConversationInstruction($requestData) .
-            ($requestData->getSignaturePresent() ? 'CRUCIAL: "Write an email without signing it or including any identifying information after the greeting, including no names or titles. Only include the message and greeting, but leave the signature and closing blank."' : '');
+            $this->existingSignatureInstruction($requestData);
+    }
+
+    private function existingSignatureInstruction(RequestData $requestData): string
+    {
+        return $requestData->getSignaturePresent()
+            ? ' End the email after its message body; do not add a closing greeting, signature, sender name, or contact details.'
+            : '';
     }
 
     private function previousConversationInstruction(RequestData $requestData): string
