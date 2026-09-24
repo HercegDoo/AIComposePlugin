@@ -1,12 +1,11 @@
 import { formatText } from "../../utils";
 import { findPlainSignature, stripGeneratedClosing } from "./signatureUtils.mjs";
 
-let editorHTML = null;
-
 export function signatureCheckedPreviousConversation(previousGeneratedEmail = "") {
   let conversation;
   let signaturePresent = false;
   let signatureText = "";
+  const editorHTML = rcmail.editor?.is_html() ? rcmail.editor.editor : null;
 
   if (editorHTML && editorHTML.getBody()) {
     const liveSignature = editorHTML.getBody().querySelector("#_rc_sig");
@@ -46,7 +45,3 @@ export function signatureCheckedPreviousConversation(previousGeneratedEmail = ""
 }
 
 export { stripGeneratedClosing };
-
-rcmail.addEventListener("editor-load", (event) => {
-  editorHTML = event?.ref?.editor ?? null;
-});

@@ -25,6 +25,8 @@ class RequestData
 
     private bool $multipleRecipients = false;
 
+    private bool $htmlMode = false;
+
     private ?string $subject = null;
 
     private function __construct(string $recipientName, string $senderName, string $instruction, ?string $style, ?string $length, ?string $creativity, ?string $language)
@@ -147,6 +149,18 @@ class RequestData
         $this->multipleRecipients = $multipleRecipients;
 
         return $this;
+    }
+
+    public function setHtmlMode(bool $htmlMode): self
+    {
+        $this->htmlMode = $htmlMode;
+
+        return $this;
+    }
+
+    public function isHtmlMode(): bool
+    {
+        return $this->htmlMode;
     }
 
     public function getSignaturePresent(): bool

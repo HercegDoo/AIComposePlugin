@@ -1,7 +1,6 @@
 import { getRecipientData, getRecipientInfo } from "./recipientDataHandler";
 import { getSenderInfo, processSenderData } from "./senderDataHandler";
 import { getSubject } from "./subjectHandler";
-import { signatureCheckedPreviousConversation } from "./signaturesHandler";
 
 export function getRequestDataFields() {
   const styleElement = document.getElementById("aic_style_select"),
@@ -27,6 +26,7 @@ export function getRequestDataFields() {
     previousConversation: "",
     fixText: "",
     previousGeneratedEmailText: "",
+    htmlMode: rcmail.editor?.is_html() ? "1" : "0",
     multipleRecipients: getRecipientInfo().length > 1 ? "yes" : ""
   };
 }

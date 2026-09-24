@@ -80,3 +80,9 @@ Set `aiProviderOpenAIConfig['model']` in `config.inc.php` to an API model ID. Su
 The OpenAI provider uses the Chat Completions API for all of these models. GPT-5 and GPT-6 requests send shared instructions in a `developer` message, use `max_completion_tokens`, and omit `temperature`, which those reasoning models may reject. For `gpt-5`, the provider requests `minimal` reasoning effort; for the three GPT-6 models, it requests `low`. The creativity setting controls temperature only for older models such as `gpt-4.1`; it has no effect with GPT-5 or GPT-6. A custom `apiUrl` must point to a Chat Completions-compatible endpoint.
 
 `aiDefaultMaxTokens` limits both visible output and reasoning tokens on GPT-5 and GPT-6. If generation stops before returning an email, increase this value. The provider reports this case when the API returns a `length` finish reason.
+
+## HTML email generation
+
+When Roundcube's compose editor is in HTML mode, the plugin asks the AI for an HTML fragment and inserts its formatting into TinyMCE. The requested short, medium, or long length refers to visible words only; HTML tags and attributes are excluded from that word range. This is a prompt instruction, so the model may still occasionally miss the range. The API output token limit still includes markup.
+
+Generated HTML is limited to common TinyMCE email formatting: paragraphs, line breaks, emphasis, underline, lists, quotes, headings, links, and simple tables. Only `http`, `https`, and `mailto` link destinations are kept. Scripts, images, styles, and other markup are removed before insertion. In plain-text mode the AI is asked for plain text, and any HTML response is converted to text if the editor mode changes while a request is running.
