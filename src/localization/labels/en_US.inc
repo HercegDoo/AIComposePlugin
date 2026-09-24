@@ -186,3 +186,12 @@ $labels['ai_help_example_15'] = 'come up with 10 ideas on strategies for creatin
 $labels['ai_help_example_16'] = 'professional resignation email with a 1-month notice per contract, the company is called ACME';
 $labels['ai_help_example_17'] = 'persuasive email to ask for a promotion, hinting that I might resign if I don’t get it because there are other opportunities';
 $labels['ai_help_example_18'] = 'I’m glad we met at the conference yesterday, I enjoyed our conversation, let’s stay in touch';
+
+// Incoming email summaries.
+$labels['ai_summary'] = 'AI summary';
+$labels['ai_summary_loading'] = 'Summarizing…';
+$labels['ai_summary_error'] = 'Summary unavailable. Try again.';
+$labels['ai_show_original'] = 'Show original';
+$labels['ai_hide_original'] = 'Hide original';
+$labels['ai_translate_again'] = 'Translate again';
+$labels['ai_original_language'] = 'Original';

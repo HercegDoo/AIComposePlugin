@@ -24,7 +24,6 @@ abstract class AbstractAIComposePlugin extends \rcube_plugin
             if (class_exists($taskClass)) {
                 /** @var AbstractTask $taskHandler */
                 $taskHandler = new $taskClass($this);
-                $taskHandler->init();
             }
         }
     }

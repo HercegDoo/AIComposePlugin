@@ -185,3 +185,12 @@ $labels['ai_help_example_15'] = 'ge 10 förslag på strategier för att skapa en
 $labels['ai_help_example_16'] = 'professionell uppsägning med en månads uppsägningstid enligt avtal, företaget heter ACME';
 $labels['ai_help_example_17'] = 'övertygande mejl för att be om befordran, hinta om att jag kan komma att sluta annars då det finns andra möjligheter';
 $labels['ai_help_example_18'] = 'trevligt att vi sågs på konferensen igår, jag uppskattade vårt samtal, låt oss hålla kontakten';
+
+// Incoming email summaries.
+$labels['ai_summary'] = 'AI-sammanfattning';
+$labels['ai_summary_loading'] = 'Sammanfattar…';
+$labels['ai_summary_error'] = 'Sammanfattningen är inte tillgänglig. Försök igen.';
+$labels['ai_show_original'] = 'Visa original';
+$labels['ai_hide_original'] = 'Dölj original';
+$labels['ai_translate_again'] = 'Översätt igen';
+$labels['ai_original_language'] = 'Original';

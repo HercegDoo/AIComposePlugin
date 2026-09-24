@@ -4,7 +4,7 @@ This document applies to the entire repository. Before making changes, inspect t
 
 ## Project overview
 
-- `aicomposeplugin` is a Roundcube plugin for composing and revising email with an AI service. It runs in the `mail` and `settings` tasks, and its HTML targets Roundcube's `elastic` skin.
+- `aicomposeplugin` is a Roundcube plugin for composing and revising email and translating incoming summaries with an AI service. It runs in the `mail` and `settings` tasks, and its HTML targets Roundcube's `elastic` skin.
 - PHP code uses the `HercegDoo\AIComposePlugin\` namespace, mapped to `src/` by Composer PSR-4 autoloading. Roundcube loads `plugins/aicomposeplugin/aicomposeplugin.php` and instantiates class `aicomposeplugin`; the PHP namespace retains its existing casing.
 - Roundcube 1.6.11 is the version pinned for development; `roundcube/plugin-installer` is a runtime dependency. `composer.json` declares PHP `>=7.4`, but the existing code uses PHP 8.0 functions such as `str_contains` and `str_starts_with`; GitHub Actions run on PHP 8.0. Do not claim PHP 7.4 compatibility without resolving and verifying this discrepancy.
 - Real provider requests require `ext-curl` and `php-curl-class/php-curl-class`. Frontend development requires Node, npm, and webpack.
@@ -20,7 +20,7 @@ This document applies to the entire repository. Before making changes, inspect t
 | `src/AIEmailService/` | Request/response models, shared prompt builder, defaults, provider interface, and OpenAI implementation. |
 | `src/Utilities/` | HTML template injection, Roundcube element construction, and translations. |
 | `skins/elastic/templates/` | Roundcube HTML templates and fragments for compose and settings screens. |
-| `assets/src/` | JavaScript and CSS sources for compose and settings. |
+| `assets/src/` | JavaScript and CSS sources for compose, settings, and incoming summaries. |
 | `assets/dist/` | Tracked webpack bundles loaded by PHP in production. |
 | `src/localization/labels/`, `src/localization/messages/` | Translations under the `aicomposeplugin.` prefix. |
 | `tests/AIEmailService/` | PHPUnit tests for models, settings, and providers. |
@@ -33,7 +33,7 @@ This document applies to the entire repository. Before making changes, inspect t
 
 1. `aicomposeplugin.php` loads the Roundcube root Composer autoloader when installed through Composer, or the plugin-local autoloader for a manual install, and extends `AbstractAIComposePlugin`.
 2. `AbstractAIComposePlugin::init()` selects `MailTask` or `SettingsTask` from the Roundcube task and sets the plugin reference used by actions.
-3. The `AbstractTask` constructor loads configuration into static `AIEmailService\Settings`, registers actions from the matching directory, and calls the task's `init()`. Currently, `AbstractAIComposePlugin::init()` then calls that task's `init()` again. Check for duplicate hook registration when changing initialization.
+3. The `AbstractTask` constructor loads configuration into static `AIEmailService\Settings`, registers actions from the matching directory, and calls the task's `init()` once. `AbstractAIComposePlugin::init()` creates the task handler and does not call `init()` again.
 4. `Settings` reads user defaults from the Roundcube `aicDefaults` preference (`style`, `length`, `creativity`, `language`, `pluginVisibility`). Saved instructions use a separate `predefinedInstructions` preference; each record has `id`, `title`, and `message`. Use Roundcube's `get_prefs()` and `save_prefs()` and keep data scoped to the signed-in user.
 5. `Settings::setProvider()` supports `OpenAI` and the test `DummyProvider`. The production provider and its `apiKey`/`model` come from the Roundcube `aiComposeProvider` and `aiProviderOpenAIConfig` configuration keys.
 
@@ -52,6 +52,15 @@ This document applies to the entire repository. Before making changes, inspect t
 - `assets/src/settings.js` registers the Roundcube commands `updateinstructionlist`, `addinstructiontemplate`, and `deleteinstruction`. PHP calls them through `output->command()`; keep command names and arguments aligned.
 - `aiMaxPredefinedInstructions` limits the number of records that can be added, defaulting to 20. When changing the CRUD flow, check validation, record identification, and the resulting list state.
 
+### Incoming summaries
+
+- `MailTask` loads `assets/dist/summary.bundle.js` on the Elastic mail list and message pages when `aiSummaryEnabled` is true. It also loads translated labels on mail pages. The frontend shows a delayed hover preview and inserts a summary card above the opened message body.
+- `plugin.aicomposeplugin_SummarizeMessageAction` accepts a message UID, mailbox, and optional refresh flag. The target language comes only from Roundcube's session, never from the client. It reads the message through Roundcube's signed-in mail storage, strips HTML, and sends up to 12,000 characters plus subject to the selected provider.
+- `SummaryPromptBuilder` supplies shared detection, summarization, and translation instructions. `SummaryService` parses plain-text JSON with `source_language`, `original_summary`, and `translated_summary`. `CompletionProviderInterface` is implemented by OpenAI and Ollama for this use case. Compose still uses `InterfaceProvider`.
+- Summaries are cached in Roundcube's per-user database cache for seven days, keyed by message identity, locale, provider configuration, and prompt version. Refresh bypasses the cache. Do not store raw incoming content in cache or log it.
+- `config.inc.php.dist` exposes `aiSummaryEnabled`, `aiSummaryProvider`, `aiSummaryOpenAIConfig`, and `aiSummaryOllamaConfig`. OpenAI inherits compose configuration unless overridden. Ollama is only used for summaries.
+
+
 ## Change guidelines
 
 ### PHP and Roundcube
@@ -61,12 +70,12 @@ This document applies to the entire repository. Before making changes, inspect t
 - PHP formatting follows `.php-cs-fixer.dist.php` (a PSR-12/Symfony combination with four-space indentation). PHPStan analyzes `src/` at `max` level with the existing `phpstan-baseline.neon`. Fix new findings in code unless there is a specific reason to update the baseline.
 - Validate new user input on the server. Frontend validation provides user feedback but does not replace server validation. Escape user text when building HTML, and keep field names aligned across `RequestData` and the JavaScript POST object.
 - In provider tests, mock cURL or use `DummyProvider`; do not send real API requests or require a real API key. `Settings` holds static state, so explicitly set values that each test depends on. Define `PHPUNIT_RUNNING` in standalone tests that call `RequestData::make()` so settings do not initialize Roundcube.
-- Do not log API keys, prompts, previous conversations, email content, or full provider responses. When working on `OpenAI`, review transport security: the existing code disables cURL SSL verification and uses a fixed 60-second timeout. Do not extend that pattern.
+- Do not log API keys, prompts, previous conversations, email content, or full provider responses. The OpenAI transport verifies TLS certificates and uses a fixed 60-second timeout; preserve certificate verification when changing providers.
 
 ### Frontend, templates, and translations
 
 - Edit sources in `assets/src/`, not generated files in `assets/dist/` by hand. After a frontend change, run a production build and include the changed bundles because `MailTask` and `SettingsTask` load them directly.
-- Webpack entry points are `assets/src/compose.js` and `assets/src/settings.js`. JavaScript uses the Roundcube `rcmail`/`rcube_webmail` globals, and compose code also uses TinyMCE. Check both plain-text and HTML editor behavior when changing insertion or text revision.
+- Webpack entry points are `assets/src/compose.js`, `assets/src/settings.js`, and `assets/src/summary.js`. JavaScript uses the Roundcube `rcmail`/`rcube_webmail` globals, and compose code also uses TinyMCE. Check both plain-text and HTML editor behavior when changing insertion or text revision.
 - HTML templates use Roundcube `<roundcube:...>` tags. `ContentInjector` looks for specific IDs in rendered `elastic` HTML (`composebodycontainer`, `compose-options`, `headers-menu`, `layout-content`). JavaScript expects IDs including `aic-instruction`, `aic-generate-email-button`, `aic_style_select`, `aic_length_select`, `aic_creativity_select`, `aic_language_select`, `composebody`, and `responses-table`. Carry ID or selector changes through PHP, HTML, JavaScript, and a manual Roundcube check.
 - Reuse existing translation keys or add new ones to the relevant files in `src/localization/labels/` and `src/localization/messages/`. PHP and JavaScript look up keys with the `aicomposeplugin.` prefix. Existing locale filenames are inconsistent (`labels/bs_BA.inc`, `messages/ba_BA.inc`); verify the mapping before renaming them.
 - `package.json` contains Prettier settings (two spaces, double quotes, semicolons), but existing JavaScript is not consistently formatted. Format the changed code without reformatting unrelated files.

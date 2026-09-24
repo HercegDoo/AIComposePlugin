@@ -22,6 +22,26 @@ $config['aiProviderOpenAIConfig'] = [
     // 'apiUrl' => 'https://api.openai.com/v1/chat/completions'  // Optional: uncomment to use a custom API endpoint
 ];
 
+// Summarize incoming messages in the selected Roundcube interface language.
+// The summary appears when hovering over a message row and above opened messages.
+// Incoming message content is sent to the selected provider when a summary is first requested.
+$config['aiSummaryEnabled'] = true;
+$config['aiSummaryProvider'] = 'OpenAI'; // 'OpenAI' or 'Ollama'
+
+// Optional OpenAI summary overrides. By default summaries reuse aiProviderOpenAIConfig.
+// A separate model or key can be used without changing email composition.
+$config['aiSummaryOpenAIConfig'] = [
+    'maxTokens' => 1200,
+    // 'model' => 'gpt-4.1',
+    // 'apiKey' => '',
+];
+
+// For private/local summaries, set aiSummaryProvider to 'Ollama' and choose an installed model.
+$config['aiSummaryOllamaConfig'] = [
+    'url' => 'http://127.0.0.1:11434/api/chat',
+    'model' => '', // e.g. an installed multilingual Ollama model
+];
+
 // The default tone of the generated email text. The users will be able to modify this option in the settings.
 // Available options: "assertive", "casual", "enthusiastic", "funny", "informational", "professional", "urgent", "witty"
 // Each style is an array element, except the **default** style, which is set as a key-value pair and used when no specific style is requested

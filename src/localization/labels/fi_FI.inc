@@ -185,3 +185,12 @@ $labels['ai_help_example_15'] = 'keksi 10 ideaa tehokkaaseen sijoittajaesityksee
 $labels['ai_help_example_16'] = 'ammatillinen irtisanoutumisilmoitus kuukauden irtisanomisajalla sopimuksen mukaan, yrityksen nimi on ACME';
 $labels['ai_help_example_17'] = 'vakuuttava sähköposti ylennyksen pyytämiseksi, vihjaa että saatan irtisanoutua jos en saa sitä, koska muita mahdollisuuksia on tarjolla';
 $labels['ai_help_example_18'] = 'oli kiva tavata eilisessä konferenssissa, nautin keskustelustamme, pidetään yhteyttä';
+
+// Incoming email summaries.
+$labels['ai_summary'] = 'Tekoälytiivistelmä';
+$labels['ai_summary_loading'] = 'Tiivistetään…';
+$labels['ai_summary_error'] = 'Tiivistelmä ei ole saatavilla. Yritä uudelleen.';
+$labels['ai_show_original'] = 'Näytä alkuperäinen';
+$labels['ai_hide_original'] = 'Piilota alkuperäinen';
+$labels['ai_translate_again'] = 'Käännä uudelleen';
+$labels['ai_original_language'] = 'Alkuperäinen';

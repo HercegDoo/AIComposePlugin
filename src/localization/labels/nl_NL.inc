@@ -185,3 +185,12 @@ $labels['ai_help_example_15'] = 'bedenk 10 ideeën over strategieën voor het cr
 $labels['ai_help_example_16'] = 'professionele e-mail over ontslag, met een opzegtermijn van 1 maand volgens het contract, het bedrijf heet ACME';
 $labels['ai_help_example_17'] = 'overtuigende e-mail om promotie te vragen, suggererend dat ik kan opstappen als ik het niet krijg omdat er andere kansen zijn';
 $labels['ai_help_example_18'] = 'Het was fijn om je gisteren op de conferentie te ontmoeten, ik heb genoten van ons gesprek, laten we in contact blijven';
+
+// Incoming email summaries.
+$labels['ai_summary'] = 'AI-samenvatting';
+$labels['ai_summary_loading'] = 'Samenvatting maken…';
+$labels['ai_summary_error'] = 'Samenvatting niet beschikbaar. Probeer het opnieuw.';
+$labels['ai_show_original'] = 'Origineel tonen';
+$labels['ai_hide_original'] = 'Origineel verbergen';
+$labels['ai_translate_again'] = 'Opnieuw vertalen';
+$labels['ai_original_language'] = 'Origineel';
