@@ -1,74 +1,52 @@
 import { formatText } from "../../utils";
+import { findPlainSignature, stripGeneratedClosing } from "./signatureUtils.mjs";
 
-let editorHTML = "";
-let formattedPreviousConversationText = "";
+let editorHTML = null;
 
 export function signatureCheckedPreviousConversation(previousGeneratedEmail = "") {
+  let conversation;
+  let signaturePresent = false;
+  let signatureText = "";
 
+  if (editorHTML && editorHTML.getBody()) {
+    const liveSignature = editorHTML.getBody().querySelector("#_rc_sig");
+    const body = editorHTML.getBody().cloneNode(true);
+    const signature = body.querySelector("#_rc_sig");
 
+    if (
+      signature &&
+      (signature.textContent.trim() || signature.querySelector("img, svg"))
+    ) {
+      signaturePresent = true;
+      signatureText = liveSignature.innerText || signature.textContent;
+      signature.remove();
+    }
 
-  if (editorHTML.editorContainer) {
-    let editorText = editorHTML.getContent({ format: "html" });
-    const editorTextDiv = document.createElement("div");
-    editorTextDiv.innerHTML = editorText;
-    editorText = editorTextDiv.textContent;
-editorText = editorText.replace(previousGeneratedEmail, "");
-    formattedPreviousConversationText = formatText(removeEmptyLinesAndSpaces(editorText));
+    conversation = body.textContent;
   } else {
-    const textareaContent = document.getElementById("composebody").value.replace(previousGeneratedEmail, "");
-    const textareaContentFormatted = formatText(textareaContent);
-    formattedPreviousConversationText = removeEmptyLinesAndSpaces(
-      textareaContentFormatted
-    );
+    conversation = document.getElementById("composebody").value.replace(/\r\n/g, "\n");
+    const currentSignature = rcmail.env.signatures?.[rcmail.env.identity]?.text;
+    const range = findPlainSignature(conversation, currentSignature);
+
+    if (range) {
+      signaturePresent = true;
+      signatureText = currentSignature;
+      conversation =
+        conversation.slice(0, range.start) + conversation.slice(range.end);
+    }
   }
 
-  const formattedSignaturePresent = containsSubstring(
-    formattedPreviousConversationText
-  );
+  conversation = formatText(conversation).replace(previousGeneratedEmail, "");
 
-  if (formattedSignaturePresent) {
-    const startIndex = formattedPreviousConversationText.indexOf(
-      formattedSignaturePresent
-    );
-    const endIndex = startIndex + formattedSignaturePresent.length;
-    return {
-      previousConversation: `${formattedPreviousConversationText.slice(0, startIndex) + formattedPreviousConversationText.slice(endIndex)}`,
-      signaturePresent: "present",
-    };
-  } else {
-    return {
-      previousConversation: `${formattedPreviousConversationText}`,
-      signaturePresent: "",
-    };
-  }
+  return {
+    previousConversation: conversation.trim(),
+    signaturePresent: signaturePresent ? "present" : "",
+    signatureText,
+  };
 }
 
-rcmail.addEventListener("editor-load", (e) => {
-  editorHTML = e?.ref?.editor;
+export { stripGeneratedClosing };
+
+rcmail.addEventListener("editor-load", (event) => {
+  editorHTML = event?.ref?.editor ?? null;
 });
-
-function removeEmptyLinesAndSpaces(text) {
-  return text
-    .split("\n")
-    .filter((line) => line.trim() !== "")
-    .map((line) => line.trim())
-    .join("\n");
-}
-
-function containsSubstring(formattedPreviousConversationText) {
-  for (const key of Object.keys(rcmail.env.signatures)) {
-    let formattedSignature;
-    if (editorHTML.editorContainer) {
-      const div = document.createElement("div");
-      div.innerHTML = rcmail.env.signatures[key]['html'];
-
-      formattedSignature =formatText(removeEmptyLinesAndSpaces(div.textContent));
-    } else {
-      formattedSignature = formatText(removeEmptyLinesAndSpaces(rcmail.env.signatures[key]['text']));
-    }
-    if (formattedPreviousConversationText.includes(formattedSignature)) {
-      return formattedSignature;
-    }
-  }
-  return null;
-}

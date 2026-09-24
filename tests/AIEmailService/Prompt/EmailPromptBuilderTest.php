@@ -89,8 +89,10 @@ final class EmailPromptBuilderTest extends TestCase
         $this->requestData->setSignaturePresent(true);
         $withSignature = $builder->build($this->requestData)->getUserInstruction();
 
-        self::assertStringNotContainsString('leave the signature and closing blank', $withoutSignature);
-        self::assertStringContainsString('leave the signature and closing blank', $withSignature);
+        self::assertStringContainsString('Closing Greeting', $withoutSignature);
+        self::assertStringNotContainsString('End the email after its message body', $withoutSignature);
+        self::assertStringNotContainsString('Closing Greeting', $withSignature);
+        self::assertStringContainsString('End the email after its message body', $withSignature);
     }
 
     public function testCustomStyleLengthAndLanguage(): void
@@ -129,5 +131,16 @@ final class EmailPromptBuilderTest extends TestCase
         self::assertStringContainsString('Previous email', $instruction);
         self::assertStringContainsString('selected text', $instruction);
         self::assertStringNotContainsString('Previous conversation:', $instruction);
+    }
+
+    public function testRevisionWithExistingSignatureOmitsClosing(): void
+    {
+        $this->requestData->setFixText('Previous email', 'selected text');
+        $this->requestData->setSignaturePresent(true);
+
+        $instruction = (new EmailPromptBuilder())->build($this->requestData)->getUserInstruction();
+
+        self::assertStringContainsString('End the email after its message body', $instruction);
+        self::assertStringNotContainsString('Closing Greeting', $instruction);
     }
 }
