@@ -39,6 +39,14 @@ final class RequestDataTest extends TestCase
         self::assertInstanceOf(RequestData::class, $requestData);
     }
 
+    public function testOptionalFlagsDefaultToFalse(): void
+    {
+        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
+
+        self::assertFalse($requestData->getMultipleRecipients());
+        self::assertFalse($requestData->getSignaturePresent());
+    }
+
     public function testConstructorWithValues()
     {
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija', 'TestStil', 'TestLength', 'TestCreativity', 'TestLang');

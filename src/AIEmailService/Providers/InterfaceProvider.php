@@ -7,6 +7,7 @@ namespace HercegDoo\AIComposePlugin\AIEmailService\Providers;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
 use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
+use HercegDoo\AIComposePlugin\AIEmailService\Prompt\EmailPrompt;
 
 interface InterfaceProvider
 {
@@ -15,5 +16,5 @@ interface InterfaceProvider
     /**
      * @throws ProviderException
      */
-    public function generateEmail(RequestData $requestData): Respond;
+    public function generateEmail(RequestData $requestData, EmailPrompt $prompt): Respond;
 }

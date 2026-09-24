@@ -21,9 +21,9 @@ class RequestData
     private ?string $previousGeneratedEmail = null;
     private ?string $previousConversation = null;
 
-    private bool $signaturePresent;
+    private bool $signaturePresent = false;
 
-    private bool $multipleRecipients;
+    private bool $multipleRecipients = false;
 
     private ?string $subject = null;
 

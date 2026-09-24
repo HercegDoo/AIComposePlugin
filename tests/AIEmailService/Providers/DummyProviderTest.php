@@ -6,6 +6,7 @@ namespace HercegDoo\AIComposePlugin\Tests\AIEmailService\Providers;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
+use HercegDoo\AIComposePlugin\AIEmailService\Prompt\EmailPrompt;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\DummyProvider;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use PHPUnit\Framework\TestCase;
@@ -41,14 +42,14 @@ final class DummyProviderTest extends TestCase
     {
         $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
         $dummyProvider = new DummyProvider();
-        $settings = new Settings($dummyProvider);
+        $prompt = new EmailPrompt('System instruction', 'Email instruction');
 
-        self::assertInstanceOf(Respond::class, $dummyProvider->generateEmail($requestData, $settings));
+        self::assertInstanceOf(Respond::class, $dummyProvider->generateEmail($requestData, $prompt));
         self::assertSame('
             This is a dummy response to your request.
             Sender: Muhi
             Receiver: Meho
             Instructions: TestInstrukcija
-            ', ($dummyProvider->generateEmail($requestData, $settings))->getBody());
+            ', ($dummyProvider->generateEmail($requestData, $prompt))->getBody());
     }
 }

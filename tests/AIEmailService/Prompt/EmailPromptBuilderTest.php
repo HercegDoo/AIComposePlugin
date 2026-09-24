@@ -1,0 +1,133 @@
+<?php
+
+declare(strict_types=1);
+
+namespace HercegDoo\AIComposePlugin\Tests\AIEmailService\Prompt;
+
+use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
+use HercegDoo\AIComposePlugin\AIEmailService\Prompt\EmailPromptBuilder;
+use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * @internal
+ *
+ * @coversNothing
+ */
+final class EmailPromptBuilderTest extends TestCase
+{
+    private RequestData $requestData;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        if (!\defined('PHPUNIT_RUNNING')) {
+            \define('PHPUNIT_RUNNING', true);
+        }
+
+        Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive']);
+        Settings::setLengths(['short', 'default' => 'medium', 'long']);
+        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch']);
+
+        $this->requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
+    }
+
+    public function testSystemInstruction(): void
+    {
+        $prompt = (new EmailPromptBuilder())->build($this->requestData);
+
+        self::assertSame('You are a helpful personal assistant.', $prompt->getSystemInstruction());
+    }
+
+    public function testNewEmailUsesRequestDetails(): void
+    {
+        $instruction = (new EmailPromptBuilder())->build($this->requestData)->getUserInstruction();
+
+        self::assertStringContainsString('Create a casual email', $instruction);
+        self::assertStringContainsString('Without a subject', $instruction);
+        self::assertStringContainsString('*Recipient: Meho', $instruction);
+        self::assertStringContainsString('*Sender: Muhi', $instruction);
+        self::assertStringContainsString('*Language: Bosnian', $instruction);
+        self::assertStringContainsString('*Length: medium', $instruction);
+        self::assertStringContainsString('TestInstrukcija', $instruction);
+        self::assertStringContainsString('70 to 150 words', $instruction);
+        self::assertStringContainsString("Greeting\n\nContent\n\nClosing Greeting", $instruction);
+    }
+
+    public function testSubjectAndPreviousConversationAreIncluded(): void
+    {
+        $this->requestData->setSubject('Quarterly report');
+        $this->requestData->setPreviousConversation('Earlier note');
+        $this->requestData->setRecipientName('');
+
+        $instruction = (new EmailPromptBuilder())->build($this->requestData)->getUserInstruction();
+
+        self::assertStringContainsString('Subject: Quarterly report', $instruction);
+        self::assertStringContainsString('Previous conversation: Earlier note.', $instruction);
+        self::assertStringNotContainsString('*Recipient:', $instruction);
+        self::assertStringNotContainsString('Without a subject', $instruction);
+    }
+
+    public function testPluralInstructionOnlyAppearsForMultipleRecipients(): void
+    {
+        $builder = new EmailPromptBuilder();
+        $singular = $builder->build($this->requestData)->getUserInstruction();
+
+        $this->requestData->setMultipleRecipients(true);
+        $plural = $builder->build($this->requestData)->getUserInstruction();
+
+        self::assertStringNotContainsString('Address the recipient in plural form.', $singular);
+        self::assertStringContainsString('Address the recipient in plural form.', $plural);
+    }
+
+    public function testSignatureInstructionOnlyAppearsWhenSignatureExists(): void
+    {
+        $builder = new EmailPromptBuilder();
+        $withoutSignature = $builder->build($this->requestData)->getUserInstruction();
+
+        $this->requestData->setSignaturePresent(true);
+        $withSignature = $builder->build($this->requestData)->getUserInstruction();
+
+        self::assertStringNotContainsString('leave the signature and closing blank', $withoutSignature);
+        self::assertStringContainsString('leave the signature and closing blank', $withSignature);
+    }
+
+    public function testCustomStyleLengthAndLanguage(): void
+    {
+        $requestData = RequestData::make('Ime1', 'Ime2', 'Sastavi Mail', 'professional', 'long', 'low', 'Spanish');
+
+        $instruction = (new EmailPromptBuilder())->build($requestData)->getUserInstruction();
+
+        self::assertStringContainsString('Create a professional email', $instruction);
+        self::assertStringContainsString('*Language: Spanish', $instruction);
+        self::assertStringContainsString('*Length: long', $instruction);
+        self::assertStringContainsString('over 150 words', $instruction);
+        self::assertStringContainsString('Sastavi Mail', $instruction);
+    }
+
+    public function testRevisionUsesSelectedTextAndConversation(): void
+    {
+        $this->requestData->setFixText('Previously generated email', 'selected text');
+        $this->requestData->setPreviousConversation('Earlier note');
+
+        $instruction = (new EmailPromptBuilder())->build($this->requestData)->getUserInstruction();
+
+        self::assertStringContainsString('Previously generated email', $instruction);
+        self::assertStringContainsString('selected text', $instruction);
+        self::assertStringContainsString('TestInstrukcija', $instruction);
+        self::assertStringContainsString('Previous conversation: Earlier note.', $instruction);
+        self::assertStringNotContainsString('Create a casual email', $instruction);
+    }
+
+    public function testRevisionWithoutPreviousConversation(): void
+    {
+        $this->requestData->setFixText('Previous email', 'selected text');
+
+        $instruction = (new EmailPromptBuilder())->build($this->requestData)->getUserInstruction();
+
+        self::assertStringContainsString('Previous email', $instruction);
+        self::assertStringContainsString('selected text', $instruction);
+        self::assertStringNotContainsString('Previous conversation:', $instruction);
+    }
+}

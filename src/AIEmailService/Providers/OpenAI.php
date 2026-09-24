@@ -8,6 +8,7 @@ use Curl\Curl;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
 use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
+use HercegDoo\AIComposePlugin\AIEmailService\Prompt\EmailPrompt;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 
 final class OpenAI extends AbstractProvider
@@ -46,7 +47,7 @@ final class OpenAI extends AbstractProvider
     /**
      * @throws ProviderException
      */
-    public function generateEmail(RequestData $requestData): Respond
+    public function generateEmail(RequestData $requestData, EmailPrompt $prompt): Respond
     {
         $providerConfig = Settings::getProviderConfig();
         $this->apiKey = $providerConfig['apiKey'];
@@ -57,8 +58,6 @@ final class OpenAI extends AbstractProvider
         $this->maxTokens = Settings::getDefaultMaxTokens();
 
         $this->creativity = $this->creativityMap[Settings::getCreativity()];
-        $prompt = $this->prompt($requestData);
-
         $respond = $this->sendRequest($prompt);
 
         if ($this->hasErrors()) {
@@ -73,38 +72,7 @@ final class OpenAI extends AbstractProvider
         return new Respond($email);
     }
 
-    private function prompt(RequestData $requestData): string
-    {
-        $adressMultiplePeople = $requestData->getMultipleRecipients() ? ' Address the recipient in plural form.' : '';
-
-        if ($requestData->getFixText()) {
-            $prompt = " Write an identical email as this {$requestData->getPreviousGeneratedEmail()}, in the same language, but change only this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." .
-                ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '');
-        } else {
-            $prompt = "Create a {$requestData->getStyle()} email with the following specifications:" .
-                (!empty($requestData->getSubject()) ? " Subject: {$requestData->getSubject()}" : ' Without a subject') .
-                ($requestData->getRecipientName() !== '' ? " *Recipient: {$requestData->getRecipientName()}" : '') .
-                " *Sender: {$requestData->getSenderName()}" .
-                " *Language: {$requestData->getLanguage()}" .
-                " *Length: {$requestData->getLength()}." .
-                $adressMultiplePeople .
-                " Compose a well-structured email based on this instruction: {$requestData->getInstruction()}. The instruction should be rewritten in the tone and format of a {$requestData->getStyle()} email to a reader. " .
-                " If the instruction contains pronouns (like 'he', 'she', 'they', etc.), assume they refer to the recipient unless specified otherwise." .
-                " The number of words should be {$requestData->getLengthWords($requestData->getLength())}. " .
-                'Do not write the subject if provided, it is only there for your context. ' .
-                'Only greet the recipient, never the sender. ' .
-                'The format should be as follows:' . "\n" .
-                'Greeting' . "\n\n" .
-                'Content' . "\n\n" .
-                'Closing Greeting' . "\n" .
-                ($requestData->getPreviousConversation() ? " Previous conversation: {$requestData->getPreviousConversation()}." : '') .
-                ($requestData->getSignaturePresent() ? 'CRUCIAL: "Write an email without signing it or including any identifying information after the greeting, including no names or titles. Only include the message and greeting, but leave the signature and closing blank."' : '');
-        }
-
-        return $prompt;
-    }
-
-    private function sendRequest(string $prompt): \stdClass
+    private function sendRequest(EmailPrompt $prompt): \stdClass
     {
         $curl = $this->curl;
 
@@ -122,8 +90,8 @@ final class OpenAI extends AbstractProvider
             $respond = $curl->post($this->apiUrl, [
                 'model' => $this->model,
                 'messages' => [
-                    ['role' => 'system', 'content' => 'You are a helpful personal assistant.'],
-                    ['role' => 'user', 'content' => $prompt],
+                    ['role' => 'system', 'content' => $prompt->getSystemInstruction()],
+                    ['role' => 'user', 'content' => $prompt->getUserInstruction()],
                 ],
                 'max_tokens' => $this->maxTokens,
                 'temperature' => $this->creativity,
