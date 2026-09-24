@@ -4,6 +4,7 @@ module.exports = {
   entry: {
     compose: "./assets/src/compose.js",
     settings: "./assets/src/settings.js",
+    summary: "./assets/src/summary.js",
   },
   output: {
     filename: "[name].bundle.js",

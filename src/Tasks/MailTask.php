@@ -52,6 +52,9 @@ class MailTask extends AbstractTask
         if (isset($args['template']) && $args['template'] == 'compose') {
             $this->plugin->include_script('assets/dist/compose.bundle.js');
         }
+        if ($this->summaryEnabled() && \in_array($args['template'] ?? null, ['mail', 'message'], true)) {
+            $this->plugin->include_script('assets/dist/summary.bundle.js');
+        }
 
         return $args;
     }
@@ -165,7 +168,14 @@ class MailTask extends AbstractTask
             $this->loadTranslations();
             $rcmail->output->set_env('aiPluginOptions', $settings);
             $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
+        } elseif ($this->summaryEnabled()) {
+            $this->loadTranslations();
         }
+    }
+
+    private function summaryEnabled(): bool
+    {
+        return (bool) \rcmail::get_instance()->config->get('aiSummaryEnabled', true);
     }
 
     private function isPluginVisible(): bool

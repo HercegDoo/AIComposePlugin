@@ -153,6 +153,28 @@ final class OpenAITest extends TestCase
         self::assertInstanceOf(Respond::class, $return);
     }
 
+    public function testSummaryCompletionUsesItsOwnConfiguration(): void
+    {
+        Settings::setProviderConfig(['apiKey' => 'compose-key', 'model' => 'gpt-5']);
+        $curl = $this->createMock(Curl::class);
+        $curl->expects(self::once())->method('post')->with(
+            self::equalTo('https://api.openai.com/v1/chat/completions'),
+            self::callback(static function (array $payload): bool {
+                return $payload['model'] === 'gpt-4.1'
+                    && $payload['max_tokens'] === 1200
+                    && $payload['temperature'] === 0.0
+                    && $payload['messages'][1]['content'] === 'Summarize this message';
+            })
+        )->willReturn((object) ['choices' => [(object) ['message' => (object) ['content' => 'Summary']]]]);
+
+        $result = (new OpenAI($curl))->complete(
+            new EmailPrompt('Summary system prompt', 'Summarize this message'),
+            ['apiKey' => 'summary-key', 'model' => 'gpt-4.1', 'maxTokens' => 1200, 'temperature' => 0]
+        );
+
+        self::assertSame('Summary', $result);
+    }
+
     public function testGenerateEmailProviderException()
     {
         $mockCurl = $this->getMockBuilder(Curl::class)
@@ -200,9 +222,8 @@ final class OpenAITest extends TestCase
         $curlMock->expects(self::once())
             ->method('setOpts')
             ->with([\CURLOPT_TIMEOUT => 60,
-                // not verifying the ssl certificate
-                \CURLOPT_SSL_VERIFYPEER => false,
-                \CURLOPT_SSL_VERIFYHOST => false, ])
+                \CURLOPT_SSL_VERIFYPEER => true,
+                \CURLOPT_SSL_VERIFYHOST => 2, ])
         ;
 
         self::assertInstanceOf(Respond::class, $OpenAi->generateEmail($this->requestData, $this->prompt));

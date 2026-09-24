@@ -28,6 +28,8 @@ The AI Email Generator plugin for Roundcube enhances the email composing experie
      - Users can set default values for style, length, creativity, and language. These default settings will be automatically applied during email generation, allowing for a more streamlined experience.
 5. **Seamless Integration:**
    - Adds a new button to the Compose page in Roundcube that opens a prompt for email generation.
+6. **Translated incoming summaries:**
+   - Detects the incoming email language and shows an AI summary in the active Roundcube interface language on hover and when opening a message.
 
 ## Install
 
@@ -88,6 +90,14 @@ Prompt wording lives in `src/AIEmailService/Prompt/EmailPromptBuilder.php`. It b
 Subject wording lives in `src/AIEmailService/Prompt/SubjectPromptBuilder.php`. The same provider handles both email and subject prompts; `AIEmail::generateSubject()` cleans the returned line before it reaches Roundcube.
 
 `AIEmail::generate()` builds an `EmailPrompt` before calling the configured provider. It also accepts a `PromptBuilderInterface` implementation as an optional second argument when a different prompt strategy is needed. A new provider implements `InterfaceProvider::generateEmail(RequestData $requestData, EmailPrompt $prompt)` and translates those instructions into its API's request format. Provider classes handle transport and responses; they do not need their own copy of the email prompt. Register a new provider in `Settings::setProvider()`, then configure `aiComposeProvider` and `aiProvider<ProviderName>Config`; task initialization loads that configuration by provider name.
+
+Incoming summary wording lives in `src/AIEmailService/Summary/SummaryPromptBuilder.php`. Summary providers implement `CompletionProviderInterface` and receive that shared prompt. OpenAI is shared with compose; Ollama is available for local summaries.
+
+## Incoming email summaries
+
+With `aiSummaryEnabled = true`, hovering over a message row for a moment shows a translated summary. Opening a message loads the summary above its body. **Show original** reveals the summary in the detected source language, and **Translate again** requests a fresh result. The plugin uses the active Roundcube session language; changing the UI language yields a new cached translation. Summaries are generated on demand and cached for seven days in Roundcube's per-user database cache. Refresh bypasses that cache.
+
+By default, summaries use the configured OpenAI key and model. `aiSummaryOpenAIConfig` can override those settings, including `model`, `apiKey`, and `maxTokens`. Set `aiSummaryProvider = 'Ollama'` and configure `aiSummaryOllamaConfig['model']` to use a local Ollama server; its default URL is `http://127.0.0.1:11434/api/chat`. The selected provider receives up to 12,000 characters from the incoming message plus its subject, so choose a local provider if the message must stay on your server. The cache stores only the generated summaries, detected language, and translation. Set `aiSummaryEnabled = false` to disable this feature.
 
 ## OpenAI models
 

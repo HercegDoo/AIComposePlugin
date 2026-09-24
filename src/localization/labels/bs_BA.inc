@@ -183,3 +183,12 @@ $labels['ai_help_example_15'] = 'smisli 10 ideja o strategijama za kreiranje efi
 $labels['ai_help_example_16'] = 'profesionalnu e-poruku o ostavci, uz najavu od 1 mjeseca prema ugovoru, kompanija se zove ACME';
 $labels['ai_help_example_17'] = 'uvjerljiv email za traženje promocije, nagovještavajući da bih mogao dati ostavku ako je ne dobijem jer postoje druge prilike';
 $labels['ai_help_example_18'] = 'Drago mi je da smo se jučer sreli na konferenciji, uživao sam u našem razgovoru, ostanimo u kontaktu';
+
+// Incoming email summaries.
+$labels['ai_summary'] = 'AI sažetak';
+$labels['ai_summary_loading'] = 'Pravim sažetak…';
+$labels['ai_summary_error'] = 'Sažetak nije dostupan. Pokušajte ponovo.';
+$labels['ai_show_original'] = 'Prikaži original';
+$labels['ai_hide_original'] = 'Sakrij original';
+$labels['ai_translate_again'] = 'Prevedi ponovo';
+$labels['ai_original_language'] = 'Original';

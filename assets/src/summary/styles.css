@@ -1,0 +1,50 @@
+.aic-summary-card {
+  margin: 0.75rem 0 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d4dbe3;
+  border-radius: 0.4rem;
+  background: #f5f8fc;
+}
+
+.aic-summary-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.aic-summary-head button {
+  margin-left: 0.5rem;
+  border: 0;
+  background: transparent;
+  color: #2c70b8;
+  cursor: pointer;
+}
+
+.aic-summary-head button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.aic-summary-card p {
+  margin: 0.5rem 0 0;
+  white-space: pre-wrap;
+}
+
+.aic-summary-original {
+  color: #66717d;
+}
+
+.aic-summary-preview {
+  position: fixed;
+  z-index: 1100;
+  width: min(330px, calc(100vw - 24px));
+  max-height: 130px;
+  overflow: auto;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #d4dbe3;
+  border-radius: 0.4rem;
+  background: #fff;
+  box-shadow: 0 4px 16px #0002;
+  pointer-events: none;
+}

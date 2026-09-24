@@ -184,3 +184,12 @@ $labels['ai_help_example_15'] = 'Überlege dir 10 Ideen für Strategien, um eine
 $labels['ai_help_example_16'] = 'Professionelle Rücktritts-E-Mail mit einer Ankündigung von 1 Monat gemäß Vertrag. Die Firma heißt ACME.';
 $labels['ai_help_example_17'] = 'Überzeugende E-Mail zur Anfrage einer Beförderung, mit dem Hinweis, dass ich möglicherweise kündigen könnte, wenn ich sie nicht erhalte, da es andere Möglichkeiten gibt.';
 $labels['ai_help_example_18'] = 'Ich freue mich, dass wir uns gestern auf der Konferenz getroffen haben. Ich habe unser Gespräch genossen, lass uns in Kontakt bleiben.';
+
+// Incoming email summaries.
+$labels['ai_summary'] = 'KI-Zusammenfassung';
+$labels['ai_summary_loading'] = 'Zusammenfassung wird erstellt…';
+$labels['ai_summary_error'] = 'Zusammenfassung nicht verfügbar. Bitte erneut versuchen.';
+$labels['ai_show_original'] = 'Original anzeigen';
+$labels['ai_hide_original'] = 'Original ausblenden';
+$labels['ai_translate_again'] = 'Erneut übersetzen';
+$labels['ai_original_language'] = 'Original';

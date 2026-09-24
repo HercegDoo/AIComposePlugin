@@ -11,7 +11,7 @@ use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
 use HercegDoo\AIComposePlugin\AIEmailService\Prompt\EmailPrompt;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 
-final class OpenAI extends AbstractProvider
+final class OpenAI extends AbstractProvider implements CompletionProviderInterface
 {
     private const DEFAULT_API_URL = 'https://api.openai.com/v1/chat/completions';
 
@@ -49,15 +49,34 @@ final class OpenAI extends AbstractProvider
      */
     public function generateEmail(RequestData $requestData, EmailPrompt $prompt): Respond
     {
-        $providerConfig = Settings::getProviderConfig();
-        $this->apiKey = $providerConfig['apiKey'];
-        $this->apiUrl = !empty($providerConfig['apiUrl'])
-            ? $providerConfig['apiUrl']
-            : self::DEFAULT_API_URL;
-        $this->model = $providerConfig['model'];
-        $this->maxTokens = Settings::getDefaultMaxTokens();
+        return new Respond($this->complete($prompt, Settings::getProviderConfig()));
+    }
 
-        $this->creativity = $this->creativityMap[Settings::getCreativity()];
+    /**
+     * @param array<string, mixed> $providerConfig
+     *
+     * @throws ProviderException
+     */
+    public function complete(EmailPrompt $prompt, array $providerConfig): string
+    {
+        $apiKey = $providerConfig['apiKey'] ?? null;
+        $apiUrl = $providerConfig['apiUrl'] ?? self::DEFAULT_API_URL;
+        $model = $providerConfig['model'] ?? null;
+        $maxTokens = $providerConfig['maxTokens'] ?? Settings::getDefaultMaxTokens();
+        if (!\is_string($apiKey) || $apiKey === '' || !\is_string($apiUrl) || $apiUrl === ''
+            || !\is_string($model) || $model === '' || !\is_int($maxTokens) || $maxTokens < 1) {
+            throw new ProviderException('Invalid OpenAI configuration');
+        }
+        $this->apiKey = $apiKey;
+        $this->apiUrl = $apiUrl;
+        $this->model = $model;
+        $this->maxTokens = $maxTokens;
+
+        $temperature = $providerConfig['temperature'] ?? $this->creativityMap[Settings::getCreativity()];
+        if (!\is_int($temperature) && !\is_float($temperature)) {
+            throw new ProviderException('Invalid OpenAI temperature');
+        }
+        $this->creativity = (float) $temperature;
         $respond = $this->sendRequest($prompt);
 
         if ($this->hasErrors()) {
@@ -73,7 +92,7 @@ final class OpenAI extends AbstractProvider
             throw new ProviderException('No email content found');
         }
 
-        return new Respond($email);
+        return $email;
     }
 
     private function sendRequest(EmailPrompt $prompt): \stdClass
@@ -85,9 +104,8 @@ final class OpenAI extends AbstractProvider
 
         $curl->setOpts([
             \CURLOPT_TIMEOUT => 60,
-            // not verifying the ssl certificate
-            \CURLOPT_SSL_VERIFYPEER => false,
-            \CURLOPT_SSL_VERIFYHOST => false,
+            \CURLOPT_SSL_VERIFYPEER => true,
+            \CURLOPT_SSL_VERIFYHOST => 2,
         ]);
 
         try {
