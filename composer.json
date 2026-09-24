@@ -22,8 +22,7 @@
     "php": ">=7.4",
     "ext-curl": "*",
     "php-curl-class/php-curl-class": "^9.19",
-    "ext-json": "*",
-    "roundcube/plugin-installer": "^0.3.0"
+    "ext-json": "*"
   },
   "repositories": [
     {
@@ -66,7 +65,8 @@
     "nexusphp/cs-config": "^3.18",
     "mockery/mockery": "^1.6",
     "dg/bypass-finals": "^1.8",
-    "phpstan/phpstan": "^1.11"
+    "phpstan/phpstan": "^1.11",
+    "roundcube/plugin-installer": "^0.3.0"
   },
   "scripts": {
     "cs-fixer": "php-cs-fixer fix --ansi --verbose --diff",

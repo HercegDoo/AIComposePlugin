@@ -1,8 +1,8 @@
 <?php return array(
     'root' => array(
         'name' => 'hercegdoo/aicomposeplugin',
-        'pretty_version' => '1.0.5',
-        'version' => '1.0.5.0',
+        'pretty_version' => '2.0.0',
+        'version' => '2.0.0.0',
         'reference' => null,
         'type' => 'roundcube-plugin',
         'install_path' => __DIR__ . '/../../',
@@ -11,8 +11,8 @@
     ),
     'versions' => array(
         'hercegdoo/aicomposeplugin' => array(
-            'pretty_version' => '1.0.5',
-            'version' => '1.0.5.0',
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
             'reference' => null,
             'type' => 'roundcube-plugin',
             'install_path' => __DIR__ . '/../../',
