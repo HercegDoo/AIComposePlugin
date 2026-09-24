@@ -45,6 +45,15 @@ final class RequestDataTest extends TestCase
 
         self::assertFalse($requestData->getMultipleRecipients());
         self::assertFalse($requestData->getSignaturePresent());
+        self::assertFalse($requestData->isHtmlMode());
+    }
+
+    public function testHtmlModeCanBeEnabled(): void
+    {
+        $requestData = RequestData::make('Meho', 'Muhi', 'TestInstrukcija');
+
+        self::assertSame($requestData, $requestData->setHtmlMode(true));
+        self::assertTrue($requestData->isHtmlMode());
     }
 
     public function testConstructorWithValues()

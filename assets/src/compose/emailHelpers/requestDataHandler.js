@@ -27,6 +27,7 @@ export function getRequestDataFields() {
     previousConversation: "",
     fixText: "",
     previousGeneratedEmailText: "",
+    htmlMode: rcmail.editor?.is_html() ? "1" : "0",
     multipleRecipients: getRecipientInfo().length > 1 ? "yes" : ""
   };
 }

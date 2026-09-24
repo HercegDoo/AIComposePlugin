@@ -143,4 +143,35 @@ final class EmailPromptBuilderTest extends TestCase
         self::assertStringContainsString('End the email after its message body', $instruction);
         self::assertStringNotContainsString('Closing Greeting', $instruction);
     }
+
+    public function testHtmlModeRequestsSafeEditorMarkupAndCountsOnlyVisibleWords(): void
+    {
+        $this->requestData->setHtmlMode(true);
+
+        $instruction = (new EmailPromptBuilder())->build($this->requestData)->getUserInstruction();
+
+        self::assertStringContainsString('70 to 150 words', $instruction);
+        self::assertStringContainsString('HTML fragment suitable for the Roundcube TinyMCE email editor', $instruction);
+        self::assertStringContainsString('Count only visible words', $instruction);
+        self::assertStringContainsString('HTML tags and attributes do not count', $instruction);
+        self::assertStringContainsString('without Markdown fences', $instruction);
+    }
+
+    public function testHtmlRevisionPreservesHtmlFormat(): void
+    {
+        $this->requestData->setHtmlMode(true);
+        $this->requestData->setFixText('<p>Hello <strong>Meho</strong></p>', 'Meho');
+
+        $instruction = (new EmailPromptBuilder())->build($this->requestData)->getUserInstruction();
+
+        self::assertStringContainsString('<p>Hello <strong>Meho</strong></p>', $instruction);
+        self::assertStringContainsString('HTML fragment suitable for the Roundcube TinyMCE email editor', $instruction);
+    }
+
+    public function testPlainModeExplicitlyRequestsText(): void
+    {
+        $instruction = (new EmailPromptBuilder())->build($this->requestData)->getUserInstruction();
+
+        self::assertStringContainsString('Return only plain text, without HTML or Markdown formatting.', $instruction);
+    }
 }

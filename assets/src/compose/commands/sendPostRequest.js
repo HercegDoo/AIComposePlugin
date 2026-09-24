@@ -5,7 +5,8 @@ import {
   signatureCheckedPreviousConversation,
   stripGeneratedClosing,
 } from "../emailHelpers/signaturesHandler";
-import { getFormattedMail, translation } from "../../utils";
+import { translation } from "../../utils";
+import { stripGeneratedHtmlClosing } from "../emailHelpers/htmlEmail";
 import { display_messages, errorPresent, validateFields } from "../emailHelpers/validateFields";
 
 export default class GenerateMail {
@@ -29,8 +30,11 @@ export default class GenerateMail {
   #generatemail(additionalData = null) {
     const requestData = getRequestDataFields();
     //Prethodni razgovor sa izvrsenom provjerom potpisa 
-    requestData.previousGeneratedEmail= getFormattedMail( `${getPreviousGeneratedInsertedEmail()}`);
-    const previousConversationObject = signatureCheckedPreviousConversation(requestData.previousGeneratedEmail);
+    const previousGeneratedText = getPreviousGeneratedInsertedEmail();
+    requestData.previousGeneratedEmail = requestData.htmlMode === "1"
+      ? getPreviousGeneratedInsertedEmail("html") || previousGeneratedText
+      : previousGeneratedText;
+    const previousConversationObject = signatureCheckedPreviousConversation(previousGeneratedText);
     requestData.previousConversation = previousConversationObject.previousConversation;
     requestData.signaturePresent = previousConversationObject.signaturePresent;
     requestData.instructions = additionalData ? (additionalData.passedInstruction === "" ? requestData.instructions : additionalData.passedInstruction) : requestData.instructions;
@@ -58,6 +62,7 @@ export default class GenerateMail {
           instructions: `${requestData.instructions}`,
           style: `${requestData.style}`,
           length: `${requestData.length}`,
+          htmlMode: requestData.htmlMode,
           creativity: `${requestData.creativity}`,
           language: `${requestData.language}`,
           previousConversation: `${requestData.previousConversation}`,
@@ -75,12 +80,11 @@ export default class GenerateMail {
         const response = data && data["respond"] !== undefined ? data["respond"] : "";
         insertEmail(
           requestData.signaturePresent
-            ? stripGeneratedClosing(
-                response,
-                requestData.senderName,
-                previousConversationObject.signatureText
-              )
-            : response
+            ? requestData.htmlMode === "1"
+              ? stripGeneratedHtmlClosing(response, requestData.senderName, previousConversationObject.signatureText)
+              : stripGeneratedClosing(response, requestData.senderName, previousConversationObject.signatureText)
+            : response,
+          requestData.htmlMode === "1"
         );
         const instructionTextArea = document.getElementById('aic-instruction');
         //Ako nema nista u instrukciji, ubaci datu instrukciju(za slucaj koristenja predefinisane instrukcije)

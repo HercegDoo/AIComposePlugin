@@ -31,6 +31,7 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
     private ?string $signaturePresent;
 
     private ?string $multipleRecipients;
+    private ?string $htmlMode;
 
     private RequestData $aiRequestData;
 
@@ -84,6 +85,10 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
         $this->previousGeneratedEmailText = Request::postString('previousGeneratedEmailText');
         $this->signaturePresent = Request::postString('signaturePresent');
         $this->multipleRecipients = Request::postString('multipleRecipients');
+        $this->htmlMode = Request::postString('htmlMode', '0');
+        if (!\in_array($this->htmlMode, ['0', '1'], true)) {
+            $this->htmlMode = '0';
+        }
         $this->nameValidation($this->senderName);
         $this->nameValidation($this->recipientName, true);
         $this->selectValidation($this->style, $styles, 'style');
@@ -107,6 +112,7 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
         $this->aiRequestData->setFixText($this->previousGeneratedEmailText, (string) $this->fixText);
         $this->aiRequestData->setSignaturePresent((bool) $this->signaturePresent);
         $this->aiRequestData->setMultipleRecipients((bool) $this->multipleRecipients);
+        $this->aiRequestData->setHtmlMode($this->htmlMode === '1');
     }
 
     private function hasNoLetters(string $string): bool

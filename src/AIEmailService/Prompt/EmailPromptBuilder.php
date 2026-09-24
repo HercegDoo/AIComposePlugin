@@ -23,7 +23,8 @@ final class EmailPromptBuilder implements PromptBuilderInterface
     {
         return " Write an identical email as this {$requestData->getPreviousGeneratedEmail()}, in the same language, but change only this text snippet from that same email: {$requestData->getFixText()} based on this instruction {$requestData->getInstruction()}." .
             $this->previousConversationInstruction($requestData) .
-            $this->existingSignatureInstruction($requestData);
+            $this->existingSignatureInstruction($requestData) .
+            $this->outputFormatInstruction($requestData);
     }
 
     private function buildNewEmailInstruction(RequestData $requestData): string
@@ -47,7 +48,20 @@ final class EmailPromptBuilder implements PromptBuilderInterface
             'Content' . "\n\n" .
             ($requestData->getSignaturePresent() ? '' : 'Closing Greeting' . "\n") .
             $this->previousConversationInstruction($requestData) .
-            $this->existingSignatureInstruction($requestData);
+            $this->existingSignatureInstruction($requestData) .
+            $this->outputFormatInstruction($requestData);
+    }
+
+    private function outputFormatInstruction(RequestData $requestData): string
+    {
+        if (!$requestData->isHtmlMode()) {
+            return ' Return only plain text, without HTML or Markdown formatting.';
+        }
+
+        return ' Return only an HTML fragment suitable for the Roundcube TinyMCE email editor, without Markdown fences or document tags.' .
+            ' Use only p, br, strong, em, u, ul, ol, li, blockquote, a, h1, h2, h3, and simple table, thead, tbody, tr, th, td tags.' .
+            ' For links, use only http, https, or mailto URLs in href. Do not use images, inline styles, scripts, or other attributes.' .
+            ' Count only visible words toward the requested email length; HTML tags and attributes do not count.';
     }
 
     private function existingSignatureInstruction(RequestData $requestData): string

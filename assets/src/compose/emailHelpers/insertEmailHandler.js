@@ -1,47 +1,79 @@
+import {
+  htmlToPlainText,
+  plainTextToHtml,
+  sanitizeHtmlMessage,
+} from "./htmlEmail";
 
-let editorHTML;
-let previousGeneratedEmail = "";
+const generatedBlockId = "aic-generated-email";
+let previousGeneratedEmailText = "";
+let previousGeneratedEmailHtml = "";
 let popupVisible = false;
 let mailGenerated = false;
-export function insertEmail(generatedEmail) {
+export function insertEmail(generatedEmail, responseIsHtml = false) {
+  const htmlEditor = rcmail.editor?.is_html() ? rcmail.editor.editor : null;
 
-   regulateInsertion(generatedEmail);
+  if (htmlEditor) {
+    const formattedContent = responseIsHtml
+      ? sanitizeHtmlMessage(generatedEmail)
+      : plainTextToHtml(generatedEmail);
+    if (!htmlToPlainText(formattedContent)) {
+      return;
+    }
 
-}
+    const body = htmlEditor.getBody();
 
-function regulateInsertion(emailToInsert) {
-  const targetTextArea = document.getElementById("composebody");
-  let formattedContent = emailToInsert;
+    htmlEditor.undoManager.transact(() => {
+      body.querySelector(`#${generatedBlockId}`)?.remove();
 
-  if (editorHTML && tinymce.activeEditor) {
-    const escaped = document.createElement("div");
-    escaped.textContent = emailToInsert;
-    formattedContent = escaped.innerHTML.replace(/\n/g, "<br>");
-    const content = editorHTML.getContent().replace(previousGeneratedEmail, "");
-    editorHTML.setContent(`${formattedContent}${content}`);
-    previousGeneratedEmail = `<p>${formattedContent.replace(/<br>/g, '<br />')}</p>`;
+      const generatedBlock = htmlEditor.getDoc().createElement("div");
+      generatedBlock.id = generatedBlockId;
+      generatedBlock.innerHTML = formattedContent;
+      body.insertBefore(generatedBlock, body.firstChild);
+
+      previousGeneratedEmailText = generatedBlock.textContent ?? "";
+      previousGeneratedEmailHtml = generatedBlock.innerHTML;
+    });
+
+    htmlEditor.nodeChanged();
+    htmlEditor.save();
+    htmlEditor.setDirty(true);
   } else {
-    targetTextArea.value = targetTextArea.value.replace(previousGeneratedEmail, "");
+    const targetTextArea = document.getElementById("composebody");
+    const text = responseIsHtml
+      ? htmlToPlainText(generatedEmail)
+      : generatedEmail;
+    if (!text.trim()) {
+      return;
+    }
+
+    const oldText = previousGeneratedEmailHtml
+      ? htmlToPlainText(previousGeneratedEmailHtml)
+      : previousGeneratedEmailText;
+
+    if (oldText) {
+      targetTextArea.value = targetTextArea.value.replace(oldText, "");
+    }
+
     const existingContent = targetTextArea.value;
-    const separator = existingContent && !existingContent.startsWith("\n") ? "\n\n" : "";
-    targetTextArea.value = `${emailToInsert}${separator}${existingContent}`;
-    previousGeneratedEmail = emailToInsert;
+    const separator =
+      existingContent && !existingContent.startsWith("\n") ? "\n\n" : "";
+    targetTextArea.value = `${text}${separator}${existingContent}`;
+    previousGeneratedEmailText = text;
+    previousGeneratedEmailHtml = "";
   }
-  if(!mailGenerated){
+
+  if (!mailGenerated) {
     popupVisible = true;
     mailGenerated = true;
   }
 }
 
-
-rcmail.addEventListener("editor-load", (e) => {
-  editorHTML = e?.ref?.editor;
-});
-
- export function getPreviousGeneratedInsertedEmail(){
-  return previousGeneratedEmail;
+export function getPreviousGeneratedInsertedEmail(format = "text") {
+  return format === "html"
+    ? previousGeneratedEmailHtml
+    : previousGeneratedEmailText;
 }
 
-export function popupCanBeVisible(){
-   return popupVisible;
+export function popupCanBeVisible() {
+  return popupVisible;
 }
