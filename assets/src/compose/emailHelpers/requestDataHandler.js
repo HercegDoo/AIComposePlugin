@@ -1,7 +1,6 @@
 import { getRecipientData, getRecipientInfo } from "./recipientDataHandler";
 import { getSenderInfo, processSenderData } from "./senderDataHandler";
 import { getSubject } from "./subjectHandler";
-import { signatureCheckedPreviousConversation } from "./signaturesHandler";
 
 export function getRequestDataFields() {
   const styleElement = document.getElementById("aic_style_select"),
