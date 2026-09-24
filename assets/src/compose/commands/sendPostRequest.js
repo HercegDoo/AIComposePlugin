@@ -8,6 +8,7 @@ import {
 import { translation } from "../../utils";
 import { stripGeneratedHtmlClosing } from "../emailHelpers/htmlEmail";
 import { display_messages, errorPresent, validateFields } from "../emailHelpers/validateFields";
+import { getSubject, setSubject } from "../emailHelpers/subjectHandler";
 
 export default class GenerateMail {
 
@@ -77,6 +78,9 @@ export default class GenerateMail {
         true
       )
       .done(function(data){
+        if (!data || data.status !== "success") {
+          return;
+        }
         const response = data && data["respond"] !== undefined ? data["respond"] : "";
         insertEmail(
           requestData.signaturePresent
@@ -86,6 +90,12 @@ export default class GenerateMail {
             : response,
           requestData.htmlMode === "1"
         );
+        if (!requestData.subject.trim() && !getSubject().trim() && data.subject) {
+          setSubject(data.subject);
+        }
+        if (data.subjectError) {
+          rcmail.display_message(translation("ai_request_error"), "warning");
+        }
         const instructionTextArea = document.getElementById('aic-instruction');
         //Ako nema nista u instrukciji, ubaci datu instrukciju(za slucaj koristenja predefinisane instrukcije)
         if(additionalData === null){

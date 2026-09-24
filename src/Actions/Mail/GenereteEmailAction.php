@@ -43,6 +43,19 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
             $this->preparePostData();
             $email = AIEmail::generate($this->aiRequestData);
             $respond = $email->getBody();
+            $subject = null;
+            $subjectError = false;
+            if (trim((string) $this->subject) === '') {
+                try {
+                    $subject = AIEmail::normalizeSubject($email->getSubject() ?? '');
+                    if ($subject === '') {
+                        $subject = AIEmail::generateSubject($this->aiRequestData, $respond);
+                    }
+                } catch (\Throwable $e) {
+                    $subjectError = true;
+                    error_log('AIComposePlugin subject generation failed: ' . $e::class);
+                }
+            }
 
             if ($this->hasErrors()) {
                 $status = 'error';
@@ -51,6 +64,8 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
             echo json_encode([
                 'status' => $status,
                 'respond' => $respond,
+                'subject' => $subject,
+                'subjectError' => $subjectError,
             ]);
         } catch (\Throwable $e) {
             error_log('Error message: ' . $e->getMessage());

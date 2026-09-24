@@ -101,6 +101,8 @@ $labels['ai_request_error'] = 'Dienst niet beschikbaar. Probeer het later nog ee
 
 $labels['ai_insert_email'] = 'E-mail invoegen';
 $labels['ai_generate_email'] = 'E-mail genereren';
+$labels['ai_generate_subject'] = 'Onderwerp voorstellen';
+$labels['ai_subject_requires_content'] = 'Schrijf een e-mail of voer instructies in voordat u een onderwerp laat voorstellen.';
 $labels['ai_generate_again'] = 'Opnieuw genereren';
 $labels['ai_stop_generating'] = 'Stop met genereren';
 $labels['ai_error_help_button'] = 'Help';

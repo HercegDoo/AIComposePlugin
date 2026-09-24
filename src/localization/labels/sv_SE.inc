@@ -101,6 +101,8 @@ $labels['ai_request_error'] = 'Tjänsten är inte tillgänglig. Försök igen se
 
 $labels['ai_insert_email'] = 'Infoga e-post';
 $labels['ai_generate_email'] = 'Generera e-post';
+$labels['ai_generate_subject'] = 'Föreslå ämne';
+$labels['ai_subject_requires_content'] = 'Skriv ett meddelande eller instruktioner innan ett ämne föreslås.';
 $labels['ai_generate_again'] = 'Generera igen';
 $labels['ai_stop_generating'] = 'Avbryt generering';
 $labels['ai_error_help_button'] = 'Hjälp';

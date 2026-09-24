@@ -427,3 +427,17 @@ background-color: #374549;
   }
 }
 /*# sourceMappingURL=styles.css.map */
+.aic-subject-control {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.aic-subject-control #compose-subject {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.aic-subject-control button {
+  flex: 0 0 auto;
+}

@@ -101,6 +101,8 @@ $labels['ai_request_error'] = 'Usluga nije dostupna. Molimo pokušajte ponovo ka
 
 $labels['ai_insert_email'] = 'Umetni e-mail';
 $labels['ai_generate_email'] = 'Generiši e-mail';
+$labels['ai_generate_subject'] = 'Predloži naslov';
+$labels['ai_subject_requires_content'] = 'Napišite poruku ili upute prije prijedloga naslova.';
 $labels['ai_generate_again'] = 'Generiši ponovo';
 $labels['ai_stop_generating'] = 'Zaustavi Generisanje';
 $labels['ai_error_help_button'] = 'Pomoć';

@@ -81,6 +81,45 @@ final class AIEmailTest extends TestCase
         self::assertSame('Shared user instruction', $provider->receivedPrompt->getUserInstruction());
     }
 
+    public function testGenerateSubjectUsesDedicatedPromptAndCleansProviderOutput(): void
+    {
+        $provider = new class extends DummyProvider {
+            public ?EmailPrompt $receivedPrompt = null;
+
+            public function generateEmail(RequestData $requestData, EmailPrompt $prompt): Respond
+            {
+                $this->receivedPrompt = $prompt;
+
+                return new Respond("Subject: <strong>Project update</strong>\r\nIgnore this line");
+            }
+        };
+
+        $this->setPrivateProperty(Settings::class, 'provider', $provider);
+
+        self::assertSame('Project update', AIEmail::generateSubject(self::$requestData, 'Draft about project progress', 'Older subject'));
+        self::assertStringContainsString('Draft about project progress', $provider->receivedPrompt->getUserInstruction());
+        self::assertStringContainsString('Older subject', $provider->receivedPrompt->getUserInstruction());
+    }
+
+    public function testGenerateSubjectRejectsEmptyProviderContent(): void
+    {
+        $provider = new class extends DummyProvider {
+            public function generateEmail(RequestData $requestData, EmailPrompt $prompt): Respond
+            {
+                return new Respond("\n");
+            }
+        };
+
+        $this->setPrivateProperty(Settings::class, 'provider', $provider);
+        $this->expectException(ProviderException::class);
+        AIEmail::generateSubject(self::$requestData, 'Draft');
+    }
+
+    public function testNormalizeSubjectRemovesMarkdownLabelAndAdditionalLines(): void
+    {
+        self::assertSame('Project update', AIEmail::normalizeSubject("**Subject:** Project update\nSecond line"));
+    }
+
     public function testGenerateEmailWithNonExistingProviderException()
     {
         $this->expectException(\InvalidArgumentException::class);
