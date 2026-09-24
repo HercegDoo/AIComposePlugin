@@ -56,7 +56,7 @@ export default class GenerateMail {
     rcmail.lock_frame(document.body);
     rcmail
       .http_post(
-        "plugin.AIComposePlugin_GenereteEmailAction",
+        "plugin.aicomposeplugin_GenereteEmailAction",
         {
           senderName: `${requestData.senderName}`,
           recipientName: `${requestData.recipientName}`,

@@ -4,17 +4,17 @@ This document applies to the entire repository. Before making changes, inspect t
 
 ## Project overview
 
-- `AIComposePlugin` is a Roundcube plugin for composing and revising email with an AI service. It runs in the `mail` and `settings` tasks, and its HTML targets Roundcube's `elastic` skin.
-- PHP code uses the `HercegDoo\AIComposePlugin\` namespace, mapped to `src/` by Composer PSR-4 autoloading. The root `AIComposePlugin.php` file is the entry point loaded by Roundcube.
-- Roundcube 1.6.11 is a development dependency. `composer.json` declares PHP `>=7.4`, but the existing code uses PHP 8.0 functions such as `str_contains` and `str_starts_with`; GitHub Actions run on PHP 8.0. Do not claim PHP 7.4 compatibility without resolving and verifying this discrepancy.
+- `aicomposeplugin` is a Roundcube plugin for composing and revising email with an AI service. It runs in the `mail` and `settings` tasks, and its HTML targets Roundcube's `elastic` skin.
+- PHP code uses the `HercegDoo\AIComposePlugin\` namespace, mapped to `src/` by Composer PSR-4 autoloading. Roundcube loads `plugins/aicomposeplugin/aicomposeplugin.php` and instantiates class `aicomposeplugin`; the PHP namespace retains its existing casing.
+- Roundcube 1.6.11 is the version pinned for development; `roundcube/plugin-installer` is a runtime dependency. `composer.json` declares PHP `>=7.4`, but the existing code uses PHP 8.0 functions such as `str_contains` and `str_starts_with`; GitHub Actions run on PHP 8.0. Do not claim PHP 7.4 compatibility without resolving and verifying this discrepancy.
 - Real provider requests require `ext-curl` and `php-curl-class/php-curl-class`. Frontend development requires Node, npm, and webpack.
-- To install the plugin in Roundcube, place it in `plugins/AIComposePlugin` and add `AIComposePlugin` to Roundcube's plugin list. See `README.md` for installation and usage.
+- To install the plugin in Roundcube, run `composer require hercegdoo/aicomposeplugin` from the Roundcube root or place it in `plugins/aicomposeplugin`; enable `aicomposeplugin` in Roundcube's plugin list. See `README.md` for migration from the former uppercase folder.
 
 ## Repository map
 
 | Path | Purpose |
 | --- | --- |
-| `AIComposePlugin.php`, `src/AbstractAIComposePlugin.php` | Entry point, task selection, and plugin initialization. |
+| `aicomposeplugin.php`, `src/AbstractAIComposePlugin.php` | Entry point, task selection, and plugin initialization. |
 | `src/Tasks/` | Roundcube hooks, action registration, configuration, preferences, and resource loading. |
 | `src/Actions/Mail/`, `src/Actions/Settings/` | HTTP actions for email generation and saved-instruction CRUD. |
 | `src/AIEmailService/` | Request/response models, shared prompt builder, defaults, provider interface, and OpenAI implementation. |
@@ -22,16 +22,16 @@ This document applies to the entire repository. Before making changes, inspect t
 | `skins/elastic/templates/` | Roundcube HTML templates and fragments for compose and settings screens. |
 | `assets/src/` | JavaScript and CSS sources for compose and settings. |
 | `assets/dist/` | Tracked webpack bundles loaded by PHP in production. |
-| `src/localization/labels/`, `src/localization/messages/` | Translations under the `AIComposePlugin.` prefix. |
+| `src/localization/labels/`, `src/localization/messages/` | Translations under the `aicomposeplugin.` prefix. |
 | `tests/AIEmailService/` | PHPUnit tests for models, settings, and providers. |
-| `config.inc.php.dist` | Administrator configuration template; its blank values make it invalid PHP until filled in. |
+| `config.inc.php.dist` | Valid administrator configuration template copied by Roundcube's installer; its empty API key must be filled in before AI requests work. |
 | `.github/workflows/` | CI for PHPUnit, PHPStan, and PHP-CS-Fixer. |
 
 ## Execution flow and contracts
 
 ### Startup and settings
 
-1. `AIComposePlugin.php` loads Composer's autoloader and extends `AbstractAIComposePlugin`.
+1. `aicomposeplugin.php` loads the Roundcube root Composer autoloader when installed through Composer, or the plugin-local autoloader for a manual install, and extends `AbstractAIComposePlugin`.
 2. `AbstractAIComposePlugin::init()` selects `MailTask` or `SettingsTask` from the Roundcube task and sets the plugin reference used by actions.
 3. The `AbstractTask` constructor loads configuration into static `AIEmailService\Settings`, registers actions from the matching directory, and calls the task's `init()`. Currently, `AbstractAIComposePlugin::init()` then calls that task's `init()` again. Check for duplicate hook registration when changing initialization.
 4. `Settings` reads user defaults from the Roundcube `aicDefaults` preference (`style`, `length`, `creativity`, `language`, `pluginVisibility`). Saved instructions use a separate `predefinedInstructions` preference; each record has `id`, `title`, and `message`. Use Roundcube's `get_prefs()` and `save_prefs()` and keep data scoped to the signed-in user.
@@ -41,14 +41,14 @@ This document applies to the entire repository. Before making changes, inspect t
 
 1. `MailTask` loads `assets/dist/compose.bundle.js` through Roundcube hooks, sets `rcmail.env.aiPluginOptions` and `aiPredefinedInstructions`, and injects templates through `ContentInjector`.
 2. `assets/src/compose.js` initializes commands. `assets/src/compose/commands/sendPostRequest.js` collects data through `emailHelpers/`, sends an `rcmail.http_post` request, and inserts the response into the plain-text or TinyMCE editor. The request sends `htmlMode` from `rcmail.editor.is_html()`; `RequestData` carries it to the shared prompt builder. HTML responses are sanitized to a small TinyMCE-compatible tag set in `emailHelpers/htmlEmail.js` before insertion. Requested length counts visible words, while the API token cap still includes markup.
-3. The Roundcube action is **`plugin.AIComposePlugin_GenereteEmailAction`**. The misspelling `Generete` is part of the existing public contract. Renaming the PHP class or file requires updating registration and JavaScript calls, as well as checking compatibility.
+3. The Roundcube action is **`plugin.aicomposeplugin_GenereteEmailAction`**. The misspelling `Generete` is part of the existing public contract. Renaming the PHP class or file requires updating registration and JavaScript calls, as well as checking compatibility.
 4. `GenereteEmailAction::validate()` checks POST data on the server and then builds `RequestData`. `AIEmail::generate()` builds one `EmailPrompt` with `Prompt/EmailPromptBuilder` and passes it with `RequestData` to the selected provider. When the compose subject is empty, the action uses the provider's subject if available or asks for a subject through `AIEmail::generateSubject()` and `Prompt/SubjectPromptBuilder`. `OpenAI` maps the shared instructions to chat messages and sends them to the chat completions endpoint or the configured `apiUrl`. It uses a `developer` role, `max_completion_tokens`, and no `temperature` for GPT-5/6, and retains a `system` role, `max_tokens`, and `temperature` for older models. It requests `minimal` reasoning effort for base GPT-5 and `low` for GPT-6 Astra/Sol/Luna.
 5. A successful email action response is JSON with `status`, `respond`, `subject`, and `subjectError`. JavaScript fills the subject only while the field is still empty. The separate `GenerateSubjectAction` validates the current draft or instructions and language, then returns JSON with `status` and a new `subject`; its button must not alter the body or overwrite a subject changed while the request was pending. Requests can include previous conversation content, selected text, and signature information; treat these as private data.
 
 ### Preferences and saved instructions
 
 - `SettingsTask` adds the `aic` preference section and the `plugin.basepredefinedinstructions` page. The `AddInstruction`, `SaveInstruction`, and `DeleteInstruction` actions handle the form and Roundcube preferences.
-- `AbstractTask::autoRegisterActions()` derives each action name from its PHP class name: `plugin.AIComposePlugin_<ClassName>`. When adding or renaming an action, update the URL in `assets/src/` and the corresponding template.
+- `AbstractTask::autoRegisterActions()` derives each action name from its PHP class name: `plugin.aicomposeplugin_<ClassName>`. When adding or renaming an action, update the URL in `assets/src/` and the corresponding template.
 - `assets/src/settings.js` registers the Roundcube commands `updateinstructionlist`, `addinstructiontemplate`, and `deleteinstruction`. PHP calls them through `output->command()`; keep command names and arguments aligned.
 - `aiMaxPredefinedInstructions` limits the number of records that can be added, defaulting to 20. When changing the CRUD flow, check validation, record identification, and the resulting list state.
 
@@ -68,16 +68,16 @@ This document applies to the entire repository. Before making changes, inspect t
 - Edit sources in `assets/src/`, not generated files in `assets/dist/` by hand. After a frontend change, run a production build and include the changed bundles because `MailTask` and `SettingsTask` load them directly.
 - Webpack entry points are `assets/src/compose.js` and `assets/src/settings.js`. JavaScript uses the Roundcube `rcmail`/`rcube_webmail` globals, and compose code also uses TinyMCE. Check both plain-text and HTML editor behavior when changing insertion or text revision.
 - HTML templates use Roundcube `<roundcube:...>` tags. `ContentInjector` looks for specific IDs in rendered `elastic` HTML (`composebodycontainer`, `compose-options`, `headers-menu`, `layout-content`). JavaScript expects IDs including `aic-instruction`, `aic-generate-email-button`, `aic_style_select`, `aic_length_select`, `aic_creativity_select`, `aic_language_select`, `composebody`, and `responses-table`. Carry ID or selector changes through PHP, HTML, JavaScript, and a manual Roundcube check.
-- Reuse existing translation keys or add new ones to the relevant files in `src/localization/labels/` and `src/localization/messages/`. PHP and JavaScript look up keys with the `AIComposePlugin.` prefix. Existing locale filenames are inconsistent (`labels/bs_BA.inc`, `messages/ba_BA.inc`); verify the mapping before renaming them.
+- Reuse existing translation keys or add new ones to the relevant files in `src/localization/labels/` and `src/localization/messages/`. PHP and JavaScript look up keys with the `aicomposeplugin.` prefix. Existing locale filenames are inconsistent (`labels/bs_BA.inc`, `messages/ba_BA.inc`); verify the mapping before renaming them.
 - `package.json` contains Prettier settings (two spaces, double quotes, semicolons), but existing JavaScript is not consistently formatted. Format the changed code without reformatting unrelated files.
 
 ### Configuration and tracked dependencies
 
-- `config.inc.php` is ignored and may contain secrets; never add it to git. `config.inc.php.dist` has blank placeholders, so do not run PHP lint on it until those values are filled in.
-- The code reads `aiComposeCreativity`, while the template names `aiComposeDefaultCreativity`. `Settings` also loads `aiDefaultTimeout` and `aiDefaultInputChars`, but `OpenAI::sendRequest()` currently uses a fixed timeout and does not enforce the input limit. When changing configuration, align behavior and documentation instead of assuming the template already controls these settings.
+- `config.inc.php` is ignored and may contain secrets; never add it to git. `config.inc.php.dist` is valid PHP with a deliberately empty API key and is copied by the Roundcube installer.
+- `Settings` loads `aiDefaultTimeout` and `aiDefaultInputChars`, but `OpenAI::sendRequest()` currently uses a fixed timeout and does not enforce the input limit. When changing configuration, align behavior and documentation instead of assuming the template already controls these settings.
 - This repository tracks `vendor/` for runtime dependencies, as well as `composer.lock`, `package-lock.json`, and `assets/dist/`. Do not edit vendor code by hand. Installing development dependencies can create many changes in tracked `vendor/`; inspect `git status` and include only intentional changes.
 - `npm test` in `package.json` is a placeholder that exits with an error. Do not report it as a real test check.
-- `README.md` suggests `npm install --omit=dev` for rebuilding, but webpack and its loaders are in `devDependencies`. Include development packages for a build, for example with `npm ci`.
+- Webpack and its loaders are in `devDependencies`. Include development packages for a build, for example with `npm ci`.
 
 ## Local development and checks
 

@@ -1,5 +1,5 @@
 export function translation(key) {
-  return rcmail.gettext("AIComposePlugin." + key);
+  return rcmail.gettext("aicomposeplugin." + key);
 }
 
 export function capitalize(str) {
