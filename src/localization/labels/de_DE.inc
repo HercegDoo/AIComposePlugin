@@ -125,6 +125,8 @@ $labels['ai_predefined_use_predefined_instructions'] = 'Verwende vordefinierte A
 
 $labels['ai_insert_email'] = 'E-Mail einfügen';
 $labels['ai_generate_email'] = 'E-Mail generieren';
+$labels['ai_generate_subject'] = 'Betreff vorschlagen';
+$labels['ai_subject_requires_content'] = 'Schreiben Sie eine E-Mail oder geben Sie Anweisungen ein, bevor Sie einen Betreff vorschlagen lassen.';
 $labels['ai_generate_again'] = 'Erneut generieren';
 $labels['ai_stop_generating'] = 'Generierung stoppen';
 $labels['ai_error_help_button'] = 'Hilfe';

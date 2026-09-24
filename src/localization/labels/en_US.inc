@@ -101,6 +101,8 @@ $labels['ai_request_error'] = 'Service unavailable. Please try again later.';
 
 $labels['ai_insert_email'] = 'Insert email';
 $labels['ai_generate_email'] = 'Generate email';
+$labels['ai_generate_subject'] = 'Suggest subject';
+$labels['ai_subject_requires_content'] = 'Write an email or enter instructions before suggesting a subject.';
 $labels['ai_generate_again'] = 'Generate again';
 $labels['ai_stop_generating'] = 'Stop generating';
 $labels['ai_error_help_button'] = 'Help';

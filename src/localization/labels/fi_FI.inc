@@ -101,6 +101,8 @@ $labels['ai_request_error'] = 'Palvelu ei ole käytettävissä. Yritä myöhemmi
 
 $labels['ai_insert_email'] = 'Lisää sähköposti';
 $labels['ai_generate_email'] = 'Luo sähköposti';
+$labels['ai_generate_subject'] = 'Ehdota aihetta';
+$labels['ai_subject_requires_content'] = 'Kirjoita viesti tai ohjeet ennen aiheen ehdottamista.';
 $labels['ai_generate_again'] = 'Luo uudelleen';
 $labels['ai_stop_generating'] = 'Lopeta luominen';
 $labels['ai_error_help_button'] = 'Apua';

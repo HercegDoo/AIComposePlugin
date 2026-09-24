@@ -63,6 +63,12 @@ npm run build:prod
     - Provide the necessary details, and click **Generate**.
     - The AI will generate an email based on the provided input.
     - The generated email can be inserted into the Compose window, ready for further editing or immediate sending.
+    - If the Subject field is empty, the plugin also suggests a subject and fills that field. An existing subject is preserved.
+
+4. **Suggest a New Subject:**
+
+    - Click **Suggest subject** beside the Subject field to generate another suggestion from the current email text. If the editor is empty, the plugin uses the entered instructions.
+    - This updates only the Subject field. Each suggestion can require another provider request.
   
 
 ![image](https://github.com/user-attachments/assets/15a813ee-65a6-483d-906c-1abd1beb0bad)
@@ -70,6 +76,8 @@ npm run build:prod
 ## Maintaining prompts and providers
 
 Prompt wording lives in `src/AIEmailService/Prompt/EmailPromptBuilder.php`. It builds both the system instruction and the user instruction for new emails and selected-text revisions. Change wording there and update `tests/AIEmailService/Prompt/EmailPromptBuilderTest.php`.
+
+Subject wording lives in `src/AIEmailService/Prompt/SubjectPromptBuilder.php`. The same provider handles both email and subject prompts; `AIEmail::generateSubject()` cleans the returned line before it reaches Roundcube.
 
 `AIEmail::generate()` builds an `EmailPrompt` before calling the configured provider. It also accepts a `PromptBuilderInterface` implementation as an optional second argument when a different prompt strategy is needed. A new provider implements `InterfaceProvider::generateEmail(RequestData $requestData, EmailPrompt $prompt)` and translates those instructions into its API's request format. Provider classes handle transport and responses; they do not need their own copy of the email prompt. Register a new provider in `Settings::setProvider()`, then configure `aiComposeProvider` and `aiProvider<ProviderName>Config`; task initialization loads that configuration by provider name.
 
