@@ -30,20 +30,28 @@ The AI Email Generator plugin for Roundcube enhances the email composing experie
    - Adds a new button to the Compose page in Roundcube that opens a prompt for email generation.
 
 ## Install
-1. Clone repository content to an `AIComposePlugin` directory inside your RoundCube `plugins` directory.
-2. Then reference the plugin by adding an item `AIComposePlugin` to the RoundCube plugins list in the configuration:
 
-   ```php
-   $config['plugins'] = array('AIComposePlugin', ...);
-   
-3. Dependencies and built frontend bundles are already included. If you want to rebuild them manually, navigate to the plugin directory and run:
+### With Composer (recommended)
+
+Run this command from the **Roundcube root directory**:
 
 ```bash
-composer install --no-dev
-npm install --omit=dev
-npm run build:prod
+composer require hercegdoo/aicomposeplugin
 ```
-4. Fill in the settings in the config.inc.php.dist file according to the instructions provided within it. After completing the configuration, rename the file to config.inc.php.
+
+Roundcube's Composer installer places the package at `plugins/aicomposeplugin/`, where the entry point is `aicomposeplugin.php`. Accept the installer's activation prompt, or add `aicomposeplugin` to `config/config.inc.php`:
+
+```php
+$config['plugins'] = ['aicomposeplugin'];
+```
+
+The installer copies `plugins/aicomposeplugin/config.inc.php.dist` to `plugins/aicomposeplugin/config.inc.php`. Edit the copied file and enter your OpenAI API key. Keep other enabled plugins in the `plugins` array when editing Roundcube's configuration.
+
+### Manually
+
+Place the repository in `plugins/aicomposeplugin/`, install PHP dependencies with `composer install --no-dev` in that directory, copy `config.inc.php.dist` to `config.inc.php`, enter your API key, and enable `aicomposeplugin` in Roundcube's plugin list. The included frontend bundles are ready to use. To rebuild them from source, run `npm ci` and `npm run build:prod` in the plugin directory.
+
+For an existing installation in `plugins/AIComposePlugin/`, rename the directory to `plugins/aicomposeplugin/` and change the plugin name in Roundcube's `config/config.inc.php` to `aicomposeplugin` when upgrading. Keep your existing `config.inc.php` and API key.
  
 ## Usage
 1. **Compose a New Email:**

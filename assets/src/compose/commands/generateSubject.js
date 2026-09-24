@@ -40,7 +40,7 @@ export default class GenerateSubject {
     button.disabled = true;
 
     rcmail.http_post(
-      "plugin.AIComposePlugin_GenerateSubjectAction",
+      "plugin.aicomposeplugin_GenerateSubjectAction",
       { body, instructions, language, subject: previousSubject },
       true
     )
