@@ -6,6 +6,8 @@ use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
 use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
+use HercegDoo\AIComposePlugin\AIEmailService\Prompt\EmailPrompt;
+use HercegDoo\AIComposePlugin\AIEmailService\Prompt\PromptBuilderInterface;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\DummyProvider;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use HercegDoo\AIComposePlugin\TestSupport\ReflectionHelper;
@@ -49,6 +51,36 @@ final class AIEmailTest extends TestCase
         self::assertInstanceOf(Respond::class, $return);
     }
 
+    public function testGenerateEmailPassesSharedPromptToProvider(): void
+    {
+        $provider = new class extends DummyProvider {
+            public ?EmailPrompt $receivedPrompt = null;
+
+            public function generateEmail(RequestData $requestData, EmailPrompt $prompt): Respond
+            {
+                $this->receivedPrompt = $prompt;
+
+                return new Respond('Generated email');
+            }
+        };
+
+        $builder = new class implements PromptBuilderInterface {
+            public function build(RequestData $requestData): EmailPrompt
+            {
+                return new EmailPrompt('Shared system instruction', 'Shared user instruction');
+            }
+        };
+
+        $this->setPrivateProperty(Settings::class, 'provider', $provider);
+
+        $response = AIEmail::generate(self::$requestData, $builder);
+
+        self::assertSame('Generated email', $response->getBody());
+        self::assertInstanceOf(EmailPrompt::class, $provider->receivedPrompt);
+        self::assertSame('Shared system instruction', $provider->receivedPrompt->getSystemInstruction());
+        self::assertSame('Shared user instruction', $provider->receivedPrompt->getUserInstruction());
+    }
+
     public function testGenerateEmailWithNonExistingProviderException()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -63,7 +95,7 @@ final class AIEmailTest extends TestCase
         $dummyProvider = new class extends DummyProvider {
             public $exception;
 
-            public function generateEmail(RequestData $requestData): Respond
+            public function generateEmail(RequestData $requestData, EmailPrompt $prompt): Respond
             {
                 throw $this->exception;
             }

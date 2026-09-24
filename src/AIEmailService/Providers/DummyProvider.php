@@ -6,6 +6,7 @@ namespace HercegDoo\AIComposePlugin\AIEmailService\Providers;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
+use HercegDoo\AIComposePlugin\AIEmailService\Prompt\EmailPrompt;
 
 class DummyProvider implements InterfaceProvider
 {
@@ -14,7 +15,7 @@ class DummyProvider implements InterfaceProvider
         return 'Dummy Provider';
     }
 
-    public function generateEmail(RequestData $requestData): Respond
+    public function generateEmail(RequestData $requestData, EmailPrompt $prompt): Respond
     {
         return (new Respond('This is a dummy response'))->setSubject('Dummy Subject')->setBody("
             This is a dummy response to your request.

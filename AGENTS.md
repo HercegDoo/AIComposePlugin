@@ -17,7 +17,7 @@ This document applies to the entire repository. Before making changes, inspect t
 | `AIComposePlugin.php`, `src/AbstractAIComposePlugin.php` | Entry point, task selection, and plugin initialization. |
 | `src/Tasks/` | Roundcube hooks, action registration, configuration, preferences, and resource loading. |
 | `src/Actions/Mail/`, `src/Actions/Settings/` | HTTP actions for email generation and saved-instruction CRUD. |
-| `src/AIEmailService/` | Request/response models, defaults, provider interface, and OpenAI implementation. |
+| `src/AIEmailService/` | Request/response models, shared prompt builder, defaults, provider interface, and OpenAI implementation. |
 | `src/Utilities/` | HTML template injection, Roundcube element construction, and translations. |
 | `skins/elastic/templates/` | Roundcube HTML templates and fragments for compose and settings screens. |
 | `assets/src/` | JavaScript and CSS sources for compose and settings. |
@@ -42,7 +42,7 @@ This document applies to the entire repository. Before making changes, inspect t
 1. `MailTask` loads `assets/dist/compose.bundle.js` through Roundcube hooks, sets `rcmail.env.aiPluginOptions` and `aiPredefinedInstructions`, and injects templates through `ContentInjector`.
 2. `assets/src/compose.js` initializes commands. `assets/src/compose/commands/sendPostRequest.js` collects data through `emailHelpers/`, sends an `rcmail.http_post` request, and inserts the response into the plain-text or TinyMCE editor.
 3. The Roundcube action is **`plugin.AIComposePlugin_GenereteEmailAction`**. The misspelling `Generete` is part of the existing public contract. Renaming the PHP class or file requires updating registration and JavaScript calls, as well as checking compatibility.
-4. `GenereteEmailAction::validate()` checks POST data on the server and then builds `RequestData`. `AIEmail::generate()` calls the selected provider; `OpenAI` builds the prompt and sends a request to the chat completions endpoint or the configured `apiUrl`.
+4. `GenereteEmailAction::validate()` checks POST data on the server and then builds `RequestData`. `AIEmail::generate()` builds one `EmailPrompt` with `Prompt/EmailPromptBuilder` and passes it with `RequestData` to the selected provider. `OpenAI` maps the system and user instructions to chat messages and sends them to the chat completions endpoint or the configured `apiUrl`.
 5. A successful action response is JSON with `status` and `respond`. Preserve the shape expected by JavaScript, or update error handling on both sides if you change it. Requests can include previous conversation content, selected text, and signature information; treat these as private data.
 
 ### Preferences and saved instructions
@@ -57,6 +57,7 @@ This document applies to the entire repository. Before making changes, inspect t
 ### PHP and Roundcube
 
 - Make changes in the layer responsible for the behavior: hooks in `Tasks`, HTTP input and validation in `Actions`, AI logic in `AIEmailService`, and HTML helpers in `Utilities`.
+- Change shared system and user instructions in `src/AIEmailService/Prompt/EmailPromptBuilder.php`. Providers implement `InterfaceProvider::generateEmail(RequestData, EmailPrompt)` and adapt the supplied prompt to their API format; do not duplicate prompt wording inside providers. `PromptBuilderInterface` lets the service use a different builder without changing provider code.
 - PHP formatting follows `.php-cs-fixer.dist.php` (a PSR-12/Symfony combination with four-space indentation). PHPStan analyzes `src/` at `max` level with the existing `phpstan-baseline.neon`. Fix new findings in code unless there is a specific reason to update the baseline.
 - Validate new user input on the server. Frontend validation provides user feedback but does not replace server validation. Escape user text when building HTML, and keep field names aligned across `RequestData` and the JavaScript POST object.
 - In provider tests, mock cURL or use `DummyProvider`; do not send real API requests or require a real API key. `Settings` holds static state, so explicitly set values that each test depends on.
@@ -100,6 +101,6 @@ git status --short
 ```
 
 - `composer cs-fixer` modifies files; use it deliberately and review the diff. CI runs PHPUnit, PHPStan, and PHP-CS-Fixer on PHP 8.0. For an isolated PHP syntax check, use `php -l path/to/changed.php`.
-- PHPUnit configuration is in `phpunit.xml.dist`; tests are in `tests/AIEmailService/`, with reflection helpers in `_support/`. Extend tests when changing models, prompts, settings, or providers. This repository has no automated frontend test suite.
+- PHPUnit configuration is in `phpunit.xml.dist`; tests are in `tests/AIEmailService/`, with reflection helpers in `_support/`. Prompt wording tests belong in `tests/AIEmailService/Prompt/`, while provider tests check API mapping and responses. Extend tests when changing models, prompts, settings, or providers. This repository has no automated frontend test suite.
 - Changes to Roundcube hooks, DOM selectors, or generation require a manual check in a Roundcube instance using the `elastic` skin: compose screen, plain-text and HTML editors, successful and failed requests, add/edit/delete saved instructions, visibility, and default preferences. The repository does not contain a running Roundcube server.
 - At the end, report which checks you actually ran, their results, and anything you could not verify in the current environment. Do not present missing tools or a missing server as a successful test.

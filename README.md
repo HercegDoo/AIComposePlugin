@@ -66,3 +66,9 @@ npm run build:prod
   
 
 ![image](https://github.com/user-attachments/assets/15a813ee-65a6-483d-906c-1abd1beb0bad)
+
+## Maintaining prompts and providers
+
+Prompt wording lives in `src/AIEmailService/Prompt/EmailPromptBuilder.php`. It builds both the system instruction and the user instruction for new emails and selected-text revisions. Change wording there and update `tests/AIEmailService/Prompt/EmailPromptBuilderTest.php`.
+
+`AIEmail::generate()` builds an `EmailPrompt` before calling the configured provider. It also accepts a `PromptBuilderInterface` implementation as an optional second argument when a different prompt strategy is needed. A new provider implements `InterfaceProvider::generateEmail(RequestData $requestData, EmailPrompt $prompt)` and translates those instructions into its API's request format. Provider classes handle transport and responses; they do not need their own copy of the email prompt. Register a new provider in `Settings::setProvider()`, then configure `aiComposeProvider` and `aiProvider<ProviderName>Config`; task initialization loads that configuration by provider name.
