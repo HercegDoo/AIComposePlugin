@@ -66,6 +66,10 @@ final class OpenAI extends AbstractProvider
 
         $email = $respond->choices[0]->message->content ?? '';
         if ($email === '') {
+            if (($respond->choices[0]->finish_reason ?? null) === 'length') {
+                throw new ProviderException('No email content found: the model reached the output token limit. Increase aiDefaultMaxTokens.');
+            }
+
             throw new ProviderException('No email content found');
         }
 
@@ -87,17 +91,7 @@ final class OpenAI extends AbstractProvider
         ]);
 
         try {
-            $respond = $curl->post($this->apiUrl, [
-                'model' => $this->model,
-                'messages' => [
-                    ['role' => 'system', 'content' => $prompt->getSystemInstruction()],
-                    ['role' => 'user', 'content' => $prompt->getUserInstruction()],
-                ],
-                'max_tokens' => $this->maxTokens,
-                'temperature' => $this->creativity,
-                'n' => 1,
-                'stream' => false,
-            ]);
+            $respond = $curl->post($this->apiUrl, $this->buildPayload($prompt));
         } catch (\Throwable $e) {
             throw new ProviderException('APIThrowable: ' . $e->getMessage());
         }
@@ -107,5 +101,41 @@ final class OpenAI extends AbstractProvider
         }
 
         return (object) $respond;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function buildPayload(EmailPrompt $prompt): array
+    {
+        $isModernModel = preg_match('/^gpt-[56](?:[.-]|$)/', $this->model) === 1;
+        $payload = [
+            'model' => $this->model,
+            'messages' => [
+                ['role' => $isModernModel ? 'developer' : 'system', 'content' => $prompt->getSystemInstruction()],
+                ['role' => 'user', 'content' => $prompt->getUserInstruction()],
+            ],
+            'n' => 1,
+            'stream' => false,
+        ];
+
+        // GPT-5 and GPT-6 use the completion token limit, which also includes reasoning tokens.
+        if ($isModernModel) {
+            $payload['max_completion_tokens'] = $this->maxTokens;
+
+            // Reduced reasoning effort leaves room for the visible email within the token limit.
+            if (preg_match('/^gpt-6-(?:astra|sol|luna)(?:-\d{4}-\d{2}-\d{2})?$/', $this->model)) {
+                $payload['reasoning_effort'] = 'low';
+            } elseif (preg_match('/^gpt-5(?:-mini|-nano)?(?:-\d{4}-\d{2}-\d{2})?$/', $this->model)) {
+                $payload['reasoning_effort'] = 'minimal';
+            }
+
+            return $payload;
+        }
+
+        $payload['max_tokens'] = $this->maxTokens;
+        $payload['temperature'] = $this->creativity;
+
+        return $payload;
     }
 }

@@ -31,6 +31,10 @@ final class OpenAITest extends TestCase
     {
         parent::setUp();
 
+        if (!\defined('PHPUNIT_RUNNING')) {
+            \define('PHPUNIT_RUNNING', true);
+        }
+
         Settings::setStyles(['professional', 'default' => 'casual', 'assertive', 'enthusiastic', 'funny', 'informational', 'persuasive']);
 
         Settings::setLengths(['short', 'default' => 'medium', 'long']);
@@ -171,9 +175,12 @@ final class OpenAITest extends TestCase
         $this->requestData->setSignaturePresent(true);
 
         $curlMock = $this->getMockBuilder(Curl::class)
-            ->onlyMethods(['setHeader', 'setOpts'])
+            ->onlyMethods(['setHeader', 'setOpts', 'post'])
             ->getMock()
         ;
+        $curlMock->method('post')->willReturn((object) [
+            'choices' => [(object) ['message' => (object) ['content' => 'Generated email']]],
+        ]);
 
         $OpenAi = new OpenAI($curlMock);
 
@@ -198,14 +205,13 @@ final class OpenAITest extends TestCase
                 \CURLOPT_SSL_VERIFYHOST => false, ])
         ;
 
-        try {
-            $OpenAi->generateEmail($this->requestData, $this->prompt);
-        } catch (ProviderException $e) {
-        }
+        self::assertInstanceOf(Respond::class, $OpenAi->generateEmail($this->requestData, $this->prompt));
     }
 
     public function testSendRequestPostMethod()
     {
+        Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'gpt-4.1']);
+
         $curlMock = $this->getMockBuilder(Curl::class)
             ->onlyMethods(['post'])
             ->getMock()
@@ -218,7 +224,7 @@ final class OpenAITest extends TestCase
             ->with(
                 self::equalTo('https://api.openai.com/v1/chat/completions'),
                 self::equalTo([
-                    'model' => 'model-test',
+                    'model' => 'gpt-4.1',
                     'messages' => [
                         ['role' => 'system', 'content' => 'System instruction'],
                         ['role' => 'user', 'content' => 'Email instruction'],
@@ -236,43 +242,106 @@ final class OpenAITest extends TestCase
         }
     }
 
-    public function testSendRequestUnathorized()
+    /**
+     * @dataProvider provideModernModelsUseSupportedChatParametersCases
+     */
+    public function testModernModelsUseSupportedChatParameters(string $model, ?string $reasoningEffort, string $apiUrl): void
     {
-        $this->requestData->setSignaturePresent(true);
-        $this->requestData->setMultipleRecipients(true);
-        $OpenAi = new OpenAI();
+        Settings::setProviderConfig([
+            'apiKey' => 'test-api-key',
+            'model' => $model,
+            'apiUrl' => $apiUrl,
+        ]);
 
-        $this->expectException(ProviderException::class);
-        $regex = '/HTTP\/(1\.1|2)\s401\s?(Unauthorized)?/';
-        $this->expectExceptionMessageMatches($regex);
+        $curlMock = $this->getMockBuilder(Curl::class)
+            ->onlyMethods(['post'])
+            ->getMock()
+        ;
 
-        $OpenAi->generateEmail($this->requestData, $this->prompt);
+        $curlMock->expects(self::once())
+            ->method('post')
+            ->with(
+                self::equalTo($apiUrl),
+                self::callback(static function (array $payload) use ($model, $reasoningEffort): bool {
+                    self::assertSame($model, $payload['model']);
+                    self::assertSame([
+                        ['role' => 'developer', 'content' => 'System instruction'],
+                        ['role' => 'user', 'content' => 'Email instruction'],
+                    ], $payload['messages']);
+                    self::assertSame(2000, $payload['max_completion_tokens']);
+                    self::assertArrayNotHasKey('max_tokens', $payload);
+                    self::assertArrayNotHasKey('temperature', $payload);
+
+                    if ($reasoningEffort === null) {
+                        self::assertArrayNotHasKey('reasoning_effort', $payload);
+                    } else {
+                        self::assertSame($reasoningEffort, $payload['reasoning_effort']);
+                    }
+
+                    return true;
+                })
+            )
+            ->willReturn((object) [
+                'choices' => [(object) ['message' => (object) ['content' => 'Generated email']]],
+            ])
+        ;
+
+        self::assertInstanceOf(Respond::class, (new OpenAI($curlMock))->generateEmail($this->requestData, $this->prompt));
     }
 
-    public function testSendRequestNotFound()
+    /**
+     * @return iterable<string, array{string, ?string, string}>
+     */
+    public static function provideModernModelsUseSupportedChatParametersCases(): iterable
     {
-        $this->requestData->setSignaturePresent(true);
+        $defaultUrl = 'https://api.openai.com/v1/chat/completions';
 
-        $OpenAi = new OpenAI();
-
-        $this->expectException(ProviderException::class);
-
-        $OpenAi->generateEmail($this->requestData, $this->prompt);
+        return [
+            'GPT-5' => ['gpt-5', 'minimal', $defaultUrl],
+            'GPT-5 mini' => ['gpt-5-mini', 'minimal', $defaultUrl],
+            'GPT-5 newer family' => ['gpt-5.4', null, $defaultUrl],
+            'GPT-5 pro' => ['gpt-5-pro', null, $defaultUrl],
+            'GPT-6 Astra' => ['gpt-6-astra', 'low', $defaultUrl],
+            'GPT-6 Sol' => ['gpt-6-sol', 'low', $defaultUrl],
+            'GPT-6 Luna custom endpoint' => ['gpt-6-luna', 'low', 'https://proxy.example/chat/completions'],
+        ];
     }
 
-    public function testSendRequestBadRequest()
+    public function testEmptyModernResponseExplainsOutputTokenLimit(): void
     {
-        $this->requestData->setSignaturePresent(true);
+        Settings::setProviderConfig(['apiKey' => 'test-api-key', 'model' => 'gpt-6-astra']);
 
-        $OpenAi = new OpenAI();
-
-        ReflectionHelper::setPrivateProperty($OpenAi, 'creativityMap', [Settings::getCreativities()[0] => -55,
-            Settings::getCreativities()[1] => -600,
-            Settings::getCreativities()[2] => -10000, ]);
+        $curlMock = $this->getMockBuilder(Curl::class)
+            ->onlyMethods(['post'])
+            ->getMock()
+        ;
+        $curlMock->method('post')->willReturn((object) [
+            'choices' => [(object) [
+                'message' => (object) ['content' => ''],
+                'finish_reason' => 'length',
+            ]],
+        ]);
 
         $this->expectException(ProviderException::class);
+        $this->expectExceptionMessage('Increase aiDefaultMaxTokens');
 
-        $OpenAi->generateEmail($this->requestData, $this->prompt);
+        (new OpenAI($curlMock))->generateEmail($this->requestData, $this->prompt);
+    }
+
+    public function testSendRequestUnauthorized()
+    {
+        $curlMock = $this->getMockBuilder(Curl::class)
+            ->onlyMethods(['post'])
+            ->getMock()
+        ;
+        $curlMock->error = true;
+        $curlMock->errorMessage = 'HTTP/1.1 401 Unauthorized';
+        $curlMock->method('post')->willReturn((object) []);
+
+        $this->expectException(ProviderException::class);
+        $this->expectExceptionMessage('APICurl: HTTP/1.1 401 Unauthorized');
+
+        (new OpenAI($curlMock))->generateEmail($this->requestData, $this->prompt);
     }
 
     public function testSendRequestThrowable()
