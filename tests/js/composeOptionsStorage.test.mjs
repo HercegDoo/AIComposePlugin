@@ -43,7 +43,7 @@ function storage() {
   };
 }
 
-test("remembers only changed options and leaves other preference defaults intact", () => {
+test("remembers all visible choices when a new compose window opens", () => {
   const store = storage();
   const style = select("aic_style_select", "casual", [
     "casual",
@@ -60,7 +60,11 @@ test("remembers only changed options and leaves other preference defaults intact
   creativity.change("high");
   assert.deepEqual(
     JSON.parse(store.getItem("aicomposeplugin.composeOptions.v1.42")),
-    { aic_style_select: "professional", aic_creativity_select: "high" }
+    {
+      aic_style_select: "professional",
+      aic_length_select: "medium",
+      aic_creativity_select: "high",
+    }
   );
 
   const nextStyle = select("aic_style_select", "casual", [
@@ -78,7 +82,7 @@ test("remembers only changed options and leaves other preference defaults intact
     "42"
   );
   assert.equal(nextStyle.value, "professional");
-  assert.equal(nextLength.value, "long");
+  assert.equal(nextLength.value, "medium");
   assert.equal(nextCreativity.value, "high");
 });
 
@@ -129,7 +133,7 @@ test("storage errors do not prevent changing compose options", () => {
   assert.equal(style.value, "professional");
 });
 
-test("saves all compose choices to Roundcube and then uses server defaults", async () => {
+test("restores local choices after a successful Roundcube save", async () => {
   const store = storage();
   const style = select("aic_style_select", "casual", [
     "casual",
@@ -156,24 +160,44 @@ test("saves all compose choices to Roundcube and then uses server defaults", asy
   );
 
   style.change("professional");
+  length.change("long");
+  creativity.change("high");
+  language.change("german");
   await Promise.resolve();
-  assert.deepEqual(saved[0], {
+  assert.deepEqual(saved[3], {
     aic_style_select: "professional",
-    aic_length_select: "medium",
-    aic_creativity_select: "medium",
-    aic_language_select: "bosnian",
+    aic_length_select: "long",
+    aic_creativity_select: "high",
+    aic_language_select: "german",
   });
-  assert.equal(
-    store.getItem("aicomposeplugin.composeOptions.server.v1.42"),
-    "1"
-  );
+  // Older versions set this marker and then skipped local choices on reload.
+  store.setItem("aicomposeplugin.composeOptions.server.v1.42", "1");
 
   const serverStyle = select("aic_style_select", "casual", [
     "casual",
     "professional",
   ]);
-  initComposeOptionPersistence(root(serverStyle), store, "42");
-  assert.equal(serverStyle.value, "casual");
+  const serverLength = select("aic_length_select", "medium", [
+    "medium",
+    "long",
+  ]);
+  const serverCreativity = select("aic_creativity_select", "medium", [
+    "medium",
+    "high",
+  ]);
+  const serverLanguage = select("aic_language_select", "bosnian", [
+    "bosnian",
+    "german",
+  ]);
+  initComposeOptionPersistence(
+    root(serverStyle, serverLength, serverCreativity, serverLanguage),
+    store,
+    "42"
+  );
+  assert.equal(serverStyle.value, "professional");
+  assert.equal(serverLength.value, "long");
+  assert.equal(serverCreativity.value, "high");
+  assert.equal(serverLanguage.value, "german");
 });
 
 test("keeps local choice when saving to Roundcube fails", async () => {
@@ -194,10 +218,6 @@ test("keeps local choice when saving to Roundcube fails", async () => {
 
   style.change("professional");
   await Promise.resolve();
-  assert.equal(
-    store.getItem("aicomposeplugin.composeOptions.server.v1.42"),
-    null
-  );
 
   const nextStyle = select("aic_style_select", "casual", [
     "casual",
@@ -207,7 +227,7 @@ test("keeps local choice when saving to Roundcube fails", async () => {
   assert.equal(nextStyle.value, "professional");
 });
 
-test("waits for the latest option change before trusting server defaults", async () => {
+test("keeps the latest choices while Roundcube saves are still pending", async () => {
   const store = storage();
   const style = select("aic_style_select", "casual", [
     "casual",
@@ -226,17 +246,21 @@ test("waits for the latest option change before trusting server defaults", async
 
   style.change("professional");
   length.change("long");
-  complete[0]();
-  await Promise.resolve();
-  assert.equal(
-    store.getItem("aicomposeplugin.composeOptions.server.v1.42"),
-    null
-  );
+  const nextStyle = select("aic_style_select", "casual", [
+    "casual",
+    "professional",
+  ]);
+  const nextLength = select("aic_length_select", "medium", [
+    "medium",
+    "long",
+  ]);
+  initComposeOptionPersistence(root(nextStyle, nextLength), store, "42");
+  assert.equal(nextStyle.value, "professional");
+  assert.equal(nextLength.value, "long");
 
+  complete[0]();
   complete[1]();
   await Promise.resolve();
-  assert.equal(
-    store.getItem("aicomposeplugin.composeOptions.server.v1.42"),
-    "1"
-  );
+  assert.equal(nextStyle.value, "professional");
+  assert.equal(nextLength.value, "long");
 });
