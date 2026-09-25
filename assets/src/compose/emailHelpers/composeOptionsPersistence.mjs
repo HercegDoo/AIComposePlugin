@@ -62,24 +62,34 @@ export function initComposeOptionPersistence(container, onSave, loadOptions) {
       });
   }
 
-  container.addEventListener(
-    "change",
-    (event) => {
-      const select = event.target;
-      if (select?.tagName !== "SELECT" || !optionIds.includes(select.id)) {
-        return;
-      }
+  function onChange(event) {
+    const select = event.target;
+    if (select?.tagName !== "SELECT" || !optionIds.includes(select.id)) {
+      return;
+    }
 
-      changed.add(select.id);
-      const options = { [select.id]: select.value };
-      if (saving) {
-        pendingOptions = { ...pendingOptions, ...options };
-      } else {
-        save(options);
-      }
-    },
-    true
-  );
+    changed.add(select.id);
+    if (event.aicComposeHandled) return;
+    event.aicComposeHandled = true;
+
+    const options = { [select.id]: select.value };
+    if (saving) {
+      pendingOptions = { ...pendingOptions, ...options };
+    } else {
+      save(options);
+    }
+  }
+
+  // Bind the rendered selects directly, then their wrapper for later replacements.
+  // Document delegation also covers compose fragments inserted after initialization.
+  const wrapper = container.querySelector(".select-div");
+  if (wrapper) {
+    for (const id of optionIds) {
+      wrapper.querySelector(`#${id}`)?.addEventListener("change", onChange);
+    }
+    wrapper.addEventListener("change", onChange);
+  }
+  container.addEventListener("change", onChange);
 
   if (typeof loadOptions === "function") {
     let request;
