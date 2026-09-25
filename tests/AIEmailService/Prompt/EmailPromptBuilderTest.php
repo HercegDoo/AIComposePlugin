@@ -37,7 +37,8 @@ final class EmailPromptBuilderTest extends TestCase
     {
         $prompt = (new EmailPromptBuilder())->build($this->requestData);
 
-        self::assertSame('You are a helpful personal assistant.', $prompt->getSystemInstruction());
+        self::assertStringContainsString('Write only the new email or reply', $prompt->getSystemInstruction());
+        self::assertStringContainsString('Never copy quoted conversation', $prompt->getSystemInstruction());
     }
 
     public function testNewEmailUsesRequestDetails(): void
@@ -64,7 +65,8 @@ final class EmailPromptBuilderTest extends TestCase
         $instruction = (new EmailPromptBuilder())->build($this->requestData)->getUserInstruction();
 
         self::assertStringContainsString('Subject: Quarterly report', $instruction);
-        self::assertStringContainsString('Previous conversation: Earlier note.', $instruction);
+        self::assertStringContainsString('<previous_conversation>Earlier note</previous_conversation>', $instruction);
+        self::assertStringContainsString('do not repeat, quote, summarize, or append any part of it', $instruction);
         self::assertStringNotContainsString('*Recipient:', $instruction);
         self::assertStringNotContainsString('Without a subject', $instruction);
     }
@@ -93,6 +95,7 @@ final class EmailPromptBuilderTest extends TestCase
         self::assertStringNotContainsString('End the email after its message body', $withoutSignature);
         self::assertStringNotContainsString('Closing Greeting', $withSignature);
         self::assertStringContainsString('End the email after its message body', $withSignature);
+        self::assertStringContainsString('The editor already contains the sender\'s signature', $builder->build($this->requestData)->getSystemInstruction());
     }
 
     public function testCustomStyleLengthAndLanguage(): void
@@ -118,7 +121,7 @@ final class EmailPromptBuilderTest extends TestCase
         self::assertStringContainsString('Previously generated email', $instruction);
         self::assertStringContainsString('selected text', $instruction);
         self::assertStringContainsString('TestInstrukcija', $instruction);
-        self::assertStringContainsString('Previous conversation: Earlier note.', $instruction);
+        self::assertStringContainsString('<previous_conversation>Earlier note</previous_conversation>', $instruction);
         self::assertStringNotContainsString('Create a casual email', $instruction);
     }
 
@@ -130,7 +133,7 @@ final class EmailPromptBuilderTest extends TestCase
 
         self::assertStringContainsString('Previous email', $instruction);
         self::assertStringContainsString('selected text', $instruction);
-        self::assertStringNotContainsString('Previous conversation:', $instruction);
+        self::assertStringNotContainsString('<previous_conversation>', $instruction);
     }
 
     public function testRevisionWithExistingSignatureOmitsClosing(): void

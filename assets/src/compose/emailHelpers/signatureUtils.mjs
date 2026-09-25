@@ -22,9 +22,49 @@ export function findPlainSignature(body, signature) {
   return null;
 }
 
-const closing = /^(?:srdač(?:an|ni) pozdrav(?:i)?|srdačno|lijep(?:i)? pozdrav(?:i)?|lep pozdrav|topli pozdravi|pozdrav(?:i)?|s poštovanjem|uz poštovanje|sve najbolje|best regards|kind regards|warm regards|regards|sincerely|yours sincerely|yours faithfully|best|cheers|mit freundlichen grüßen|freundliche grüße|viele grüße|met vriendelijke groet(?:en)?|vriendelijke groet(?:en)?|cordialement|bien cordialement|saludos cordiales|un saludo|atentamente|distinti saluti|cordiali saluti)[,.!\s]*$/iu;
+const quoteHeader =
+  /^(?:>+|(?:on|am|le|el|il) .{1,160} (?:wrote|schrieb|a écrit|escribió|ha scritto)\s*:|.{1,160}\b(?:je napisao(?:\/la)?|je napisala|je pisao|je pisala)\s*:|[-_]{2,}\s*(?:original message|izvorna poruka)|(?:from|od)\s*:)/iu;
 
-export function stripGeneratedClosing(email, senderName = "", signatureText = "") {
+function normalizeQuoteText(text) {
+  return text.replace(/\s+/g, " ").trim().toLocaleLowerCase();
+}
+
+export function stripGeneratedConversation(email, previousConversation = "") {
+  if (!previousConversation.trim()) return email.trim();
+
+  const source = normalizeQuoteText(previousConversation);
+  const lines = email.replace(/\r\n/g, "\n").split("\n");
+  let cutoff = lines.length;
+
+  for (let index = 0; index < lines.length; index++) {
+    const line = lines[index].trim();
+    if (quoteHeader.test(line)) {
+      cutoff = index;
+      break;
+    }
+
+    const normalized = normalizeQuoteText(line);
+    if (
+      normalized.length >= 60 &&
+      normalized.split(" ").length >= 8 &&
+      source.includes(normalized)
+    ) {
+      cutoff = index;
+      break;
+    }
+  }
+
+  return lines.slice(0, cutoff).join("\n").trim();
+}
+
+const closing =
+  /^(?:srdač(?:an|ni) pozdrav(?:i)?|srdačno|lijep(?:i)? pozdrav(?:i)?|lep pozdrav|topli pozdravi|pozdrav(?:i)?|s poštovanjem|uz poštovanje|sve najbolje|best regards|kind regards|warm regards|regards|sincerely|yours sincerely|yours faithfully|best|cheers|mit freundlichen grüßen|freundliche grüße|viele grüße|met vriendelijke groet(?:en)?|vriendelijke groet(?:en)?|cordialement|bien cordialement|saludos cordiales|un saludo|atentamente|distinti saluti|cordiali saluti)[,.!\s]*$/iu;
+
+export function stripGeneratedClosing(
+  email,
+  senderName = "",
+  signatureText = ""
+) {
   const lines = email.replace(/\r\n/g, "\n").trimEnd().split("\n");
   const signatureLines = signatureText
     .replace(/\r\n/g, "\n")
@@ -44,7 +84,9 @@ export function stripGeneratedClosing(email, senderName = "", signatureText = ""
     signatureLines.every(
       (line, index) =>
         line.toLocaleLowerCase() ===
-        lines[lines.length - signatureLines.length + index].trim().toLocaleLowerCase()
+        lines[lines.length - signatureLines.length + index]
+          .trim()
+          .toLocaleLowerCase()
     )
   ) {
     lines.splice(-signatureLines.length);
