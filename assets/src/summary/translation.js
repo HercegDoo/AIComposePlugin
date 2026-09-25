@@ -124,7 +124,18 @@ export function messageTranslationControl() {
   const target = document.createElement("select");
   target.id = "aic-translation-target";
   target.className = "form-control custom-select pretty-select";
-  for (const [locale, name] of Object.entries(languages)) {
+  const collator = new Intl.Collator(
+    document.documentElement.lang || undefined,
+    {
+      sensitivity: "base",
+    }
+  );
+  const sortedLanguages = Object.entries(languages).sort(
+    ([firstLocale, firstName], [secondLocale, secondName]) =>
+      collator.compare(firstName, secondName) ||
+      collator.compare(firstLocale, secondLocale)
+  );
+  for (const [locale, name] of sortedLanguages) {
     const option = document.createElement("option");
     option.value = locale;
     option.textContent = name;
