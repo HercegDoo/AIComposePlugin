@@ -28,32 +28,47 @@ export default class GenerateSubject {
     const body = editor
       ? editor.getContent({ format: "text" })
       : document.getElementById("composebody")?.value || "";
-    const instructions = document.getElementById("aic-instruction")?.value || "";
+    const instructions =
+      document.getElementById("aic-instruction")?.value || "";
     if (!body.trim() && !instructions.trim()) {
-      rcmail.display_message(translation("ai_subject_requires_content"), "warning");
+      rcmail.display_message(
+        translation("ai_subject_requires_content"),
+        "warning"
+      );
       return;
     }
 
     const previousSubject = getSubject();
-    const language = document.getElementById("aic_language_select")?.value ||
+    const selectedLanguage =
+      document.getElementById("aic_language_select")?.value ||
       rcmail.env.aiPluginOptions.defaultLanguage;
+    const language =
+      rcmail.env.aiPluginOptions.languages.find(
+        (option) => option.toLowerCase() === selectedLanguage.toLowerCase()
+      ) || selectedLanguage;
     button.disabled = true;
 
-    rcmail.http_post(
-      "plugin.aicomposeplugin_GenerateSubjectAction",
-      { body, instructions, language, subject: previousSubject },
-      true
-    )
+    rcmail
+      .http_post(
+        "plugin.aicomposeplugin_GenerateSubjectAction",
+        { body, instructions, language, subject: previousSubject },
+        true
+      )
       .done((data) => {
         if (data?.status === "success" && data.subject) {
           if (getSubject() === previousSubject) {
             setSubject(data.subject);
           }
         } else {
-          rcmail.display_message(translation("ai_request_error"), "error");
+          rcmail.display_message(
+            data?.message || translation("ai_request_error"),
+            "error"
+          );
         }
       })
-      .fail(() => rcmail.display_message(translation("ai_request_error"), "error"))
+      .fail(() =>
+        rcmail.display_message(translation("ai_request_error"), "error")
+      )
       .always(() => {
         button.disabled = false;
       });

@@ -150,6 +150,17 @@ final class Settings
         return self::$languages;
     }
 
+    public static function resolveLanguage(string $choice): ?string
+    {
+        foreach (array_values(self::getLanguages()) as $language) {
+            if (strcasecmp($choice, $language) === 0) {
+                return $language;
+            }
+        }
+
+        return null;
+    }
+
     public static function getDefaultLanguage(): string
     {
         if ($userChoice = self::getChoiceFromSettings('language')) {
