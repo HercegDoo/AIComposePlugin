@@ -188,6 +188,7 @@ $labels['ai_help_example_18'] = 'Het was fijn om je gisteren op de conferentie t
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'AI-samenvatting';
+$labels['ai_show_summary'] = 'Samenvatting tonen';
 $labels['ai_summary_loading'] = 'Samenvatting wordt gegenereerd…';
 $labels['ai_summary_error'] = 'Samenvatting niet beschikbaar. Probeer het opnieuw.';
 $labels['ai_show_original'] = 'Origineel tonen';
@@ -199,7 +200,7 @@ $labels['ai_original_language'] = 'Origineel';
 $labels['ai_summary_language_setting'] = 'Taal van samenvattingen';
 $labels['ai_summary_hover_setting'] = 'AI-samenvatting bij aanwijzen van een bericht';
 $labels['ai_summary_message_setting'] = 'AI-samenvatting in geopende berichten';
-$labels['ai_summary_message_long'] = 'Alleen lange berichten/gesprekken (200+ woorden)';
+$labels['ai_summary_message_long'] = 'Alleen lange berichten/gesprekken (150+ woorden)';
 $labels['ai_summary_message_always'] = 'Altijd tonen';
 $labels['ai_translation_message_setting'] = 'Vertaling van de volledige e-mail in geopende berichten';
 $labels['ai_summary_language_roundcube'] = 'Taal van de Roundcube-interface (automatisch)';

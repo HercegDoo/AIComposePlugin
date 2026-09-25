@@ -40,11 +40,11 @@ final class SummaryDisplayPreferences
     }
 
     /** @param array<string, mixed> $defaults */
-    public static function shouldSummarizeMessage(array $defaults, string $body): bool
+    public static function shouldSummarizeMessage(array $defaults, string $body, bool $force = false): bool
     {
         $choice = self::choice($defaults, self::MESSAGE);
 
-        return $choice === self::SHOW || ($choice === self::LONG && SummaryPromptBuilder::isLongMessage($body));
+        return $choice === self::SHOW || ($choice === self::LONG && ($force || SummaryPromptBuilder::isLongMessage($body)));
     }
 
     /**

@@ -187,6 +187,7 @@ $labels['ai_help_example_18'] = 'Ich freue mich, dass wir uns gestern auf der Ko
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'KI-Zusammenfassung';
+$labels['ai_show_summary'] = 'Zusammenfassung anzeigen';
 $labels['ai_summary_loading'] = 'Zusammenfassung wird erstellt…';
 $labels['ai_summary_error'] = 'Zusammenfassung nicht verfügbar. Bitte erneut versuchen.';
 $labels['ai_show_original'] = 'Original anzeigen';
@@ -198,7 +199,7 @@ $labels['ai_original_language'] = 'Original';
 $labels['ai_summary_language_setting'] = 'Sprache der Zusammenfassungen';
 $labels['ai_summary_hover_setting'] = 'KI-Zusammenfassung beim Zeigen auf eine Nachricht';
 $labels['ai_summary_message_setting'] = 'KI-Zusammenfassung in geöffneten Nachrichten';
-$labels['ai_summary_message_long'] = 'Nur lange Nachrichten/Konversationen (200+ Wörter)';
+$labels['ai_summary_message_long'] = 'Nur lange Nachrichten/Konversationen (150+ Wörter)';
 $labels['ai_summary_message_always'] = 'Immer anzeigen';
 $labels['ai_translation_message_setting'] = 'Übersetzung der gesamten E-Mail in geöffneten Nachrichten';
 $labels['ai_summary_language_roundcube'] = 'Sprache der Roundcube-Oberfläche (automatisch)';
