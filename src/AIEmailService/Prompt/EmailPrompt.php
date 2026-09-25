@@ -8,11 +8,13 @@ final class EmailPrompt
 {
     private string $systemInstruction;
     private string $userInstruction;
+    private string $purpose;
 
-    public function __construct(string $systemInstruction, string $userInstruction)
+    public function __construct(string $systemInstruction, string $userInstruction, string $purpose = 'email')
     {
         $this->systemInstruction = $systemInstruction;
         $this->userInstruction = $userInstruction;
+        $this->purpose = $purpose;
     }
 
     public function getSystemInstruction(): string
@@ -23,5 +25,10 @@ final class EmailPrompt
     public function getUserInstruction(): string
     {
         return $this->userInstruction;
+    }
+
+    public function getPurpose(): string
+    {
+        return $this->purpose;
     }
 }

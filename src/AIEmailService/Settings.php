@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HercegDoo\AIComposePlugin\AIEmailService;
 
+use HercegDoo\AIComposePlugin\AIEmailService\Debug\RequestLogger;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\DummyProvider;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\InterfaceProvider;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
@@ -94,11 +95,11 @@ final class Settings
         }
     }
 
-    public static function setProvider(string $provider): void
+    public static function setProvider(string $provider, ?RequestLogger $requestLogger = null): void
     {
         switch ($provider) {
             case 'OpenAI':
-                self::$provider = new OpenAI();
+                self::$provider = new OpenAI(null, $requestLogger);
                 break;
             case 'DummyProvider':
                 self::$provider = new DummyProvider();

@@ -40,6 +40,7 @@ final class SummaryPromptBuilderTest extends TestCase
     {
         $prompt = (new SummaryPromptBuilder())->build('Meeting', 'Can we meet tomorrow?', 'en_US', 1, true);
 
+        self::assertSame('summary', $prompt->getPurpose());
         self::assertStringContainsString('reply_intent_clear as a boolean', $prompt->getUserInstruction());
         self::assertStringContainsString('If the intent or required details are unclear', $prompt->getUserInstruction());
         self::assertStringContainsString('return an empty array', $prompt->getUserInstruction());

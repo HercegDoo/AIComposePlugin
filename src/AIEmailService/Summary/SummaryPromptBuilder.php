@@ -43,6 +43,6 @@ final class SummaryPromptBuilder
                 : '') .
             "\n<subject>\n{$subject}\n</subject>\n<email>\n{$body}\n</email>";
 
-        return new EmailPrompt($system, $instruction);
+        return new EmailPrompt($system, $instruction, 'summary');
     }
 }

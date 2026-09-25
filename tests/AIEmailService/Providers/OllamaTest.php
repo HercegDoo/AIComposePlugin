@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HercegDoo\AIComposePlugin\Tests\AIEmailService\Providers;
 
 use Curl\Curl;
+use HercegDoo\AIComposePlugin\AIEmailService\Debug\RequestLogger;
 use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
 use HercegDoo\AIComposePlugin\AIEmailService\Prompt\EmailPrompt;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\Ollama;
@@ -43,5 +44,30 @@ final class OllamaTest extends TestCase
     {
         $this->expectException(ProviderException::class);
         (new Ollama())->complete(new EmailPrompt('System', 'User'), ['model' => '']);
+    }
+
+    public function testDebugLogRecordsOllamaTokenCounts(): void
+    {
+        $lines = [];
+        $logger = new RequestLogger(true, '42', static function (string $line) use (&$lines): void {
+            $lines[] = json_decode($line, true, 512, \JSON_THROW_ON_ERROR);
+        });
+        $curl = $this->createMock(Curl::class);
+        $curl->method('post')->willReturn((object) [
+            'message' => (object) ['content' => 'Private summary'],
+            'prompt_eval_count' => 40,
+            'eval_count' => 15,
+            'done_reason' => 'stop',
+        ]);
+
+        $result = (new Ollama($curl, $logger))->complete(
+            new EmailPrompt('System summary', 'Incoming email', 'summary'),
+            ['model' => 'test-model']
+        );
+
+        self::assertSame('Private summary', $result);
+        self::assertSame('summary', $lines[0]['operation']);
+        self::assertSame(['prompt_tokens' => 40, 'completion_tokens' => 15, 'total_tokens' => 55], $lines[1]['usage']);
+        self::assertStringNotContainsString('Private summary', json_encode($lines));
     }
 }

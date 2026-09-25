@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HercegDoo\AIComposePlugin\AIEmailService\Summary;
 
+use HercegDoo\AIComposePlugin\AIEmailService\Debug\RequestLogger;
 use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\CompletionProviderInterface;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\Ollama;
@@ -16,6 +17,10 @@ final class SummaryProviderFactory
      */
     public function create(\rcube_config $settings): array
     {
+        $requestLogger = new RequestLogger(
+            $settings->get('aiDebugLogging', false) === true,
+            (string) \rcmail::get_instance()->user->ID
+        );
         $name = $settings->get('aiSummaryProvider', 'OpenAI');
         if ($name === 'Ollama') {
             $config = $settings->get('aiSummaryOllamaConfig', []);
@@ -23,7 +28,7 @@ final class SummaryProviderFactory
                 throw new ProviderException('Invalid Ollama summary configuration');
             }
 
-            return [new Ollama(), $config];
+            return [new Ollama(null, $requestLogger), $config];
         }
 
         if ($name === 'OpenAI') {
@@ -39,7 +44,7 @@ final class SummaryProviderFactory
                 throw new ProviderException('Missing OpenAI summary credentials or model');
             }
 
-            return [new OpenAI(), $config];
+            return [new OpenAI(null, $requestLogger), $config];
         }
 
         throw new ProviderException('Unsupported summary provider');

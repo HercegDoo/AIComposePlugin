@@ -22,6 +22,15 @@ $config['aiProviderOpenAIConfig'] = [
     // 'apiUrl' => 'https://api.openai.com/v1/chat/completions'  // Optional: uncomment to use a custom API endpoint
 ];
 
+// Optional request diagnostics for email, subject, and summary generation.
+// WARNING: When enabled, complete AI prompts (including email content and Sent
+// style examples) are written to Roundcube's aicomposeplugin_ai log. Keep the
+// Roundcube log directory private and turn this off after troubleshooting.
+// Configured API credentials and full provider response payloads are not dumped.
+// Generated text reused in a later subject prompt can appear in that prompt.
+// OpenAI/Ollama token counts are recorded only when the provider reports them.
+$config['aiDebugLogging'] = false;
+
 // Use up to three short excerpts from this user's Sent folder to match their writing style.
 // Messages to the current recipient are preferred. Only messages sent from the selected
 // compose identity are considered; quoted threads and attachments are excluded.
