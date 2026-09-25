@@ -14,18 +14,18 @@
 }
 
 #message-header .header-links .aic-translation-trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
+  display: inline-block;
   margin: 0 0.5rem 0 0;
   padding: 0;
   border: 0;
   background: transparent;
   color: #00acff;
   cursor: pointer;
-  font: inherit;
-  font-size: 90%;
+  font-size: inherit;
+  line-height: inherit;
+  text-decoration: none;
   vertical-align: baseline;
+  white-space: nowrap;
 }
 
 #message-header .header-links .aic-translation-trigger:hover,
@@ -41,25 +41,28 @@
   outline-offset: 2px;
 }
 
-#message-header .header-links .aic-translation-trigger:disabled {
+#message-header .header-links .aic-translation-trigger[aria-disabled="true"] {
   cursor: wait;
   opacity: 0.55;
 }
 
 .aic-translation-trigger svg {
-  width: 1rem;
-  height: 1rem;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.3em;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.8;
+  vertical-align: -0.12em;
 }
 
 .aic-translation-trigger::after {
   content: "";
-  margin-left: 0.12rem;
+  display: inline-block;
+  margin-left: 0.25em;
   border: 0.25rem solid transparent;
   border-top-color: currentColor;
-  transform: translateY(0.13rem);
+  vertical-align: -0.18em;
 }
 
 .aic-translation-popover {
@@ -285,6 +288,31 @@
   line-height: 1.55;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
+}
+
+.aic-summary-card .aic-summary-loading::before {
+  content: "";
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-right: 0.5em;
+  border: 2px solid var(--aic-summary-accent);
+  border-top-color: transparent;
+  border-radius: 50%;
+  vertical-align: -0.12em;
+  animation: aic-summary-spin 0.8s linear infinite;
+}
+
+@keyframes aic-summary-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aic-summary-card .aic-summary-loading::before {
+    animation: none;
+  }
 }
 
 .aic-summary-card .aic-summary-original {

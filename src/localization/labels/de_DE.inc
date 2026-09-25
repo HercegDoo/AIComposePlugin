@@ -187,7 +187,7 @@ $labels['ai_help_example_18'] = 'Ich freue mich, dass wir uns gestern auf der Ko
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'KI-Zusammenfassung';
-$labels['ai_summary_loading'] = 'Zusammenfassung wird geladen…';
+$labels['ai_summary_loading'] = 'Zusammenfassung wird erstellt…';
 $labels['ai_summary_error'] = 'Zusammenfassung nicht verfügbar. Bitte erneut versuchen.';
 $labels['ai_show_original'] = 'Original anzeigen';
 $labels['ai_hide_original'] = 'Original ausblenden';

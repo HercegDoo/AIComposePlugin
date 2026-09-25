@@ -9,7 +9,7 @@ use HercegDoo\AIComposePlugin\AIEmailService\Prompt\EmailPrompt;
 final class SummaryPromptBuilder
 {
     public const VERSION = 4;
-    public const LONG_MESSAGE_MIN_WORDS = 200;
+    public const LONG_MESSAGE_MIN_WORDS = 150;
 
     public static function isLongMessage(string $body): bool
     {

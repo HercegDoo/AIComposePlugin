@@ -1,5 +1,4 @@
 import "./summary/styles.css";
-import { checkMessageEligibility } from "./summary/eligibility";
 import { messageTranslationControl } from "./summary/translation";
 
 const action = "plugin.aicomposeplugin_SummarizeMessageAction";
@@ -58,8 +57,6 @@ function messageCard() {
   const uid = String(rcmail.env.uid || "");
   const mailbox = rcmail.env.mailbox;
   if (!body || !/^[1-9]\d*(?:\.\d+)*$/.test(uid) || !mailbox) return;
-  const onlyLong = rcmail.env.aiSummaryMessageMode === "long";
-
   const card = document.createElement("section");
   card.className = "aic-summary-card";
   card.setAttribute("aria-label", label("ai_summary", "AI summary"));
@@ -82,7 +79,10 @@ function messageCard() {
   controls.append(originalButton, refreshButton);
   head.append(heading, controls);
   const summary = document.createElement("p");
-  summary.textContent = label("ai_summary_loading", "Fetching summary…");
+  summary.className = "aic-summary-loading";
+  summary.setAttribute("role", "status");
+  summary.setAttribute("aria-live", "polite");
+  summary.textContent = label("ai_summary_loading", "Generating summary…");
   const original = document.createElement("p");
   original.className = "aic-summary-original";
   original.hidden = true;
@@ -105,13 +105,7 @@ function messageCard() {
   suggestionsList.className = "aic-reply-suggestion-list";
   suggestions.append(suggestionsHeading, suggestionsList);
   card.append(head, summary, original);
-  let inserted = false;
-  function showCard() {
-    if (inserted) return;
-    body.prepend(card, suggestions);
-    inserted = true;
-  }
-  if (!onlyLong) showCard();
+  body.prepend(card, suggestions);
 
   let current;
   function prepareReply(item) {
@@ -148,6 +142,8 @@ function messageCard() {
   }
   function render(data) {
     current = data;
+    card.setAttribute("aria-busy", "false");
+    summary.classList.remove("aic-summary-loading");
     summary.textContent = data.translatedSummary;
     original.textContent = `${label("ai_original_language", "Original")} (${data.sourceLanguage}): ${data.originalSummary}`;
     originalButton.hidden = data.translationEnabled === false;
@@ -177,21 +173,22 @@ function messageCard() {
   }
   function load(refresh) {
     refreshButton.disabled = true;
-    summary.textContent = label("ai_summary_loading", "Fetching summary…");
+    card.setAttribute("aria-busy", "true");
+    summary.classList.add("aic-summary-loading");
+    summary.textContent = label("ai_summary_loading", "Generating summary…");
     suggestions.hidden = true;
     summarize(uid, mailbox, "message", refresh)
       .then((data) => {
         if (data.status === "skipped") {
           card.remove();
           suggestions.remove();
-          inserted = false;
           return;
         }
-        showCard();
         render(data);
       })
       .catch(() => {
-        if (onlyLong && !inserted) return;
+        card.setAttribute("aria-busy", "false");
+        summary.classList.remove("aic-summary-loading");
         summary.textContent = label(
           "ai_summary_error",
           "Summary unavailable. Try again."
@@ -207,23 +204,7 @@ function messageCard() {
       : label("ai_hide_original", "Hide original");
   });
   refreshButton.addEventListener("click", () => load(true));
-  if (onlyLong) {
-    checkMessageEligibility(uid, mailbox)
-      .then((eligible) => {
-        if (eligible) {
-          showCard();
-          load(false);
-        }
-      })
-      .catch(() => {
-        rcmail.display_message(
-          label("ai_summary_error", "Summary unavailable. Try again."),
-          "warning"
-        );
-      });
-  } else {
-    load(false);
-  }
+  load(false);
 }
 
 function hoverPreview() {
@@ -271,7 +252,7 @@ function hoverPreview() {
       if (activeRow !== row) return;
       previewText.textContent = label(
         "ai_summary_loading",
-        "Fetching summary…"
+        "Generating summary…"
       );
       preview.hidden = false;
       position(row);

@@ -189,7 +189,7 @@ $labels['ai_help_example_18'] = 'Drago mi je da smo se jučer sreli na konferenc
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'AI sažetak';
-$labels['ai_summary_loading'] = 'Preuzimam sažetak…';
+$labels['ai_summary_loading'] = 'Sažetak se generira…';
 $labels['ai_summary_error'] = 'Sažetak nije dostupan. Pokušajte ponovno.';
 $labels['ai_show_original'] = 'Prikaži izvornik';
 $labels['ai_hide_original'] = 'Sakrij izvornik';

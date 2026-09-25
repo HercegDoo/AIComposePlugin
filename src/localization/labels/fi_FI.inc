@@ -188,7 +188,7 @@ $labels['ai_help_example_18'] = 'oli kiva tavata eilisessä konferenssissa, naut
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'Tekoälytiivistelmä';
-$labels['ai_summary_loading'] = 'Haetaan yhteenvetoa…';
+$labels['ai_summary_loading'] = 'Yhteenvetoa luodaan…';
 $labels['ai_summary_error'] = 'Tiivistelmä ei ole saatavilla. Yritä uudelleen.';
 $labels['ai_show_original'] = 'Näytä alkuperäinen';
 $labels['ai_hide_original'] = 'Piilota alkuperäinen';

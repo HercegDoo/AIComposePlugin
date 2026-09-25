@@ -188,7 +188,7 @@ $labels['ai_help_example_18'] = 'Het was fijn om je gisteren op de conferentie t
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'AI-samenvatting';
-$labels['ai_summary_loading'] = 'Samenvatting ophalen…';
+$labels['ai_summary_loading'] = 'Samenvatting wordt gegenereerd…';
 $labels['ai_summary_error'] = 'Samenvatting niet beschikbaar. Probeer het opnieuw.';
 $labels['ai_show_original'] = 'Origineel tonen';
 $labels['ai_hide_original'] = 'Origineel verbergen';

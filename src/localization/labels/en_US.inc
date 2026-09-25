@@ -189,7 +189,7 @@ $labels['ai_help_example_18'] = 'I’m glad we met at the conference yesterday, 
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'AI summary';
-$labels['ai_summary_loading'] = 'Fetching summary…';
+$labels['ai_summary_loading'] = 'Generating summary…';
 $labels['ai_summary_error'] = 'Summary unavailable. Try again.';
 $labels['ai_show_original'] = 'Show original';
 $labels['ai_hide_original'] = 'Hide original';

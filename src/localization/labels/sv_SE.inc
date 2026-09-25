@@ -188,7 +188,7 @@ $labels['ai_help_example_18'] = 'trevligt att vi sågs på konferensen igår, ja
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'AI-sammanfattning';
-$labels['ai_summary_loading'] = 'Hämtar sammanfattning…';
+$labels['ai_summary_loading'] = 'Sammanfattning skapas…';
 $labels['ai_summary_error'] = 'Sammanfattningen är inte tillgänglig. Försök igen.';
 $labels['ai_show_original'] = 'Visa original';
 $labels['ai_hide_original'] = 'Dölj original';

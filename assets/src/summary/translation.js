@@ -73,9 +73,10 @@ export function messageTranslationControl() {
   )
     return;
 
-  const trigger = document.createElement("button");
-  trigger.type = "button";
+  const trigger = document.createElement("a");
+  trigger.href = "#";
   trigger.className = "aic-translation-trigger";
+  trigger.setAttribute("role", "button");
   trigger.setAttribute("aria-haspopup", "dialog");
   trigger.setAttribute("aria-expanded", "false");
   trigger.setAttribute("aria-controls", "aic-translation-popover");
@@ -219,10 +220,13 @@ export function messageTranslationControl() {
   function closePopover(focusTrigger = false) {
     popover.hidden = true;
     trigger.setAttribute("aria-expanded", "false");
-    if (focusTrigger && !trigger.disabled) trigger.focus();
+    if (focusTrigger && trigger.getAttribute("aria-disabled") !== "true")
+      trigger.focus();
   }
 
-  trigger.addEventListener("click", () => {
+  trigger.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (trigger.getAttribute("aria-disabled") === "true") return;
     if (!popover.hidden) {
       closePopover();
       return;
@@ -231,6 +235,12 @@ export function messageTranslationControl() {
     trigger.setAttribute("aria-expanded", "true");
     positionPopover();
     target.focus();
+  });
+  trigger.addEventListener("keydown", (event) => {
+    if (event.key === " ") {
+      event.preventDefault();
+      trigger.click();
+    }
   });
   closeButton.addEventListener("click", () => closePopover(true));
   document.addEventListener("pointerdown", (event) => {
@@ -296,7 +306,8 @@ export function messageTranslationControl() {
     }
     const requestedLocale = target.value;
     closePopover();
-    trigger.disabled = true;
+    trigger.setAttribute("aria-disabled", "true");
+    trigger.tabIndex = -1;
     translateButton.disabled = true;
     target.disabled = true;
     hideButton.disabled = true;
@@ -337,7 +348,8 @@ export function messageTranslationControl() {
       );
     } finally {
       status.remove();
-      trigger.disabled = false;
+      trigger.removeAttribute("aria-disabled");
+      trigger.removeAttribute("tabindex");
       translateButton.disabled = false;
       target.disabled = false;
       hideButton.disabled = false;

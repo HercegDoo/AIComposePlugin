@@ -36,13 +36,10 @@ final class SummarizeMessageAction extends AbstractAction
             $folder = Request::postString('mailbox') ?? '';
             $refresh = Request::postString('refresh', '0');
             $view = Request::postString('view', self::VIEW_PREVIEW);
-            $check = Request::postString('check', '0');
             if (!preg_match('/^[1-9][0-9]*(?:\.[0-9]+)*$/', $uid)
                 || $folder === '' || \strlen($folder) > 1024 || preg_match('/[\x00-\x1F\x7F]/', $folder)
                 || !\in_array($refresh, ['0', '1'], true)
-                || !\in_array($view, [self::VIEW_PREVIEW, self::VIEW_MESSAGE], true)
-                || !\in_array($check, ['0', '1'], true)
-                || ($check === '1' && $view !== self::VIEW_MESSAGE)) {
+                || !\in_array($view, [self::VIEW_PREVIEW, self::VIEW_MESSAGE], true)) {
                 throw new \InvalidArgumentException('Invalid summary request');
             }
             if (!SummaryDisplayPreferences::isEnabled($defaults, $view)) {
@@ -58,14 +55,6 @@ final class SummarizeMessageAction extends AbstractAction
 
             $extractor = new MessageTextExtractor();
             $body = $view === self::VIEW_MESSAGE ? $extractor->extract($message) : null;
-            if ($check === '1' && $body !== null) {
-                echo json_encode([
-                    'status' => 'success',
-                    'eligible' => SummaryDisplayPreferences::shouldSummarizeMessage($defaults, $body),
-                ]);
-
-                return;
-            }
             if ($body !== null && !SummaryDisplayPreferences::shouldSummarizeMessage($defaults, $body)) {
                 echo json_encode(['status' => 'skipped']);
 

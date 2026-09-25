@@ -186,7 +186,7 @@ $labels['ai_help_example_18'] = 'Drago mi je da smo se jučer sreli na konferenc
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'AI sažetak';
-$labels['ai_summary_loading'] = 'Preuzimam sažetak…';
+$labels['ai_summary_loading'] = 'Sažetak se generiše…';
 $labels['ai_summary_error'] = 'Sažetak nije dostupan. Pokušajte ponovo.';
 $labels['ai_show_original'] = 'Prikaži original';
 $labels['ai_hide_original'] = 'Sakrij original';
