@@ -5,6 +5,7 @@ import {
   composeOptionsPostData,
   initComposeOptionPersistence,
 } from "../../assets/src/compose/emailHelpers/composeOptionsPersistence.mjs";
+import { postComposeOptions } from "../../assets/src/compose/emailHelpers/saveComposeOptions.mjs";
 
 function select(id, value, values = [value]) {
   return {
@@ -302,4 +303,134 @@ test("the parent listener saves a select inserted after initialization", () => {
   onDocumentChange(event);
 
   assert.deepEqual(saved, [{ aic_language_select: "german" }]);
+});
+
+test("captures changes before the compose options markup finishes rendering", async () => {
+  let onDocumentChange;
+  let onDomReady;
+  let onParentChange;
+  let wrapper = null;
+  const container = {
+    readyState: "loading",
+    querySelector(selector) {
+      return selector === ".select-div" ? wrapper : null;
+    },
+    addEventListener(name, listener, options) {
+      if (name === "change") {
+        assert.equal(options, true);
+        onDocumentChange = listener;
+      }
+      if (name === "DOMContentLoaded") onDomReady = listener;
+    },
+  };
+  const saved = [];
+  initComposeOptionPersistence(container, (options) => saved.push(options));
+
+  const style = select("aic_style_select", "professional");
+  onDocumentChange({ target: style });
+  wrapper = {
+    querySelector() {
+      return null;
+    },
+    addEventListener(name, listener) {
+      onParentChange = listener;
+    },
+  };
+  onDomReady();
+  const laterChange = { target: select("aic_length_select", "long") };
+  onDocumentChange(laterChange);
+  onParentChange(laterChange);
+
+  await new Promise(setImmediate);
+  assert.deepEqual(saved, [
+    { aic_style_select: "professional" },
+    { aic_length_select: "long" },
+  ]);
+});
+
+test("saves on input and ignores the following change for the same value", () => {
+  const listeners = {};
+  const container = {
+    querySelector() {
+      return null;
+    },
+    addEventListener(name, listener) {
+      listeners[name] = listener;
+    },
+  };
+  const saved = [];
+  initComposeOptionPersistence(container, (options) => saved.push(options));
+
+  const style = select("aic_style_select", "professional");
+  listeners.input({ target: style });
+  listeners.change({ target: style });
+
+  assert.deepEqual(saved, [{ aic_style_select: "professional" }]);
+});
+
+test("posts the changed field directly with Roundcube's CSRF header", async () => {
+  const requests = [];
+  const roundcube = {
+    env: { request_token: "test-token" },
+    url: (action) => `/roundcube/?_task=mail&_action=${action}`,
+  };
+  await postComposeOptions(
+    roundcube,
+    async (url, options) => {
+      requests.push({ url, options });
+      return { ok: true, json: async () => ({ status: "success" }) };
+    },
+    { aic_style_select: "casual" }
+  );
+
+  assert.equal(
+    requests[0].url,
+    "/roundcube/?_task=mail&_action=plugin.aicomposeplugin_SaveComposeOptionsAction"
+  );
+  assert.equal(requests[0].options.method, "POST");
+  assert.equal(requests[0].options.credentials, "same-origin");
+  assert.equal(requests[0].options.headers["X-Roundcube-Request"], "test-token");
+  assert.deepEqual(
+    Object.fromEntries(new URLSearchParams(requests[0].options.body)),
+    { _remote: "1", "data[aic][style]": "casual" }
+  );
+});
+
+test("reports a server rejection of the preference change", async () => {
+  await assert.rejects(
+    postComposeOptions(
+      {
+        env: { request_token: "test-token" },
+        url: () => "/roundcube/",
+      },
+      async () => ({ ok: true, json: async () => ({ status: "error" }) }),
+      { aic_length_select: "long" }
+    ),
+    /Could not save compose options/
+  );
+});
+
+test("saves choices changed before a late bundle binds its listeners", () => {
+  const style = select("aic_style_select", "casual");
+  style.addEventListener = () => {};
+  const wrapper = {
+    querySelector: (selector) =>
+      selector === "#aic_style_select" ? style : null,
+    addEventListener() {},
+  };
+  const container = {
+    querySelector: (selector) =>
+      selector === ".select-div" ? wrapper : null,
+    addEventListener() {},
+  };
+  const saved = [];
+
+  initComposeOptionPersistence(
+    container,
+    (options) => saved.push(options),
+    null,
+    { style: "professional" }
+  );
+
+  assert.deepEqual(saved, [{ aic_style_select: "casual" }]);
 });

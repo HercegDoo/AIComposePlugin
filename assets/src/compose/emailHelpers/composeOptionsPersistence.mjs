@@ -16,12 +16,18 @@ export function composeOptionsPostData(options) {
   return { data: { aic } };
 }
 
-export function initComposeOptionPersistence(container, onSave, loadOptions) {
+export function initComposeOptionPersistence(
+  container,
+  onSave,
+  loadOptions,
+  initialOptions
+) {
   if (!container || typeof onSave !== "function") return;
 
   let saving = false;
   let pendingOptions = null;
   const changed = new Set();
+  const observedValues = new Map();
 
   function applySavedOptions(options) {
     for (const id of optionIds) {
@@ -69,6 +75,8 @@ export function initComposeOptionPersistence(container, onSave, loadOptions) {
     }
 
     changed.add(select.id);
+    if (observedValues.get(select.id) === select.value) return;
+    observedValues.set(select.id, select.value);
     if (event.aicComposeHandled) return;
     event.aicComposeHandled = true;
 
@@ -80,16 +88,48 @@ export function initComposeOptionPersistence(container, onSave, loadOptions) {
     }
   }
 
-  // Bind the rendered selects directly, then their wrapper for later replacements.
-  // Document delegation also covers compose fragments inserted after initialization.
-  const wrapper = container.querySelector(".select-div");
-  if (wrapper) {
-    for (const id of optionIds) {
-      wrapper.querySelector(`#${id}`)?.addEventListener("change", onChange);
-    }
-    wrapper.addEventListener("change", onChange);
+  // Capture selections immediately, even while Roundcube is building the page.
+  for (const type of ["input", "change"]) {
+    container.addEventListener(type, onChange, true);
   }
-  container.addEventListener("change", onChange);
+
+  function bindRenderedOptions() {
+    const wrapper = container.querySelector(".select-div");
+    if (!wrapper) return;
+
+    for (const id of optionIds) {
+      for (const type of ["input", "change"]) {
+        wrapper.querySelector(`#${id}`)?.addEventListener(type, onChange);
+      }
+    }
+    for (const type of ["input", "change"]) {
+      wrapper.addEventListener(type, onChange);
+    }
+
+    // A late-loaded bundle can find controls changed before its listeners ran.
+    if (initialOptions && typeof initialOptions === "object") {
+      for (const id of optionIds) {
+        const select = wrapper.querySelector(`#${id}`);
+        const field = id.replace(/^aic_/, "").replace(/_select$/, "");
+        const initial = initialOptions[field];
+        if (
+          select?.tagName === "SELECT" &&
+          typeof initial === "string" &&
+          select.value.toLowerCase() !== initial.toLowerCase() &&
+          !changed.has(id)
+        ) {
+          onChange({ target: select });
+        }
+      }
+    }
+  }
+
+  bindRenderedOptions();
+  if (container.readyState === "loading") {
+    container.addEventListener("DOMContentLoaded", bindRenderedOptions, {
+      once: true,
+    });
+  }
 
   if (typeof loadOptions === "function") {
     let request;
