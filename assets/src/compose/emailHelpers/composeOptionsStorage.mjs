@@ -19,13 +19,9 @@ export function initComposeOptionPersistence(
   if (selects.length === 0) return;
 
   const key = `aicomposeplugin.composeOptions.v1.${userId}`;
-  const serverKey = `aicomposeplugin.composeOptions.server.v1.${userId}`;
   let saved = {};
-  let serverSaved = false;
-  let saveRevision = 0;
 
   try {
-    serverSaved = storage?.getItem(serverKey) === "1";
     const stored = JSON.parse(storage?.getItem(key) || "{}");
     if (stored && typeof stored === "object" && !Array.isArray(stored)) {
       saved = stored;
@@ -37,7 +33,6 @@ export function initComposeOptionPersistence(
   for (const select of selects) {
     const value = saved[select.id];
     if (
-      !serverSaved &&
       typeof value === "string" &&
       Array.from(select.options).some((option) => option.value === value)
     ) {
@@ -45,7 +40,10 @@ export function initComposeOptionPersistence(
     }
 
     select.addEventListener("change", () => {
-      saved[select.id] = select.value;
+      const options = Object.fromEntries(
+        selects.map((item) => [item.id, item.value])
+      );
+      saved = { ...saved, ...options };
       try {
         storage?.setItem(key, JSON.stringify(saved));
       } catch (_) {
@@ -55,33 +53,10 @@ export function initComposeOptionPersistence(
       if (typeof onSave !== "function" || selects.length !== optionIds.length)
         return;
 
-      const options = Object.fromEntries(
-        selects.map((item) => [item.id, item.value])
-      );
-      const revision = ++saveRevision;
       try {
-        storage?.removeItem(serverKey);
-      } catch (_) {
-        // Server saving still works without localStorage.
-      }
-      try {
-        Promise.resolve(onSave(options))
-          .then(() => {
-            if (revision !== saveRevision) return;
-            try {
-              storage?.setItem(serverKey, "1");
-            } catch (_) {
-              // Server preferences remain available when storage is blocked.
-            }
-          })
-          .catch(() => {
-            if (revision !== saveRevision) return;
-            try {
-              storage?.removeItem(serverKey);
-            } catch (_) {
-              // The local selection is still usable for this compose session.
-            }
-          });
+        Promise.resolve(onSave(options)).catch(() => {
+          // The latest local selection remains available if server saving fails.
+        });
       } catch (_) {
         // The local selection is still usable if a save cannot be started.
       }
