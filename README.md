@@ -3,33 +3,23 @@
 
 ## Overview
 
-The AI Email Generator plugin for Roundcube enhances the email composing experience by integrating AI-based email generation capabilities. With this plugin, users can generate professional and personalized emails with just a few clicks, saving time and effort.
+AIComposePlugin adds AI-assisted email writing, subject suggestions, incoming-message summaries, translation, and reply drafts to Roundcube.
 
-**Current Version:** v2.0.0
+**Current Version:** v3.0.0
+
+**Changelog:** [v3.0.0 and previous releases](CHANGELOG.md)
 
 ### Features
 
-1. **AI Email Generation:**
-    - Allows users to generate an email by providing specific instructions.
-
-2. **Customizable Parameters: Users can choose:**
-
-   - Style: The tone and style of the email (e.g., formal, casual, informational, etc.).
-
-   - Length: How long the generated email should be (short, medium, or long).
-
-   - Creativity: Adjust the level of creativity in the email (low, medium, or high).
-
-   - Language: Choose from Bosnian, Croatian, English, German, or Dutch.
-   
-3. **User-Defined Predefined Instructions:**
-     - Users can create custom predefined instructions that they can reuse for generating emails. Instead of typing instructions each time, users can save and select frequently used ones, enhancing productivity.
-4. **Default Settings:**
-     - Users can set default values for style, length, creativity, and language. These default settings will be automatically applied during email generation, allowing for a more streamlined experience.
-5. **Seamless Integration:**
-   - Adds a new button to the Compose page in Roundcube that opens a prompt for email generation.
-6. **Translated incoming summaries:**
-   - Detects the incoming email language and shows an AI summary in the active Roundcube interface language on hover and when opening a message.
+- **AI email writing and revision:** Generate a new email, draft a reply, or revise selected text from instructions in Roundcube Compose. Output follows the editor's plain-text or HTML mode; generated HTML is sanitized before insertion.
+- **Compose controls that persist:** Choose style, length, creativity, and language. Changes are saved automatically and restored in new compose windows. Users can also save reusable instructions for common requests.
+- **Subject suggestions:** A blank Subject field can be filled when an email is generated. The icon beside Subject requests another suggestion without changing the message body.
+- **Personal writing style:** The plugin can use up to three short examples from the signed-in user's Sent folder, preferring messages to the current recipient, to guide the tone and phrasing of new text. Administrators can disable this feature.
+- **Incoming email summaries and translation:** Hover over a message for a short preview or open it for a longer summary that adapts to message length. The plugin detects the source language and can show the summary in the active Roundcube language, another installed language, or the original language. Users can reveal the original summary or refresh it; results are cached per user for seven days.
+- **Suggested replies:** When an opened message clearly calls for a response, the plugin offers up to three suggestions. Clicking one opens an editable reply draft; the email is never sent automatically.
+- **Provider choices:** OpenAI and Gemini support email composition, subjects, and summaries. Ollama is available for local incoming-message summaries. OpenAI requests include model-specific handling for GPT-5 and GPT-6.
+- **Roundcube integration:** The interface uses the Elastic skin, localized labels, and light and dark theme styling. Compose options and summary language preferences belong to the signed-in user.
+- **Optional diagnostics:** Administrators can enable AI request logging with prompts, model details, timing, and provider-reported token usage. Logging is off by default and can contain private email text when enabled.
 
 ## Install
 
