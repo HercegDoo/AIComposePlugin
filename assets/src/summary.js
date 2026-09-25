@@ -9,14 +9,14 @@ function label(key, fallback) {
   return text === `aicomposeplugin.${key}` ? fallback : text;
 }
 
-function summarize(uid, mailbox, refresh = false) {
-  const key = `${mailbox}\0${uid}`;
+function summarize(uid, mailbox, view = "preview", refresh = false) {
+  const key = `${mailbox}\0${uid}\0${view}`;
   if (!refresh && results.has(key)) return Promise.resolve(results.get(key));
   if (!refresh && pending.has(key)) return pending.get(key);
 
   const request = new Promise((resolve, reject) => {
     rcmail
-      .http_post(action, { uid, mailbox, refresh: refresh ? "1" : "0" })
+      .http_post(action, { uid, mailbox, view, refresh: refresh ? "1" : "0" })
       .done((data) => {
         if (data && data.status === "success") {
           results.set(key, data);
@@ -74,7 +74,7 @@ function messageCard() {
   function load(refresh) {
     refreshButton.disabled = true;
     summary.textContent = label("ai_summary_loading", "Summarizing…");
-    summarize(uid, mailbox, refresh)
+    summarize(uid, mailbox, "message", refresh)
       .then(render)
       .catch(() => {
         summary.textContent = label(

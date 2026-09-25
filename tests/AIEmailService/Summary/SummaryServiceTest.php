@@ -52,6 +52,24 @@ final class SummaryServiceTest extends TestCase
         (new SummaryService($provider, []))->summarize('', 'Hallo', 'en_US');
     }
 
+    public function testPassesExpandedLengthToProviderForOpenedMessages(): void
+    {
+        $provider = new class implements CompletionProviderInterface {
+            public ?EmailPrompt $prompt = null;
+
+            public function complete(EmailPrompt $prompt, array $config): string
+            {
+                $this->prompt = $prompt;
+
+                return '{"source_language":"German","original_summary":"Kunde benötigt Hilfe.","translated_summary":"Customer needs help."}';
+            }
+        };
+
+        (new SummaryService($provider, []))->summarize('Login issue', 'Ich kann mich nicht anmelden.', 'en_US', 2);
+
+        self::assertStringContainsString('at most 75 words and no more than 2 sentences', $provider->prompt->getUserInstruction());
+    }
+
     public function testStripsHtmlFromProviderResponse(): void
     {
         $provider = new class implements CompletionProviderInterface {
