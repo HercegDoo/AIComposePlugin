@@ -136,6 +136,25 @@ final class EmailPromptBuilderTest extends TestCase
         self::assertStringNotContainsString('<previous_conversation>', $instruction);
     }
 
+    public function testSentExamplesAffectToneWithoutOverridingCurrentInstructions(): void
+    {
+        $this->requestData->setStyleExamples([
+            ['body' => 'Zdravo Nahide, hvala ti na brzom odgovoru.', 'sameRecipient' => true],
+            ['body' => 'Poštovani, javit ću vam se sutra.', 'sameRecipient' => false],
+        ]);
+
+        $instruction = (new EmailPromptBuilder())->build($this->requestData)->getUserInstruction();
+
+        self::assertStringContainsString('<style_example recipient="same recipient">', $instruction);
+        self::assertStringContainsString('Zdravo Nahide, hvala ti na brzom odgovoru.', $instruction);
+        self::assertStringContainsString('do not copy their facts, requests, names, addresses, dates, or wording', $instruction);
+        self::assertStringContainsString('current instruction, language, length, style selection, and existing signature rules take priority', $instruction);
+        self::assertStringContainsString('<style_example recipient="another recipient">', $instruction);
+
+        $this->requestData->setFixText('Earlier draft', 'selected text');
+        self::assertStringContainsString('<style_example recipient="same recipient">', (new EmailPromptBuilder())->build($this->requestData)->getUserInstruction());
+    }
+
     public function testRevisionWithExistingSignatureOmitsClosing(): void
     {
         $this->requestData->setFixText('Previous email', 'selected text');

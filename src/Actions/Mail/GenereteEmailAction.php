@@ -8,6 +8,7 @@ use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Request;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use HercegDoo\AIComposePlugin\AIEmailService\Style\SentStyleSampler;
 
 final class GenereteEmailAction extends AbstractAction implements ValidateAction
 {
@@ -128,6 +129,22 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
         $this->aiRequestData->setSignaturePresent((bool) $this->signaturePresent);
         $this->aiRequestData->setMultipleRecipients((bool) $this->multipleRecipients);
         $this->aiRequestData->setHtmlMode($this->htmlMode === '1');
+
+        if ($this->rcmail->config->get('aiComposeSentStyleEnabled', true)) {
+            try {
+                $sentFolder = $this->rcmail->config->get('sent_mbox', '');
+                $examples = (new SentStyleSampler())->collect(
+                    $this->rcmail->get_storage(),
+                    \is_string($sentFolder) ? $sentFolder : '',
+                    (string) $this->senderEmail,
+                    $this->recipientEmail
+                );
+                $this->aiRequestData->setStyleExamples($examples);
+            } catch (\Throwable $e) {
+                // Missing/unavailable Sent mail must not prevent generation.
+                error_log('AIComposePlugin Sent style lookup failed: ' . \get_class($e));
+            }
+        }
     }
 
     private function hasNoLetters(string $string): bool
