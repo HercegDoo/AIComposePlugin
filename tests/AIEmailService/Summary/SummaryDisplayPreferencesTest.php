@@ -42,10 +42,10 @@ final class SummaryDisplayPreferencesTest extends TestCase
         self::assertFalse(SummaryDisplayPreferences::isValid('other'));
     }
 
-    public function testOpenedMessageModeUsesThreeHundredWordBoundary(): void
+    public function testOpenedMessageModeUsesTwoHundredWordBoundary(): void
     {
-        $short = str_repeat('word ', 299);
-        $long = str_repeat('word ', 300);
+        $short = str_repeat('word ', 199);
+        $long = str_repeat('word ', 200);
 
         self::assertFalse(SummaryDisplayPreferences::shouldSummarizeMessage([], $short));
         self::assertTrue(SummaryDisplayPreferences::shouldSummarizeMessage([], $long));

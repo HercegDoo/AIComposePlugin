@@ -36,10 +36,13 @@ final class SummarizeMessageAction extends AbstractAction
             $folder = Request::postString('mailbox') ?? '';
             $refresh = Request::postString('refresh', '0');
             $view = Request::postString('view', self::VIEW_PREVIEW);
+            $check = Request::postString('check', '0');
             if (!preg_match('/^[1-9][0-9]*(?:\.[0-9]+)*$/', $uid)
                 || $folder === '' || \strlen($folder) > 1024 || preg_match('/[\x00-\x1F\x7F]/', $folder)
                 || !\in_array($refresh, ['0', '1'], true)
-                || !\in_array($view, [self::VIEW_PREVIEW, self::VIEW_MESSAGE], true)) {
+                || !\in_array($view, [self::VIEW_PREVIEW, self::VIEW_MESSAGE], true)
+                || !\in_array($check, ['0', '1'], true)
+                || ($check === '1' && $view !== self::VIEW_MESSAGE)) {
                 throw new \InvalidArgumentException('Invalid summary request');
             }
             if (!SummaryDisplayPreferences::isEnabled($defaults, $view)) {
@@ -48,6 +51,26 @@ final class SummarizeMessageAction extends AbstractAction
                 return;
             }
 
+            $message = new \rcube_message($uid, $folder);
+            if (!$message->headers) {
+                throw new \RuntimeException('Message unavailable');
+            }
+
+            $extractor = new MessageTextExtractor();
+            $body = $view === self::VIEW_MESSAGE ? $extractor->extract($message) : null;
+            if ($check === '1' && $body !== null) {
+                echo json_encode([
+                    'status' => 'success',
+                    'eligible' => SummaryDisplayPreferences::shouldSummarizeMessage($defaults, $body),
+                ]);
+
+                return;
+            }
+            if ($body !== null && !SummaryDisplayPreferences::shouldSummarizeMessage($defaults, $body)) {
+                echo json_encode(['status' => 'skipped']);
+
+                return;
+            }
             $locale = $_SESSION['language'] ?? $this->rcmail->config->get('language', 'en_US');
             if (!\is_string($locale) || !preg_match('/^[a-z]{2,3}(?:_[A-Z]{2})?$/', $locale)) {
                 $locale = 'en_US';
@@ -58,21 +81,8 @@ final class SummarizeMessageAction extends AbstractAction
                 $locale,
                 $this->rcmail->list_languages()
             );
-
-            $message = new \rcube_message($uid, $folder);
-            if (!$message->headers) {
-                throw new \RuntimeException('Message unavailable');
-            }
-
             [$provider, $config] = (new SummaryProviderFactory())->create($this->rcmail->config);
             $cache = $this->rcmail->get_cache('aicompose_summary', 'db', '7d');
-            $extractor = new MessageTextExtractor();
-            $body = $view === self::VIEW_MESSAGE ? $extractor->extract($message) : null;
-            if ($body !== null && !SummaryDisplayPreferences::shouldSummarizeMessage($defaults, $body)) {
-                echo json_encode(['status' => 'skipped']);
-
-                return;
-            }
             $sentenceCount = $body === null ? 1 : SummaryPromptBuilder::sentenceCountForBody($body);
             $cacheData = json_encode([
                 SummaryPromptBuilder::VERSION,

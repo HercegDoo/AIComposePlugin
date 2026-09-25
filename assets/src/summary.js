@@ -1,4 +1,5 @@
 import "./summary/styles.css";
+import { checkMessageEligibility } from "./summary/eligibility";
 import { messageTranslationControl } from "./summary/translation";
 
 const action = "plugin.aicomposeplugin_SummarizeMessageAction";
@@ -81,7 +82,7 @@ function messageCard() {
   controls.append(originalButton, refreshButton);
   head.append(heading, controls);
   const summary = document.createElement("p");
-  summary.textContent = label("ai_summary_loading", "Summarizing…");
+  summary.textContent = label("ai_summary_loading", "Fetching summary…");
   const original = document.createElement("p");
   original.className = "aic-summary-original";
   original.hidden = true;
@@ -176,7 +177,7 @@ function messageCard() {
   }
   function load(refresh) {
     refreshButton.disabled = true;
-    summary.textContent = label("ai_summary_loading", "Summarizing…");
+    summary.textContent = label("ai_summary_loading", "Fetching summary…");
     suggestions.hidden = true;
     summarize(uid, mailbox, "message", refresh)
       .then((data) => {
@@ -206,7 +207,23 @@ function messageCard() {
       : label("ai_hide_original", "Hide original");
   });
   refreshButton.addEventListener("click", () => load(true));
-  load(false);
+  if (onlyLong) {
+    checkMessageEligibility(uid, mailbox)
+      .then((eligible) => {
+        if (eligible) {
+          showCard();
+          load(false);
+        }
+      })
+      .catch(() => {
+        rcmail.display_message(
+          label("ai_summary_error", "Summary unavailable. Try again."),
+          "warning"
+        );
+      });
+  } else {
+    load(false);
+  }
 }
 
 function hoverPreview() {
@@ -252,7 +269,10 @@ function hoverPreview() {
     activeRow = row;
     timer = setTimeout(() => {
       if (activeRow !== row) return;
-      previewText.textContent = label("ai_summary_loading", "Summarizing…");
+      previewText.textContent = label(
+        "ai_summary_loading",
+        "Fetching summary…"
+      );
       preview.hidden = false;
       position(row);
       summarize(uid, mailbox)

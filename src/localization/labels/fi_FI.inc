@@ -188,7 +188,7 @@ $labels['ai_help_example_18'] = 'oli kiva tavata eilisessä konferenssissa, naut
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'Tekoälytiivistelmä';
-$labels['ai_summary_loading'] = 'Tiivistetään…';
+$labels['ai_summary_loading'] = 'Haetaan yhteenvetoa…';
 $labels['ai_summary_error'] = 'Tiivistelmä ei ole saatavilla. Yritä uudelleen.';
 $labels['ai_show_original'] = 'Näytä alkuperäinen';
 $labels['ai_hide_original'] = 'Piilota alkuperäinen';
@@ -199,7 +199,7 @@ $labels['ai_original_language'] = 'Alkuperäinen';
 $labels['ai_summary_language_setting'] = 'Yhteenvetojen kieli';
 $labels['ai_summary_hover_setting'] = 'Tekoälytiivistelmä viestiä osoitettaessa';
 $labels['ai_summary_message_setting'] = 'Tekoälytiivistelmä avatuissa viesteissä';
-$labels['ai_summary_message_long'] = 'Vain pitkät viestit/keskustelut (300+ sanaa)';
+$labels['ai_summary_message_long'] = 'Vain pitkät viestit/keskustelut (200+ sanaa)';
 $labels['ai_summary_message_always'] = 'Näytä aina';
 $labels['ai_translation_message_setting'] = 'Koko sähköpostin käännös avatuissa viesteissä';
 $labels['ai_summary_language_roundcube'] = 'Roundcuben käyttöliittymän kieli (automaattinen)';

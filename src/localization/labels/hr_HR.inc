@@ -189,7 +189,7 @@ $labels['ai_help_example_18'] = 'Drago mi je da smo se jučer sreli na konferenc
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'AI sažetak';
-$labels['ai_summary_loading'] = 'Izrađujem sažetak…';
+$labels['ai_summary_loading'] = 'Preuzimam sažetak…';
 $labels['ai_summary_error'] = 'Sažetak nije dostupan. Pokušajte ponovno.';
 $labels['ai_show_original'] = 'Prikaži izvornik';
 $labels['ai_hide_original'] = 'Sakrij izvornik';
@@ -200,7 +200,7 @@ $labels['ai_original_language'] = 'Izvornik';
 $labels['ai_summary_language_setting'] = 'Jezik sažetaka';
 $labels['ai_summary_hover_setting'] = 'AI sažetak pri prelasku mišem preko poruke';
 $labels['ai_summary_message_setting'] = 'AI sažetak u otvorenoj poruci';
-$labels['ai_summary_message_long'] = 'Samo duge poruke/razgovori (300+ riječi)';
+$labels['ai_summary_message_long'] = 'Samo duge poruke/razgovori (200+ riječi)';
 $labels['ai_summary_message_always'] = 'Prikaži uvijek';
 $labels['ai_translation_message_setting'] = 'Prijevod cijelog emaila u otvorenoj poruci';
 $labels['ai_summary_language_roundcube'] = 'Jezik Roundcube sučelja (automatski)';

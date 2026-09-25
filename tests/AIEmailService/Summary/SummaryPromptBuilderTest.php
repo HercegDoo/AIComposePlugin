@@ -18,7 +18,8 @@ final class SummaryPromptBuilderTest extends TestCase
     {
         self::assertSame(1, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 99)));
         self::assertSame(2, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 100)));
-        self::assertSame(2, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 299)));
+        self::assertSame(2, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 199)));
+        self::assertSame(3, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 200)));
         self::assertSame(3, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 300)));
         self::assertSame(3, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 1000)));
     }

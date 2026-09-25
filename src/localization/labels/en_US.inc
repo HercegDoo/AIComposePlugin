@@ -189,7 +189,7 @@ $labels['ai_help_example_18'] = 'I’m glad we met at the conference yesterday, 
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'AI summary';
-$labels['ai_summary_loading'] = 'Summarizing…';
+$labels['ai_summary_loading'] = 'Fetching summary…';
 $labels['ai_summary_error'] = 'Summary unavailable. Try again.';
 $labels['ai_show_original'] = 'Show original';
 $labels['ai_hide_original'] = 'Hide original';
@@ -200,7 +200,7 @@ $labels['ai_original_language'] = 'Original';
 $labels['ai_summary_language_setting'] = 'Summary language';
 $labels['ai_summary_hover_setting'] = 'AI summary on message hover';
 $labels['ai_summary_message_setting'] = 'AI summary in opened messages';
-$labels['ai_summary_message_long'] = 'Only long messages/conversations (300+ words)';
+$labels['ai_summary_message_long'] = 'Only long messages/conversations (200+ words)';
 $labels['ai_summary_message_always'] = 'Always show';
 $labels['ai_translation_message_setting'] = 'Full email translation in opened messages';
 $labels['ai_summary_language_roundcube'] = 'Roundcube interface language (automatic)';
