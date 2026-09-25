@@ -124,4 +124,18 @@ final class SummaryServiceTest extends TestCase
 
         self::assertSame([], $result['replySuggestions']);
     }
+
+    public function testOriginalLanguageChoiceNeverDisplaysAProviderTranslation(): void
+    {
+        $provider = new class implements CompletionProviderInterface {
+            public function complete(EmailPrompt $prompt, array $config): string
+            {
+                return '{"source_language":"German","original_summary":"Kunde braucht Hilfe.","translated_summary":"Customer needs help."}';
+            }
+        };
+
+        $result = (new SummaryService($provider, []))->summarize('Problem', 'Hallo', 'en_US', 1, false, false);
+
+        self::assertSame('Kunde braucht Hilfe.', $result['translatedSummary']);
+    }
 }

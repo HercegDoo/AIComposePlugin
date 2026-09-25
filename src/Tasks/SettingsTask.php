@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace HercegDoo\AIComposePlugin\Tasks;
 
-use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryTargetLanguage;
 
 class SettingsTask extends AbstractTask
 {
@@ -138,20 +138,8 @@ class SettingsTask extends AbstractTask
                         'content' => $this->getDropdownShow(),
                     ],
                     [
-                        'title' => $this->translation('ai_label_style'),
-                        'content' => $this->getDropdownHtml(Settings::getStyles(), 'style', Settings::getDefaultStyle()),
-                    ],
-                    [
-                        'title' => $this->translation('ai_label_creativity'),
-                        'content' => $this->getDropdownHtml(Settings::getCreativities(), 'creativity', Settings::getCreativity()),
-                    ],
-                    [
-                        'title' => $this->translation('ai_label_length'),
-                        'content' => $this->getDropdownHtml(Settings::getLengths(), 'length', Settings::getDefaultLength()),
-                    ],
-                    [
-                        'title' => $this->translation('ai_label_language'),
-                        'content' => $this->getDropdownHtml(Settings::getLanguages(), 'language', Settings::getDefaultLanguage()),
+                        'title' => $this->translation('ai_summary_language_setting'),
+                        'content' => $this->getSummaryLanguageDropdown(),
                     ],
                 ],
             ];
@@ -172,35 +160,34 @@ class SettingsTask extends AbstractTask
         if ($args['section'] === 'aic') {
             $data = \rcube_utils::get_input_value('data', \rcube_utils::INPUT_POST);
             $aicData = [];
-            if (\is_array($data) && isset($data['aic'])) {
+            if (\is_array($data) && isset($data['aic']) && \is_array($data['aic'])) {
                 $aicData = $data['aic'];
             }
             $rcmail = \rcmail::get_instance();
-
-            if ($this->validateSettingsValues($aicData['style'], Settings::getStyles()) && $this->validateSettingsValues($aicData['creativity'], Settings::getCreativities())
-                && $this->validateSettingsValues($aicData['length'], Settings::getLengths()) && $this->validateSettingsValues($aicData['language'], Settings::getLanguages())
-            ) {
-                $rcmail->user->save_prefs([
-                    'aicDefaults' => $aicData,
-                ]);
+            $visibility = $aicData['pluginVisibility'] ?? null;
+            $summaryLanguage = $aicData['summaryLanguage'] ?? null;
+            if (\in_array($visibility, ['show', 'hide'], true)
+                && \is_string($summaryLanguage)
+                && SummaryTargetLanguage::isValid($summaryLanguage, $rcmail->list_languages())) {
+                $defaults = $rcmail->user->get_prefs()['aicDefaults'] ?? [];
+                if (!\is_array($defaults)) {
+                    $defaults = [];
+                }
+                $defaults['pluginVisibility'] = $visibility;
+                $defaults['summaryLanguage'] = $summaryLanguage;
+                $prefs = $args['prefs'] ?? [];
+                if (!\is_array($prefs)) {
+                    $prefs = [];
+                }
+                $prefs['aicDefaults'] = $defaults;
+                $args['prefs'] = $prefs;
+            } else {
+                $args['abort'] = true;
+                $args['result'] = false;
             }
         }
 
         return $args;
-    }
-
-    /**
-     * @param string[] $options
-     */
-    private function getDropdownHtml(array $options, string $name, ?string $default = null): string
-    {
-        $dropdown = '<select name="data[aic][' . $name . ']">'; // Ispravno ime za formu
-        foreach ($options as $option) {
-            $dropdown .= '<option ' . ($option === $default ? 'selected' : '') . ' value="' . ($option) . '">' . ($this->translation('ai_' . $name . '_' . strtolower($option))) . '</option>';
-        }
-        $dropdown .= '</select>';
-
-        return $dropdown;
     }
 
     private function getDropdownShow(): string
@@ -224,11 +211,26 @@ class SettingsTask extends AbstractTask
         return $dropdown;
     }
 
-    /**
-     * @param string[] $values
-     */
-    private function validateSettingsValues(string $selectedValue, array $values): bool
+    private function getSummaryLanguageDropdown(): string
     {
-        return \in_array($selectedValue, $values, true);
+        $rcmail = \rcmail::get_instance();
+        $languages = $rcmail->list_languages();
+        $options = [
+            SummaryTargetLanguage::ROUNDCUBE => $this->translation('ai_summary_language_roundcube'),
+            SummaryTargetLanguage::ORIGINAL => $this->translation('ai_summary_language_original'),
+        ] + $languages;
+        $defaults = $rcmail->user->get_prefs()['aicDefaults'] ?? [];
+        $selected = \is_array($defaults) ? ($defaults['summaryLanguage'] ?? SummaryTargetLanguage::ROUNDCUBE) : SummaryTargetLanguage::ROUNDCUBE;
+        if (!\is_string($selected) || !SummaryTargetLanguage::isValid($selected, $languages)) {
+            $selected = SummaryTargetLanguage::ROUNDCUBE;
+        }
+
+        $dropdown = '<select name="data[aic][summaryLanguage]">';
+        foreach ($options as $value => $label) {
+            $dropdown .= '<option value="' . htmlspecialchars($value, \ENT_QUOTES, 'UTF-8') . '"' .
+                ($value === $selected ? ' selected' : '') . '>' . htmlspecialchars($label, \ENT_QUOTES, 'UTF-8') . '</option>';
+        }
+
+        return $dropdown . '</select>';
     }
 }

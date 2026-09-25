@@ -11,6 +11,37 @@ import {
   handleInstructionHeight,
 } from "./compose/emailHelpers/instructionHeightHandler";
 
+let optionSaveQueue = Promise.resolve();
+let optionSaveWarningShown = false;
+
+function saveComposeOptions(options) {
+  const data = {
+    style: options.aic_style_select,
+    length: options.aic_length_select,
+    creativity: options.aic_creativity_select,
+    language: options.aic_language_select,
+  };
+  const save = () =>
+    new Promise((resolve, reject) => {
+      rcmail
+        .http_post("plugin.aicomposeplugin_SaveComposeOptionsAction", data)
+        .done((result) => {
+          if (result?.status === "success") resolve();
+          else reject(new Error("Could not save compose options"));
+        })
+        .fail(reject);
+    });
+
+  optionSaveQueue = optionSaveQueue.catch(() => {}).then(save);
+  optionSaveQueue.catch(() => {
+    if (!optionSaveWarningShown) {
+      optionSaveWarningShown = true;
+      rcmail.display_message(translation("ai_options_save_error"), "warning");
+    }
+  });
+  return optionSaveQueue;
+}
+
 function generateSuggestedReply() {
   const suggestion = rcmail.env.aiReplySuggestion;
   if (
@@ -51,15 +82,18 @@ function generateSuggestedReply() {
 
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("compose-options")) {
+    let storage = null;
     try {
-      initComposeOptionPersistence(
-        document,
-        window.localStorage,
-        rcmail.env.aiPluginOptions?.storageUserId
-      );
+      storage = window.localStorage;
     } catch (_) {
       // Accessing localStorage can fail in restricted browser contexts.
     }
+    initComposeOptionPersistence(
+      document,
+      storage,
+      rcmail.env.aiPluginOptions?.storageUserId,
+      saveComposeOptions
+    );
   }
 
   new HelpCommands();
