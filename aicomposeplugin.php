@@ -15,13 +15,13 @@ if (is_file($pluginAutoload) && $pluginAutoload !== $roundcubeAutoload) {
 // Packaged Roundcube installations may have a host Composer autoloader that
 // does not know about plugins copied into the plugins/ directory.
 spl_autoload_register(static function (string $class): void {
-    $prefix = 'HercegDoo\\AIComposePlugin\\';
-    if (strncmp($class, $prefix, strlen($prefix)) !== 0) {
+    $prefix = 'HercegDoo\AIComposePlugin\\';
+    if (strncmp($class, $prefix, \strlen($prefix)) !== 0) {
         return;
     }
 
-    $relative = substr($class, strlen($prefix));
-    if ($relative === '' || strpos($relative, '..') !== false || strpos($relative, '/') !== false) {
+    $relative = substr($class, \strlen($prefix));
+    if ($relative === '' || str_contains($relative, '..') || str_contains($relative, '/')) {
         return;
     }
 
