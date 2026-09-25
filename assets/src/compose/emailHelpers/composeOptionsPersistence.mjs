@@ -19,14 +19,25 @@ export function composeOptionsPostData(options) {
 export function initComposeOptionPersistence(container, onSave, loadOptions) {
   if (!container || typeof onSave !== "function") return;
 
-  const selects = optionIds
-    .map((id) => container.querySelector(`#${id}`))
-    .filter((select) => select?.tagName === "SELECT");
-  if (selects.length === 0) return;
-
   let saving = false;
   let pendingOptions = null;
   const changed = new Set();
+
+  function applySavedOptions(options) {
+    for (const id of optionIds) {
+      const select = container.querySelector(`#${id}`);
+      if (select?.tagName !== "SELECT" || changed.has(id)) continue;
+
+      const field = id.replace(/^aic_/, "").replace(/_select$/, "");
+      const value = options[field];
+      if (typeof value !== "string") continue;
+
+      const matchingOption = Array.from(select.options).find(
+        (option) => option.value.toLowerCase() === value.toLowerCase()
+      );
+      if (matchingOption) select.value = matchingOption.value;
+    }
+  }
 
   function save(options) {
     saving = true;
@@ -51,8 +62,14 @@ export function initComposeOptionPersistence(container, onSave, loadOptions) {
       });
   }
 
-  for (const select of selects) {
-    select.addEventListener("change", () => {
+  container.addEventListener(
+    "change",
+    (event) => {
+      const select = event.target;
+      if (select?.tagName !== "SELECT" || !optionIds.includes(select.id)) {
+        return;
+      }
+
       changed.add(select.id);
       const options = { [select.id]: select.value };
       if (saving) {
@@ -60,8 +77,9 @@ export function initComposeOptionPersistence(container, onSave, loadOptions) {
       } else {
         save(options);
       }
-    });
-  }
+    },
+    true
+  );
 
   if (typeof loadOptions === "function") {
     let request;
@@ -74,15 +92,27 @@ export function initComposeOptionPersistence(container, onSave, loadOptions) {
     Promise.resolve(request)
       .then((options) => {
         if (!options || typeof options !== "object") return;
-        for (const select of selects) {
-          if (changed.has(select.id)) continue;
-          const field = select.id.replace(/^aic_/, "").replace(/_select$/, "");
-          const value = options[field];
-          if (typeof value !== "string") continue;
-          const matchingOption = Array.from(select.options).find(
-            (option) => option.value.toLowerCase() === value.toLowerCase()
-          );
-          if (matchingOption) select.value = matchingOption.value;
+        applySavedOptions(options);
+
+        const Observer = container.defaultView?.MutationObserver;
+        const savedIds = optionIds.filter((id) => {
+          const field = id.replace(/^aic_/, "").replace(/_select$/, "");
+          return typeof options[field] === "string";
+        });
+        if (
+          Observer &&
+          savedIds.some((id) => !container.querySelector(`#${id}`))
+        ) {
+          const observer = new Observer(() => {
+            applySavedOptions(options);
+            if (savedIds.every((id) => container.querySelector(`#${id}`))) {
+              observer.disconnect();
+            }
+          });
+          observer.observe(container.documentElement || container, {
+            childList: true,
+            subtree: true,
+          });
         }
       })
       .catch(() => {
