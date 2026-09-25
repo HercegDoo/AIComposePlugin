@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace HercegDoo\AIComposePlugin\Actions\Mail;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
-use HercegDoo\AIComposePlugin\Actions\ValidateAction;
 use HercegDoo\AIComposePlugin\AIEmailService\AIEmail;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Request;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 
-final class GenerateSubjectAction extends AbstractAction implements ValidateAction
+final class GenerateSubjectAction extends AbstractAction
 {
     private string $draft = '';
     private string $language = '';
@@ -22,7 +21,8 @@ final class GenerateSubjectAction extends AbstractAction implements ValidateActi
         $body = Request::postString('body') ?? '';
         $instructions = Request::postString('instructions') ?? '';
         $this->draft = trim($body) !== '' ? $body : $instructions;
-        $this->language = Request::postString('language') ?? '';
+        $language = Request::postString('language') ?? Settings::getDefaultLanguage();
+        $this->language = Settings::resolveLanguage($language) ?? '';
         $this->previousSubject = Request::postString('subject') ?? '';
 
         if (trim($this->draft) === '' || \strlen($this->draft) > 30000) {
@@ -38,7 +38,14 @@ final class GenerateSubjectAction extends AbstractAction implements ValidateActi
 
     public function handler(): void
     {
-        header('Content-Type: application/json');
+        header('Content-Type: application/json; charset=UTF-8');
+
+        $this->validate();
+        if ($this->hasErrors()) {
+            echo json_encode(['status' => 'error', 'message' => $this->getErrors()[0]]);
+
+            return;
+        }
 
         try {
             $request = RequestData::make('', '', $this->draft, null, null, null, $this->language);

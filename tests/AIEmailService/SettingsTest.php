@@ -27,6 +27,15 @@ final class SettingsTest extends TestCase
         self::assertSame(['default' => 'Bosnian', 'Croatian', 'German', 'Dutch'], Settings::getLanguages());
     }
 
+    public function testResolveLanguageAcceptsSelectValueCase(): void
+    {
+        Settings::setLanguages(['default' => 'Bosnian', 'Croatian', 'Scottish_Gaelic']);
+
+        self::assertSame('Bosnian', Settings::resolveLanguage('bosnian'));
+        self::assertSame('Scottish_Gaelic', Settings::resolveLanguage('scottish_Gaelic'));
+        self::assertNull(Settings::resolveLanguage('unsupported'));
+    }
+
     public function testSetAndGetLengths()
     {
         Settings::setLengths(['short', 'default' => 'medium', 'long']);

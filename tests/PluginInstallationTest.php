@@ -47,6 +47,17 @@ final class PluginInstallationTest extends TestCase
         self::assertSame('gpt-4.1', $config['aiProviderOpenAIConfig']['model']);
     }
 
+    public function testEveryLabelLocaleHasMatchingMessages(): void
+    {
+        foreach (glob(\dirname(__DIR__) . '/src/localization/labels/*.inc') ?: [] as $labelsFile) {
+            self::assertFileExists(\dirname(__DIR__) . '/src/localization/messages/' . basename($labelsFile));
+
+            $labels = [];
+            require $labelsFile;
+            self::assertNotEmpty($labels['ai_generate_subject'] ?? null);
+        }
+    }
+
     public function testPluginLoadsWhenHostAutoloaderHasNoPluginMapping(): void
     {
         if (!\function_exists('exec')) {
