@@ -29,6 +29,7 @@ final class SubjectPromptBuilderTest extends TestCase
         $request = RequestData::make('', '', '', null, null, null, 'Bosnian');
         $prompt = (new SubjectPromptBuilder('<p>Meeting&nbsp;tomorrow</p><p>at 9</p>', 'Old subject'))->build($request);
 
+        self::assertSame('subject', $prompt->getPurpose());
         self::assertStringContainsString('in Bosnian', $prompt->getUserInstruction());
         self::assertStringContainsString('Meeting tomorrow at 9', $prompt->getUserInstruction());
         self::assertStringContainsString('different subject from: Old subject', $prompt->getUserInstruction());

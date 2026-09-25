@@ -32,6 +32,6 @@ final class SubjectPromptBuilder implements PromptBuilderInterface
                 : '') .
             "\nEmail draft or instructions:\n<draft>\n{$draft}\n</draft>";
 
-        return new EmailPrompt('You write concise email subject lines.', $instruction);
+        return new EmailPrompt('You write concise email subject lines.', $instruction, 'subject');
     }
 }

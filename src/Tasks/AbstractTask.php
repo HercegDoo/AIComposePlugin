@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
+use HercegDoo\AIComposePlugin\AIEmailService\Debug\RequestLogger;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use HercegDoo\AIComposePlugin\Utilities\TranslationTrait;
 
@@ -89,7 +90,10 @@ abstract class AbstractTask
         /** @var string $provider */
         $provider = $rcmail->config->get('aiComposeProvider', 'OpenAI');
 
-        Settings::setProvider($provider);
+        Settings::setProvider($provider, new RequestLogger(
+            $rcmail->config->get('aiDebugLogging', false) === true,
+            (string) $rcmail->user->ID
+        ));
 
         /** @var array<string> $config */
         $config = $rcmail->config->get('aiProvider' . $provider . 'Config', []);

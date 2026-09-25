@@ -6,6 +6,7 @@ namespace HercegDoo\AIComposePlugin\Tests\AIEmailService\Providers;
 
 use Curl\Curl;
 use DG\BypassFinals;
+use HercegDoo\AIComposePlugin\AIEmailService\Debug\RequestLogger;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\RequestData;
 use HercegDoo\AIComposePlugin\AIEmailService\Entity\Respond;
 use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
@@ -173,6 +174,79 @@ final class OpenAITest extends TestCase
         );
 
         self::assertSame('Summary', $result);
+    }
+
+    public function testDebugLogIncludesProviderUsageWithoutApiKeyOrResponseBody(): void
+    {
+        $lines = [];
+        $logger = new RequestLogger(true, '42', static function (string $line) use (&$lines): void {
+            $lines[] = json_decode($line, true, 512, \JSON_THROW_ON_ERROR);
+        });
+        $curl = $this->createMock(Curl::class);
+        $curl->httpStatusCode = 200;
+        $curl->method('post')->willReturn((object) [
+            'id' => 'chatcmpl-test',
+            'choices' => [(object) [
+                'message' => (object) ['content' => 'Private generated response'],
+                'finish_reason' => 'stop',
+            ]],
+            'usage' => (object) [
+                'prompt_tokens' => 20,
+                'completion_tokens' => 30,
+                'total_tokens' => 50,
+                'prompt_tokens_details' => (object) ['cached_tokens' => 5],
+                'completion_tokens_details' => (object) ['reasoning_tokens' => 8],
+            ],
+        ]);
+
+        $result = (new OpenAI($curl, $logger))->complete(
+            new EmailPrompt('System prompt', 'Private draft', 'subject'),
+            ['apiKey' => 'secret-api-key', 'model' => 'gpt-4.1']
+        );
+
+        self::assertSame('Private generated response', $result);
+        self::assertSame('subject', $lines[0]['operation']);
+        self::assertSame('Private draft', $lines[0]['prompt']['user']);
+        self::assertSame('chatcmpl-test', $lines[1]['details']['provider_request_id']);
+        self::assertSame(200, $lines[1]['details']['http_status']);
+        self::assertSame(50, $lines[1]['usage']['total_tokens']);
+        self::assertSame(5, $lines[1]['usage']['cached_tokens']);
+        self::assertSame(8, $lines[1]['usage']['reasoning_tokens']);
+        self::assertStringNotContainsString('secret-api-key', json_encode($lines));
+        self::assertStringNotContainsString('Private generated response', json_encode($lines));
+    }
+
+    public function testDebugLogRecordsSafeErrorDetailsWithoutProviderMessage(): void
+    {
+        $lines = [];
+        $logger = new RequestLogger(true, '42', static function (string $line) use (&$lines): void {
+            $lines[] = json_decode($line, true, 512, \JSON_THROW_ON_ERROR);
+        });
+        $curl = $this->createMock(Curl::class);
+        $curl->error = true;
+        $curl->errorCode = 400;
+        $curl->httpStatusCode = 400;
+        $curl->errorMessage = 'Private provider response';
+        $curl->response = (object) ['error' => (object) [
+            'type' => 'invalid_request_error',
+            'code' => 'unsupported_parameter',
+            'message' => 'Private provider response',
+        ]];
+        $curl->method('post')->willReturn($curl->response);
+
+        try {
+            (new OpenAI($curl, $logger))->complete(
+                new EmailPrompt('System', 'Private draft'),
+                ['apiKey' => 'secret-api-key', 'model' => 'gpt-4.1']
+            );
+            self::fail('Expected provider error');
+        } catch (ProviderException $e) {
+            self::assertSame('error', $lines[1]['status']);
+            self::assertSame(400, $lines[1]['details']['http_status']);
+            self::assertSame('unsupported_parameter', $lines[1]['details']['provider_error_code']);
+            self::assertStringNotContainsString('Private provider response', json_encode($lines));
+            self::assertStringNotContainsString('secret-api-key', json_encode($lines));
+        }
     }
 
     public function testGenerateEmailProviderException()
