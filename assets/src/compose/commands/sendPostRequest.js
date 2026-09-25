@@ -5,8 +5,12 @@ import {
   signatureCheckedPreviousConversation,
   stripGeneratedClosing,
 } from "../emailHelpers/signaturesHandler";
+import { stripGeneratedConversation } from "../emailHelpers/signatureUtils.mjs";
 import { translation } from "../../utils";
-import { stripGeneratedHtmlClosing } from "../emailHelpers/htmlEmail";
+import {
+  stripGeneratedHtmlClosing,
+  stripGeneratedHtmlConversation,
+} from "../emailHelpers/htmlEmail";
 import { display_messages, errorPresent, validateFields } from "../emailHelpers/validateFields";
 import { getSubject, setSubject } from "../emailHelpers/subjectHandler";
 
@@ -81,13 +85,17 @@ export default class GenerateMail {
         if (!data || data.status !== "success") {
           return;
         }
-        const response = data && data["respond"] !== undefined ? data["respond"] : "";
+        const response = typeof data.respond === "string" ? data.respond : "";
+        const withoutConversation =
+          requestData.htmlMode === "1"
+            ? stripGeneratedHtmlConversation(response, requestData.previousConversation)
+            : stripGeneratedConversation(response, requestData.previousConversation);
         insertEmail(
           requestData.signaturePresent
             ? requestData.htmlMode === "1"
-              ? stripGeneratedHtmlClosing(response, requestData.senderName, previousConversationObject.signatureText)
-              : stripGeneratedClosing(response, requestData.senderName, previousConversationObject.signatureText)
-            : response,
+              ? stripGeneratedHtmlClosing(withoutConversation, requestData.senderName, previousConversationObject.signatureText)
+              : stripGeneratedClosing(withoutConversation, requestData.senderName, previousConversationObject.signatureText)
+            : withoutConversation,
           requestData.htmlMode === "1"
         );
         if (!requestData.subject.trim() && !getSubject().trim() && data.subject) {

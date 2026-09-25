@@ -1,4 +1,7 @@
-import { stripGeneratedClosing } from "./signatureUtils.mjs";
+import {
+  stripGeneratedClosing,
+  stripGeneratedConversation,
+} from "./signatureUtils.mjs";
 
 // Keep generated markup within the basic formatting supported by Roundcube's
 // TinyMCE compose editor. Attributes other than safe link destinations are removed.
@@ -163,30 +166,47 @@ export function stripGeneratedHtmlClosing(html, senderName, signatureText) {
     signatureText
   );
 
-  if (!withoutClosing || withoutClosing === originalText) {
+  if (!withoutClosing) {
+    return "";
+  }
+
+  if (withoutClosing === originalText) {
     return safe;
   }
 
+  return (
+    preserveHtmlPrefix(safe, withoutClosing) ?? plainTextToHtml(withoutClosing)
+  );
+}
+
+function preserveHtmlPrefix(safe, expectedText) {
   const container = document.createElement("div");
   container.innerHTML = safe;
-  let candidate = container.lastElementChild;
-  while (candidate) {
-    const parent = candidate.parentElement;
-    candidate.remove();
-
-    const remainingText = htmlToPlainText(container.innerHTML);
-    if (!remainingText.startsWith(withoutClosing)) {
-      parent.appendChild(candidate);
-      candidate = candidate.lastElementChild;
-      continue;
+  const prefix = document.createElement("div");
+  for (const node of container.childNodes) {
+    if (htmlToPlainText(prefix.innerHTML) === expectedText) {
+      return prefix.innerHTML;
     }
-
-    if (remainingText === withoutClosing) {
-      break;
-    }
-
-    candidate = container.lastElementChild;
+    prefix.appendChild(node.cloneNode(true));
   }
 
-  return sanitizeHtmlMessage(container.innerHTML);
+  return null;
+}
+
+export function stripGeneratedHtmlConversation(html, previousConversation) {
+  const safe = sanitizeHtmlMessage(html);
+  const text = htmlToPlainText(safe);
+  const withoutConversation = stripGeneratedConversation(
+    text,
+    previousConversation
+  );
+
+  if (withoutConversation === text) {
+    return safe;
+  }
+
+  return (
+    preserveHtmlPrefix(safe, withoutConversation) ??
+    plainTextToHtml(withoutConversation)
+  );
 }
