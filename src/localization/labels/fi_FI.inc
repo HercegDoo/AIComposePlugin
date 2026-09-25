@@ -201,3 +201,4 @@ $labels['ai_summary_language_roundcube'] = 'Roundcuben käyttöliittymän kieli 
 $labels['ai_summary_language_original'] = 'Alkuperäinen kieli (ei käännöstä)';
 $labels['ai_summarize_again'] = 'Tee yhteenveto uudelleen';
 $labels['ai_options_save_error'] = 'Tekoälyn kirjoitusasetuksia ei voitu tallentaa.';
+$labels['ai_options_load_error'] = 'Tallennettuja tekoälyn kirjoitusasetuksia ei voitu ladata.';

@@ -19,15 +19,25 @@ final class SaveComposeOptionsAction extends AbstractAction
             'length' => array_values(Settings::getLengths()),
             'creativity' => Settings::getCreativities(),
         ];
+        $postedData = \rcube_utils::get_input_value('data', \rcube_utils::INPUT_POST);
+        $formOptions = \is_array($postedData) && isset($postedData['aic']) && \is_array($postedData['aic'])
+            ? $postedData['aic']
+            : null;
+        $input = $formOptions ?? $_POST;
         $updates = [];
         foreach (['style', 'length', 'creativity', 'language'] as $field) {
-            if (!\array_key_exists($field, $_POST)) {
+            if (!\array_key_exists($field, $input)) {
                 continue;
             }
 
-            $value = Request::postString($field);
+            $value = $formOptions !== null ? $formOptions[$field] : Request::postString($field);
+            if (!\is_string($value)) {
+                echo json_encode(['status' => 'error']);
+
+                return;
+            }
             if ($field === 'language') {
-                $value = $value !== null ? Settings::resolveLanguage($value) : null;
+                $value = Settings::resolveLanguage($value);
             } elseif (!\in_array($value, $allowed[$field], true)) {
                 $value = null;
             }

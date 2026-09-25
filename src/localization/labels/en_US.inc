@@ -202,3 +202,4 @@ $labels['ai_summary_language_roundcube'] = 'Roundcube interface language (automa
 $labels['ai_summary_language_original'] = 'Original language (no translation)';
 $labels['ai_summarize_again'] = 'Summarize again';
 $labels['ai_options_save_error'] = 'Could not save AI compose options.';
+$labels['ai_options_load_error'] = 'Could not load saved AI compose options.';

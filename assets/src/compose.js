@@ -5,7 +5,10 @@ import ToolTipAvailability from "./compose/commands/setToolTipAvailability";
 import GenerateMail from "./compose/commands/sendPostRequest";
 import FixTextCommands from "./compose/commands/fixTextCommands";
 import GenerateSubject from "./compose/commands/generateSubject";
-import { initComposeOptionPersistence } from "./compose/emailHelpers/composeOptionsPersistence.mjs";
+import {
+  composeOptionsPostData,
+  initComposeOptionPersistence,
+} from "./compose/emailHelpers/composeOptionsPersistence.mjs";
 import { translation } from "./utils";
 import {
   expandInstructionHeightBasedOnInput,
@@ -14,17 +17,41 @@ import {
 
 let optionSaveWarningShown = false;
 
-function saveComposeOptions(options) {
-  const fields = {
-    aic_style_select: "style",
-    aic_length_select: "length",
-    aic_creativity_select: "creativity",
-    aic_language_select: "language",
-  };
-  const data = {};
-  for (const [id, field] of Object.entries(fields)) {
-    if (typeof options[id] === "string") data[field] = options[id];
+function showOptionSaveWarning() {
+  if (!optionSaveWarningShown) {
+    optionSaveWarningShown = true;
+    rcmail.display_message(translation("ai_options_save_error"), "warning");
   }
+}
+
+function loadComposeOptions() {
+  return new Promise((resolve, reject) => {
+    const request = rcmail.http_get(
+      "plugin.aicomposeplugin_GetComposeOptionsAction",
+      {}
+    );
+    if (!request) {
+      reject(new Error("Could not load compose options"));
+      return;
+    }
+
+    request
+      .done((result) => {
+        if (result?.status === "success" && result.options) {
+          resolve(result.options);
+        } else {
+          reject(new Error("Could not load compose options"));
+        }
+      })
+      .fail(reject);
+  }).catch((error) => {
+    rcmail.display_message(translation("ai_options_load_error"), "warning");
+    throw error;
+  });
+}
+
+function saveComposeOptions(options) {
+  const data = composeOptionsPostData(options);
   return new Promise((resolve, reject) => {
     rcmail
       .http_post("plugin.aicomposeplugin_SaveComposeOptionsAction", data)
@@ -38,10 +65,7 @@ function saveComposeOptions(options) {
       })
       .fail(reject);
   }).catch(() => {
-    if (!optionSaveWarningShown) {
-      optionSaveWarningShown = true;
-      rcmail.display_message(translation("ai_options_save_error"), "warning");
-    }
+    showOptionSaveWarning();
   });
 }
 
@@ -84,7 +108,11 @@ function generateSuggestedReply() {
 }
 
 function initCompose() {
-  initComposeOptionPersistence(document, saveComposeOptions);
+  initComposeOptionPersistence(
+    document,
+    saveComposeOptions,
+    loadComposeOptions
+  );
 
   new HelpCommands();
   new ToolTipAvailability();

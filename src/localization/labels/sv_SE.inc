@@ -201,3 +201,4 @@ $labels['ai_summary_language_roundcube'] = 'Språk i Roundcube-gränssnittet (au
 $labels['ai_summary_language_original'] = 'Originalspråk (ingen översättning)';
 $labels['ai_summarize_again'] = 'Sammanfatta igen';
 $labels['ai_options_save_error'] = 'Det gick inte att spara AI-skrivalternativen.';
+$labels['ai_options_load_error'] = 'Det gick inte att läsa in sparade AI-skrivalternativ.';
