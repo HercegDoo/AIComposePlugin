@@ -48,3 +48,33 @@
   box-shadow: 0 4px 16px #0002;
   pointer-events: none;
 }
+
+html.dark-mode .aic-summary-card,
+html.dark-mode .aic-summary-preview {
+  border-color: #4d6066;
+  background: #303a3e;
+  color: #e4ebed;
+}
+
+html.dark-mode .aic-summary-card p,
+html.dark-mode .aic-summary-card strong {
+  color: #e4ebed;
+}
+
+html.dark-mode .aic-summary-card .aic-summary-original {
+  color: #bdcbd0;
+}
+
+html.dark-mode .aic-summary-head button {
+  color: #75caff;
+}
+
+html.dark-mode .aic-summary-head button:hover,
+html.dark-mode .aic-summary-head button:focus-visible {
+  color: #b4e2ff;
+  text-decoration: underline;
+}
+
+html.dark-mode .aic-summary-preview {
+  box-shadow: 0 4px 16px #0007;
+}
