@@ -10,6 +10,12 @@ final class SummaryDisplayPreferences
     public const MESSAGE = 'summaryMessage';
     public const SHOW = 'show';
     public const HIDE = 'hide';
+    public const LONG = 'long';
+
+    private const DEFAULTS = [
+        self::HOVER => self::HIDE,
+        self::MESSAGE => self::LONG,
+    ];
 
     /**
      * @param array<string, mixed> $defaults
@@ -18,14 +24,27 @@ final class SummaryDisplayPreferences
     {
         $value = $defaults[$preference] ?? null;
 
-        return \is_string($value) && self::isValid($value)
+        return \is_string($value) && self::isValidFor($value, $preference)
             ? $value
-            : ($preference === self::HOVER ? self::HIDE : self::SHOW);
+            : (self::DEFAULTS[$preference] ?? self::SHOW);
     }
 
     public static function isValid(string $value): bool
     {
         return \in_array($value, [self::SHOW, self::HIDE], true);
+    }
+
+    public static function isValidFor(string $value, string $preference): bool
+    {
+        return self::isValid($value) || ($preference === self::MESSAGE && $value === self::LONG);
+    }
+
+    /** @param array<string, mixed> $defaults */
+    public static function shouldSummarizeMessage(array $defaults, string $body): bool
+    {
+        $choice = self::choice($defaults, self::MESSAGE);
+
+        return $choice === self::SHOW || ($choice === self::LONG && SummaryPromptBuilder::isLongMessage($body));
     }
 
     /**
@@ -39,6 +58,6 @@ final class SummaryDisplayPreferences
 
         $preference = $view === 'preview' ? self::HOVER : self::MESSAGE;
 
-        return self::choice($defaults, $preference) === self::SHOW;
+        return self::choice($defaults, $preference) !== self::HIDE;
     }
 }

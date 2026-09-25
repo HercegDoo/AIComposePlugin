@@ -196,7 +196,7 @@ class SettingsTask extends AbstractTask
                 && \is_string($summaryHover)
                 && SummaryDisplayPreferences::isValid($summaryHover)
                 && \is_string($summaryMessage)
-                && SummaryDisplayPreferences::isValid($summaryMessage)
+                && SummaryDisplayPreferences::isValidFor($summaryMessage, SummaryDisplayPreferences::MESSAGE)
                 && \is_string($translationMessage)
                 && SummaryDisplayPreferences::isValid($translationMessage)) {
                 $defaults['pluginVisibility'] = $visibility;
@@ -271,6 +271,13 @@ class SettingsTask extends AbstractTask
             SummaryDisplayPreferences::SHOW => $this->translation('ai_compose_show'),
             SummaryDisplayPreferences::HIDE => $this->translation('ai_compose_hide'),
         ];
+        if ($preference === SummaryDisplayPreferences::MESSAGE) {
+            $options = [
+                SummaryDisplayPreferences::HIDE => $this->translation('ai_compose_hide'),
+                SummaryDisplayPreferences::LONG => $this->translation('ai_summary_message_long'),
+                SummaryDisplayPreferences::SHOW => $this->translation('ai_summary_message_always'),
+            ];
+        }
 
         $dropdown = '<select name="data[aic][' . $preference . ']">';
         foreach ($options as $value => $label) {

@@ -212,6 +212,11 @@ class MailTask extends AbstractTask
         } elseif ($this->summaryEnabled() || $this->translationEnabled()) {
             $this->loadTranslations();
             $rcmail->output->set_env('aiSummaryViews', $this->summaryViews());
+            $defaults = $rcmail->user->get_prefs()['aicDefaults'] ?? [];
+            $rcmail->output->set_env('aiSummaryMessageMode', SummaryDisplayPreferences::choice(
+                \is_array($defaults) ? $defaults : [],
+                SummaryDisplayPreferences::MESSAGE
+            ));
             $rcmail->output->set_env('aiSummaryEnabled', $this->summaryEnabled());
             $rcmail->output->set_env('aiTranslationEnabled', $this->translationEnabled());
             if ($this->translationEnabled()) {

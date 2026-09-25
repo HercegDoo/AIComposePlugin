@@ -52,7 +52,8 @@ final class SummarySettingsTaskTest extends TestCase
         self::assertStringContainsString('name="data[aic][summaryHover]"', $options[2]['content']);
         self::assertStringContainsString('<option value="hide" selected>', $options[2]['content']);
         self::assertStringContainsString('name="data[aic][summaryMessage]"', $options[3]['content']);
-        self::assertStringContainsString('<option value="show" selected>', $options[3]['content']);
+        self::assertStringContainsString('<option value="long"', $options[3]['content']);
+        self::assertStringContainsString('<option value="long" selected>', $options[3]['content']);
         self::assertStringContainsString('name="data[aic][translationMessage]"', $options[4]['content']);
         self::assertStringContainsString('<option value="hide" selected>', $options[4]['content']);
     }
@@ -64,7 +65,7 @@ final class SummarySettingsTaskTest extends TestCase
             'pluginVisibility' => 'show',
             'summaryLanguage' => 'roundcube',
             'summaryHover' => 'hide',
-            'summaryMessage' => 'show',
+            'summaryMessage' => 'long',
             'translationMessage' => 'hide',
         ];
 
@@ -75,7 +76,7 @@ final class SummarySettingsTaskTest extends TestCase
             'pluginVisibility' => 'show',
             'summaryLanguage' => 'roundcube',
             'summaryHover' => 'hide',
-            'summaryMessage' => 'show',
+            'summaryMessage' => 'long',
             'translationMessage' => 'hide',
         ], $result['prefs']['aicDefaults']);
     }
@@ -85,8 +86,19 @@ final class SummarySettingsTaskTest extends TestCase
         $options = $this->task->preferencesList(['section' => 'aic'])['blocks']['general']['options'];
 
         self::assertStringContainsString('<option value="hide" selected>', $options[2]['content']);
-        self::assertStringContainsString('<option value="show" selected>', $options[3]['content']);
+        self::assertStringContainsString('<option value="long" selected>', $options[3]['content']);
         self::assertStringContainsString('<option value="show" selected>', $options[4]['content']);
+    }
+
+    public function testPreviouslySavedAlwaysAndHideChoicesRemainSelected(): void
+    {
+        $this->user->prefs = ['aicDefaults' => ['summaryMessage' => 'show']];
+        $options = $this->task->preferencesList(['section' => 'aic'])['blocks']['general']['options'];
+        self::assertStringContainsString('<option value="show" selected>', $options[3]['content']);
+
+        $this->user->prefs = ['aicDefaults' => ['summaryMessage' => 'hide']];
+        $options = $this->task->preferencesList(['section' => 'aic'])['blocks']['general']['options'];
+        self::assertStringContainsString('<option value="hide" selected>', $options[3]['content']);
     }
 
     public function testSaveWithoutNewFieldPreservesAnExistingTranslationChoice(): void
@@ -129,6 +141,23 @@ final class SummarySettingsTaskTest extends TestCase
 
         self::assertTrue($result['abort']);
         self::assertFalse($result['result']);
+    }
+
+    public function testLongModeIsRejectedForHoverAndTranslation(): void
+    {
+        $_POST['data']['aic'] = [
+            'pluginVisibility' => 'show',
+            'summaryLanguage' => 'roundcube',
+            'summaryHover' => 'long',
+            'summaryMessage' => 'long',
+        ];
+        $result = $this->task->preferencesSave(['section' => 'aic', 'prefs' => []]);
+        self::assertTrue($result['abort']);
+
+        $_POST['data']['aic']['summaryHover'] = 'hide';
+        $_POST['data']['aic']['translationMessage'] = 'long';
+        $result = $this->task->preferencesSave(['section' => 'aic', 'prefs' => []]);
+        self::assertTrue($result['abort']);
     }
 }
 

@@ -68,6 +68,11 @@ final class SummarizeMessageAction extends AbstractAction
             $cache = $this->rcmail->get_cache('aicompose_summary', 'db', '7d');
             $extractor = new MessageTextExtractor();
             $body = $view === self::VIEW_MESSAGE ? $extractor->extract($message) : null;
+            if ($body !== null && !SummaryDisplayPreferences::shouldSummarizeMessage($defaults, $body)) {
+                echo json_encode(['status' => 'skipped']);
+
+                return;
+            }
             $sentenceCount = $body === null ? 1 : SummaryPromptBuilder::sentenceCountForBody($body);
             $cacheData = json_encode([
                 SummaryPromptBuilder::VERSION,
