@@ -83,7 +83,7 @@ function generateSuggestedReply() {
   start();
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+function initCompose() {
   initComposeOptionPersistence(document, saveComposeOptions);
 
   new HelpCommands();
@@ -95,4 +95,10 @@ document.addEventListener("DOMContentLoaded", function () {
   handleInstructionHeight();
   expandInstructionHeightBasedOnInput();
   generateSuggestedReply();
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initCompose, { once: true });
+} else {
+  initCompose();
+}
