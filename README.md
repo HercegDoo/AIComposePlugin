@@ -87,8 +87,8 @@ For a Plesk installation, copy the complete plugin directory (including `src/` a
     - This updates only the Subject field. Each suggestion can require another provider request.
     - The button label follows the Roundcube interface language. The language selected in AI Mail Options controls the generated subject text.
   
-<img width="1608" height="978" alt="image" src="https://github.com/user-attachments/assets/e452b8df-b4da-4268-aaf0-3e7f14f0c1f5" />
-<img width="1608" height="978" alt="image" src="https://github.com/user-attachments/assets/ba9aa09f-6ce5-4d0c-ac21-cf993d74952d" />
+<img  alt="image" src="https://github.com/user-attachments/assets/e452b8df-b4da-4268-aaf0-3e7f14f0c1f5" />
+<img  alt="image" src="https://github.com/user-attachments/assets/ba9aa09f-6ce5-4d0c-ac21-cf993d74952d" />
 
 
 
