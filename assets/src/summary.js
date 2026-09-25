@@ -9,6 +9,25 @@ function label(key, fallback) {
   return text === `aicomposeplugin.${key}` ? fallback : text;
 }
 
+function icon(kind) {
+  const mark = document.createElement("span");
+  mark.className = `aic-summary-icon aic-summary-icon-${kind}`;
+  mark.setAttribute("aria-hidden", "true");
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("focusable", "false");
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute(
+    "d",
+    kind === "reply"
+      ? "M4 5h16v11H9l-5 4V5Zm3 4h10m-10 3h7"
+      : "M12 2.5 14 8l5.5 2-5.5 2-2 5.5-2-5.5-5.5-2L10 8l2-5.5ZM19 16l.6 1.4L21 18l-1.4.6L19 20l-.6-1.4L17 18l1.4-.6L19 16Z"
+  );
+  svg.append(path);
+  mark.append(svg);
+  return mark;
+}
+
 function summarize(uid, mailbox, view = "preview", refresh = false) {
   const key = `${mailbox}\0${uid}\0${view}`;
   if (!refresh && results.has(key)) return Promise.resolve(results.get(key));
@@ -43,9 +62,13 @@ function messageCard() {
   card.setAttribute("aria-label", label("ai_summary", "AI summary"));
   const head = document.createElement("div");
   head.className = "aic-summary-head";
+  const heading = document.createElement("div");
+  heading.className = "aic-summary-heading";
   const title = document.createElement("strong");
   title.textContent = label("ai_summary", "AI summary");
-  const controls = document.createElement("span");
+  heading.append(icon("sparkles"), title);
+  const controls = document.createElement("div");
+  controls.className = "aic-summary-controls";
   const originalButton = document.createElement("button");
   originalButton.type = "button";
   originalButton.hidden = true;
@@ -54,25 +77,32 @@ function messageCard() {
   refreshButton.type = "button";
   refreshButton.textContent = label("ai_translate_again", "Translate again");
   controls.append(originalButton, refreshButton);
-  head.append(title, controls);
+  head.append(heading, controls);
   const summary = document.createElement("p");
   summary.textContent = label("ai_summary_loading", "Summarizing…");
   const original = document.createElement("p");
   original.className = "aic-summary-original";
   original.hidden = true;
-  const suggestions = document.createElement("div");
+  const suggestions = document.createElement("section");
   suggestions.className = "aic-reply-suggestions";
+  suggestions.setAttribute(
+    "aria-label",
+    label("ai_reply_suggestions", "Suggested replies")
+  );
   suggestions.hidden = true;
+  const suggestionsHeading = document.createElement("div");
+  suggestionsHeading.className = "aic-reply-suggestions-heading";
   const suggestionsTitle = document.createElement("strong");
   suggestionsTitle.textContent = label(
     "ai_reply_suggestions",
     "Suggested replies"
   );
+  suggestionsHeading.append(icon("reply"), suggestionsTitle);
   const suggestionsList = document.createElement("div");
   suggestionsList.className = "aic-reply-suggestion-list";
-  suggestions.append(suggestionsTitle, suggestionsList);
-  card.append(head, summary, original, suggestions);
-  body.prepend(card);
+  suggestions.append(suggestionsHeading, suggestionsList);
+  card.append(head, summary, original);
+  body.prepend(card, suggestions);
 
   let current;
   function prepareReply(item) {
@@ -167,6 +197,13 @@ function hoverPreview() {
   const preview = document.createElement("div");
   preview.className = "aic-summary-preview";
   preview.setAttribute("role", "status");
+  const previewHeading = document.createElement("div");
+  previewHeading.className = "aic-summary-preview-heading";
+  const previewTitle = document.createElement("strong");
+  previewTitle.textContent = label("ai_summary", "AI summary");
+  previewHeading.append(icon("sparkles"), previewTitle);
+  const previewText = document.createElement("p");
+  preview.append(previewHeading, previewText);
   preview.hidden = true;
   document.body.append(preview);
 
@@ -176,6 +213,16 @@ function hoverPreview() {
     clearTimeout(timer);
     activeRow = null;
     preview.hidden = true;
+  }
+  function position(row) {
+    const rect = row.getBoundingClientRect();
+    const popup = preview.getBoundingClientRect();
+    let top = rect.bottom + 8;
+    if (top + popup.height > window.innerHeight - 8) {
+      top = rect.top - popup.height - 8;
+    }
+    preview.style.top = `${Math.max(8, top)}px`;
+    preview.style.left = `${Math.max(8, Math.min(rect.left + 16, window.innerWidth - popup.width - 8))}px`;
   }
   list.addEventListener("mouseover", (event) => {
     const row = event.target.closest("tr");
@@ -187,21 +234,24 @@ function hoverPreview() {
     activeRow = row;
     timer = setTimeout(() => {
       if (activeRow !== row) return;
-      const rect = row.getBoundingClientRect();
-      preview.style.top = `${Math.max(8, Math.min(rect.bottom + 4, window.innerHeight - 110))}px`;
-      preview.style.left = `${Math.max(8, Math.min(rect.left + 16, window.innerWidth - 350))}px`;
-      preview.textContent = label("ai_summary_loading", "Summarizing…");
+      previewText.textContent = label("ai_summary_loading", "Summarizing…");
       preview.hidden = false;
+      position(row);
       summarize(uid, mailbox)
         .then((data) => {
-          if (activeRow === row) preview.textContent = data.translatedSummary;
+          if (activeRow === row) {
+            previewText.textContent = data.translatedSummary;
+            position(row);
+          }
         })
         .catch(() => {
-          if (activeRow === row)
-            preview.textContent = label(
+          if (activeRow === row) {
+            previewText.textContent = label(
               "ai_summary_error",
               "Summary unavailable. Try again."
             );
+            position(row);
+          }
         });
     }, 350);
   });
