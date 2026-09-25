@@ -29,6 +29,9 @@ class RequestData
 
     private ?string $subject = null;
 
+    /** @var array<int, array{body: string, sameRecipient: bool}> */
+    private array $styleExamples = [];
+
     private function __construct(string $recipientName, string $senderName, string $instruction, ?string $style, ?string $length, ?string $creativity, ?string $language)
     {
         $this->recipientName = $recipientName;
@@ -156,6 +159,24 @@ class RequestData
         $this->htmlMode = $htmlMode;
 
         return $this;
+    }
+
+    /**
+     * @param array<int, array{body: string, sameRecipient: bool}> $styleExamples
+     */
+    public function setStyleExamples(array $styleExamples): self
+    {
+        $this->styleExamples = $styleExamples;
+
+        return $this;
+    }
+
+    /**
+     * @return array<int, array{body: string, sameRecipient: bool}>
+     */
+    public function getStyleExamples(): array
+    {
+        return $this->styleExamples;
     }
 
     public function isHtmlMode(): bool

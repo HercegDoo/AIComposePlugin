@@ -22,6 +22,13 @@ $config['aiProviderOpenAIConfig'] = [
     // 'apiUrl' => 'https://api.openai.com/v1/chat/completions'  // Optional: uncomment to use a custom API endpoint
 ];
 
+// Use up to three short excerpts from this user's Sent folder to match their writing style.
+// Messages to the current recipient are preferred. Only messages sent from the selected
+// compose identity are considered; quoted threads and attachments are excluded.
+// The excerpts are sent to the configured compose AI provider with the generation request.
+// Set false to disable this behavior (for example, if Sent messages must stay on this server).
+$config['aiComposeSentStyleEnabled'] = true;
+
 // Summarize incoming messages in the selected Roundcube interface language.
 // The summary appears when hovering over a message row and above opened messages.
 // Opened messages may also show up to three reply suggestions when the intent is clear.
