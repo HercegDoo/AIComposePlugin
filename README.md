@@ -41,7 +41,7 @@ Run this command from the **Roundcube root directory**:
 composer require hercegdoo/aicomposeplugin
 ```
 
-Roundcube's Composer installer places the package at `plugins/aicomposeplugin/`, where the entry point is `aicomposeplugin.php`. Accept the installer's activation prompt, or add `aicomposeplugin` to `config/config.inc.php`:
+On a Composer-managed Roundcube installation with `roundcube/plugin-installer` enabled, the installer places the package at `plugins/aicomposeplugin/`, where the entry point is `aicomposeplugin.php`. Accept the installer's activation prompt, or add `aicomposeplugin` to `config/config.inc.php`:
 
 ```php
 $config['plugins'] = ['aicomposeplugin'];
@@ -54,6 +54,10 @@ The installer copies `plugins/aicomposeplugin/config.inc.php.dist` to `plugins/a
 Place the repository in `plugins/aicomposeplugin/`, install PHP dependencies with `composer install --no-dev` in that directory, copy `config.inc.php.dist` to `config.inc.php`, enter your API key, and enable `aicomposeplugin` in Roundcube's plugin list. The included frontend bundles are ready to use. To rebuild them from source, run `npm ci` and `npm run build:prod` in the plugin directory.
 
 For an existing installation in `plugins/AIComposePlugin/`, rename the directory to `plugins/aicomposeplugin/` and change the plugin name in Roundcube's `config/config.inc.php` to `aicomposeplugin` when upgrading. Keep your existing `config.inc.php` and API key.
+
+### Plesk Roundcube
+
+For a Plesk installation, copy the complete plugin directory (including `src/` and `assets/dist/`) to `/usr/share/psa-roundcube/plugins/aicomposeplugin/`. Run `composer install --no-dev` **inside that plugin directory** if its `vendor/` dependencies are not included. Enable `aicomposeplugin` in `/usr/share/psa-roundcube/config/config.local.php` while retaining the other enabled plugins. Plesk's host Composer autoloader may not know classes from manually copied plugins; the plugin entry point registers its own `src/` mapping to handle that layout. See [Plesk's Roundcube plugin instructions](https://support.plesk.com/hc/en-us/articles/24152701483799-How-to-enable-Roundcube-plugins-in-Plesk-for-Linux).
  
 ## Usage
 1. **Compose a New Email:**

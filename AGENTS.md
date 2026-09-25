@@ -6,7 +6,7 @@ This document applies to the entire repository. Before making changes, inspect t
 
 - `aicomposeplugin` is a Roundcube plugin for composing and revising email and translating incoming summaries with an AI service. It runs in the `mail` and `settings` tasks, and its HTML targets Roundcube's `elastic` skin.
 - PHP code uses the `HercegDoo\AIComposePlugin\` namespace, mapped to `src/` by Composer PSR-4 autoloading. Roundcube loads `plugins/aicomposeplugin/aicomposeplugin.php` and instantiates class `aicomposeplugin`; the PHP namespace retains its existing casing.
-- Roundcube 1.6.11 is the version pinned for development; `roundcube/plugin-installer` is a runtime dependency. `composer.json` declares PHP `>=7.4`, but the existing code uses PHP 8.0 functions such as `str_contains` and `str_starts_with`; GitHub Actions run on PHP 8.0. Do not claim PHP 7.4 compatibility without resolving and verifying this discrepancy.
+- Roundcube 1.6.11 is the version pinned for development; `roundcube/plugin-installer` is a development dependency in this repository, so a Composer-managed Roundcube root needs its own installer. `composer.json` declares PHP `>=7.4`, but the existing code uses PHP 8.0 functions such as `str_contains` and `str_starts_with`; GitHub Actions run on PHP 8.0. Do not claim PHP 7.4 compatibility without resolving and verifying this discrepancy.
 - Real provider requests require `ext-curl` and `php-curl-class/php-curl-class`. Frontend development requires Node, npm, and webpack.
 - To install the plugin in Roundcube, run `composer require hercegdoo/aicomposeplugin` from the Roundcube root or place it in `plugins/aicomposeplugin`; enable `aicomposeplugin` in Roundcube's plugin list. See `README.md` for migration from the former uppercase folder.
 
@@ -31,7 +31,7 @@ This document applies to the entire repository. Before making changes, inspect t
 
 ### Startup and settings
 
-1. `aicomposeplugin.php` loads the Roundcube root Composer autoloader when installed through Composer, or the plugin-local autoloader for a manual install, and extends `AbstractAIComposePlugin`.
+1. `aicomposeplugin.php` loads any available Roundcube root and plugin-local Composer autoloaders, then registers a source-local PSR-4 fallback for `HercegDoo\AIComposePlugin\`. This is needed for Plesk and other manually copied plugin directories whose host autoloader has no mapping for the plugin. It extends `AbstractAIComposePlugin`.
 2. `AbstractAIComposePlugin::init()` selects `MailTask` or `SettingsTask` from the Roundcube task and sets the plugin reference used by actions.
 3. The `AbstractTask` constructor loads configuration into static `AIEmailService\Settings`, registers actions from the matching directory, and calls the task's `init()` once. `AbstractAIComposePlugin::init()` creates the task handler and does not call `init()` again.
 4. `Settings` reads user defaults from the Roundcube `aicDefaults` preference (`style`, `length`, `creativity`, `language`, `pluginVisibility`). Saved instructions use a separate `predefinedInstructions` preference; each record has `id`, `title`, and `message`. Use Roundcube's `get_prefs()` and `save_prefs()` and keep data scoped to the signed-in user.
