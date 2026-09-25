@@ -51,7 +51,7 @@ final class SummarizeMessageAction extends AbstractAction
                 $message->get_header('message-id'),
                 $message->get_header('date'),
                 $locale,
-                $provider::class,
+                \get_class($provider),
                 $config,
             ], \JSON_THROW_ON_ERROR);
             $cacheKey = hash('sha256', $cacheData);
@@ -76,7 +76,7 @@ final class SummarizeMessageAction extends AbstractAction
 
             echo json_encode(['status' => 'success', 'targetLanguage' => $locale] + $summary);
         } catch (\Throwable $error) {
-            error_log('AIComposePlugin summary failed: ' . $error::class);
+            error_log('AIComposePlugin summary failed: ' . \get_class($error));
             echo json_encode(['status' => 'error']);
         }
     }

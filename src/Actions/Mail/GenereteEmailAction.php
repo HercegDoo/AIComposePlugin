@@ -53,7 +53,7 @@ final class GenereteEmailAction extends AbstractAction implements ValidateAction
                     }
                 } catch (\Throwable $e) {
                     $subjectError = true;
-                    error_log('AIComposePlugin subject generation failed: ' . $e::class);
+                    error_log('AIComposePlugin subject generation failed: ' . \get_class($e));
                 }
             }
 
