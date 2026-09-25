@@ -29,8 +29,12 @@ final class Ollama implements CompletionProviderInterface
     {
         $model = $config['model'] ?? '';
         $url = $config['url'] ?? 'http://127.0.0.1:11434/api/chat';
+        $maxTokens = $config['maxTokens'] ?? 750;
         if (!\is_string($model) || $model === '' || !\is_string($url) || !\in_array(parse_url($url, \PHP_URL_SCHEME), ['http', 'https'], true)) {
             throw new ProviderException('Invalid Ollama summary configuration');
+        }
+        if (!\is_int($maxTokens) || $maxTokens < 1) {
+            throw new ProviderException('Invalid Ollama output limit');
         }
 
         $payload = [
@@ -41,9 +45,9 @@ final class Ollama implements CompletionProviderInterface
             ],
             'format' => 'json',
             'stream' => false,
-            'options' => ['temperature' => 0, 'num_predict' => 750],
+            'options' => ['temperature' => 0, 'num_predict' => $maxTokens],
         ];
-        $trace = $this->requestLogger->begin('Ollama', $model, $prompt, ['temperature' => 0, 'token_limit' => 750]);
+        $trace = $this->requestLogger->begin('Ollama', $model, $prompt, ['temperature' => 0, 'token_limit' => $maxTokens]);
         $response = null;
         $failure = null;
 

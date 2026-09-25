@@ -56,8 +56,10 @@ class MailTask extends AbstractTask
             $this->includeComposeScripts();
         }
         $summaryViews = $this->summaryViews();
-        if ($this->summaryEnabled() && ($summaryViews['preview'] || $summaryViews['message'])
-            && \in_array($args['template'] ?? null, ['mail', 'message'], true)) {
+        $template = $args['template'] ?? null;
+        if (($this->summaryEnabled() && (($template === 'mail' && $summaryViews['preview'])
+            || ($template === 'message' && $summaryViews['message'])))
+            || ($template === 'message' && $this->translationEnabled())) {
             $this->includeBundle('summary');
         }
 
@@ -206,9 +208,25 @@ class MailTask extends AbstractTask
             if ($rcmail->action === 'compose') {
                 $this->includeComposeScripts();
             }
-        } elseif ($this->summaryEnabled()) {
+        } elseif ($this->summaryEnabled() || $this->translationEnabled()) {
             $this->loadTranslations();
             $rcmail->output->set_env('aiSummaryViews', $this->summaryViews());
+            $rcmail->output->set_env('aiSummaryEnabled', $this->summaryEnabled());
+            $rcmail->output->set_env('aiTranslationEnabled', $this->translationEnabled());
+            if ($this->translationEnabled()) {
+                $languages = $rcmail->list_languages();
+                $locale = $_SESSION['language'] ?? $rcmail->config->get('language', 'en_US');
+                $defaults = $rcmail->user->get_prefs()['aicDefaults'] ?? [];
+                $choice = \is_array($defaults) ? ($defaults['summaryLanguage'] ?? null) : null;
+                if (\is_string($choice) && isset($languages[$choice])) {
+                    $locale = $choice;
+                }
+                if (!\is_string($locale) || !isset($languages[$locale])) {
+                    $locale = array_key_first($languages);
+                }
+                $rcmail->output->set_env('aiTranslationLanguages', $languages);
+                $rcmail->output->set_env('aiTranslationDefaultLocale', $locale);
+            }
         }
     }
 
@@ -230,6 +248,11 @@ class MailTask extends AbstractTask
     private function summaryEnabled(): bool
     {
         return (bool) \rcmail::get_instance()->config->get('aiSummaryEnabled', true);
+    }
+
+    private function translationEnabled(): bool
+    {
+        return (bool) \rcmail::get_instance()->config->get('aiTranslationEnabled', true);
     }
 
     /**

@@ -1,4 +1,5 @@
 import "./summary/styles.css";
+import { messageTranslationCard } from "./summary/translation";
 
 const action = "plugin.aicomposeplugin_SummarizeMessageAction";
 const results = new Map();
@@ -268,6 +269,9 @@ function hoverPreview() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (rcmail.env.aiSummaryViews?.message !== false) messageCard();
-  if (rcmail.env.aiSummaryViews?.preview !== false) hoverPreview();
+  if (rcmail.env.aiSummaryEnabled === true) {
+    if (rcmail.env.aiSummaryViews?.message !== false) messageCard();
+    if (rcmail.env.aiSummaryViews?.preview !== false) hoverPreview();
+  }
+  if (rcmail.env.aiTranslationEnabled === true) messageTranslationCard();
 });
