@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryDisplayPreferences;
 use HercegDoo\AIComposePlugin\Utilities\ContentInjector;
 use HercegDoo\AIComposePlugin\Utilities\ReplySuggestionStore;
 use HercegDoo\AIComposePlugin\Utilities\TemplateObjectFiller;
@@ -54,8 +55,10 @@ class MailTask extends AbstractTask
         if (($args['template'] ?? null) === 'compose') {
             $this->includeComposeScripts();
         }
-        if ($this->summaryEnabled() && \in_array($args['template'] ?? null, ['mail', 'message'], true)) {
-            $this->plugin->include_script('assets/dist/summary.bundle.js');
+        $summaryViews = $this->summaryViews();
+        if ($this->summaryEnabled() && ($summaryViews['preview'] || $summaryViews['message'])
+            && \in_array($args['template'] ?? null, ['mail', 'message'], true)) {
+            $this->includeBundle('summary');
         }
 
         return $args;
@@ -205,22 +208,44 @@ class MailTask extends AbstractTask
             }
         } elseif ($this->summaryEnabled()) {
             $this->loadTranslations();
+            $rcmail->output->set_env('aiSummaryViews', $this->summaryViews());
         }
     }
 
     private function includeComposeScripts(): void
     {
         foreach (['composeOptions', 'compose'] as $name) {
-            $bundle = 'assets/dist/' . $name . '.bundle.js';
-            $bundlePath = __DIR__ . '/../../' . $bundle;
-            $hash = is_file($bundlePath) ? hash_file('sha256', $bundlePath) : false;
-            $this->plugin->include_script($bundle . ($hash ? '?v=' . substr($hash, 0, 12) : ''));
+            $this->includeBundle($name);
         }
+    }
+
+    private function includeBundle(string $name): void
+    {
+        $bundle = 'assets/dist/' . $name . '.bundle.js';
+        $bundlePath = __DIR__ . '/../../' . $bundle;
+        $hash = is_file($bundlePath) ? hash_file('sha256', $bundlePath) : false;
+        $this->plugin->include_script($bundle . ($hash ? '?v=' . substr($hash, 0, 12) : ''));
     }
 
     private function summaryEnabled(): bool
     {
         return (bool) \rcmail::get_instance()->config->get('aiSummaryEnabled', true);
+    }
+
+    /**
+     * @return array{preview: bool, message: bool}
+     */
+    private function summaryViews(): array
+    {
+        $defaults = \rcmail::get_instance()->user->get_prefs()['aicDefaults'] ?? [];
+        if (!\is_array($defaults)) {
+            $defaults = [];
+        }
+
+        return [
+            'preview' => SummaryDisplayPreferences::isEnabled($defaults, 'preview'),
+            'message' => SummaryDisplayPreferences::isEnabled($defaults, 'message'),
+        ];
     }
 
     private function isPluginVisible(): bool

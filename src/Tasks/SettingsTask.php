@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HercegDoo\AIComposePlugin\Tasks;
 
+use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryDisplayPreferences;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryTargetLanguage;
 
 class SettingsTask extends AbstractTask
@@ -141,6 +142,14 @@ class SettingsTask extends AbstractTask
                         'title' => $this->translation('ai_summary_language_setting'),
                         'content' => $this->getSummaryLanguageDropdown(),
                     ],
+                    [
+                        'title' => $this->translation('ai_summary_hover_setting'),
+                        'content' => $this->getSummaryVisibilityDropdown(SummaryDisplayPreferences::HOVER),
+                    ],
+                    [
+                        'title' => $this->translation('ai_summary_message_setting'),
+                        'content' => $this->getSummaryVisibilityDropdown(SummaryDisplayPreferences::MESSAGE),
+                    ],
                 ],
             ];
 
@@ -166,15 +175,25 @@ class SettingsTask extends AbstractTask
             $rcmail = \rcmail::get_instance();
             $visibility = $aicData['pluginVisibility'] ?? null;
             $summaryLanguage = $aicData['summaryLanguage'] ?? null;
+            $defaults = $rcmail->user->get_prefs()['aicDefaults'] ?? [];
+            if (!\is_array($defaults)) {
+                $defaults = [];
+            }
+            $summaryHover = $aicData[SummaryDisplayPreferences::HOVER]
+                ?? SummaryDisplayPreferences::choice($defaults, SummaryDisplayPreferences::HOVER);
+            $summaryMessage = $aicData[SummaryDisplayPreferences::MESSAGE]
+                ?? SummaryDisplayPreferences::choice($defaults, SummaryDisplayPreferences::MESSAGE);
             if (\in_array($visibility, ['show', 'hide'], true)
                 && \is_string($summaryLanguage)
-                && SummaryTargetLanguage::isValid($summaryLanguage, $rcmail->list_languages())) {
-                $defaults = $rcmail->user->get_prefs()['aicDefaults'] ?? [];
-                if (!\is_array($defaults)) {
-                    $defaults = [];
-                }
+                && SummaryTargetLanguage::isValid($summaryLanguage, $rcmail->list_languages())
+                && \is_string($summaryHover)
+                && SummaryDisplayPreferences::isValid($summaryHover)
+                && \is_string($summaryMessage)
+                && SummaryDisplayPreferences::isValid($summaryMessage)) {
                 $defaults['pluginVisibility'] = $visibility;
                 $defaults['summaryLanguage'] = $summaryLanguage;
+                $defaults[SummaryDisplayPreferences::HOVER] = $summaryHover;
+                $defaults[SummaryDisplayPreferences::MESSAGE] = $summaryMessage;
                 $prefs = $args['prefs'] ?? [];
                 if (!\is_array($prefs)) {
                     $prefs = [];
@@ -229,6 +248,24 @@ class SettingsTask extends AbstractTask
         foreach ($options as $value => $label) {
             $dropdown .= '<option value="' . htmlspecialchars($value, \ENT_QUOTES, 'UTF-8') . '"' .
                 ($value === $selected ? ' selected' : '') . '>' . htmlspecialchars($label, \ENT_QUOTES, 'UTF-8') . '</option>';
+        }
+
+        return $dropdown . '</select>';
+    }
+
+    private function getSummaryVisibilityDropdown(string $preference): string
+    {
+        $defaults = \rcmail::get_instance()->user->get_prefs()['aicDefaults'] ?? [];
+        $selected = SummaryDisplayPreferences::choice(\is_array($defaults) ? $defaults : [], $preference);
+        $options = [
+            SummaryDisplayPreferences::SHOW => $this->translation('ai_compose_show'),
+            SummaryDisplayPreferences::HIDE => $this->translation('ai_compose_hide'),
+        ];
+
+        $dropdown = '<select name="data[aic][' . $preference . ']">';
+        foreach ($options as $value => $label) {
+            $dropdown .= '<option value="' . $value . '"' . ($selected === $value ? ' selected' : '') . '>'
+                . htmlspecialchars($label, \ENT_QUOTES, 'UTF-8') . '</option>';
         }
 
         return $dropdown . '</select>';

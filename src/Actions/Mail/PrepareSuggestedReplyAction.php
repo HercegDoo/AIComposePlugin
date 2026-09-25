@@ -6,6 +6,7 @@ namespace HercegDoo\AIComposePlugin\Actions\Mail;
 
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
 use HercegDoo\AIComposePlugin\AIEmailService\Request;
+use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryDisplayPreferences;
 use HercegDoo\AIComposePlugin\Utilities\ReplySuggestionStore;
 
 final class PrepareSuggestedReplyAction extends AbstractAction
@@ -15,9 +16,16 @@ final class PrepareSuggestedReplyAction extends AbstractAction
         header('Content-Type: application/json; charset=UTF-8');
 
         try {
+            $defaults = $this->rcmail->user->get_prefs()['aicDefaults'] ?? [];
+            if (!\is_array($defaults)) {
+                $defaults = [];
+            }
             if (!$this->rcmail->config->get('aiSummaryEnabled', true)
-                || ($this->rcmail->user->get_prefs()['aicDefaults']['pluginVisibility'] ?? 'show') !== 'show') {
-                throw new \RuntimeException('Suggestions are disabled');
+                || ($defaults['pluginVisibility'] ?? 'show') !== 'show'
+                || !SummaryDisplayPreferences::isEnabled($defaults, 'message')) {
+                echo json_encode(['status' => 'error']);
+
+                return;
             }
 
             $uid = Request::postString('uid') ?? '';

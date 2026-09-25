@@ -7,6 +7,7 @@ namespace HercegDoo\AIComposePlugin\Actions\Mail;
 use HercegDoo\AIComposePlugin\Actions\AbstractAction;
 use HercegDoo\AIComposePlugin\AIEmailService\Request;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\MessageTextExtractor;
+use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryDisplayPreferences;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryPromptBuilder;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryProviderFactory;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryService;
@@ -22,8 +23,12 @@ final class SummarizeMessageAction extends AbstractAction
         header('Content-Type: application/json; charset=UTF-8');
 
         try {
+            $defaults = $this->rcmail->user->get_prefs()['aicDefaults'] ?? [];
+            if (!\is_array($defaults)) {
+                $defaults = [];
+            }
             if (!$this->rcmail->config->get('aiSummaryEnabled', true)
-                || ($this->rcmail->user->get_prefs()['aicDefaults']['pluginVisibility'] ?? 'show') !== 'show') {
+                || ($defaults['pluginVisibility'] ?? 'show') !== 'show') {
                 throw new \RuntimeException('Summaries are disabled');
             }
 
@@ -37,12 +42,17 @@ final class SummarizeMessageAction extends AbstractAction
                 || !\in_array($view, [self::VIEW_PREVIEW, self::VIEW_MESSAGE], true)) {
                 throw new \InvalidArgumentException('Invalid summary request');
             }
+            if (!SummaryDisplayPreferences::isEnabled($defaults, $view)) {
+                echo json_encode(['status' => 'error']);
+
+                return;
+            }
 
             $locale = $_SESSION['language'] ?? $this->rcmail->config->get('language', 'en_US');
             if (!\is_string($locale) || !preg_match('/^[a-z]{2,3}(?:_[A-Z]{2})?$/', $locale)) {
                 $locale = 'en_US';
             }
-            $choice = $this->rcmail->user->get_prefs()['aicDefaults']['summaryLanguage'] ?? SummaryTargetLanguage::ROUNDCUBE;
+            $choice = $defaults['summaryLanguage'] ?? SummaryTargetLanguage::ROUNDCUBE;
             $target = SummaryTargetLanguage::resolve(
                 \is_string($choice) ? $choice : SummaryTargetLanguage::ROUNDCUBE,
                 $locale,
