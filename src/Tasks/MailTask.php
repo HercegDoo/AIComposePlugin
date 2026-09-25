@@ -154,6 +154,7 @@ class MailTask extends AbstractTask
         $actionPrefix = 'plugin.aicomposeplugin_';
         $rcmail = \rcmail::get_instance();
         $settings = [
+            'storageUserId' => (string) $rcmail->user->ID,
             'languages' => array_values(Settings::getLanguages()),
             'defaultLanguage' => Settings::getDefaultLanguage(),
             'lengths' => array_values(Settings::getLengths()),

@@ -79,6 +79,8 @@ For a Plesk installation, copy the complete plugin directory (including `src/` a
     - The generated email can be inserted into the Compose window, ready for further editing or immediate sending.
     - If the Subject field is empty, the plugin also suggests a subject and fills that field. An existing subject is preserved.
 
+    - The last AI style, length, creativity, and language selections are remembered in this browser for your Roundcube account. Options without a saved selection use your default preferences.
+
 4. **Suggest a New Subject:**
 
     - Click **Suggest subject** beside the Subject field to generate another suggestion from the current email text. If the editor is empty, the plugin uses the entered instructions.
