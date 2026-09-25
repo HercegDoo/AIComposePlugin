@@ -83,7 +83,7 @@ For a Plesk installation, copy the complete plugin directory (including `src/` a
 
 4. **Suggest a New Subject:**
 
-    - Click **Suggest subject** beside the Subject field to generate another suggestion from the current email text. If the editor is empty, the plugin uses the entered instructions.
+    - Click the lightbulb icon beside the Subject field to generate another suggestion from the current email text. Hover over it to see the translated **Suggest subject** tooltip. If the editor is empty, the plugin uses the entered instructions.
     - This updates only the Subject field. Each suggestion can require another provider request.
     - The button label follows the Roundcube interface language. The language selected in AI Mail Options controls the generated subject text.
   

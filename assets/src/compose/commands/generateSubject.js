@@ -9,18 +9,39 @@ export default class GenerateSubject {
     }
 
     const wrapper = document.createElement("div");
-    wrapper.className = "aic-subject-control";
+    wrapper.className = "input-group aic-subject-control";
     input.parentNode.insertBefore(wrapper, input);
     wrapper.appendChild(input);
 
-    const button = document.createElement("button");
+    const append = document.createElement("span");
+    append.className = "input-group-append";
+    const button = document.createElement("a");
     button.id = "aic-generate-subject-button";
-    button.type = "button";
-    button.className = "btn btn-secondary";
-    button.textContent = translation("ai_generate_subject");
-    button.title = translation("ai_generate_subject");
-    wrapper.appendChild(button);
-    button.addEventListener("click", () => this.generate(button));
+    button.href = "#";
+    button.tabIndex = 1;
+    button.className = "input-group-text icon";
+    button.setAttribute("role", "button");
+    const label = translation("ai_generate_subject");
+    button.setAttribute("aria-label", label);
+    button.title = label;
+    const inner = document.createElement("span");
+    inner.className = "inner";
+    inner.textContent = label;
+    button.appendChild(inner);
+    append.appendChild(button);
+    wrapper.appendChild(append);
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      if (button.getAttribute("aria-disabled") !== "true") {
+        this.generate(button);
+      }
+    });
+    button.addEventListener("keydown", (event) => {
+      if (event.key === " ") {
+        event.preventDefault();
+        button.click();
+      }
+    });
   }
 
   generate(button) {
@@ -46,7 +67,8 @@ export default class GenerateSubject {
       rcmail.env.aiPluginOptions.languages.find(
         (option) => option.toLowerCase() === selectedLanguage.toLowerCase()
       ) || selectedLanguage;
-    button.disabled = true;
+    button.classList.add("disabled");
+    button.setAttribute("aria-disabled", "true");
 
     rcmail
       .http_post(
@@ -70,7 +92,8 @@ export default class GenerateSubject {
         rcmail.display_message(translation("ai_request_error"), "error")
       )
       .always(() => {
-        button.disabled = false;
+        button.classList.remove("disabled");
+        button.removeAttribute("aria-disabled");
       });
   }
 }
