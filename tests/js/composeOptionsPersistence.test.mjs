@@ -6,29 +6,34 @@ import {
 } from "../../assets/src/compose/emailHelpers/composeOptionsPersistence.mjs";
 
 function select(id, value, values = [value]) {
-  const listeners = new Map();
   return {
     id,
     tagName: "SELECT",
     value,
     options: values.map((optionValue) => ({ value: optionValue })),
-    addEventListener(name, listener) {
-      listeners.set(name, listener);
-    },
-    change(nextValue) {
-      this.value = nextValue;
-      listeners.get("change")();
-    },
   };
 }
 
 function root(...selects) {
-  const elements = new Map(selects.map((element) => [element.id, element]));
-  return {
+  const elements = new Map();
+  let onChange;
+  const container = {
     querySelector(selector) {
       return elements.get(selector.slice(1)) ?? null;
     },
+    addEventListener(name, listener) {
+      if (name === "change") onChange = listener;
+    },
+    add(element) {
+      elements.set(element.id, element);
+      element.change = (nextValue) => {
+        element.value = nextValue;
+        onChange({ target: element });
+      };
+    },
   };
+  for (const element of selects) container.add(element);
+  return container;
 }
 
 test("keeps Roundcube-rendered defaults until the user changes a select", () => {
@@ -37,6 +42,30 @@ test("keeps Roundcube-rendered defaults until the user changes a select", () => 
   initComposeOptionPersistence(root(style), (options) => saved.push(options));
 
   assert.equal(style.value, "professional");
+  assert.deepEqual(saved, []);
+});
+
+test("saves changes from controls inserted after initialization", () => {
+  const container = root();
+  const saved = [];
+  initComposeOptionPersistence(container, (options) => saved.push(options));
+
+  const style = select("aic_style_select", "casual");
+  container.add(style);
+  style.change("professional");
+
+  assert.deepEqual(saved, [{ aic_style_select: "professional" }]);
+});
+
+test("ignores changes outside AI compose options", () => {
+  const container = root();
+  const saved = [];
+  initComposeOptionPersistence(container, (options) => saved.push(options));
+
+  const unrelated = select("some_other_select", "first");
+  container.add(unrelated);
+  unrelated.change("second");
+
   assert.deepEqual(saved, []);
 });
 
@@ -84,6 +113,36 @@ test("loads saved Roundcube preferences into a new compose window", async () => 
   assert.equal(style.value, "professional");
   assert.equal(language.value, "german");
   assert.deepEqual(saved, []);
+});
+
+test("applies saved preferences to controls inserted after the response", async () => {
+  const container = root();
+  let onMutation;
+  container.documentElement = {};
+  container.defaultView = {
+    MutationObserver: class {
+      constructor(callback) {
+        onMutation = callback;
+      }
+      observe() {}
+      disconnect() {}
+    },
+  };
+
+  initComposeOptionPersistence(
+    container,
+    () => {},
+    () => Promise.resolve({ style: "professional" })
+  );
+  await new Promise(setImmediate);
+
+  const style = select("aic_style_select", "casual", [
+    "casual",
+    "professional",
+  ]);
+  container.add(style);
+  onMutation();
+  assert.equal(style.value, "professional");
 });
 
 test("saves a changed field immediately while loading other server choices", async () => {
