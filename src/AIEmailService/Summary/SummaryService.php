@@ -26,9 +26,9 @@ final class SummaryService
     /**
      * @return array{sourceLanguage: string, originalSummary: string, translatedSummary: string, replySuggestions: array<int, array{label: string, instruction: string}>}
      */
-    public function summarize(string $subject, string $body, string $targetLocale, int $sentenceCount = 1, bool $includeReplySuggestions = false): array
+    public function summarize(string $subject, string $body, string $targetLocale, int $sentenceCount = 1, bool $includeReplySuggestions = false, bool $translate = true): array
     {
-        $prompt = (new SummaryPromptBuilder())->build($subject, $body, $targetLocale, $sentenceCount, $includeReplySuggestions);
+        $prompt = (new SummaryPromptBuilder())->build($subject, $body, $targetLocale, $sentenceCount, $includeReplySuggestions, $translate);
         $raw = trim($this->provider->complete($prompt, $this->config));
         $start = strpos($raw, '{');
         $end = strrpos($raw, '}');
@@ -44,7 +44,7 @@ final class SummaryService
         $sourceLanguage = $this->clean($data['source_language'] ?? null, 60);
         $summaryLimit = $sentenceCount > 1 ? 900 : 700;
         $originalSummary = $this->clean($data['original_summary'] ?? null, $summaryLimit);
-        $translatedSummary = $this->clean($data['translated_summary'] ?? null, $summaryLimit);
+        $translatedSummary = $translate ? $this->clean($data['translated_summary'] ?? null, $summaryLimit) : $originalSummary;
         if ($sourceLanguage === '' || $originalSummary === '' || $translatedSummary === '') {
             throw new ProviderException('Incomplete summary response');
         }

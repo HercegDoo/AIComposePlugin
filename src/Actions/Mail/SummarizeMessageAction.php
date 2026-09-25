@@ -10,6 +10,7 @@ use HercegDoo\AIComposePlugin\AIEmailService\Summary\MessageTextExtractor;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryPromptBuilder;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryProviderFactory;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryService;
+use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryTargetLanguage;
 
 final class SummarizeMessageAction extends AbstractAction
 {
@@ -41,6 +42,12 @@ final class SummarizeMessageAction extends AbstractAction
             if (!\is_string($locale) || !preg_match('/^[a-z]{2,3}(?:_[A-Z]{2})?$/', $locale)) {
                 $locale = 'en_US';
             }
+            $choice = $this->rcmail->user->get_prefs()['aicDefaults']['summaryLanguage'] ?? SummaryTargetLanguage::ROUNDCUBE;
+            $target = SummaryTargetLanguage::resolve(
+                \is_string($choice) ? $choice : SummaryTargetLanguage::ROUNDCUBE,
+                $locale,
+                $this->rcmail->list_languages()
+            );
 
             $message = new \rcube_message($uid, $folder);
             if (!$message->headers) {
@@ -60,7 +67,7 @@ final class SummarizeMessageAction extends AbstractAction
                 $uid,
                 $message->get_header('message-id'),
                 $message->get_header('date'),
-                $locale,
+                $target,
                 \get_class($provider),
                 $config,
             ], \JSON_THROW_ON_ERROR);
@@ -68,7 +75,7 @@ final class SummarizeMessageAction extends AbstractAction
             if ($refresh !== '1' && $cache) {
                 $saved = $cache->get($cacheKey);
                 if (\is_array($saved) && isset($saved['sourceLanguage'], $saved['originalSummary'], $saved['translatedSummary'])) {
-                    echo json_encode(['status' => 'success', 'targetLanguage' => $locale] + $saved);
+                    echo json_encode(['status' => 'success', 'targetLanguage' => $target['locale'], 'translationEnabled' => $target['translate']] + $saved);
 
                     return;
                 }
@@ -81,12 +88,12 @@ final class SummarizeMessageAction extends AbstractAction
                 throw new \RuntimeException('Message has no summarizable text');
             }
 
-            $summary = (new SummaryService($provider, $config))->summarize($message->subject, $body, $locale, $sentenceCount, $view === self::VIEW_MESSAGE);
+            $summary = (new SummaryService($provider, $config))->summarize($message->subject, $body, $target['locale'], $sentenceCount, $view === self::VIEW_MESSAGE, $target['translate']);
             if ($cache) {
                 $cache->set($cacheKey, $summary);
             }
 
-            echo json_encode(['status' => 'success', 'targetLanguage' => $locale] + $summary);
+            echo json_encode(['status' => 'success', 'targetLanguage' => $target['locale'], 'translationEnabled' => $target['translate']] + $summary);
         } catch (\Throwable $error) {
             error_log('AIComposePlugin summary failed: ' . \get_class($error));
             echo json_encode(['status' => 'error']);

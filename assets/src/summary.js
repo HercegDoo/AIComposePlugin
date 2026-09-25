@@ -111,7 +111,11 @@ function messageCard() {
     current = data;
     summary.textContent = data.translatedSummary;
     original.textContent = `${label("ai_original_language", "Original")} (${data.sourceLanguage}): ${data.originalSummary}`;
-    originalButton.hidden = false;
+    originalButton.hidden = data.translationEnabled === false;
+    refreshButton.textContent =
+      data.translationEnabled === false
+        ? label("ai_summarize_again", "Summarize again")
+        : label("ai_translate_again", "Translate again");
     refreshButton.disabled = false;
     suggestionsList.replaceChildren();
     const items = Array.isArray(data.replySuggestions)

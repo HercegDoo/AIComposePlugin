@@ -44,4 +44,14 @@ final class SummaryPromptBuilderTest extends TestCase
         self::assertStringContainsString('If the intent or required details are unclear', $prompt->getUserInstruction());
         self::assertStringContainsString('return an empty array', $prompt->getUserInstruction());
     }
+
+    public function testTranslationCanBeSkippedOrTargetAnExplicitLanguage(): void
+    {
+        $builder = new SummaryPromptBuilder();
+        $original = $builder->build('Betreff', 'Hallo', 'en_US', 1, false, false)->getUserInstruction();
+        $french = $builder->build('Betreff', 'Hallo', 'fr_FR')->getUserInstruction();
+
+        self::assertStringContainsString('Do not translate the summary; copy original_summary exactly', $original);
+        self::assertStringContainsString('Translate that same summary into fr_FR', $french);
+    }
 }
