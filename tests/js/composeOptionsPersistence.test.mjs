@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
   composeOptionsPostData,
@@ -228,4 +229,77 @@ test("a failed request does not stop later changes", async () => {
     { aic_length_select: "long" },
     { aic_length_select: "short" },
   ]);
+});
+
+test("the compose options template contains no inline JavaScript", () => {
+  const html = readFileSync(
+    new URL(
+      "../../skins/elastic/templates/ai_select_fields.html",
+      import.meta.url
+    ),
+    "utf8"
+  );
+  assert.match(html, /<div class="select-div">/);
+  assert.doesNotMatch(html, /\bonchange=|<script\b/i);
+});
+
+test("direct select and parent listeners send only one request", () => {
+  const style = select("aic_style_select", "casual");
+  const listeners = [];
+  style.addEventListener = (name, listener) => listeners.push(listener);
+  const wrapper = {
+    querySelector(selector) {
+      return selector === "#aic_style_select" ? style : null;
+    },
+    addEventListener(name, listener) {
+      listeners.push(listener);
+    },
+  };
+  const container = {
+    querySelector(selector) {
+      if (selector === ".select-div") return wrapper;
+      if (selector === "#aic_style_select") return style;
+      return null;
+    },
+    addEventListener(name, listener) {
+      listeners.push(listener);
+    },
+  };
+  const saved = [];
+  initComposeOptionPersistence(container, (options) => saved.push(options));
+
+  style.value = "professional";
+  const event = { target: style };
+  for (const listener of listeners) listener(event);
+
+  assert.deepEqual(saved, [{ aic_style_select: "professional" }]);
+});
+
+test("the parent listener saves a select inserted after initialization", () => {
+  let onParentChange;
+  let onDocumentChange;
+  const wrapper = {
+    querySelector() {
+      return null;
+    },
+    addEventListener(name, listener) {
+      onParentChange = listener;
+    },
+  };
+  const container = {
+    querySelector(selector) {
+      return selector === ".select-div" ? wrapper : null;
+    },
+    addEventListener(name, listener) {
+      onDocumentChange = listener;
+    },
+  };
+  const saved = [];
+  initComposeOptionPersistence(container, (options) => saved.push(options));
+
+  const event = { target: select("aic_language_select", "german") };
+  onParentChange(event);
+  onDocumentChange(event);
+
+  assert.deepEqual(saved, [{ aic_language_select: "german" }]);
 });

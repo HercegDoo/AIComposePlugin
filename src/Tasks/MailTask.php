@@ -52,7 +52,7 @@ class MailTask extends AbstractTask
     public function loadResources(array $args): array
     {
         if (($args['template'] ?? null) === 'compose') {
-            $this->includeComposeScript();
+            $this->includeComposeScripts();
         }
         if ($this->summaryEnabled() && \in_array($args['template'] ?? null, ['mail', 'message'], true)) {
             $this->plugin->include_script('assets/dist/summary.bundle.js');
@@ -201,19 +201,21 @@ class MailTask extends AbstractTask
             $rcmail->output->set_env('aiPluginOptions', $settings);
             $rcmail->output->set_env('aiPredefinedInstructions', $rcmail->user->get_prefs()['predefinedInstructions'] ?? []);
             if ($rcmail->action === 'compose') {
-                $this->includeComposeScript();
+                $this->includeComposeScripts();
             }
         } elseif ($this->summaryEnabled()) {
             $this->loadTranslations();
         }
     }
 
-    private function includeComposeScript(): void
+    private function includeComposeScripts(): void
     {
-        $bundle = 'assets/dist/compose.bundle.js';
-        $bundlePath = __DIR__ . '/../../' . $bundle;
-        $hash = is_file($bundlePath) ? hash_file('sha256', $bundlePath) : false;
-        $this->plugin->include_script($bundle . ($hash ? '?v=' . substr($hash, 0, 12) : ''));
+        foreach (['composeOptions', 'compose'] as $name) {
+            $bundle = 'assets/dist/' . $name . '.bundle.js';
+            $bundlePath = __DIR__ . '/../../' . $bundle;
+            $hash = is_file($bundlePath) ? hash_file('sha256', $bundlePath) : false;
+            $this->plugin->include_script($bundle . ($hash ? '?v=' . substr($hash, 0, 12) : ''));
+        }
     }
 
     private function summaryEnabled(): bool

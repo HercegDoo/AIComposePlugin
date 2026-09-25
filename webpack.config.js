@@ -3,6 +3,7 @@ const path = require("path");
 module.exports = {
   entry: {
     compose: "./assets/src/compose.js",
+    composeOptions: "./assets/src/composeOptions.js",
     settings: "./assets/src/settings.js",
     summary: "./assets/src/summary.js",
   },
