@@ -21,7 +21,7 @@ final class SaveComposeOptionsAction extends AbstractAction
         ];
         $updates = [];
         foreach (['style', 'length', 'creativity', 'language'] as $field) {
-            if (!array_key_exists($field, $_POST)) {
+            if (!\array_key_exists($field, $_POST)) {
                 continue;
             }
 
