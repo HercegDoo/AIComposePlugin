@@ -14,12 +14,12 @@ use PHPUnit\Framework\TestCase;
  */
 final class SummaryPromptBuilderTest extends TestCase
 {
-    public function testOpenedMessageLengthAddsAtMostTwoSentences(): void
+    public function testOpenedMessageSentenceCountUsesLongMessageBoundary(): void
     {
         self::assertSame(1, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 99)));
         self::assertSame(2, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 100)));
-        self::assertSame(2, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 199)));
-        self::assertSame(3, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 200)));
+        self::assertSame(2, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 149)));
+        self::assertSame(3, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 150)));
         self::assertSame(3, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 300)));
         self::assertSame(3, SummaryPromptBuilder::sentenceCountForBody(str_repeat('word ', 1000)));
     }

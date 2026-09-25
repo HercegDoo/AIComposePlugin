@@ -29,14 +29,22 @@ function icon(kind) {
   return mark;
 }
 
-function summarize(uid, mailbox, view = "preview", refresh = false) {
-  const key = `${mailbox}\0${uid}\0${view}`;
+function summarize(
+  uid,
+  mailbox,
+  view = "preview",
+  refresh = false,
+  force = false
+) {
+  const key = `${mailbox}\0${uid}\0${view}\0${force ? "forced" : "automatic"}`;
   if (!refresh && results.has(key)) return Promise.resolve(results.get(key));
   if (!refresh && pending.has(key)) return pending.get(key);
 
   const request = new Promise((resolve, reject) => {
+    const payload = { uid, mailbox, view, refresh: refresh ? "1" : "0" };
+    if (force) payload.force = "1";
     rcmail
-      .http_post(action, { uid, mailbox, view, refresh: refresh ? "1" : "0" })
+      .http_post(action, payload)
       .done((data) => {
         if (data && (data.status === "success" || data.status === "skipped")) {
           if (data.status === "success") results.set(key, data);
@@ -108,6 +116,35 @@ function messageCard() {
   body.prepend(card, suggestions);
 
   let current;
+  let forced = false;
+  let manualButton;
+  function showManualControl() {
+    const headerLinks = document.querySelector("#message-header .header-links");
+    if (!headerLinks) return;
+    if (!manualButton) {
+      manualButton = document.createElement("a");
+      manualButton.href = "#";
+      manualButton.className = "aic-summary-manual-trigger";
+      manualButton.setAttribute("role", "button");
+      const text = label("ai_show_summary", "Show summary");
+      manualButton.title = text;
+      manualButton.append(icon("sparkles"), document.createTextNode(text));
+      manualButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        forced = true;
+        manualButton.remove();
+        body.prepend(card, suggestions);
+        load(false);
+      });
+      manualButton.addEventListener("keydown", (event) => {
+        if (event.key === " ") {
+          event.preventDefault();
+          manualButton.click();
+        }
+      });
+    }
+    headerLinks.append(manualButton);
+  }
   function prepareReply(item) {
     const buttons = suggestionsList.querySelectorAll("button");
     buttons.forEach((button) => (button.disabled = true));
@@ -177,11 +214,13 @@ function messageCard() {
     summary.classList.add("aic-summary-loading");
     summary.textContent = label("ai_summary_loading", "Generating summary…");
     suggestions.hidden = true;
-    summarize(uid, mailbox, "message", refresh)
+    summarize(uid, mailbox, "message", refresh, forced)
       .then((data) => {
         if (data.status === "skipped") {
+          if (forced) throw new Error("Forced summary was skipped");
           card.remove();
           suggestions.remove();
+          showManualControl();
           return;
         }
         render(data);

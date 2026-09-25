@@ -13,7 +13,8 @@
   color: var(--aic-summary-text);
 }
 
-#message-header .header-links .aic-translation-trigger {
+#message-header .header-links .aic-translation-trigger,
+#message-header .header-links .aic-summary-manual-trigger {
   display: inline-block;
   margin: 0 0.5rem 0 0;
   padding: 0;
@@ -29,11 +30,13 @@
 }
 
 #message-header .header-links .aic-translation-trigger:hover,
-#message-header .header-links .aic-translation-trigger[aria-expanded="true"] {
+#message-header .header-links .aic-translation-trigger[aria-expanded="true"],
+#message-header .header-links .aic-summary-manual-trigger:hover {
   color: #0086c7;
 }
 
 #message-header .header-links .aic-translation-trigger:focus-visible,
+#message-header .header-links .aic-summary-manual-trigger:focus-visible,
 .aic-translation-popover button:focus-visible,
 .aic-translation-popover select:focus-visible,
 .aic-translation-result-header button:focus-visible {
@@ -63,6 +66,21 @@
   border: 0.25rem solid transparent;
   border-top-color: currentColor;
   vertical-align: -0.18em;
+}
+
+.aic-summary-manual-trigger .aic-summary-icon {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  margin-right: 0.3em;
+  background: transparent;
+  color: inherit;
+}
+
+.aic-summary-manual-trigger .aic-summary-icon svg {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.12em;
 }
 
 .aic-translation-popover {

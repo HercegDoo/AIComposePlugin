@@ -188,6 +188,7 @@ $labels['ai_help_example_18'] = 'trevligt att vi sågs på konferensen igår, ja
 
 // Incoming email summaries.
 $labels['ai_summary'] = 'AI-sammanfattning';
+$labels['ai_show_summary'] = 'Visa sammanfattning';
 $labels['ai_summary_loading'] = 'Sammanfattning skapas…';
 $labels['ai_summary_error'] = 'Sammanfattningen är inte tillgänglig. Försök igen.';
 $labels['ai_show_original'] = 'Visa original';
@@ -199,7 +200,7 @@ $labels['ai_original_language'] = 'Original';
 $labels['ai_summary_language_setting'] = 'Språk för sammanfattningar';
 $labels['ai_summary_hover_setting'] = 'AI-sammanfattning när muspekaren hålls över ett meddelande';
 $labels['ai_summary_message_setting'] = 'AI-sammanfattning i öppnade meddelanden';
-$labels['ai_summary_message_long'] = 'Endast långa meddelanden/konversationer (200+ ord)';
+$labels['ai_summary_message_long'] = 'Endast långa meddelanden/konversationer (150+ ord)';
 $labels['ai_summary_message_always'] = 'Visa alltid';
 $labels['ai_translation_message_setting'] = 'Översättning av hela e-postmeddelandet i öppnade meddelanden';
 $labels['ai_summary_language_roundcube'] = 'Språk i Roundcube-gränssnittet (automatiskt)';
