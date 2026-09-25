@@ -47,7 +47,7 @@ On a Composer-managed Roundcube installation with `roundcube/plugin-installer` e
 $config['plugins'] = ['aicomposeplugin'];
 ```
 
-The installer copies `plugins/aicomposeplugin/config.inc.php.dist` to `plugins/aicomposeplugin/config.inc.php`. Edit the copied file and enter your OpenAI API key. Keep other enabled plugins in the `plugins` array when editing Roundcube's configuration.
+The installer copies `plugins/aicomposeplugin/config.inc.php.dist` to `plugins/aicomposeplugin/config.inc.php`. Edit the copied file, choose `aiComposeProvider` (`OpenAI` or `Gemini`), and enter the matching API key. Keep other enabled plugins in the `plugins` array when editing Roundcube's configuration.
 
 ### Manually
 
@@ -102,11 +102,11 @@ Subject wording lives in `src/AIEmailService/Prompt/SubjectPromptBuilder.php`. T
 
 `AIEmail::generate()` builds an `EmailPrompt` before calling the configured provider. It also accepts a `PromptBuilderInterface` implementation as an optional second argument when a different prompt strategy is needed. A new provider implements `InterfaceProvider::generateEmail(RequestData $requestData, EmailPrompt $prompt)` and translates those instructions into its API's request format. Provider classes handle transport and responses; they do not need their own copy of the email prompt. Register a new provider in `Settings::setProvider()`, then configure `aiComposeProvider` and `aiProvider<ProviderName>Config`; task initialization loads that configuration by provider name.
 
-Incoming summary wording lives in `src/AIEmailService/Summary/SummaryPromptBuilder.php`. Summary providers implement `CompletionProviderInterface` and receive that shared prompt. OpenAI is shared with compose; Ollama is available for local summaries.
+Incoming summary wording lives in `src/AIEmailService/Summary/SummaryPromptBuilder.php`. Summary providers implement `CompletionProviderInterface` and receive that shared prompt. OpenAI and Gemini are shared with compose; Ollama is available for local summaries.
 
 ## AI request diagnostics
 
-Set `$config['aiDebugLogging'] = true;` in the plugin's `config.inc.php` to record AI requests in Roundcube's `aicomposeplugin_ai.log` (or the configured Roundcube log driver). The setting is `false` by default. Each provider call produces a `request` record with a generated `request_id`, user ID, operation (`email`, `subject`, or `summary`), model, request options, and the complete system and user prompts. A matching `result` record includes status, duration, HTTP status when available, finish reason, and token counts reported by the provider. OpenAI reports prompt, completion, and total tokens; Ollama reports prompt and completion counts, from which the plugin computes a total. Missing provider usage is left empty, not estimated. A summary served from cache does not create a provider request or token record.
+Set `$config['aiDebugLogging'] = true;` in the plugin's `config.inc.php` to record AI requests in Roundcube's `aicomposeplugin_ai.log` (or the configured Roundcube log driver). The setting is `false` by default. Each provider call produces a `request` record with a generated `request_id`, user ID, operation (`email`, `subject`, or `summary`), model, request options, and the complete system and user prompts. A matching `result` record includes status, duration, HTTP status when available, finish reason, and token counts reported by the provider. OpenAI and Gemini report prompt, completion, and total tokens; Gemini can also report thinking tokens. Ollama reports prompt and completion counts, from which the plugin computes a total. Missing provider usage is left empty, not estimated. A summary served from cache does not create a provider request or token record.
 
 The log contains private email text, previous conversation, and possibly Sent style examples. A generated email reused as input for subject generation can also appear in the subsequent subject prompt. Restrict access to Roundcube's log destination and disable `aiDebugLogging` after troubleshooting. Configured API credentials and full provider response payloads are not dumped. For file logging, the destination follows Roundcube's `log_dir` and `log_file_ext` settings; with the default extension the filename is `aicomposeplugin_ai.log`.
 
@@ -118,7 +118,7 @@ In **Settings → AICompose Settings**, choose where summaries should appear: th
 
 When an opened message clearly calls for a reply, the same AI request may return one to three short reply suggestions in the summary's target language (or the interface language when translation is off). Informational or ambiguous messages show no suggestions. Clicking a suggestion opens Roundcube's normal reply composer and generates a draft with the selected instruction; the user can edit it before sending. The suggestion is passed through a short-lived, one-time token in the Roundcube session. The reply language follows the incoming message when that language is available in the compose language selector.
 
-By default, summaries use the configured OpenAI key and model. `aiSummaryOpenAIConfig` can override those settings, including `model`, `apiKey`, and `maxTokens`. Set `aiSummaryProvider = 'Ollama'` and configure `aiSummaryOllamaConfig['model']` to use a local Ollama server; its default URL is `http://127.0.0.1:11434/api/chat`. The selected provider receives up to 12,000 characters from the incoming message plus its subject, so choose a local provider if the message must stay on your server. The cache stores only the generated summaries, detected language, and translation. Set `aiSummaryEnabled = false` to disable this feature.
+By default, summaries use the configured OpenAI key and model. Set `aiSummaryProvider = 'Gemini'` to use Gemini instead; `aiSummaryGeminiConfig` inherits `aiProviderGeminiConfig` and can override `model`, `apiKey`, and `maxTokens`. `aiSummaryOpenAIConfig` similarly overrides the compose OpenAI configuration. Set `aiSummaryProvider = 'Ollama'` and configure `aiSummaryOllamaConfig['model']` to use a local Ollama server; its default URL is `http://127.0.0.1:11434/api/chat`. The selected provider receives up to 12,000 characters from the incoming message plus its subject, so choose a local provider if the message must stay on your server. The cache stores only the generated summaries, detected language, and translation. Set `aiSummaryEnabled = false` to disable this feature.
 
 ## OpenAI models
 
@@ -127,6 +127,12 @@ Set `aiProviderOpenAIConfig['model']` in `config.inc.php` to an API model ID. Su
 The OpenAI provider uses the Chat Completions API for all of these models. GPT-5 and GPT-6 requests send shared instructions in a `developer` message, use `max_completion_tokens`, and omit `temperature`, which those reasoning models may reject. For `gpt-5`, the provider requests `minimal` reasoning effort; for the three GPT-6 models, it requests `low`. The creativity setting controls temperature only for older models such as `gpt-4.1`; it has no effect with GPT-5 or GPT-6. A custom `apiUrl` must point to a Chat Completions-compatible endpoint.
 
 `aiDefaultMaxTokens` limits both visible output and reasoning tokens on GPT-5 and GPT-6. If generation stops before returning an email, increase this value. The provider reports this case when the API returns a `length` finish reason.
+
+## Gemini provider
+
+Set `aiComposeProvider = 'Gemini'` in `config.inc.php`, then put a Google AI Studio API key and a model ID such as `gemini-3.8-flash` in `aiProviderGeminiConfig`. Email generation and subject suggestions use the same shared prompt builders as OpenAI. Set `aiSummaryProvider = 'Gemini'` to use it for incoming summaries as well. The provider calls Google's `generateContent` REST endpoint with the API key in the `x-goog-api-key` header. It validates model IDs before adding them to the URL and verifies TLS certificates.
+
+Gemini 3 requests use low thinking by default to leave room for the visible email within `aiDefaultMaxTokens`; set `thinkingLevel` to `medium` or `high` in the Gemini provider configuration if needed. The creativity control changes temperature only for older Gemini models, since Google recommends default sampling for Gemini 3. The Gemini response's `usageMetadata` is included in the optional AI debug log when available. A blocked or empty response is reported as a provider error.
 
 ## HTML email generation
 

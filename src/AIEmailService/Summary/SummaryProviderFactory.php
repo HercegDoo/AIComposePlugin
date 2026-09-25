@@ -7,6 +7,7 @@ namespace HercegDoo\AIComposePlugin\AIEmailService\Summary;
 use HercegDoo\AIComposePlugin\AIEmailService\Debug\RequestLogger;
 use HercegDoo\AIComposePlugin\AIEmailService\Exceptions\ProviderException;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\CompletionProviderInterface;
+use HercegDoo\AIComposePlugin\AIEmailService\Providers\Gemini;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\Ollama;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
 
@@ -17,9 +18,10 @@ final class SummaryProviderFactory
      */
     public function create(\rcube_config $settings): array
     {
+        $debugEnabled = $settings->get('aiDebugLogging', false) === true;
         $requestLogger = new RequestLogger(
-            $settings->get('aiDebugLogging', false) === true,
-            (string) \rcmail::get_instance()->user->ID
+            $debugEnabled,
+            $debugEnabled ? (string) \rcmail::get_instance()->user->ID : null
         );
         $name = $settings->get('aiSummaryProvider', 'OpenAI');
         if ($name === 'Ollama') {
@@ -45,6 +47,22 @@ final class SummaryProviderFactory
             }
 
             return [new OpenAI(null, $requestLogger), $config];
+        }
+
+        if ($name === 'Gemini') {
+            $base = $settings->get('aiProviderGeminiConfig', []);
+            $overrides = $settings->get('aiSummaryGeminiConfig', []);
+            if (!\is_array($base) || !\is_array($overrides)) {
+                throw new ProviderException('Invalid Gemini summary configuration');
+            }
+            $config = array_merge($base, $overrides);
+            $config['maxTokens'] = $config['maxTokens'] ?? 1200;
+            $config['temperature'] = 0;
+            if (empty($config['apiKey']) || empty($config['model'])) {
+                throw new ProviderException('Missing Gemini summary credentials or model');
+            }
+
+            return [new Gemini(null, $requestLogger), $config];
         }
 
         throw new ProviderException('Unsupported summary provider');
