@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
+use HercegDoo\AIComposePlugin\AIEmailService\Summary\MessageTextExtractor;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryDisplayPreferences;
 use HercegDoo\AIComposePlugin\AIEmailService\Translation\TranslationDisplayPreferences;
 use HercegDoo\AIComposePlugin\Utilities\ContentInjector;
@@ -25,6 +26,7 @@ class MailTask extends AbstractTask
         $this->templateObjectFiller = TemplateObjectFiller::getTemplateObjectFiller();
 
         $this->plugin->add_hook('startup', [$this, 'startup']);
+        $this->plugin->add_hook('message_load', [$this, 'setSummaryEligibility']);
         $this->plugin->add_hook('render_page', [$this, 'loadResources']);
         $this->plugin->add_hook('render_page', [$this, 'attachSuggestedReply']);
         $this->plugin->add_hook('render_page', [$this, 'addInstructionField']);
@@ -62,6 +64,46 @@ class MailTask extends AbstractTask
             || ($template === 'message' && $summaryViews['message'])))
             || ($template === 'message' && $this->translationEnabled())) {
             $this->includeBundle('summary');
+        }
+
+        return $args;
+    }
+
+    /**
+     * @param array<string, mixed> $args
+     *
+     * @return array<string, mixed>
+     */
+    public function setSummaryEligibility(array $args): array
+    {
+        $rcmail = \rcmail::get_instance();
+        if ($rcmail->action !== 'show' || !$this->summaryEnabled()) {
+            return $args;
+        }
+
+        $defaults = $rcmail->user->get_prefs()['aicDefaults'] ?? [];
+        if (!\is_array($defaults) || !SummaryDisplayPreferences::isEnabled($defaults, 'message')) {
+            return $args;
+        }
+
+        $message = $args['object'] ?? null;
+        $requestedUid = \rcube_utils::get_input_string('_uid', \rcube_utils::INPUT_GET);
+        if (!$message instanceof \rcube_message || !$message->headers || !\is_string($requestedUid)
+            || (string) $message->uid !== preg_replace('/\.[0-9.]+$/', '', $requestedUid)) {
+            return $args;
+        }
+
+        if (SummaryDisplayPreferences::choice($defaults, SummaryDisplayPreferences::MESSAGE) === SummaryDisplayPreferences::SHOW) {
+            $rcmail->output->set_env('aiSummaryAutoEligible', true);
+
+            return $args;
+        }
+
+        try {
+            $body = (new MessageTextExtractor())->extract($message);
+            $rcmail->output->set_env('aiSummaryAutoEligible', SummaryDisplayPreferences::shouldSummarizeMessage($defaults, $body));
+        } catch (\Throwable $error) {
+            // Leave eligibility unknown; the summary action can still check it.
         }
 
         return $args;

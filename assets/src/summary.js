@@ -65,6 +65,8 @@ function messageCard() {
   const uid = String(rcmail.env.uid || "");
   const mailbox = rcmail.env.mailbox;
   if (!body || !/^[1-9]\d*(?:\.\d+)*$/.test(uid) || !mailbox) return;
+  const onlyLong = rcmail.env.aiSummaryMessageMode === "long";
+  const autoEligible = rcmail.env.aiSummaryAutoEligible;
   const card = document.createElement("section");
   card.className = "aic-summary-card";
   card.setAttribute("aria-label", label("ai_summary", "AI summary"));
@@ -113,7 +115,10 @@ function messageCard() {
   suggestionsList.className = "aic-reply-suggestion-list";
   suggestions.append(suggestionsHeading, suggestionsList);
   card.append(head, summary, original);
-  body.prepend(card, suggestions);
+
+  function showCard() {
+    if (!card.isConnected) body.prepend(card, suggestions);
+  }
 
   let current;
   let forced = false;
@@ -133,7 +138,7 @@ function messageCard() {
         event.preventDefault();
         forced = true;
         manualButton.remove();
-        body.prepend(card, suggestions);
+        showCard();
         load(false);
       });
       manualButton.addEventListener("keydown", (event) => {
@@ -223,9 +228,11 @@ function messageCard() {
           showManualControl();
           return;
         }
+        showCard();
         render(data);
       })
       .catch(() => {
+        showCard();
         card.setAttribute("aria-busy", "false");
         summary.classList.remove("aic-summary-loading");
         summary.textContent = label(
@@ -243,7 +250,12 @@ function messageCard() {
       : label("ai_hide_original", "Hide original");
   });
   refreshButton.addEventListener("click", () => load(true));
-  load(false);
+  if (onlyLong && autoEligible === false) {
+    showManualControl();
+  } else {
+    if (!onlyLong || autoEligible === true) showCard();
+    load(false);
+  }
 }
 
 function hoverPreview() {
@@ -326,9 +338,9 @@ function hoverPreview() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (rcmail.env.aiTranslationEnabled === true) messageTranslationControl();
   if (rcmail.env.aiSummaryEnabled === true) {
     if (rcmail.env.aiSummaryViews?.message !== false) messageCard();
     if (rcmail.env.aiSummaryViews?.preview !== false) hoverPreview();
   }
-  if (rcmail.env.aiTranslationEnabled === true) messageTranslationControl();
 });
