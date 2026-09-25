@@ -80,10 +80,12 @@ final class SummarySettingsTaskTest extends TestCase
         ], $result['prefs']['aicDefaults']);
     }
 
-    public function testExistingUsersDefaultToShowingTranslation(): void
+    public function testExistingUsersSeeIndependentDefaultChoices(): void
     {
         $options = $this->task->preferencesList(['section' => 'aic'])['blocks']['general']['options'];
 
+        self::assertStringContainsString('<option value="hide" selected>', $options[2]['content']);
+        self::assertStringContainsString('<option value="show" selected>', $options[3]['content']);
         self::assertStringContainsString('<option value="show" selected>', $options[4]['content']);
     }
 

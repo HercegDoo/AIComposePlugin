@@ -18,7 +18,9 @@ final class SummaryDisplayPreferences
     {
         $value = $defaults[$preference] ?? null;
 
-        return \is_string($value) && self::isValid($value) ? $value : self::SHOW;
+        return \is_string($value) && self::isValid($value)
+            ? $value
+            : ($preference === self::HOVER ? self::HIDE : self::SHOW);
     }
 
     public static function isValid(string $value): bool

@@ -14,9 +14,9 @@ use PHPUnit\Framework\TestCase;
  */
 final class SummaryDisplayPreferencesTest extends TestCase
 {
-    public function testBothViewsAreShownForExistingUsers(): void
+    public function testHoverIsHiddenAndOpenedMessageIsShownWithoutSavedChoices(): void
     {
-        self::assertTrue(SummaryDisplayPreferences::isEnabled([], 'preview'));
+        self::assertFalse(SummaryDisplayPreferences::isEnabled([], 'preview'));
         self::assertTrue(SummaryDisplayPreferences::isEnabled([], 'message'));
     }
 
@@ -24,14 +24,15 @@ final class SummaryDisplayPreferencesTest extends TestCase
     {
         self::assertFalse(SummaryDisplayPreferences::isEnabled(['summaryHover' => 'hide'], 'preview'));
         self::assertTrue(SummaryDisplayPreferences::isEnabled(['summaryHover' => 'hide'], 'message'));
-        self::assertTrue(SummaryDisplayPreferences::isEnabled(['summaryMessage' => 'hide'], 'preview'));
+        self::assertTrue(SummaryDisplayPreferences::isEnabled(['summaryHover' => 'show', 'summaryMessage' => 'hide'], 'preview'));
         self::assertFalse(SummaryDisplayPreferences::isEnabled(['summaryMessage' => 'hide'], 'message'));
         self::assertFalse(SummaryDisplayPreferences::isEnabled([], 'unknown'));
     }
 
-    public function testInvalidStoredValuesFallBackToShow(): void
+    public function testInvalidStoredValuesUseEachViewDefault(): void
     {
-        self::assertSame('show', SummaryDisplayPreferences::choice(['summaryHover' => false], SummaryDisplayPreferences::HOVER));
+        self::assertSame('hide', SummaryDisplayPreferences::choice(['summaryHover' => false], SummaryDisplayPreferences::HOVER));
+        self::assertSame('show', SummaryDisplayPreferences::choice(['summaryMessage' => false], SummaryDisplayPreferences::MESSAGE));
         self::assertFalse(SummaryDisplayPreferences::isValid('other'));
     }
 }
