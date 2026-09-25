@@ -191,4 +191,6 @@ $labels['ai_summary_error'] = 'Sažetak nije dostupan. Pokušajte ponovo.';
 $labels['ai_show_original'] = 'Prikaži original';
 $labels['ai_hide_original'] = 'Sakrij original';
 $labels['ai_translate_again'] = 'Prevedi ponovo';
+$labels['ai_reply_suggestions'] = 'Prijedlozi odgovora';
+$labels['ai_reply_suggestion_error'] = 'Odgovor nije moguće otvoriti. Pokušajte ponovo.';
 $labels['ai_original_language'] = 'Original';

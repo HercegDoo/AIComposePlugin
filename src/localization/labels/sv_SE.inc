@@ -193,4 +193,6 @@ $labels['ai_summary_error'] = 'Sammanfattningen är inte tillgänglig. Försök 
 $labels['ai_show_original'] = 'Visa original';
 $labels['ai_hide_original'] = 'Dölj original';
 $labels['ai_translate_again'] = 'Översätt igen';
+$labels['ai_reply_suggestions'] = 'Svarsförslag';
+$labels['ai_reply_suggestion_error'] = 'Det gick inte att öppna svaret. Försök igen.';
 $labels['ai_original_language'] = 'Original';

@@ -24,6 +24,7 @@ $config['aiProviderOpenAIConfig'] = [
 
 // Summarize incoming messages in the selected Roundcube interface language.
 // The summary appears when hovering over a message row and above opened messages.
+// Opened messages may also show up to three reply suggestions when the intent is clear.
 // Incoming message content is sent to the selected provider when a summary is first requested.
 $config['aiSummaryEnabled'] = true;
 $config['aiSummaryProvider'] = 'OpenAI'; // 'OpenAI' or 'Ollama'

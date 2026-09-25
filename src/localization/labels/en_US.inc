@@ -194,4 +194,6 @@ $labels['ai_summary_error'] = 'Summary unavailable. Try again.';
 $labels['ai_show_original'] = 'Show original';
 $labels['ai_hide_original'] = 'Hide original';
 $labels['ai_translate_again'] = 'Translate again';
+$labels['ai_reply_suggestions'] = 'Suggested replies';
+$labels['ai_reply_suggestion_error'] = 'Could not start the reply. Please try again.';
 $labels['ai_original_language'] = 'Original';

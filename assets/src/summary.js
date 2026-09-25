@@ -60,20 +60,82 @@ function messageCard() {
   const original = document.createElement("p");
   original.className = "aic-summary-original";
   original.hidden = true;
-  card.append(head, summary, original);
+  const suggestions = document.createElement("div");
+  suggestions.className = "aic-reply-suggestions";
+  suggestions.hidden = true;
+  const suggestionsTitle = document.createElement("strong");
+  suggestionsTitle.textContent = label(
+    "ai_reply_suggestions",
+    "Suggested replies"
+  );
+  const suggestionsList = document.createElement("div");
+  suggestionsList.className = "aic-reply-suggestion-list";
+  suggestions.append(suggestionsTitle, suggestionsList);
+  card.append(head, summary, original, suggestions);
   body.prepend(card);
 
   let current;
+  function prepareReply(item) {
+    const buttons = suggestionsList.querySelectorAll("button");
+    buttons.forEach((button) => (button.disabled = true));
+    rcmail
+      .http_post("plugin.aicomposeplugin_PrepareSuggestedReplyAction", {
+        uid,
+        mailbox,
+        instruction: item.instruction,
+        language: current.sourceLanguage,
+      })
+      .done((data) => {
+        if (data?.status === "success" && /^[a-f0-9]{32}$/.test(data.token)) {
+          rcmail.open_compose_step({
+            _reply_uid: uid,
+            _mbox: mailbox,
+            _aic_reply_token: data.token,
+          });
+        } else {
+          rcmail.display_message(
+            label("ai_reply_suggestion_error", "Could not start the reply."),
+            "error"
+          );
+        }
+      })
+      .fail(() => {
+        rcmail.display_message(
+          label("ai_reply_suggestion_error", "Could not start the reply."),
+          "error"
+        );
+      })
+      .always(() => buttons.forEach((button) => (button.disabled = false)));
+  }
   function render(data) {
     current = data;
     summary.textContent = data.translatedSummary;
     original.textContent = `${label("ai_original_language", "Original")} (${data.sourceLanguage}): ${data.originalSummary}`;
     originalButton.hidden = false;
     refreshButton.disabled = false;
+    suggestionsList.replaceChildren();
+    const items = Array.isArray(data.replySuggestions)
+      ? data.replySuggestions.slice(0, 3)
+      : [];
+    items.forEach((item) => {
+      if (
+        !item ||
+        typeof item.label !== "string" ||
+        typeof item.instruction !== "string"
+      )
+        return;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = item.label;
+      button.addEventListener("click", () => prepareReply(item));
+      suggestionsList.append(button);
+    });
+    suggestions.hidden = !suggestionsList.childElementCount;
   }
   function load(refresh) {
     refreshButton.disabled = true;
     summary.textContent = label("ai_summary_loading", "Summarizing…");
+    suggestions.hidden = true;
     summarize(uid, mailbox, "message", refresh)
       .then(render)
       .catch(() => {

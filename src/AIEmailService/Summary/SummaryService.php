@@ -24,11 +24,11 @@ final class SummaryService
     }
 
     /**
-     * @return array{sourceLanguage: string, originalSummary: string, translatedSummary: string}
+     * @return array{sourceLanguage: string, originalSummary: string, translatedSummary: string, replySuggestions: array<int, array{label: string, instruction: string}>}
      */
-    public function summarize(string $subject, string $body, string $targetLocale, int $sentenceCount = 1): array
+    public function summarize(string $subject, string $body, string $targetLocale, int $sentenceCount = 1, bool $includeReplySuggestions = false): array
     {
-        $prompt = (new SummaryPromptBuilder())->build($subject, $body, $targetLocale, $sentenceCount);
+        $prompt = (new SummaryPromptBuilder())->build($subject, $body, $targetLocale, $sentenceCount, $includeReplySuggestions);
         $raw = trim($this->provider->complete($prompt, $this->config));
         $start = strpos($raw, '{');
         $end = strrpos($raw, '}');
@@ -53,7 +53,36 @@ final class SummaryService
             'sourceLanguage' => $sourceLanguage,
             'originalSummary' => $originalSummary,
             'translatedSummary' => $translatedSummary,
+            'replySuggestions' => $includeReplySuggestions && ($data['reply_intent_clear'] ?? null) === true
+                ? $this->replySuggestions($data['reply_suggestions'] ?? null) : [],
         ];
+    }
+
+    /**
+     * @phpstan-param mixed $value
+     *
+     * @return array<int, array{label: string, instruction: string}>
+     */
+    private function replySuggestions($value): array
+    {
+        if (!\is_array($value)) {
+            return [];
+        }
+
+        $suggestions = [];
+        foreach (\array_slice($value, 0, 3) as $item) {
+            if (!\is_array($item)) {
+                continue;
+            }
+            $label = $this->clean($item['label'] ?? null, 80);
+            $instruction = $this->clean($item['instruction'] ?? null, 300);
+            if ($label === '' || $instruction === '') {
+                continue;
+            }
+            $suggestions[] = ['label' => $label, 'instruction' => $instruction];
+        }
+
+        return $suggestions;
     }
 
     /** @phpstan-param mixed $value */

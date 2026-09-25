@@ -54,6 +54,7 @@ final class SummarizeMessageAction extends AbstractAction
             $sentenceCount = $body === null ? 1 : SummaryPromptBuilder::sentenceCountForBody($body);
             $cacheData = json_encode([
                 SummaryPromptBuilder::VERSION,
+                $view,
                 $sentenceCount,
                 $folder,
                 $uid,
@@ -80,7 +81,7 @@ final class SummarizeMessageAction extends AbstractAction
                 throw new \RuntimeException('Message has no summarizable text');
             }
 
-            $summary = (new SummaryService($provider, $config))->summarize($message->subject, $body, $locale, $sentenceCount);
+            $summary = (new SummaryService($provider, $config))->summarize($message->subject, $body, $locale, $sentenceCount, $view === self::VIEW_MESSAGE);
             if ($cache) {
                 $cache->set($cacheKey, $summary);
             }

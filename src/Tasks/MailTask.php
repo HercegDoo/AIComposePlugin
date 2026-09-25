@@ -6,6 +6,7 @@ namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use HercegDoo\AIComposePlugin\Utilities\ContentInjector;
+use HercegDoo\AIComposePlugin\Utilities\ReplySuggestionStore;
 use HercegDoo\AIComposePlugin\Utilities\TemplateObjectFiller;
 
 class MailTask extends AbstractTask
@@ -23,6 +24,7 @@ class MailTask extends AbstractTask
 
         $this->plugin->add_hook('startup', [$this, 'startup']);
         $this->plugin->add_hook('render_page', [$this, 'loadResources']);
+        $this->plugin->add_hook('render_page', [$this, 'attachSuggestedReply']);
         $this->plugin->add_hook('render_page', [$this, 'addInstructionField']);
         $this->plugin->add_hook('render_page', [$this, 'addSelectFields']);
         $this->plugin->add_hook('render_page', [$this, 'addHelpExamples']);
@@ -54,6 +56,36 @@ class MailTask extends AbstractTask
         }
         if ($this->summaryEnabled() && \in_array($args['template'] ?? null, ['mail', 'message'], true)) {
             $this->plugin->include_script('assets/dist/summary.bundle.js');
+        }
+
+        return $args;
+    }
+
+    /**
+     * @param array<string, mixed> $args
+     *
+     * @return array<string, mixed>
+     */
+    public function attachSuggestedReply(array $args): array
+    {
+        if (($args['template'] ?? null) !== 'compose') {
+            return $args;
+        }
+
+        $composeId = \rcube_utils::get_input_string('_id', \rcube_utils::INPUT_GET);
+        $compose = $_SESSION['compose_data_' . $composeId] ?? null;
+        $params = \is_array($compose) ? ($compose['param'] ?? null) : null;
+        $token = \is_array($params) ? ($params['aic_reply_token'] ?? null) : null;
+        $uid = \is_array($params) ? ($params['reply_uid'] ?? null) : null;
+        $mailbox = \is_array($compose) ? ($compose['mailbox'] ?? null) : null;
+        if (!\is_string($token) || !preg_match('/^[a-f0-9]{32}$/', $token)
+            || !\is_string($uid) || !\is_string($mailbox)) {
+            return $args;
+        }
+
+        $suggestion = ReplySuggestionStore::consume($token, $uid, $mailbox);
+        if ($suggestion !== null) {
+            \rcmail::get_instance()->output->set_env('aiReplySuggestion', $suggestion);
         }
 
         return $args;

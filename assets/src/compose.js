@@ -11,6 +11,44 @@ import {
   handleInstructionHeight,
 } from "./compose/emailHelpers/instructionHeightHandler";
 
+function generateSuggestedReply() {
+  const suggestion = rcmail.env.aiReplySuggestion;
+  if (
+    rcmail.env.compose_mode !== "reply" ||
+    !suggestion ||
+    typeof suggestion.instruction !== "string" ||
+    !suggestion.instruction.trim()
+  ) {
+    return;
+  }
+
+  const instruction = document.getElementById("aic-instruction");
+  if (!instruction) return;
+  instruction.value = suggestion.instruction;
+  instruction.dispatchEvent(new Event("input", { bubbles: true }));
+
+  const languageSelect = document.getElementById("aic_language_select");
+  const language = String(suggestion.language || "").toLocaleLowerCase();
+  const matchingOption = Array.from(languageSelect?.options || []).find(
+    (option) => option.value.toLocaleLowerCase() === language
+  );
+  if (matchingOption) languageSelect.value = matchingOption.value;
+
+  let attempts = 0;
+  function start() {
+    if (!rcmail.editor && attempts++ < 30) {
+      window.setTimeout(start, 100);
+      return;
+    }
+    rcmail.enable_command("generatemail", true);
+    rcmail.command("generatemail", {
+      passedInstruction: suggestion.instruction,
+      fixText: "",
+    });
+  }
+  start();
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   if (document.getElementById("compose-options")) {
     try {
@@ -32,4 +70,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
   handleInstructionHeight();
   expandInstructionHeightBasedOnInput();
+  generateSuggestedReply();
 });

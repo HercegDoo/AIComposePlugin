@@ -192,4 +192,6 @@ $labels['ai_summary_error'] = 'Zusammenfassung nicht verfügbar. Bitte erneut ve
 $labels['ai_show_original'] = 'Original anzeigen';
 $labels['ai_hide_original'] = 'Original ausblenden';
 $labels['ai_translate_again'] = 'Erneut übersetzen';
+$labels['ai_reply_suggestions'] = 'Antwortvorschläge';
+$labels['ai_reply_suggestion_error'] = 'Die Antwort konnte nicht geöffnet werden. Bitte versuchen Sie es erneut.';
 $labels['ai_original_language'] = 'Original';

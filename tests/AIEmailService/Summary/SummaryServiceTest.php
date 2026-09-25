@@ -83,4 +83,45 @@ final class SummaryServiceTest extends TestCase
         self::assertSame('Hallo', $result['originalSummary']);
         self::assertSame('Hello', $result['translatedSummary']);
     }
+
+    public function testReturnsAtMostThreeCleanSuggestionsForClearRequests(): void
+    {
+        $provider = new class implements CompletionProviderInterface {
+            public function complete(EmailPrompt $prompt, array $config): string
+            {
+                return json_encode([
+                    'source_language' => 'English',
+                    'original_summary' => 'Sender requests a decision.',
+                    'translated_summary' => 'Sender requests a decision.',
+                    'reply_intent_clear' => true,
+                    'reply_suggestions' => [
+                        ['label' => '<b>Agree</b>', 'instruction' => 'Accept the proposal.'],
+                        ['label' => 'Decline', 'instruction' => 'Politely decline.'],
+                        ['label' => 'Ask a question', 'instruction' => 'Ask which date works.'],
+                        ['label' => 'Another', 'instruction' => 'This must be discarded.'],
+                    ],
+                ], \JSON_THROW_ON_ERROR);
+            }
+        };
+
+        $result = (new SummaryService($provider, []))->summarize('Proposal', 'Can you approve?', 'en_US', 1, true);
+
+        self::assertCount(3, $result['replySuggestions']);
+        self::assertSame('Agree', $result['replySuggestions'][0]['label']);
+        self::assertSame('Accept the proposal.', $result['replySuggestions'][0]['instruction']);
+    }
+
+    public function testHidesSuggestionsWhenIntentIsUnclear(): void
+    {
+        $provider = new class implements CompletionProviderInterface {
+            public function complete(EmailPrompt $prompt, array $config): string
+            {
+                return '{"source_language":"English","original_summary":"Status update.","translated_summary":"Status update.","reply_intent_clear":false,"reply_suggestions":[{"label":"Reply","instruction":"Say something."}]}';
+            }
+        };
+
+        $result = (new SummaryService($provider, []))->summarize('Update', 'For your information.', 'en_US', 1, true);
+
+        self::assertSame([], $result['replySuggestions']);
+    }
 }

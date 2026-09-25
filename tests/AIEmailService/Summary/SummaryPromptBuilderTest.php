@@ -33,5 +33,15 @@ final class SummaryPromptBuilderTest extends TestCase
         self::assertStringNotContainsString('earlier context', $preview);
         self::assertStringContainsString('at most 95 words and no more than 3 sentences', $opened);
         self::assertStringContainsString('only earlier context needed to understand the latest request or decision', $opened);
+        self::assertStringNotContainsString('reply_suggestions', $preview);
+    }
+
+    public function testOpenedMessageRequestsSuggestionsOnlyForClearReplyIntent(): void
+    {
+        $prompt = (new SummaryPromptBuilder())->build('Meeting', 'Can we meet tomorrow?', 'en_US', 1, true);
+
+        self::assertStringContainsString('reply_intent_clear as a boolean', $prompt->getUserInstruction());
+        self::assertStringContainsString('If the intent or required details are unclear', $prompt->getUserInstruction());
+        self::assertStringContainsString('return an empty array', $prompt->getUserInstruction());
     }
 }
