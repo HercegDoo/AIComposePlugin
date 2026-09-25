@@ -5,7 +5,7 @@
  */
 
 // The AI service provider for the compose functionality.
-// Currently, the only available option is 'OpenAI', so this should be set accordingly.
+// Available: 'OpenAI' or 'Gemini'.
 // Default: 'OpenAI'
 $config['aiComposeProvider'] = 'OpenAI';
 
@@ -22,13 +22,25 @@ $config['aiProviderOpenAIConfig'] = [
     // 'apiUrl' => 'https://api.openai.com/v1/chat/completions'  // Optional: uncomment to use a custom API endpoint
 ];
 
+// -------- Google Gemini configuration (https://ai.google.dev/gemini-api) --------
+// Set aiComposeProvider to 'Gemini' to use this provider for emails and subjects.
+// Use a Gemini API key from Google AI Studio and a text generation model ID.
+// Gemini 3 models use low thinking by default here; change thinkingLevel to
+// 'medium' or 'high' if needed. The compose creativity select affects only
+// older Gemini models, because Google recommends default sampling for Gemini 3.
+$config['aiProviderGeminiConfig'] = [
+    'apiKey' => '',
+    'model' => 'gemini-3.8-flash',
+    // 'thinkingLevel' => 'low',
+];
+
 // Optional request diagnostics for email, subject, and summary generation.
 // WARNING: When enabled, complete AI prompts (including email content and Sent
 // style examples) are written to Roundcube's aicomposeplugin_ai log. Keep the
 // Roundcube log directory private and turn this off after troubleshooting.
 // Configured API credentials and full provider response payloads are not dumped.
 // Generated text reused in a later subject prompt can appear in that prompt.
-// OpenAI/Ollama token counts are recorded only when the provider reports them.
+// OpenAI/Gemini/Ollama token counts are recorded only when reported by the provider.
 $config['aiDebugLogging'] = false;
 
 // Use up to three short excerpts from this user's Sent folder to match their writing style.
@@ -45,13 +57,20 @@ $config['aiComposeSentStyleEnabled'] = true;
 // Opened messages may also show up to three reply suggestions when the intent is clear.
 // Incoming message content is sent to the selected provider when a summary is first requested.
 $config['aiSummaryEnabled'] = true;
-$config['aiSummaryProvider'] = 'OpenAI'; // 'OpenAI' or 'Ollama'
+$config['aiSummaryProvider'] = 'OpenAI'; // 'OpenAI', 'Gemini', or 'Ollama'
 
 // Optional OpenAI summary overrides. By default summaries reuse aiProviderOpenAIConfig.
 // A separate model or key can be used without changing email composition.
 $config['aiSummaryOpenAIConfig'] = [
     'maxTokens' => 1200,
     // 'model' => 'gpt-4.1',
+    // 'apiKey' => '',
+];
+
+// Optional Gemini summary overrides. By default summaries reuse aiProviderGeminiConfig.
+$config['aiSummaryGeminiConfig'] = [
+    'maxTokens' => 1200,
+    // 'model' => 'gemini-3.8-flash',
     // 'apiKey' => '',
 ];
 

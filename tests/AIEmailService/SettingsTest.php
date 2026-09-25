@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HercegDoo\AIComposePlugin\Tests\AIEmailService;
 
+use HercegDoo\AIComposePlugin\AIEmailService\Providers\Gemini;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use PHPUnit\Framework\TestCase;
@@ -54,6 +55,12 @@ final class SettingsTest extends TestCase
     {
         Settings::setProvider('OpenAI');
         self::assertInstanceOf(OpenAI::class, Settings::getProvider());
+    }
+
+    public function testSetAndGetProviderGemini(): void
+    {
+        Settings::setProvider('Gemini');
+        self::assertInstanceOf(Gemini::class, Settings::getProvider());
     }
 
     public function testSetProviderInvalidProvider()

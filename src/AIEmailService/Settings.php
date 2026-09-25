@@ -6,6 +6,7 @@ namespace HercegDoo\AIComposePlugin\AIEmailService;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Debug\RequestLogger;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\DummyProvider;
+use HercegDoo\AIComposePlugin\AIEmailService\Providers\Gemini;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\InterfaceProvider;
 use HercegDoo\AIComposePlugin\AIEmailService\Providers\OpenAI;
 
@@ -100,6 +101,9 @@ final class Settings
         switch ($provider) {
             case 'OpenAI':
                 self::$provider = new OpenAI(null, $requestLogger);
+                break;
+            case 'Gemini':
+                self::$provider = new Gemini(null, $requestLogger);
                 break;
             case 'DummyProvider':
                 self::$provider = new DummyProvider();
