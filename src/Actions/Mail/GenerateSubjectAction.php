@@ -53,7 +53,7 @@ final class GenerateSubjectAction extends AbstractAction
 
             echo json_encode(['status' => 'success', 'subject' => $subject]);
         } catch (\Throwable $e) {
-            error_log('AIComposePlugin subject generation failed: ' . $e::class);
+            error_log('AIComposePlugin subject generation failed: ' . \get_class($e));
             echo json_encode(['status' => 'error']);
         }
     }

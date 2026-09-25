@@ -22,7 +22,8 @@
     "php": ">=7.4",
     "ext-curl": "*",
     "php-curl-class/php-curl-class": "^9.19",
-    "ext-json": "*"
+    "ext-json": "*",
+    "symfony/polyfill-php80": "^1.30"
   },
   "repositories": [
     {

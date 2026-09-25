@@ -25,6 +25,7 @@ $config = (new PhpCsFixer\Config())
         'echo_tag_syntax' => ['format' => 'short'],
         'escape_implicit_backslashes' => false,
         'fully_qualified_strict_types' => true,
+        'get_class_to_class_keyword' => false,
         'linebreak_after_opening_tag' => true,
         'list_syntax' => ['syntax' => 'short'],
         'method_argument_space' => ['on_multiline' => 'ensure_fully_multiline'],

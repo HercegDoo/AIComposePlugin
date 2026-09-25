@@ -6,7 +6,15 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit8bbbd2b3396a9802e78852c37fbb3b02
 {
+    public static $files = array (
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'S' =>
+        array (
+            'Symfony\\Polyfill\\Php80\\' => 23,
+        ),
         'H' =>
         array (
             'HercegDoo\\AIComposePlugin\\' => 26,
@@ -18,6 +26,10 @@ class ComposerStaticInit8bbbd2b3396a9802e78852c37fbb3b02
     );
 
     public static $prefixDirsPsr4 = array (
+        'Symfony\\Polyfill\\Php80\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+        ),
         'HercegDoo\\AIComposePlugin\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -29,7 +41,12 @@ class ComposerStaticInit8bbbd2b3396a9802e78852c37fbb3b02
     );
 
     public static $classMap = array (
+        'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/PhpToken.php',
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
