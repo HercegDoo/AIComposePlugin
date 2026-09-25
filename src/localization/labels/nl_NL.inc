@@ -193,4 +193,6 @@ $labels['ai_summary_error'] = 'Samenvatting niet beschikbaar. Probeer het opnieu
 $labels['ai_show_original'] = 'Origineel tonen';
 $labels['ai_hide_original'] = 'Origineel verbergen';
 $labels['ai_translate_again'] = 'Opnieuw vertalen';
+$labels['ai_reply_suggestions'] = 'Antwoordsuggesties';
+$labels['ai_reply_suggestion_error'] = 'Het antwoord kon niet worden geopend. Probeer het opnieuw.';
 $labels['ai_original_language'] = 'Origineel';

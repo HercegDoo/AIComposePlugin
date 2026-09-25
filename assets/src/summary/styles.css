@@ -35,6 +35,38 @@
   color: #66717d;
 }
 
+.aic-reply-suggestions {
+  margin-top: 0.85rem;
+}
+
+.aic-reply-suggestion-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.aic-reply-suggestion-list button {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid #bed0e5;
+  border-radius: 0.4rem;
+  background: #fff;
+  color: #2c70b8;
+  cursor: pointer;
+  text-align: left;
+}
+
+.aic-reply-suggestion-list button:hover,
+.aic-reply-suggestion-list button:focus-visible {
+  border-color: #2c70b8;
+  background: #eaf3fc;
+}
+
+.aic-reply-suggestion-list button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
 .aic-summary-preview {
   position: fixed;
   z-index: 1100;
@@ -73,6 +105,18 @@ html.dark-mode .aic-summary-head button:hover,
 html.dark-mode .aic-summary-head button:focus-visible {
   color: #b4e2ff;
   text-decoration: underline;
+}
+
+html.dark-mode .aic-reply-suggestion-list button {
+  border-color: #66808b;
+  background: #35454c;
+  color: #b4e2ff;
+}
+
+html.dark-mode .aic-reply-suggestion-list button:hover,
+html.dark-mode .aic-reply-suggestion-list button:focus-visible {
+  border-color: #75caff;
+  background: #40545d;
 }
 
 html.dark-mode .aic-summary-preview {

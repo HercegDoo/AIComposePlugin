@@ -193,4 +193,6 @@ $labels['ai_summary_error'] = 'Tiivistelmä ei ole saatavilla. Yritä uudelleen.
 $labels['ai_show_original'] = 'Näytä alkuperäinen';
 $labels['ai_hide_original'] = 'Piilota alkuperäinen';
 $labels['ai_translate_again'] = 'Käännä uudelleen';
+$labels['ai_reply_suggestions'] = 'Vastausvaihtoehdot';
+$labels['ai_reply_suggestion_error'] = 'Vastausta ei voitu avata. Yritä uudelleen.';
 $labels['ai_original_language'] = 'Alkuperäinen';

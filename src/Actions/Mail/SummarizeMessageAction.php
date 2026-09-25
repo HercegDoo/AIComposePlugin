@@ -13,6 +13,9 @@ use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryService;
 
 final class SummarizeMessageAction extends AbstractAction
 {
+    private const VIEW_PREVIEW = 'preview';
+    private const VIEW_MESSAGE = 'message';
+
     protected function handler(): void
     {
         header('Content-Type: application/json; charset=UTF-8');
@@ -26,9 +29,11 @@ final class SummarizeMessageAction extends AbstractAction
             $uid = Request::postString('uid') ?? '';
             $folder = Request::postString('mailbox') ?? '';
             $refresh = Request::postString('refresh', '0');
+            $view = Request::postString('view', self::VIEW_PREVIEW);
             if (!preg_match('/^[1-9][0-9]*(?:\.[0-9]+)*$/', $uid)
                 || $folder === '' || \strlen($folder) > 1024 || preg_match('/[\x00-\x1F\x7F]/', $folder)
-                || !\in_array($refresh, ['0', '1'], true)) {
+                || !\in_array($refresh, ['0', '1'], true)
+                || !\in_array($view, [self::VIEW_PREVIEW, self::VIEW_MESSAGE], true)) {
                 throw new \InvalidArgumentException('Invalid summary request');
             }
 
@@ -44,8 +49,13 @@ final class SummarizeMessageAction extends AbstractAction
 
             [$provider, $config] = (new SummaryProviderFactory())->create($this->rcmail->config);
             $cache = $this->rcmail->get_cache('aicompose_summary', 'db', '7d');
+            $extractor = new MessageTextExtractor();
+            $body = $view === self::VIEW_MESSAGE ? $extractor->extract($message) : null;
+            $sentenceCount = $body === null ? 1 : SummaryPromptBuilder::sentenceCountForBody($body);
             $cacheData = json_encode([
                 SummaryPromptBuilder::VERSION,
+                $view,
+                $sentenceCount,
                 $folder,
                 $uid,
                 $message->get_header('message-id'),
@@ -64,12 +74,14 @@ final class SummarizeMessageAction extends AbstractAction
                 }
             }
 
-            $body = (new MessageTextExtractor())->extract($message);
+            if ($body === null) {
+                $body = $extractor->extract($message);
+            }
             if ($body === '' && trim($message->subject) === '') {
                 throw new \RuntimeException('Message has no summarizable text');
             }
 
-            $summary = (new SummaryService($provider, $config))->summarize($message->subject, $body, $locale);
+            $summary = (new SummaryService($provider, $config))->summarize($message->subject, $body, $locale, $sentenceCount, $view === self::VIEW_MESSAGE);
             if ($cache) {
                 $cache->set($cacheKey, $summary);
             }

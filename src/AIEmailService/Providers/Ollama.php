@@ -42,7 +42,7 @@ final class Ollama implements CompletionProviderInterface
                 ],
                 'format' => 'json',
                 'stream' => false,
-                'options' => ['temperature' => 0, 'num_predict' => 450],
+                'options' => ['temperature' => 0, 'num_predict' => 750],
             ]);
         } catch (\Throwable $e) {
             throw new ProviderException('Ollama request failed');
