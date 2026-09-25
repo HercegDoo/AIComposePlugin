@@ -428,9 +428,7 @@ background-color: #374549;
 }
 /*# sourceMappingURL=styles.css.map */
 .aic-subject-control {
-  display: flex;
-  gap: 0.5rem;
-  align-items: stretch;
+  flex-wrap: nowrap;
 }
 
 .aic-subject-control #compose-subject {
@@ -438,6 +436,11 @@ background-color: #374549;
   min-width: 0;
 }
 
-.aic-subject-control button {
-  flex: 0 0 auto;
+#aic-generate-subject-button::before {
+  content: "\f0eb";
+}
+
+#aic-generate-subject-button.disabled {
+  cursor: default;
+  opacity: 0.5;
 }
