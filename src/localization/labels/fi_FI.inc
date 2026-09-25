@@ -199,6 +199,7 @@ $labels['ai_original_language'] = 'Alkuperäinen';
 $labels['ai_summary_language_setting'] = 'Yhteenvetojen kieli';
 $labels['ai_summary_hover_setting'] = 'Tekoälytiivistelmä viestiä osoitettaessa';
 $labels['ai_summary_message_setting'] = 'Tekoälytiivistelmä avatuissa viesteissä';
+$labels['ai_translation_message_setting'] = 'Koko sähköpostin käännös avatuissa viesteissä';
 $labels['ai_summary_language_roundcube'] = 'Roundcuben käyttöliittymän kieli (automaattinen)';
 $labels['ai_summary_language_original'] = 'Alkuperäinen kieli (ei käännöstä)';
 $labels['ai_summarize_again'] = 'Tee yhteenveto uudelleen';

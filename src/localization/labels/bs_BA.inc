@@ -197,6 +197,7 @@ $labels['ai_original_language'] = 'Original';
 $labels['ai_summary_language_setting'] = 'Jezik sažetaka';
 $labels['ai_summary_hover_setting'] = 'AI sažetak pri prelasku mišem preko poruke';
 $labels['ai_summary_message_setting'] = 'AI sažetak u otvorenoj poruci';
+$labels['ai_translation_message_setting'] = 'Prijevod cijelog emaila u otvorenoj poruci';
 $labels['ai_summary_language_roundcube'] = 'Jezik Roundcube sučelja (automatski)';
 $labels['ai_summary_language_original'] = 'Izvorni jezik (bez prijevoda)';
 $labels['ai_summarize_again'] = 'Sažmi ponovo';

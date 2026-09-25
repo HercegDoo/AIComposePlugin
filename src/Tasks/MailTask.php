@@ -6,6 +6,7 @@ namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Settings;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryDisplayPreferences;
+use HercegDoo\AIComposePlugin\AIEmailService\Translation\TranslationDisplayPreferences;
 use HercegDoo\AIComposePlugin\Utilities\ContentInjector;
 use HercegDoo\AIComposePlugin\Utilities\ReplySuggestionStore;
 use HercegDoo\AIComposePlugin\Utilities\TemplateObjectFiller;
@@ -252,7 +253,11 @@ class MailTask extends AbstractTask
 
     private function translationEnabled(): bool
     {
-        return (bool) \rcmail::get_instance()->config->get('aiTranslationEnabled', true);
+        $rcmail = \rcmail::get_instance();
+        $defaults = $rcmail->user->get_prefs()['aicDefaults'] ?? [];
+
+        return (bool) $rcmail->config->get('aiTranslationEnabled', true)
+            && TranslationDisplayPreferences::isEnabled(\is_array($defaults) ? $defaults : []);
     }
 
     /**

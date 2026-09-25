@@ -199,6 +199,7 @@ $labels['ai_original_language'] = 'Origineel';
 $labels['ai_summary_language_setting'] = 'Taal van samenvattingen';
 $labels['ai_summary_hover_setting'] = 'AI-samenvatting bij aanwijzen van een bericht';
 $labels['ai_summary_message_setting'] = 'AI-samenvatting in geopende berichten';
+$labels['ai_translation_message_setting'] = 'Vertaling van de volledige e-mail in geopende berichten';
 $labels['ai_summary_language_roundcube'] = 'Taal van de Roundcube-interface (automatisch)';
 $labels['ai_summary_language_original'] = 'Oorspronkelijke taal (geen vertaling)';
 $labels['ai_summarize_again'] = 'Opnieuw samenvatten';

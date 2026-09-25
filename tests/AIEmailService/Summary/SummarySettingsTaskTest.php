@@ -43,9 +43,9 @@ final class SummarySettingsTaskTest extends TestCase
         $this->instanceProperty->setValue($this->originalInstance);
     }
 
-    public function testSettingsPageShowsBothControlsAndSavedChoices(): void
+    public function testSettingsPageShowsSummaryAndTranslationControls(): void
     {
-        $this->user->prefs = ['aicDefaults' => ['summaryHover' => 'hide']];
+        $this->user->prefs = ['aicDefaults' => ['summaryHover' => 'hide', 'translationMessage' => 'hide']];
         $blocks = $this->task->preferencesList(['section' => 'aic'])['blocks'];
         $options = $blocks['general']['options'];
 
@@ -53,9 +53,11 @@ final class SummarySettingsTaskTest extends TestCase
         self::assertStringContainsString('<option value="hide" selected>', $options[2]['content']);
         self::assertStringContainsString('name="data[aic][summaryMessage]"', $options[3]['content']);
         self::assertStringContainsString('<option value="show" selected>', $options[3]['content']);
+        self::assertStringContainsString('name="data[aic][translationMessage]"', $options[4]['content']);
+        self::assertStringContainsString('<option value="hide" selected>', $options[4]['content']);
     }
 
-    public function testSavePreservesOtherDefaultsAndStoresBothSummaryViews(): void
+    public function testSavePreservesOtherDefaultsAndStoresAllVisibilityChoices(): void
     {
         $this->user->prefs = ['aicDefaults' => ['style' => 'casual']];
         $_POST['data']['aic'] = [
@@ -63,6 +65,7 @@ final class SummarySettingsTaskTest extends TestCase
             'summaryLanguage' => 'roundcube',
             'summaryHover' => 'hide',
             'summaryMessage' => 'show',
+            'translationMessage' => 'hide',
         ];
 
         $result = $this->task->preferencesSave(['section' => 'aic', 'prefs' => []]);
@@ -73,7 +76,42 @@ final class SummarySettingsTaskTest extends TestCase
             'summaryLanguage' => 'roundcube',
             'summaryHover' => 'hide',
             'summaryMessage' => 'show',
+            'translationMessage' => 'hide',
         ], $result['prefs']['aicDefaults']);
+    }
+
+    public function testExistingUsersDefaultToShowingTranslation(): void
+    {
+        $options = $this->task->preferencesList(['section' => 'aic'])['blocks']['general']['options'];
+
+        self::assertStringContainsString('<option value="show" selected>', $options[4]['content']);
+    }
+
+    public function testSaveWithoutNewFieldPreservesAnExistingTranslationChoice(): void
+    {
+        $this->user->prefs = ['aicDefaults' => ['translationMessage' => 'hide']];
+        $_POST['data']['aic'] = [
+            'pluginVisibility' => 'show',
+            'summaryLanguage' => 'roundcube',
+        ];
+
+        $result = $this->task->preferencesSave(['section' => 'aic', 'prefs' => []]);
+
+        self::assertSame('hide', $result['prefs']['aicDefaults']['translationMessage']);
+    }
+
+    public function testInvalidTranslationVisibilityAbortsSave(): void
+    {
+        $_POST['data']['aic'] = [
+            'pluginVisibility' => 'show',
+            'summaryLanguage' => 'roundcube',
+            'translationMessage' => 'invalid',
+        ];
+
+        $result = $this->task->preferencesSave(['section' => 'aic', 'prefs' => []]);
+
+        self::assertTrue($result['abort']);
+        self::assertFalse($result['result']);
     }
 
     public function testInvalidVisibilityValueAbortsSave(): void

@@ -200,6 +200,7 @@ $labels['ai_original_language'] = 'Original';
 $labels['ai_summary_language_setting'] = 'Summary language';
 $labels['ai_summary_hover_setting'] = 'AI summary on message hover';
 $labels['ai_summary_message_setting'] = 'AI summary in opened messages';
+$labels['ai_translation_message_setting'] = 'Full email translation in opened messages';
 $labels['ai_summary_language_roundcube'] = 'Roundcube interface language (automatic)';
 $labels['ai_summary_language_original'] = 'Original language (no translation)';
 $labels['ai_summarize_again'] = 'Summarize again';

@@ -8,6 +8,7 @@ use HercegDoo\AIComposePlugin\Actions\AbstractAction;
 use HercegDoo\AIComposePlugin\AIEmailService\Request;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryProviderFactory;
 use HercegDoo\AIComposePlugin\AIEmailService\Translation\MessageTranslationText;
+use HercegDoo\AIComposePlugin\AIEmailService\Translation\TranslationDisplayPreferences;
 use HercegDoo\AIComposePlugin\AIEmailService\Translation\TranslationService;
 
 final class TranslateMessageAction extends AbstractAction
@@ -19,8 +20,11 @@ final class TranslateMessageAction extends AbstractAction
         try {
             $defaults = $this->rcmail->user->get_prefs()['aicDefaults'] ?? [];
             if (!\is_array($defaults) || ($defaults['pluginVisibility'] ?? 'show') !== 'show'
-                || !$this->rcmail->config->get('aiTranslationEnabled', true)) {
-                throw new \RuntimeException('Translation is disabled');
+                || !$this->rcmail->config->get('aiTranslationEnabled', true)
+                || !TranslationDisplayPreferences::isEnabled($defaults)) {
+                echo json_encode(['status' => 'error']);
+
+                return;
             }
 
             $uid = Request::postString('uid') ?? '';

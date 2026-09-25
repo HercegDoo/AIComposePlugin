@@ -198,6 +198,7 @@ $labels['ai_original_language'] = 'Original';
 $labels['ai_summary_language_setting'] = 'Sprache der Zusammenfassungen';
 $labels['ai_summary_hover_setting'] = 'KI-Zusammenfassung beim Zeigen auf eine Nachricht';
 $labels['ai_summary_message_setting'] = 'KI-Zusammenfassung in geöffneten Nachrichten';
+$labels['ai_translation_message_setting'] = 'Übersetzung der gesamten E-Mail in geöffneten Nachrichten';
 $labels['ai_summary_language_roundcube'] = 'Sprache der Roundcube-Oberfläche (automatisch)';
 $labels['ai_summary_language_original'] = 'Originalsprache (ohne Übersetzung)';
 $labels['ai_summarize_again'] = 'Erneut zusammenfassen';

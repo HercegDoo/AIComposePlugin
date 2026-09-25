@@ -199,6 +199,7 @@ $labels['ai_original_language'] = 'Original';
 $labels['ai_summary_language_setting'] = 'Språk för sammanfattningar';
 $labels['ai_summary_hover_setting'] = 'AI-sammanfattning när muspekaren hålls över ett meddelande';
 $labels['ai_summary_message_setting'] = 'AI-sammanfattning i öppnade meddelanden';
+$labels['ai_translation_message_setting'] = 'Översättning av hela e-postmeddelandet i öppnade meddelanden';
 $labels['ai_summary_language_roundcube'] = 'Språk i Roundcube-gränssnittet (automatiskt)';
 $labels['ai_summary_language_original'] = 'Originalspråk (ingen översättning)';
 $labels['ai_summarize_again'] = 'Sammanfatta igen';
