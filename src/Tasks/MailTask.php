@@ -52,7 +52,10 @@ class MailTask extends AbstractTask
     public function loadResources(array $args): array
     {
         if (isset($args['template']) && $args['template'] == 'compose') {
-            $this->plugin->include_script('assets/dist/compose.bundle.js');
+            $bundle = 'assets/dist/compose.bundle.js';
+            $bundlePath = __DIR__ . '/../../' . $bundle;
+            $version = is_file($bundlePath) ? filemtime($bundlePath) : false;
+            $this->plugin->include_script($bundle . ($version ? '?v=' . $version : ''));
         }
         if ($this->summaryEnabled() && \in_array($args['template'] ?? null, ['mail', 'message'], true)) {
             $this->plugin->include_script('assets/dist/summary.bundle.js');
@@ -186,7 +189,6 @@ class MailTask extends AbstractTask
         $actionPrefix = 'plugin.aicomposeplugin_';
         $rcmail = \rcmail::get_instance();
         $settings = [
-            'storageUserId' => (string) $rcmail->user->ID,
             'languages' => array_values(Settings::getLanguages()),
             'defaultLanguage' => Settings::getDefaultLanguage(),
             'lengths' => array_values(Settings::getLengths()),

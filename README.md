@@ -12,7 +12,7 @@ AIComposePlugin adds AI-assisted email writing, subject suggestions, incoming-me
 ### Features
 
 - **AI email writing and revision:** Generate a new email, draft a reply, or revise selected text from instructions in Roundcube Compose. Output follows the editor's plain-text or HTML mode; generated HTML is sanitized before insertion.
-- **Compose controls that persist:** Choose style, length, creativity, and language. Changes are saved automatically and restored in new compose windows. Users can also save reusable instructions for common requests.
+- **Compose controls that persist:** Choose style, length, creativity, and language. Each change is saved to the signed-in user's Roundcube preferences and restored in new compose windows. Users can also save reusable instructions for common requests.
 - **Subject suggestions:** A blank Subject field can be filled when an email is generated. The icon beside Subject requests another suggestion without changing the message body.
 - **Personal writing style:** The plugin can use up to three short examples from the signed-in user's Sent folder, preferring messages to the current recipient, to guide the tone and phrasing of new text. Administrators can disable this feature.
 - **Incoming email summaries and translation:** Hover over a message for a short preview or open it for a longer summary that adapts to message length. The plugin detects the source language and can show the summary in the active Roundcube language, another installed language, or the original language. Users can reveal the original summary or refresh it; results are cached per user for seven days.
@@ -69,7 +69,7 @@ For a Plesk installation, copy the complete plugin directory (including `src/` a
     - The generated email can be inserted into the Compose window, ready for further editing or immediate sending.
     - If the Subject field is empty, the plugin also suggests a subject and fills that field. An existing subject is preserved.
 
-    - Changing AI style, length, creativity, or language in Compose saves all four choices to your Roundcube account. Existing browser selections remain available until they are next changed and saved to Roundcube.
+    - Changing AI style, length, creativity, or language in Compose saves that choice to your Roundcube account immediately. New compose windows and page reloads use the saved server preferences.
 
 4. **Suggest a New Subject:**
 
@@ -106,7 +106,7 @@ The log contains private email text, previous conversation, and possibly Sent st
 
 With `aiSummaryEnabled = true`, hovering over a message row for a moment shows a short translated summary by default. Opening a message loads the summary above its body: messages under 100 words get one sentence, messages from 100 to 299 words get up to two, and messages of 300 words or more get up to three. The opened-message summary includes earlier conversation context only when needed to explain the latest request or decision. **Show original** reveals the summary in the detected source language, and **Translate again** requests a fresh result. By default, the plugin uses the active Roundcube session language; changing the UI language yields a new cached translation. Summaries are generated on demand and cached for seven days in Roundcube's per-user database cache. Refresh bypasses that cache.
 
-In **Settings → AICompose Settings**, choose where summaries should appear: the active Roundcube interface language (default), any language installed in that Roundcube instance, or the message's original language without translation. The same choice applies to hover previews and opened messages. The summary cache separates these choices. The former style, length, creativity, and compose-language controls have moved out of Settings; change them in the Compose AI options to save them automatically for your account. The latest choices appear in the next compose window in the same browser; Roundcube account preferences provide defaults when no browser choices are stored. Existing saved choices are preserved.
+In **Settings → AICompose Settings**, choose where summaries should appear: the active Roundcube interface language (default), any language installed in that Roundcube instance, or the message's original language without translation. The same choice applies to hover previews and opened messages. The summary cache separates these choices. The former style, length, creativity, and compose-language controls have moved out of Settings; change them in the Compose AI options to save them automatically to your Roundcube account. The saved choices are used on the next compose page load, including on another browser or device.
 
 When an opened message clearly calls for a reply, the same AI request may return one to three short reply suggestions in the summary's target language (or the interface language when translation is off). Informational or ambiguous messages show no suggestions. Clicking a suggestion opens Roundcube's normal reply composer and generates a draft with the selected instruction; the user can edit it before sending. The suggestion is passed through a short-lived, one-time token in the Roundcube session. The reply language follows the incoming message when that language is available in the compose language selector.
 

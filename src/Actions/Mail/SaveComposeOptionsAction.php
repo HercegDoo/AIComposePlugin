@@ -14,16 +14,34 @@ final class SaveComposeOptionsAction extends AbstractAction
     {
         header('Content-Type: application/json; charset=UTF-8');
 
-        $style = Request::postString('style');
-        $length = Request::postString('length');
-        $creativity = Request::postString('creativity');
-        $language = Request::postString('language');
-        $resolvedLanguage = $language !== null ? Settings::resolveLanguage($language) : null;
+        $allowed = [
+            'style' => array_values(Settings::getStyles()),
+            'length' => array_values(Settings::getLengths()),
+            'creativity' => Settings::getCreativities(),
+        ];
+        $updates = [];
+        foreach (['style', 'length', 'creativity', 'language'] as $field) {
+            if (!array_key_exists($field, $_POST)) {
+                continue;
+            }
 
-        if (!\in_array($style, array_values(Settings::getStyles()), true)
-            || !\in_array($length, array_values(Settings::getLengths()), true)
-            || !\in_array($creativity, Settings::getCreativities(), true)
-            || $resolvedLanguage === null) {
+            $value = Request::postString($field);
+            if ($field === 'language') {
+                $value = $value !== null ? Settings::resolveLanguage($value) : null;
+            } elseif (!\in_array($value, $allowed[$field], true)) {
+                $value = null;
+            }
+
+            if ($value === null) {
+                echo json_encode(['status' => 'error']);
+
+                return;
+            }
+
+            $updates[$field] = $value;
+        }
+
+        if ($updates === []) {
             echo json_encode(['status' => 'error']);
 
             return;
@@ -33,12 +51,7 @@ final class SaveComposeOptionsAction extends AbstractAction
         if (!\is_array($defaults)) {
             $defaults = [];
         }
-        $saved = $this->rcmail->user->save_prefs(['aicDefaults' => array_merge($defaults, [
-            'style' => $style,
-            'length' => $length,
-            'creativity' => $creativity,
-            'language' => $resolvedLanguage,
-        ])]);
+        $saved = $this->rcmail->user->save_prefs(['aicDefaults' => array_merge($defaults, $updates)]);
 
         echo json_encode(['status' => $saved ? 'success' : 'error']);
     }

@@ -20,7 +20,7 @@
 ### Preferences and interface
 
 - **Summary language settings:** Users can keep the active Roundcube interface language, choose another installed language, or show summaries in the message's original language. Compose options now save from the compose screen instead of the old default-option fields in Settings ([#177](https://github.com/HercegDoo/AIComposePlugin/pull/177)).
-- **Compose option persistence:** Browser storage handling and focused frontend tests were added for style, length, creativity, and language ([#172](https://github.com/HercegDoo/AIComposePlugin/pull/172)). A follow-up fix restores those choices in newly opened compose windows and simplifies saving them to Roundcube account preferences ([#178](https://github.com/HercegDoo/AIComposePlugin/pull/178)).
+- **Compose option persistence:** Changes to style, length, creativity, and language are saved to Roundcube account preferences as they are selected and restored on the next compose page load. Frontend persistence tests were added in [#172](https://github.com/HercegDoo/AIComposePlugin/pull/172), with follow-up handling for newly opened compose windows in [#178](https://github.com/HercegDoo/AIComposePlugin/pull/178).
 - **Subject button usability:** The subject suggestion control now uses an icon and a Roundcube tooltip, with improved label handling ([#173](https://github.com/HercegDoo/AIComposePlugin/pull/173)).
 - **Summary appearance:** Summary cards and hover previews received dark-mode styling ([#171](https://github.com/HercegDoo/AIComposePlugin/pull/171)), then AI icons, a clearer hover popup, and a separate panel for reply suggestions ([#181](https://github.com/HercegDoo/AIComposePlugin/pull/181)).
 
