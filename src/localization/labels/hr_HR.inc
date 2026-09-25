@@ -204,4 +204,6 @@ $labels['ai_summary_language_roundcube'] = 'Jezik Roundcube sučelja (automatski
 $labels['ai_summary_language_original'] = 'Izvorni jezik (bez prijevoda)';
 $labels['ai_summarize_again'] = 'Sažmi ponovno';
 $labels['ai_options_save_error'] = 'Nije moguće spremiti AI opcije pisanja.';
+$labels['ai_options_save_defaults'] = 'Spremi kao zadano';
+$labels['ai_options_save_success'] = 'AI opcije spremljene su kao zadane.';
 $labels['ai_options_load_error'] = 'Nije moguće učitati spremljene AI opcije pisanja.';
