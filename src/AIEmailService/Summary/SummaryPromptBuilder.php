@@ -9,11 +9,17 @@ use HercegDoo\AIComposePlugin\AIEmailService\Prompt\EmailPrompt;
 final class SummaryPromptBuilder
 {
     public const VERSION = 4;
+    public const LONG_MESSAGE_MIN_WORDS = 300;
+
+    public static function isLongMessage(string $body): bool
+    {
+        return (preg_match_all('/\S+/u', $body) ?: 0) >= self::LONG_MESSAGE_MIN_WORDS;
+    }
 
     public static function sentenceCountForBody(string $body): int
     {
         $wordCount = preg_match_all('/\S+/u', $body) ?: 0;
-        if ($wordCount >= 300) {
+        if ($wordCount >= self::LONG_MESSAGE_MIN_WORDS) {
             return 3;
         }
         if ($wordCount >= 100) {

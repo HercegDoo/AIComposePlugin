@@ -1,4 +1,5 @@
 import "./summary/styles.css";
+import { messageTranslationCard } from "./summary/translation";
 
 const action = "plugin.aicomposeplugin_SummarizeMessageAction";
 const results = new Map();
@@ -37,8 +38,8 @@ function summarize(uid, mailbox, view = "preview", refresh = false) {
     rcmail
       .http_post(action, { uid, mailbox, view, refresh: refresh ? "1" : "0" })
       .done((data) => {
-        if (data && data.status === "success") {
-          results.set(key, data);
+        if (data && (data.status === "success" || data.status === "skipped")) {
+          if (data.status === "success") results.set(key, data);
           resolve(data);
         } else {
           reject(new Error("Summary unavailable"));
@@ -56,6 +57,7 @@ function messageCard() {
   const uid = String(rcmail.env.uid || "");
   const mailbox = rcmail.env.mailbox;
   if (!body || !/^[1-9]\d*(?:\.\d+)*$/.test(uid) || !mailbox) return;
+  const onlyLong = rcmail.env.aiSummaryMessageMode === "long";
 
   const card = document.createElement("section");
   card.className = "aic-summary-card";
@@ -102,7 +104,13 @@ function messageCard() {
   suggestionsList.className = "aic-reply-suggestion-list";
   suggestions.append(suggestionsHeading, suggestionsList);
   card.append(head, summary, original);
-  body.prepend(card, suggestions);
+  let inserted = false;
+  function showCard() {
+    if (inserted) return;
+    body.prepend(card, suggestions);
+    inserted = true;
+  }
+  if (!onlyLong) showCard();
 
   let current;
   function prepareReply(item) {
@@ -171,8 +179,18 @@ function messageCard() {
     summary.textContent = label("ai_summary_loading", "Summarizing…");
     suggestions.hidden = true;
     summarize(uid, mailbox, "message", refresh)
-      .then(render)
+      .then((data) => {
+        if (data.status === "skipped") {
+          card.remove();
+          suggestions.remove();
+          inserted = false;
+          return;
+        }
+        showCard();
+        render(data);
+      })
       .catch(() => {
+        if (onlyLong && !inserted) return;
         summary.textContent = label(
           "ai_summary_error",
           "Summary unavailable. Try again."
@@ -268,6 +286,9 @@ function hoverPreview() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (rcmail.env.aiSummaryViews?.message !== false) messageCard();
-  if (rcmail.env.aiSummaryViews?.preview !== false) hoverPreview();
+  if (rcmail.env.aiSummaryEnabled === true) {
+    if (rcmail.env.aiSummaryViews?.message !== false) messageCard();
+    if (rcmail.env.aiSummaryViews?.preview !== false) hoverPreview();
+  }
+  if (rcmail.env.aiTranslationEnabled === true) messageTranslationCard();
 });

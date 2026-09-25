@@ -27,6 +27,7 @@ final class OllamaTest extends TestCase
                 return $payload['model'] === 'multilingual-model'
                     && $payload['format'] === 'json'
                     && $payload['stream'] === false
+                    && $payload['options']['num_predict'] === 4096
                     && $payload['messages'][0]['content'] === 'System summary instruction'
                     && $payload['messages'][1]['content'] === 'User email content';
             })
@@ -34,7 +35,7 @@ final class OllamaTest extends TestCase
 
         $response = (new Ollama($curl))->complete(
             new EmailPrompt('System summary instruction', 'User email content'),
-            ['model' => 'multilingual-model']
+            ['model' => 'multilingual-model', 'maxTokens' => 4096]
         );
 
         self::assertSame('{"source_language":"German"}', $response);

@@ -57,6 +57,10 @@ $config['aiComposeSentStyleEnabled'] = true;
 // Opened messages may also show up to three reply suggestions when the intent is clear.
 // Incoming message content is sent to the selected provider when a summary is first requested.
 $config['aiSummaryEnabled'] = true;
+// Show a separate on-demand full-message translation control in opened emails.
+// It uses aiSummaryProvider, but also works when summaries are disabled.
+// Users can hide this control for themselves in AICompose Settings.
+$config['aiTranslationEnabled'] = true;
 $config['aiSummaryProvider'] = 'OpenAI'; // 'OpenAI', 'Gemini', or 'Ollama'
 
 // Optional OpenAI summary overrides. By default summaries reuse aiProviderOpenAIConfig.

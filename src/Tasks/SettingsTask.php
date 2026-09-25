@@ -6,6 +6,7 @@ namespace HercegDoo\AIComposePlugin\Tasks;
 
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryDisplayPreferences;
 use HercegDoo\AIComposePlugin\AIEmailService\Summary\SummaryTargetLanguage;
+use HercegDoo\AIComposePlugin\AIEmailService\Translation\TranslationDisplayPreferences;
 
 class SettingsTask extends AbstractTask
 {
@@ -144,11 +145,15 @@ class SettingsTask extends AbstractTask
                     ],
                     [
                         'title' => $this->translation('ai_summary_hover_setting'),
-                        'content' => $this->getSummaryVisibilityDropdown(SummaryDisplayPreferences::HOVER),
+                        'content' => $this->getVisibilityDropdown(SummaryDisplayPreferences::HOVER),
                     ],
                     [
                         'title' => $this->translation('ai_summary_message_setting'),
-                        'content' => $this->getSummaryVisibilityDropdown(SummaryDisplayPreferences::MESSAGE),
+                        'content' => $this->getVisibilityDropdown(SummaryDisplayPreferences::MESSAGE),
+                    ],
+                    [
+                        'title' => $this->translation('ai_translation_message_setting'),
+                        'content' => $this->getVisibilityDropdown(TranslationDisplayPreferences::MESSAGE),
                     ],
                 ],
             ];
@@ -183,17 +188,22 @@ class SettingsTask extends AbstractTask
                 ?? SummaryDisplayPreferences::choice($defaults, SummaryDisplayPreferences::HOVER);
             $summaryMessage = $aicData[SummaryDisplayPreferences::MESSAGE]
                 ?? SummaryDisplayPreferences::choice($defaults, SummaryDisplayPreferences::MESSAGE);
+            $translationMessage = $aicData[TranslationDisplayPreferences::MESSAGE]
+                ?? SummaryDisplayPreferences::choice($defaults, TranslationDisplayPreferences::MESSAGE);
             if (\in_array($visibility, ['show', 'hide'], true)
                 && \is_string($summaryLanguage)
                 && SummaryTargetLanguage::isValid($summaryLanguage, $rcmail->list_languages())
                 && \is_string($summaryHover)
                 && SummaryDisplayPreferences::isValid($summaryHover)
                 && \is_string($summaryMessage)
-                && SummaryDisplayPreferences::isValid($summaryMessage)) {
+                && SummaryDisplayPreferences::isValidFor($summaryMessage, SummaryDisplayPreferences::MESSAGE)
+                && \is_string($translationMessage)
+                && SummaryDisplayPreferences::isValid($translationMessage)) {
                 $defaults['pluginVisibility'] = $visibility;
                 $defaults['summaryLanguage'] = $summaryLanguage;
                 $defaults[SummaryDisplayPreferences::HOVER] = $summaryHover;
                 $defaults[SummaryDisplayPreferences::MESSAGE] = $summaryMessage;
+                $defaults[TranslationDisplayPreferences::MESSAGE] = $translationMessage;
                 $prefs = $args['prefs'] ?? [];
                 if (!\is_array($prefs)) {
                     $prefs = [];
@@ -253,7 +263,7 @@ class SettingsTask extends AbstractTask
         return $dropdown . '</select>';
     }
 
-    private function getSummaryVisibilityDropdown(string $preference): string
+    private function getVisibilityDropdown(string $preference): string
     {
         $defaults = \rcmail::get_instance()->user->get_prefs()['aicDefaults'] ?? [];
         $selected = SummaryDisplayPreferences::choice(\is_array($defaults) ? $defaults : [], $preference);
@@ -261,6 +271,13 @@ class SettingsTask extends AbstractTask
             SummaryDisplayPreferences::SHOW => $this->translation('ai_compose_show'),
             SummaryDisplayPreferences::HIDE => $this->translation('ai_compose_hide'),
         ];
+        if ($preference === SummaryDisplayPreferences::MESSAGE) {
+            $options = [
+                SummaryDisplayPreferences::HIDE => $this->translation('ai_compose_hide'),
+                SummaryDisplayPreferences::LONG => $this->translation('ai_summary_message_long'),
+                SummaryDisplayPreferences::SHOW => $this->translation('ai_summary_message_always'),
+            ];
+        }
 
         $dropdown = '<select name="data[aic][' . $preference . ']">';
         foreach ($options as $value => $label) {

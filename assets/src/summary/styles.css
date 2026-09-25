@@ -1,6 +1,7 @@
 .aic-summary-card,
 .aic-reply-suggestions,
-.aic-summary-preview {
+.aic-summary-preview,
+.aic-translation-card {
   --aic-summary-text: #273247;
   --aic-summary-muted: #637086;
   --aic-summary-border: #dce2ef;
@@ -8,6 +9,101 @@
   --aic-summary-focus: #5f48c7;
   box-sizing: border-box;
   color: var(--aic-summary-text);
+}
+
+.aic-translation-card {
+  margin: 0.75rem 0 1rem;
+  padding: 0.9rem 1.1rem 1rem;
+  border: 1px solid var(--aic-summary-border);
+  border-left: 3px solid #32989a;
+  border-radius: 0.55rem;
+  background: #f7fcfc;
+}
+
+.aic-translation-header strong {
+  display: block;
+  font-size: 0.94rem;
+}
+
+.aic-translation-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.aic-translation-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 0.5rem;
+  background: #dff3f0;
+  color: #227d7e;
+}
+
+.aic-translation-symbol svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+}
+
+.aic-translation-header p {
+  margin: 0.25rem 0 0;
+  color: var(--aic-summary-muted);
+  font-size: 0.82rem;
+}
+
+.aic-translation-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.aic-translation-controls label {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.aic-translation-controls select {
+  flex: 0 1 15rem;
+  min-width: 9rem;
+  width: auto;
+}
+
+.aic-translation-controls button {
+  white-space: nowrap;
+}
+
+.aic-translation-status {
+  margin: 0.8rem 0 0;
+  color: var(--aic-summary-muted);
+  font-size: 0.84rem;
+}
+
+.aic-translation-result {
+  max-height: 65vh;
+  overflow: auto;
+  margin-top: 0.9rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--aic-summary-border);
+  border-radius: 0.4rem;
+  background: #fff;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.aic-translation-status[hidden],
+.aic-translation-result[hidden],
+.aic-translation-controls button[hidden] {
+  display: none;
 }
 
 .aic-summary-card {
@@ -216,12 +312,27 @@
 
 html.dark-mode .aic-summary-card,
 html.dark-mode .aic-reply-suggestions,
-html.dark-mode .aic-summary-preview {
+html.dark-mode .aic-summary-preview,
+html.dark-mode .aic-translation-card {
   --aic-summary-text: #e9e9f3;
   --aic-summary-muted: #b8c0d0;
   --aic-summary-border: #464a5d;
   --aic-summary-accent: #aa8af1;
   --aic-summary-focus: #bba2ff;
+}
+
+html.dark-mode .aic-translation-card {
+  border-left-color: #69c9ca;
+  background: #243438;
+}
+
+html.dark-mode .aic-translation-symbol {
+  background: #315459;
+  color: #a6e8e2;
+}
+
+html.dark-mode .aic-translation-result {
+  background: #1d292d;
 }
 
 html.dark-mode .aic-summary-card {

@@ -14,24 +14,42 @@ use PHPUnit\Framework\TestCase;
  */
 final class SummaryDisplayPreferencesTest extends TestCase
 {
-    public function testBothViewsAreShownForExistingUsers(): void
+    public function testHoverIsHiddenAndOpenedMessageUsesLongModeWithoutSavedChoices(): void
     {
-        self::assertTrue(SummaryDisplayPreferences::isEnabled([], 'preview'));
+        self::assertFalse(SummaryDisplayPreferences::isEnabled([], 'preview'));
         self::assertTrue(SummaryDisplayPreferences::isEnabled([], 'message'));
+        self::assertSame('long', SummaryDisplayPreferences::choice([], SummaryDisplayPreferences::MESSAGE));
     }
 
     public function testEachViewCanBeHiddenIndependently(): void
     {
         self::assertFalse(SummaryDisplayPreferences::isEnabled(['summaryHover' => 'hide'], 'preview'));
         self::assertTrue(SummaryDisplayPreferences::isEnabled(['summaryHover' => 'hide'], 'message'));
-        self::assertTrue(SummaryDisplayPreferences::isEnabled(['summaryMessage' => 'hide'], 'preview'));
+        self::assertTrue(SummaryDisplayPreferences::isEnabled(['summaryHover' => 'show', 'summaryMessage' => 'hide'], 'preview'));
         self::assertFalse(SummaryDisplayPreferences::isEnabled(['summaryMessage' => 'hide'], 'message'));
+        self::assertTrue(SummaryDisplayPreferences::isEnabled(['summaryMessage' => 'show'], 'message'));
+        self::assertTrue(SummaryDisplayPreferences::isEnabled(['summaryMessage' => 'long'], 'message'));
         self::assertFalse(SummaryDisplayPreferences::isEnabled([], 'unknown'));
     }
 
-    public function testInvalidStoredValuesFallBackToShow(): void
+    public function testInvalidStoredValuesUseEachViewDefault(): void
     {
-        self::assertSame('show', SummaryDisplayPreferences::choice(['summaryHover' => false], SummaryDisplayPreferences::HOVER));
+        self::assertSame('hide', SummaryDisplayPreferences::choice(['summaryHover' => false], SummaryDisplayPreferences::HOVER));
+        self::assertSame('long', SummaryDisplayPreferences::choice(['summaryMessage' => false], SummaryDisplayPreferences::MESSAGE));
+        self::assertSame('hide', SummaryDisplayPreferences::choice(['summaryHover' => 'long'], SummaryDisplayPreferences::HOVER));
+        self::assertFalse(SummaryDisplayPreferences::isValidFor('long', SummaryDisplayPreferences::HOVER));
+        self::assertTrue(SummaryDisplayPreferences::isValidFor('long', SummaryDisplayPreferences::MESSAGE));
         self::assertFalse(SummaryDisplayPreferences::isValid('other'));
+    }
+
+    public function testOpenedMessageModeUsesThreeHundredWordBoundary(): void
+    {
+        $short = str_repeat('word ', 299);
+        $long = str_repeat('word ', 300);
+
+        self::assertFalse(SummaryDisplayPreferences::shouldSummarizeMessage([], $short));
+        self::assertTrue(SummaryDisplayPreferences::shouldSummarizeMessage([], $long));
+        self::assertFalse(SummaryDisplayPreferences::shouldSummarizeMessage(['summaryMessage' => 'hide'], $long));
+        self::assertTrue(SummaryDisplayPreferences::shouldSummarizeMessage(['summaryMessage' => 'show'], $short));
     }
 }
