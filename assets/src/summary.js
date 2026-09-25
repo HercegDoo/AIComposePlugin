@@ -268,6 +268,6 @@ function hoverPreview() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  messageCard();
-  hoverPreview();
+  if (rcmail.env.aiSummaryViews?.message !== false) messageCard();
+  if (rcmail.env.aiSummaryViews?.preview !== false) hoverPreview();
 });
