@@ -202,4 +202,6 @@ $labels['ai_summary_language_roundcube'] = 'Sprache der Roundcube-Oberfläche (a
 $labels['ai_summary_language_original'] = 'Originalsprache (ohne Übersetzung)';
 $labels['ai_summarize_again'] = 'Erneut zusammenfassen';
 $labels['ai_options_save_error'] = 'Die KI-Schreiboptionen konnten nicht gespeichert werden.';
+$labels['ai_options_save_defaults'] = 'Als Standard speichern';
+$labels['ai_options_save_success'] = 'KI-Schreiboptionen als Standard gespeichert.';
 $labels['ai_options_load_error'] = 'Die gespeicherten KI-Schreiboptionen konnten nicht geladen werden.';

@@ -272,6 +272,13 @@ margin: 0 auto;
   align-items: center;
 }
 
+.aic-options-actions {
+  display: flex;
+  justify-content: flex-end;
+  width: 95%;
+  padding: 2px 0 14px;
+}
+
 .single-select{
   width:95%;
   display : flex;

@@ -203,4 +203,6 @@ $labels['ai_summary_language_roundcube'] = 'Taal van de Roundcube-interface (aut
 $labels['ai_summary_language_original'] = 'Oorspronkelijke taal (geen vertaling)';
 $labels['ai_summarize_again'] = 'Opnieuw samenvatten';
 $labels['ai_options_save_error'] = 'AI-schrijfopties konden niet worden opgeslagen.';
+$labels['ai_options_save_defaults'] = 'Opslaan als standaard';
+$labels['ai_options_save_success'] = 'AI-schrijfopties opgeslagen als standaardwaarden.';
 $labels['ai_options_load_error'] = 'Opgeslagen AI-schrijfopties konden niet worden geladen.';
