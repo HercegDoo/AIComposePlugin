@@ -1,0 +1,18 @@
+services:
+  ask-mail-indexer:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ask-mail-state:/data
+    # Attach this service to the private network with Solr, Ollama, Tika,
+    # Roundcube's database, and the IMAP server. Do not publish a port.
+    networks:
+      - ask-mail-private
+
+volumes:
+  ask-mail-state:
+
+networks:
+  ask-mail-private:
+    external: true
