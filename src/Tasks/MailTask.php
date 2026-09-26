@@ -65,6 +65,9 @@ class MailTask extends AbstractTask
             || ($template === 'message' && $this->translationEnabled())) {
             $this->includeBundle('summary');
         }
+        if ($this->askMailEnabled() && \in_array($template, ['mail', 'message'], true)) {
+            $this->includeBundle('askMail');
+        }
 
         return $args;
     }
@@ -251,8 +254,9 @@ class MailTask extends AbstractTask
             if ($rcmail->action === 'compose') {
                 $this->includeComposeScripts();
             }
-        } elseif ($this->summaryEnabled() || $this->translationEnabled()) {
+        } elseif ($this->summaryEnabled() || $this->translationEnabled() || $this->askMailEnabled()) {
             $this->loadTranslations();
+            $rcmail->output->set_env('aiAskMailEnabled', $this->askMailEnabled());
             $rcmail->output->set_env('aiSummaryViews', $this->summaryViews());
             $defaults = $rcmail->user->get_prefs()['aicDefaults'] ?? [];
             $rcmail->output->set_env('aiSummaryMessageMode', SummaryDisplayPreferences::choice(
@@ -296,6 +300,11 @@ class MailTask extends AbstractTask
     private function summaryEnabled(): bool
     {
         return (bool) \rcmail::get_instance()->config->get('aiSummaryEnabled', true);
+    }
+
+    private function askMailEnabled(): bool
+    {
+        return \rcmail::get_instance()->config->get('aiAskMailEnabled', false) === true;
     }
 
     private function translationEnabled(): bool

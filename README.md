@@ -21,6 +21,30 @@ AIComposePlugin adds AI-assisted email writing, subject suggestions, incoming-me
 - **Provider choices:** OpenAI and Gemini support email composition, subjects, summaries, and full-message translation. Ollama is available for local incoming-message summaries and translation. OpenAI requests include model-specific handling for GPT-5 and GPT-6.
 - **Roundcube integration:** The interface uses the Elastic skin, localized labels, and light and dark theme styling. Compose options, summary and translation visibility, and summary language preferences belong to the signed-in user.
 - **Optional diagnostics:** Administrators can enable AI request logging with prompts, model details, timing, and provider-reported token usage. Logging is off by default and can contain private email text when enabled.
+- **Optional Ask your mail:** Search across the signed-in user's indexed folders by meaning and keywords, then get an answer with links to the messages used as evidence. A separate background worker indexes mail and supported attachments; the control is disabled until configured.
+
+## Ask your mail (optional)
+
+Ask your mail needs Solr 9.6 or newer, an Ollama instance running the `qwen3-embedding:0.6b` model, and a separate worker. It uses its **own** Solr collection, `aicompose_mail_vectors`, and does not change Dovecot's existing FTS collection. It combines Roundcube's IMAP/FTS keyword results with Solr vector results. If Ollama embeddings are unavailable during a question, IMAP/FTS results remain available. Answers use the configured `aiSummaryProvider` (OpenAI, Gemini, or Ollama). For a completely local setup, configure that provider as Ollama too.
+
+1. Pull the embedding model in Ollama: `ollama pull qwen3-embedding:0.6b`.
+2. Give the worker read access to Roundcube's `users` table and a dedicated **Dovecot master-user** login that can open each user's mailboxes. Restrict that account to read access with your Dovecot policy and to the worker network; the worker itself selects folders read-only. The worker enumerates all accounts present in Roundcube's database; it does not need each user's password. MySQL/MariaDB, PostgreSQL, and SQLite Roundcube databases are supported by the worker URL.
+3. Ensure the worker can reach IMAP, Solr, Ollama, and an optional Apache Tika server on a private Docker network. The IMAP TLS certificate must match the configured host; mount your internal CA certificate and set `AIC_IMAP_CA_FILE` when needed. Tika is needed to index PDF, Word, Excel, PowerPoint, and OpenDocument attachments. Plain-text and HTML attachments work without Tika. Do not expose Solr, Ollama, Tika, or the worker state volume to the public internet.
+4. Copy `deploy/ask-mail/.env.example` to `deploy/ask-mail/.env` and set the database URL, Dovecot master-user credential, and service URLs. Keep `.env` private. The example Compose file expects an existing Docker network named `ask-mail-private`; attach your existing services to it or adapt the network in the file.
+5. From `deploy/ask-mail`, run:
+
+   ```bash
+   docker compose build
+   docker compose run --rm ask-mail-indexer python init_solr.py
+   docker compose up -d
+   ```
+
+   `init_solr.py` creates only the separate Ask Mail collection on SolrCloud and adds a 1024-dimension vector field plus message coordinates. For standalone Solr, create an empty collection/core with the `_default` configset first, then run the initializer. The initializer can be rerun; it leaves existing fields in place. The embedding model and vector dimension must agree. Changing models or dimensions requires a new collection and a complete reindex.
+6. In the plugin's `config.inc.php`, set `aiAskMailEnabled = true` and configure `aiAskMailConfig` with URLs reachable **from the Roundcube PHP process**. Use the same collection and embedding model as the worker. Configure `aiSummaryProvider` for answers. Reload Roundcube and open **Ask your mail** on the mail page.
+
+The worker visits every selectable folder except Drafts, Spam/Junk, and Trash, prioritizes new mail, and then indexes older mail newest first. It records per-folder UID progress in its Docker volume and resumes after restarts. A rolling pass removes indexed UIDs that IMAP no longer has; removed users and folders are also purged. UIDVALIDITY changes reset a folder's index. The dialog reports per-user indexing progress. Keep a single worker replica against a state volume.
+
+The default limits are 30 MB per email, 20 MB per attachment, and at most 80 sampled chunks per email (up to 24 for the body and 12 per attachment). Text is sampled across very long content. Adjust limits in `.env` after estimating Solr vector storage and Ollama throughput for your mailbox volume, and set matching `maxMessageBytes` and `maxAttachmentBytes` in `aiAskMailConfig`; oversized messages are counted as skipped. The vector collection stores embeddings and message coordinates, not message text. Roundcube's existing IMAP/FTS index handles keyword lookup. Keyword search stops starting new subscribed-folder searches after eight seconds; a single IMAP folder search can take longer. If keyword search cannot finish, vector matches still work. Search results are filtered by the signed-in Roundcube user ID and the matching message is reopened from that user's IMAP session before its excerpt can appear in an answer. The answer provider receives those excerpts; `aiDebugLogging` may record them when explicitly enabled. Attachments are sent to the configured Tika service for extraction. PDFs requiring OCR, images, and unsupported formats are outside this index.
 
 ## Install
 
