@@ -1,6 +1,10 @@
 
 # AI Email Generator Plugin for Roundcube
 
+
+<img  alt="image" src="https://github.com/user-attachments/assets/e452b8df-b4da-4268-aaf0-3e7f14f0c1f5" />
+<img  alt="image" src="https://github.com/user-attachments/assets/ba9aa09f-6ce5-4d0c-ac21-cf993d74952d" />
+
 ## Overview
 
 AIComposePlugin adds AI-assisted email writing, subject suggestions, incoming-message summaries, translation, and reply drafts to Roundcube.
@@ -77,11 +81,6 @@ For a Plesk installation, copy the complete plugin directory (including `src/` a
     - Click the lightbulb icon beside the Subject field to generate another suggestion from the current email text. Hover over it to see the translated **Suggest subject** tooltip. If the editor is empty, the plugin uses the entered instructions.
     - This updates only the Subject field. Each suggestion can require another provider request.
     - The button label follows the Roundcube interface language. The language selected in AI Mail Options controls the generated subject text.
-  
-<img  alt="image" src="https://github.com/user-attachments/assets/e452b8df-b4da-4268-aaf0-3e7f14f0c1f5" />
-<img  alt="image" src="https://github.com/user-attachments/assets/ba9aa09f-6ce5-4d0c-ac21-cf993d74952d" />
-
-
 
 ## Maintaining prompts and providers
 
