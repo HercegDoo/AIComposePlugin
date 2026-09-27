@@ -1,0 +1,137 @@
+.aic-ask-mail-trigger {
+  border: 1px solid var(--border-color, #c6d0d5);
+  border-radius: 0.4rem;
+  color: inherit;
+  background: transparent;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+
+.aic-ask-mail-trigger::before {
+  content: "✦";
+  margin-right: 0.4rem;
+}
+
+.aic-ask-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgb(0 0 0 / 55%);
+}
+
+.aic-ask-backdrop[hidden] {
+  display: none;
+}
+
+.aic-ask-dialog {
+  width: min(740px, 100%);
+  max-height: min(85vh, 900px);
+  overflow: auto;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: var(--content-bg-color, #fff);
+  color: var(--font-color, #222);
+  box-shadow: 0 1rem 3rem rgb(0 0 0 / 25%);
+}
+
+html.dark-mode .aic-ask-dialog {
+  background: #21292c;
+  color: #e4e9eb;
+}
+
+.aic-ask-heading,
+.aic-ask-form {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.aic-ask-heading {
+  justify-content: space-between;
+}
+
+.aic-ask-heading h2 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.aic-ask-close {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.aic-ask-input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.65rem;
+  border: 1px solid #98aab2;
+  border-radius: 0.4rem;
+}
+
+.aic-ask-submit {
+  padding: 0.65rem 0.9rem;
+  border: 0;
+  border-radius: 0.4rem;
+  background: #2563a6;
+  color: white;
+  cursor: pointer;
+}
+
+.aic-ask-submit:disabled {
+  opacity: 0.6;
+}
+
+.aic-ask-progress,
+.aic-ask-feedback {
+  margin: 0.7rem 0;
+  color: inherit;
+  opacity: 0.75;
+}
+
+.aic-ask-answer {
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+.aic-ask-sources {
+  padding-left: 1.6rem;
+}
+
+.aic-ask-source {
+  padding: 0.75rem 0;
+  border-top: 1px solid #a0aeb444;
+}
+
+.aic-ask-source small {
+  display: block;
+  opacity: 0.65;
+}
+
+.aic-ask-source p {
+  margin: 0.35rem 0 0;
+  max-height: 5.4em;
+  overflow: hidden;
+  line-height: 1.35;
+}
+
+.aic-ask-cited {
+  border-left: 3px solid #4186c5;
+  padding-left: 0.65rem;
+}
+
+@media (max-width: 600px) {
+  .aic-ask-form {
+    flex-wrap: wrap;
+  }
+
+  .aic-ask-submit {
+    width: 100%;
+  }
+}

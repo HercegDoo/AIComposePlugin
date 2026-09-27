@@ -4,3 +4,7 @@
 .idea
 /cache/
 config.inc.php
+/deploy/ask-mail/.env
+/deploy/ask-mail/*.sqlite3
+**/__pycache__/
+*.pyc

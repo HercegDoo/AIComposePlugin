@@ -6,6 +6,7 @@ module.exports = {
     composeOptions: "./assets/src/composeOptions.js",
     settings: "./assets/src/settings.js",
     summary: "./assets/src/summary.js",
+    askMail: "./assets/src/askMail.js",
   },
   output: {
     filename: "[name].bundle.js",
