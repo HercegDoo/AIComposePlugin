@@ -84,6 +84,21 @@ $config['aiSummaryOllamaConfig'] = [
     'model' => '', // e.g. an installed multilingual Ollama model
 ];
 
+// Optional Ask your mail search. Run the separate indexer from deploy/ask-mail
+// before enabling this control. Search is always scoped to the signed-in
+// Roundcube user; answers use aiSummaryProvider. Keep Solr and Ollama private.
+$config['aiAskMailEnabled'] = false;
+$config['aiAskMailConfig'] = [
+    'solrUrl' => 'http://127.0.0.1:8983/solr/aicompose_mail_vectors',
+    'ollamaUrl' => 'http://127.0.0.1:11434',
+    'embeddingModel' => 'qwen3-embedding:0.6b',
+    'tikaUrl' => 'http://127.0.0.1:9998',
+    'maxMessageBytes' => 31457280, // Match AIC_MAX_MESSAGE_BYTES in the worker.
+    'maxAttachmentBytes' => 20971520, // Match AIC_MAX_ATTACHMENT_BYTES in the worker.
+    // 'solrUser' => '',
+    // 'solrPassword' => '',
+];
+
 // The default tone of the generated email text. The users will be able to modify this option in the settings.
 // Available options: "assertive", "casual", "enthusiastic", "funny", "informational", "professional", "urgent", "witty"
 // Each style is an array element, except the **default** style, which is set as a key-value pair and used when no specific style is requested
