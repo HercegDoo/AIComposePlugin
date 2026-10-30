@@ -4,25 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6167e8fd1a43eca134a835dd7b56f204",
+    "content-hash": "78b75684dd02e731b8192403cfa81a37",
     "packages": [
         {
             "name": "php-curl-class/php-curl-class",
-            "version": "9.19.2",
+            "version": "13.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-curl-class/php-curl-class.git",
-                "reference": "c41efeb4ea2dc3cf8f90f8f967b0fcf45a41e294"
+                "reference": "b92dab46aa56e25e377db48d9c7cca1fcbc34d10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/c41efeb4ea2dc3cf8f90f8f967b0fcf45a41e294",
-                "reference": "c41efeb4ea2dc3cf8f90f8f967b0fcf45a41e294",
+                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/b92dab46aa56e25e377db48d9c7cca1fcbc34d10",
+                "reference": "b92dab46aa56e25e377db48d9c7cca1fcbc34d10",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
-                "php": ">=7.0"
+                "php": ">=8.0"
             },
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "*",
@@ -30,9 +30,9 @@
                 "friendsofphp/php-cs-fixer": "*",
                 "phpcompatibility/php-compatibility": "dev-develop",
                 "phpcsstandards/phpcsutils": "@alpha",
+                "phpstan/phpstan": "*",
                 "phpunit/phpunit": "*",
-                "squizlabs/php_codesniffer": "*",
-                "vimeo/psalm": ">=0.3.63"
+                "squizlabs/php_codesniffer": "*"
             },
             "suggest": {
                 "ext-mbstring": "*"
@@ -82,9 +82,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-curl-class/php-curl-class/issues",
-                "source": "https://github.com/php-curl-class/php-curl-class/tree/9.19.2"
+                "source": "https://github.com/php-curl-class/php-curl-class/tree/13.0.1"
             },
-            "time": "2024-04-09T18:03:13+00:00"
+            "time": "2026-10-21T01:41:03+00:00"
         },
         {
             "name": "symfony/polyfill-php80",
