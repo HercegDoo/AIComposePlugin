@@ -518,24 +518,26 @@
         },
         {
             "name": "dg/bypass-finals",
-            "version": "v1.8.0",
+            "version": "v1.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dg/bypass-finals.git",
-                "reference": "86b00f0d900c7e15d3341e687e0df89e8c2d4632"
+                "reference": "295d8549a99848afc7fe39099d9bfac6fceb0e75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dg/bypass-finals/zipball/86b00f0d900c7e15d3341e687e0df89e8c2d4632",
-                "reference": "86b00f0d900c7e15d3341e687e0df89e8c2d4632",
+                "url": "https://api.github.com/repos/dg/bypass-finals/zipball/295d8549a99848afc7fe39099d9bfac6fceb0e75",
+                "reference": "295d8549a99848afc7fe39099d9bfac6fceb0e75",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1"
+                "php": ">=8.2"
             },
             "require-dev": {
-                "nette/tester": "^2.3",
-                "phpstan/phpstan": "^0.12"
+                "nette/phpstan-rules": "^1.0",
+                "nette/tester": "^2.6",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^2.2"
             },
             "type": "library",
             "autoload": {
@@ -555,19 +557,21 @@
                     "homepage": "https://davidgrudl.com"
                 }
             ],
-            "description": "Removes final keyword from source code on-the-fly and allows mocking of final methods and classes",
+            "description": "🔓 BypassFinals: removes final and readonly from your code on the fly, so you can mock final classes and methods in PHPUnit, Mockery or Nette Tester.",
             "keywords": [
-                "finals",
+                "final",
+                "mock final class",
+                "mockery",
                 "mocking",
                 "phpunit",
-                "testing",
-                "unit"
+                "readonly",
+                "testing"
             ],
             "support": {
                 "issues": "https://github.com/dg/bypass-finals/issues",
-                "source": "https://github.com/dg/bypass-finals/tree/v1.8.0"
+                "source": "https://github.com/dg/bypass-finals/tree/v1.11.1"
             },
-            "time": "2024-07-02T22:24:43+00:00"
+            "time": "2026-10-23T13:27:43+00:00"
         },
         {
             "name": "doctrine/instantiator",
