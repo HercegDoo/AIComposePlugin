@@ -66,7 +66,7 @@
     "nexusphp/cs-config": "^3.18",
     "mockery/mockery": "^1.6",
     "dg/bypass-finals": "^1.8",
-    "phpstan/phpstan": "^1.11",
+    "phpstan/phpstan": "^2.3",
     "roundcube/plugin-installer": "^0.3.0"
   },
   "scripts": {
